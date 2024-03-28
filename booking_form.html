@@ -27,11 +27,11 @@
         <div class="row"> 
             <div class="col-md-12" id="hello">
                 <h3 class="fw-bold ps-4">Fill up the form</h3>
-                <form class="needs-validation" id="booking-form" novalidate>
+                <form class="needs-validation" id="booking-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-12 col-md-4 mb-3">
                             <label for="firstName" class="form-label">First Name <span>*</span></label>
-                            <input type="text" class="form-control" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
+                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-12 col-md-4 mb-3">
                             <label for="middleName" class="form-label">Middle Name</label>
-                            <input type="text" class="form-control" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" />
+                            <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -51,7 +51,7 @@
                         </div>
                         <div class="col-12 col-md-4 mb-3">
                             <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" />
+                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -60,8 +60,8 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-4 mb-3">
-                            <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
-                            <input type="date" class="form-control" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
+                            <label for="birthDate" class="form-label">Birthday<span>*</span></label>
+                            <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -71,7 +71,7 @@
                         </div>  
                         <div class="col-12 col-md-4 mb-3">
                             <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                            <input type="text" class="form-control" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
+                            <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -81,7 +81,7 @@
                         </div>                                                                
                         <div class="col-12 col-md-4 mb-3">
                             <label for="email" class="form-label">Email Address <span>*</span></label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -91,7 +91,7 @@
                         </div>
                         <div class="col-12 col-md-3 mb-3">
                             <label for="selectDate" class="form-label">Select Date <span>*</span></label>
-                            <input type="date" class="form-control" id="selectDate" placeholder="" required oninvalid="this.setCustomValidity('Please enter a valid date within the next 30 days')" oninput="this.setCustomValidity('')" />
+                            <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="" required oninvalid="this.setCustomValidity('Please enter a valid date within the next 30 days')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -101,21 +101,21 @@
                         </div>
                         <div class="col-12 col-md-3 mb-3">
                             <label for="startTime" class="form-label">Start Time <span>*</span></label>
-                            <input type="time" class="form-control" id="startTime" placeholder="" required disabled />
+                            <input type="time" class="form-control" name="startTime" id="startTime" placeholder="" required disabled />
                             <div class="invalid-feedback" id="timeRangeError">
                                 Please enter a valid time range (end time must be after start time).
                             </div>
                         </div>
                         <div class="col-12 col-md-3 mb-3">
                             <label for="endTime" class="form-label">End Time <span>*</span></label>
-                            <input type="time" class="form-control" id="endTime" placeholder="" required disabled />
+                            <input type="time" class="form-control" name="endTime" id="endTime" placeholder="" required disabled />
                             <div class="invalid-feedback" id="timeRangeError">
                                 Please enter a valid time range (end time must be after start time).
                             </div>
                         </div>
                         <div class="col-12 col-md-3 mb-3">
                             <label for="selectTable" class="form-label">Select Table <span>*</span></label>
-                            <select class="form-control" id="selectTable" required onchange="this.setCustomValidity('')" disabled>
+                            <select class="form-control" name="selectTable" id="selectTable" required onchange="this.setCustomValidity('')" disabled>
                                 <option value="" selected disabled>Select table</option>
                                 <option value="Table 1">Table 1</option>
                                 <option value="Table 2">Table 2</option>
@@ -131,26 +131,25 @@
                             <div class="invalid-feedback">
                                 Please select a table.
                             </div>
-                        </div>                        
-                                             
+                        </div>                                                                    
                         <div class="col-12 col-md-6 mb-3 mb-4">
                             <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
                             <img src="./images/Seamless-Wavy-lines-Pattern-digital-Graphics-30696202-1.jpg" alt="" style="width: 100%; height: 100%;">
                         </div>
                         <div class="col-12 col-md-12 mb-5">
                             <label for="validId" class="form-label">Valid ID <span>*</span></label>
-                            <input type="file" class="form-control" id="validId" accept="image/*" required onchange="validateImageUpload(this)" />
+                            <input type="file" class="form-control" name="validId" id="validId" accept="image/*" required onchange="validateImageUpload(this)" />
                             <div class="invalid-feedback">
                                 Please select a valid image file.
                             </div>
                         </div>                                                             
                         <div class="col-12 col-md-2 mb-3 mb-md-0">
-                            <button class="btn btn-primary w-100" type="submit">Submit form</button>
+                            <button class="btn btn-primary w-100" name="submitReserve" type="submit">Submit form</button>
                         </div>
+                     </form>
                         <div class="col-12 col-md-2">
                             <button class="btn btn-outline-primary w-100" type="reset" onclick="resetForm()">Reset</button>
                         </div>
-                </form>
             </div>
         </div>
     </div>
