@@ -98,8 +98,20 @@ form{
     margin: 20px auto; /* Center the <hr> horizontally */
 }
 
-
-#home-active-playing{
+#home-active-playing, #home-number-of-customers, #home-services, #home-pubmats{
     background-color: #fff;
     border-radius: 10px;
+    padding: 1%;
 }
+
+.carousel-height .carousel-item {
+    height: 300px; /* Set your desired height here */
+    overflow: hidden;
+}
+
+.carousel-height .carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
