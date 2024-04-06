@@ -1,4 +1,4 @@
-body {
+.body {
     font-family: "Montserrat", sans-serif;
     background-color: #E4E9F7;
     min-height: 100vh;
@@ -12,8 +12,6 @@ span{
 
 form{
     border-radius: 10px;
-    padding: 2%;
-    margin: 2%;
 }
 
 
@@ -36,7 +34,7 @@ form{
     width: 200px;
 }
 
-#index-button{
+#index-button, #add-new-profile{
     padding-left: 5%;
     padding-right: 5%;
     background-color: #FFB800;
@@ -67,8 +65,13 @@ form{
     letter-spacing: 10px;
 }
 
-#booking-page {
-    background-image: linear-gradient(to bottom right, #0D2818, #020202);
+#customer-login-page {
+    width: 100%;
+    position: relative;
+    background: url("../images/billiards.jpg");
+    background-position: center 65%;
+    background-size: cover;
+    background-attachment: fixed;
     color: #fff;
     display: flex;
     justify-content: center;
@@ -79,6 +82,9 @@ form{
 #booking-form{
     background-color: #fff;
     color: #020202 !important;
+    padding: 2%;
+    margin: 2%;
+
 }
 
 #login-form{
@@ -86,6 +92,7 @@ form{
     color: #020202 !important;
     max-width: 400px;
     margin: auto;
+    padding: 1%;
 }
 
 #booking-sub {
@@ -98,14 +105,14 @@ form{
     margin: 20px auto; /* Center the <hr> horizontally */
 }
 
-#home-active-playing, #home-number-of-customers, #home-services, #home-pubmats{
+#home-active-playing, #home-number-of-customers, #home-services, #home-pubmats, #profile-management, #profmanage-add-new-profile, #reports-customer-demand-forecasting{
     background-color: #fff;
     border-radius: 10px;
     padding: 1%;
 }
 
 .carousel-height .carousel-item {
-    height: 300px; /* Set your desired height here */
+    height: 300px;
     overflow: hidden;
 }
 
@@ -115,3 +122,7 @@ form{
     object-fit: cover;
 }
 
+#customer-landing-logo{
+    width: 95px;
+    padding: 1%;
+  }
