@@ -10,11 +10,6 @@ span{
     color: #FF0000;
 }
 
-form{
-    border-radius: 10px;
-}
-
-
 .krona-one-regular {
     font-family: "Krona One", sans-serif;
     font-weight: 400;
@@ -47,31 +42,40 @@ form{
     transform: scale(1.1);
 }
 
-#login-button{
-    padding: 3%;
+.login{
+    background-color: #FFB800;
+    color: #020202 !important;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    max-width: 450px;
+    padding: 1%;
+}
+
+.login .login-button{
     background-color: #0D2818;
-    color: #fff;
     border: none;
-    transition: transform 0.3s ease;
+    padding: 3%;
+    font-size: large;
 }
 
-#login-button:hover{
-    font-weight: bold;
+.login .login-button:hover{
     color: #FFB800;
+    font-weight: bold;
+    background-color: #0D2818;
+    border: none;
+
 }
 
-#index-sub{
+.index-sub{
     color: #FFB800;
     letter-spacing: 10px;
 }
 
-#customer-login-page {
+#customer-page-login{
     width: 100%;
     position: relative;
-    background: url("../images/billiards.jpg");
-    background-position: center 65%;
-    background-size: cover;
-    background-attachment: fixed;
+
     color: #fff;
     display: flex;
     justify-content: center;
@@ -87,13 +91,13 @@ form{
 
 }
 
-#login-form{
+/* .login-form{
     background-color: #FFB800;
     color: #020202 !important;
     max-width: 400px;
     margin: auto;
     padding: 1%;
-}
+} */
 
 #booking-sub {
     letter-spacing: 10px;
