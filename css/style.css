@@ -128,27 +128,8 @@ span{
 
 #customer-landing-logo{
     width: 95px;
-    padding: 1%;
   }
 
-  #customer-navbar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 1030;
-    width: 100%;
-    padding-left: 15px;
-    padding-right: 15px; 
-    background-color: #240046;
-  }
-  
-  #customer-navbar .navbar-brand,
-#customer-navbar .navbar-nav .nav-link {
-  color: white; /* Make the text color white */
-}
-
-  
 
   .table-container {
     overflow-x: auto;
@@ -170,5 +151,4 @@ span{
 #customer-navbar .navbar-toggler {
     background-color: white; /* Make the navbar toggler button white */
 }
-  
   
