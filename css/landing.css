@@ -71,7 +71,7 @@ header a, footer a {
 }
 
 header a:hover, footer a:hover {
-  color: #ddd;
+  color: #FFB800;
 }
 
 .homepage {
@@ -405,3 +405,9 @@ iframe{
 
 
 
+
+
+#customer-landing-logo{
+  width: 95px;
+  padding: 1%;
+}
