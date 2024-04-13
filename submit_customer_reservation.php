@@ -54,14 +54,6 @@ include "connect_database.php";
                 
                 header("location:booking_form.html");
             }
-   /* } else {
-        // Code to execute when the connection is not successful
-        if (!$conn) {
-            echo "Failed to connect to the database: " . mysqli_connect_error();
-            header("location:booking_form.html");
-        }
-    }*/
     
-
 
 ?>
