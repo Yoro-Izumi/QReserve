@@ -117,15 +117,17 @@
     </div>
 
     <section class="home-section">
-      <h4 class="krona-one-regular">Active Playing</h4>
+      <h4 class="krona-one-regular">Reservations</h4>
       <div class="container-fluid" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
           <thead>
             <tr>
               <th>Name</th>
+              <th>Date of Reservation</th>
+              <th>Time of Reservation</th>
               <th>Pool Table</th>
-              <th>Time Started</th>
-              <th>Expected End Time</th>
+              <th>Contact Number</th>
+              <th>Email Address</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -135,6 +137,8 @@
               <td>System Architect</td>
               <td>Edinburgh</td>
               <td>61</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td><span class="badge bg-success">Done</span></td>
             </tr>
             <tr>
@@ -142,6 +146,8 @@
               <td>Accountant</td>
               <td>Tokyo</td>
               <td>63</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td><span class="badge bg-warning">Playing</span></td>
             </tr>
             <tr>
@@ -149,11 +155,33 @@
               <td>Accountant</td>
               <td>Tokyo</td>
               <td>63</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td><span class="badge bg-danger">Waiting</span></td>
             </tr>
             <tr>
               <td>Garrett Winters</td>
               <td>Accountant</td>
+              <td>Tokyo</td>
+              <td>63</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
+              <td><span class="badge bg-danger">Waiting</span></td>
+            </tr>
+            <tr>
+              <td>Garrett Winters</td>
+              <td>Accountant</td>
+              <td>Tokyo</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
+              <td>63</td>
+              <td><span class="badge bg-danger">Waiting</span></td>
+            </tr>
+            <tr>
+              <td>Garrett Winters</td>
+              <td>Accountant</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td>Tokyo</td>
               <td>63</td>
               <td><span class="badge bg-danger">Waiting</span></td>
@@ -163,20 +191,8 @@
               <td>Accountant</td>
               <td>Tokyo</td>
               <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td><span class="badge bg-danger">Waiting</span></td>
             </tr>
 
@@ -185,12 +201,16 @@
               <td>Accountant</td>
               <td>Tokyo</td>
               <td>63</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td><span class="badge bg-danger">Waiting</span></td>
             </tr>
             <tr>
               <td>Garrett Winters</td>
               <td>Accountant</td>
               <td>Tokyo</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td>63</td>
               <td><span class="badge bg-danger">Waiting</span></td>
             </tr>
@@ -198,14 +218,17 @@
               <td>Garrett Winters</td>
               <td>Accountant</td>
               <td>Tokyo</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td>63</td>
               <td><span class="badge bg-danger">Waiting</span></td>
             </tr>
-
             <tr>
               <td>Garrett Winters</td>
               <td>Accountant</td>
               <td>Tokyo</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
               <td>63</td>
               <td><span class="badge bg-danger">Waiting</span></td>
             </tr>
@@ -213,125 +236,6 @@
         </table>
       </div>
 
-      <div class="container-fluid mt-4">
-        <div class="row justify-content-center text-center">
-          <div class="col-md-3 mb-3 me-3 fw-bold" id="home-number-of-customers">
-            Number of Reservations
-            <h1>60</h1>
-          </div>
-          <div class="col-md-4 mb-3 me-3" id="home-services">
-            <div
-              id="service-carousel"
-              class="carousel slide carousel-height"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img
-                    src="./images/Services/418935720_384753944445582_5393515379436099988_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="./images/Services/419245253_384754057778904_8340070337912823186_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="./images/Services/419542020_384754601112183_5253370100753623039_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-              </div>
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#service-carousel"
-                data-bs-slide="prev"
-              >
-                <span
-                  class="carousel-control-prev-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#service-carousel"
-                data-bs-slide="next"
-              >
-                <span
-                  class="carousel-control-next-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="col-md-4 mb-3" id="home-pubmats">
-            <div
-              id="pubmat-carousel"
-              class="carousel slide carousel-height"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img
-                    src="./images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="./images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="./images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-              </div>
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#pubmat-carousel"
-                data-bs-slide="prev"
-              >
-                <span
-                  class="carousel-control-prev-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#pubmat-carousel"
-                data-bs-slide="next"
-              >
-                <span
-                  class="carousel-control-next-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <script>

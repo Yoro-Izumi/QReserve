@@ -1,23 +1,26 @@
-  .sidebar{
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 78px;
-    background-image: linear-gradient(to bottom, #0D2818, #020202);
-    padding: 6px 14px;
-    z-index: 99;
-    transition: all 0.5s ease;
-  }
-  .sidebar.open{
-    width: 250px;
-  }
-  .sidebar .logo-details{
-    height: 60px;
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 78px;
+  background-image: linear-gradient(to bottom, #0D2818, #020202);
+  padding: 6px 14px;
+  z-index: 99;
+  transition: all 0.5s ease;
+}
+
+.sidebar.open {
+  width: 250px;
+}
+
+.sidebar .logo-details {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
   .sidebar .logo-details .icon{
     opacity: 0;
     transition: all 0.5s ease;
@@ -226,7 +229,7 @@
   .home-section{
     position: relative;
     background: #E4E9F7;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     top: 0;
     left: 78px;
     width: calc(100% - 78px);
@@ -248,7 +251,15 @@
   #sidebar-logo{
     width: 55px;
   }
-  
+
+.dropdown-menu{
+    background-color: #0D2818;
+  }
+
+  .dropdown-item{
+    color: #E4E9F7;
+  }
+
   @media (max-width: 420px) {
     .sidebar li .tooltip{
       display: none;
