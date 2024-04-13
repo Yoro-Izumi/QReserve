@@ -113,10 +113,6 @@ include "get_data_from_database/get_pool_table_info.php";
                         <div class="col-12 col-md-3 mb-3">
                             <label for="endTime" class="form-label">End Time <span>*</span></label>
                             <input type="time" class="form-control" name="endTime" id="endTime" placeholder="" required disabled />
-<<<<<<< HEAD
-=======
-                            <input type="hidden" name="timeDifference" id="timeDifference" value="">
->>>>>>> development
                             <div class="invalid-feedback" id="timeRangeError">
                                 Please enter a valid time range (end time must be after start time).
                             </div>
@@ -126,13 +122,8 @@ include "get_data_from_database/get_pool_table_info.php";
                             <select class="form-control" name="selectTable" id="selectTable" required onchange="this.setCustomValidity('')" disabled>
                                 <option value="" selected disabled>Select table</option>
                                 <?php foreach($arrayPoolTables as $dataPT){?>
-<<<<<<< HEAD
                                 <option value="<?php echo $dataPT['poolTableID'];?>">Table <?php echo $dataPT['poolTableNumber'];?></option>
                                 <?php } mysqli_close($conn);?>
-=======
-                                <option value="<?php echo $dataPT['poolTableID'];?>"><?php echo $dataPT['poolTableNumber'];?></option>
-                                <?php }?>
->>>>>>> development
                             </select>
                             <div class="invalid-feedback">
                                 Please select a table.
@@ -148,12 +139,8 @@ include "get_data_from_database/get_pool_table_info.php";
                             <div class="invalid-feedback">
                                 Please select a valid image file.
                             </div>
-<<<<<<< HEAD
                         </div>                       
                         <input type="hidden" name="timeDifference" id="timeDifference" value="">                                      
-=======
-                        </div>                                                             
->>>>>>> development
                         <div class="col-12 col-md-2 mb-3 mb-md-0">
                             <button class="btn btn-primary w-100" name="submitReserve" type="submit">Submit form</button>
                         </div>
@@ -326,10 +313,7 @@ include "get_data_from_database/get_pool_table_info.php";
     // after getting difference, we set the value of timeDifference hidden input field
     document.getElementById('endTime').addEventListener('change', function() {
         var startTime = document.getElementById('startTime').value;
-<<<<<<< HEAD
         var timeDifference = document.getElementById('timeDifference');
-=======
->>>>>>> development
         var endTime = this.value;
 
         if (startTime && endTime) {
@@ -343,15 +327,9 @@ include "get_data_from_database/get_pool_table_info.php";
             var difference = endDate - startDate;
             var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
-<<<<<<< HEAD
             timeDifference.value = hours;
         } else {
             timeDifference.value = 0;
-=======
-            document.getElementById('timeDifference').value = hours;
-        } else {
-            document.getElementById('timeDifference').value = 0;
->>>>>>> development
         }
     });
     </script>
