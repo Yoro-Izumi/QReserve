@@ -82,12 +82,12 @@ header a:hover, footer a:hover {
 .homepage {
   height: 100vh;
   width: 100%;
-  position: relative;
+  position:relative;
   background: url("../images/billiards.jpg");
-  background-position: center 65%;
+  background-position: center;
   background-size: cover;
-  background-attachment: fixed;
 }
+
 
 .homepage::before {
   content: "";

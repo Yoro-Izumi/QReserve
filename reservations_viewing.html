@@ -3,12 +3,10 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <title>Responsive Sidebar Menu | CodingLab</title>
+    <title>Reservations</title>
+
     <!-- Boxicons CDN Link -->
-    <link
-      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Bootstrap 5 -->
@@ -49,7 +47,7 @@
     <link rel="stylesheet" href="./css/sidebar.css" />
     <link rel="stylesheet" href="./css/style.css" />
   </head>
-  <body>
+  <body class="body">
     <div class="sidebar">
       <div class="logo-details">
         <img
@@ -81,21 +79,25 @@
           <span class="tooltip">Reservations</span>
         </li>
         <li>
-          <a href="#">
+          <a href="service management.html">
             <i class="bx bx-aperture"></i>
             <span class="links_name">Service Management</span>
           </a>
           <span class="tooltip">Services</span>
         </li>
-        <li>
-          <a href="#">
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bx bx-user"></i>
-            <span class="links_name">Profile Management</span>
+            <span class="links_name dropdown-toggle">Profile Management </span>
           </a>
-          <span class="tooltip">Profiles</span>
+          <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
+            <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+          </ul>
         </li>
         <li>
-          <a href="#">
+          <a href="reports.html">
             <i class="bx bx-pie-chart-alt-2"></i>
             <span class="links_name">Reports</span>
           </a>
@@ -118,6 +120,7 @@
 
     <section class="home-section">
       <h4 class="krona-one-regular">Reservations</h4>
+      <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
           <thead>
