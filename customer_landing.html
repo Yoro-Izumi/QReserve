@@ -1,3 +1,7 @@
+<?php
+include "connect_database.php";
+include "get_data_from_database/get_services.php"
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -55,36 +59,13 @@
       <h2>Our Services</h2>
       <!-- <p>Explore our wide range of camping gear services.</p> -->
       <ul class="cards">
+      <?php foreach($arrayServices as $services){?>
         <li class="card">
-          <img src="./images/Services/Billiards Hall.jpg" alt="img">
-          <h3>Billiards</h3>
-          <p>Rate: </p> <!--  Eto yung tatawagin sa DB -->
+          <img src="./images/Services/<?php echo $services['serviceImage'];?>" alt="img">
+          <h3><?php echo $services['serviceName'];?></h3>
+          <p>Rate: <?php echo $services['serviceRate'];?></p> <!--  Eto yung tatawagin sa DB -->
         </li>
-        <li class="card">
-          <img src="./images/Services/KTV Room 1.jpg" alt="img">
-          <h3>KTV Room 1</h3>
-          <p>Rate: </p>
-        </li>
-        <li class="card">
-          <img src="./images/Services/KTV Room 2.jpg" alt="img">
-          <h3>KTV Room 2</h3>
-          <p>Rate: </p>
-        </li>
-        <li class="card">
-          <img src="./images/Services/KTV Room 3.jpg" alt="img">
-          <h3>KTV Room 3</h3>
-          <p>Rate: </p>
-        </li>
-        <li class="card">
-          <img src="./images/Services/Karaoke.jpg" alt="img">
-          <h3>Karaoke Night</h3>
-          <p>Rate: </p>
-        </li>
-        <li class="card">
-          <img src="./images/Services/Membership.jpg" alt="img">
-          <h3>Membership</h3>
-          <p>Rate: </p>
-        </li>
+        <?php }?>
       </ul>
     </section>
 

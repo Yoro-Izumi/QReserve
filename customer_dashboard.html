@@ -1,3 +1,9 @@
+<?php
+session_start();
+//  if(isset($_SESSION['username'])){
+  include "connect_database.php";
+  include "get_data_from_database/get_pool_table_info.php"
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,8 +42,8 @@
           </svg>
         </label>
         <ul class="all-links">
-          <li><a href="customer_dashboard.html">Home</a></li>
-          <li><a href="customer-account.html">Account</a></li>
+          <li><a href="customer_dashboard.php">Home</a></li>
+          <li><a href="customer_account.php">Account</a></li>
           <li><a href="#contact">Log Out</a></li>
         </ul>
       </nav>
@@ -55,80 +61,30 @@
           <thead>
             <tr>
               <th>Pool Table</th>
+              <th>Name</th>
               <th>Time Started</th>
               <th>Expected End Time</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
+            <?php foreach($arrayPoolTables as $poolTables){
+              if($poolTables['customerName'] == NULL){
+                $customerName = "None";
+              }
+              else{ $customerName = $poolTables['customerName']; }
+              $poolTableStatus = $poolTables['poolTableStatus']; $poolTableNumber = $poolTables['poolTableNumber']; 
+              $timeStarted = explode(' ',$poolTables['timeStarted']); 
+              $timeEnd = explode(' ',$poolTables['timeEnd']);
+            ?>
             <tr>
-              <td>Davendhine L Del Puerto</td>
-              <td>Edinburgh</td>
-              <td>61</td>
-              <td><span class="badge bg-success">Done</span></td>
+              <th><?php echo $poolTableNumber;?></th>
+              <td><?php echo $customerName;?></td>
+              <td><?php echo $timeStarted[1];?></td>
+              <td><?php echo $timeEnd[1];?></td>
+              <td><span class="badge bg-success"><?php echo $poolTableStatus;?></span></td>
             </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-warning">Playing</span></td>
-            </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-
-            <tr>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
+            <?php }?>
           </tbody>
         </table>
       </div>
@@ -301,3 +257,10 @@
     </script>
 </body>
 </html>
+<?php
+ /* }
+  else{
+    header('location:customer_login.php');
+    exit();
+  } */
+?>

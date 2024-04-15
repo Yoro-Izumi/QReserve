@@ -1,3 +1,43 @@
+<?php
+session_start();
+include 'connect_database.php';
+include 'get_data_from_database/get_admin_accounts.php';
+
+//encryptData($data,$key); decryptData($data,$key);
+$key = "TheGreatestNumberIs73";
+
+if (isset($_SESSION['adminUsername'])){
+	header('location:dashboard.php');
+	die();
+}
+if(isset($_POST['login_admin'])){
+  $adminUsername=mysqli_real_escape_string($conn,$_POST['username']);
+  $adminPassword=mysqli_real_escape_string($conn,$_POST['password']);
+  if(mysqli_num_rows($adminAccountConn) > 0){
+    foreach($arrayAdminAccount as $adminAccount){
+      if(decryptData($adminAccount['adminUsername'],$key) == $adminUsername){
+        echo '<script language="javascript">';
+                echo 'alert("You are now logged in!")';
+                echo '</script>';
+        $_SESSION['admin_username'] = $adminUsername;
+        header("location:dashboard.php");
+        exit();
+
+    }
+      else{
+        echo '<script language="javascript">';
+                echo 'alert("Username and Password does not exist")';
+                echo '</script>';
+      }
+    }
+  }
+  else{
+    echo '<script language="javascript">';
+    echo 'alert("Username and Password does not exist")';
+    echo '</script>';
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -69,7 +109,7 @@
       </div>
       <div class="row">
         <div class="col-md-12" id="hello">
-          <form class="needs-validation" id="login-form" novalidate>
+          <form class="needs-validation" id="login-form" novalidate action="login.php" method="POST">
             <h5 class="text-center mb-3 fw-bold">Welcome!</h5>
             <div class="form-floating mb-3">
               <input
@@ -77,6 +117,7 @@
                 class="form-control"
                 id="floatingInput"
                 placeholder="name@example.com"
+                required
               />
               <label for="floatingInput">Email address</label>
             </div>
@@ -87,6 +128,7 @@
                 class="form-control"
                 id="floatingPassword"
                 placeholder="Password"
+                required
               />
               <label for="floatingPassword">Password</label>
               <button
@@ -98,12 +140,12 @@
             </div>
 
             <div class="col-12 col-md-12 mb-3 mb-md-0 mt-4">
-              <a
-                href="dashboard.html"
-                type="button"
+              <button
+                type="submit"
                 class="btn btn-primary w-100"
                 id="login-button"
-                >Sign In</a
+                name="login_admin"
+                >Sign In</button
               >
             </div>
           </form>
