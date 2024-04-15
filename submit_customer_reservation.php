@@ -68,14 +68,10 @@ $key = "TheGreatestNumberIs73";
                 
                 header("location:booking_form.php");
             }
-   /* } else {
-        // Code to execute when the connection is not successful
-        if (!$conn) {
-            echo "Failed to connect to the database: " . mysqli_connect_error();
-            header("location:booking_form.html");
-        }
-    }*/
     
 
+<<<<<<< HEAD
 mysqli_close($conn);
+=======
+>>>>>>> development
 ?>

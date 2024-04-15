@@ -11,10 +11,32 @@ include "get_data_from_database/get_pool_table_info.php";
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<<<<<<< HEAD
     <!-- Montserrat Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+=======
+  </head>
+  <body class="body">
+    <header>
+        <nav class="navbar p-0">
+        <img src="./images/Bevitore-logo.png" id="customer-landing-logo" />
+        <input type="checkbox" id="menu-toggler">
+        <label for="menu-toggler" id="hamburger-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z"/>
+          </svg>
+        </label>
+        <ul class="all-links">
+            <li><a href="customer_dashboard.html">Home</a></li>
+            <li><a href="customer_account.html">Account</a></li>
+            <li><a href="#contact">Log Out</a></li>
+        </ul>
+      </nav>
+    </header>
+>>>>>>> development
 
     <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
@@ -94,16 +116,77 @@ include "get_data_from_database/get_pool_table_info.php";
                             </div>
                         </div>
                         <div class="col-12 col-md-3 mb-3">
+<<<<<<< HEAD
                             <label for="selectDate" class="form-label">Select Date <span>*</span></label>
                             <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="" required oninvalid="this.setCustomValidity('Please enter a valid date within the next 30 days')" oninput="this.setCustomValidity('')" />
                             <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
+=======
+                            <label for="validity" class="form-label">Validity Date <span>*</span></label>
+                            <input type="date" class="form-control" name="validity" id="validity" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
+>>>>>>> development
                             <div class="invalid-feedback">
-                                Please enter a valid date within the next 30 days.
+                                Please enter a valid birthdate.
+                            </div>
+                        </div>  
+                        
+                        <!-- <div class="col-12 col-md-3 mb-3">
+                            <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
+                            <select class="form-control" name="selectStartTime" id="selectStartTime" required>
+                                <option value="" selected disabled>Select table</option>
+                                <option value="10:00am">10:00am</option>
+                                <option value="11:00am">11:00am</option>
+                                <option value="12:00 noon">12:00 noon</option>
+                                <option value="1:00pm">1:00pm</option>
+                                <option value="2:00pm">2:00pm</option>
+                                <option value="3:00pm">3:00pm</option>
+                                <option value="4:00pm">4:00pm</option>
+                                <option value="5:00pm">5:00pm</option>
+                                <option value="6:00pm">6:00pm</option>
+                                <option value="7:00pm">7:00pm</option>
+                                <option value="8:00pm">8:00pm</option>
+                                <option value="9:00pm">9:00pm</option>
+                                <option value="10:00pm">10:00pm</option>
+                                <option value="11:00pm">11:00pm</option>
+                                <option value="12:00 midnight">12:00 midnight</option>
+                                <option value="1:00am">1:00am</option>
+                                <option value="2:00am">2:00am</option>
+                                <option value="3:00am">3:00am</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a start time.
+                            </div>
+                        </div>   -->
+                        <div class="col-12 col-md-3 mb-3">
+                            <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
+                            <select class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()">
+                                <option value="" selected disabled>Select start time</option>
+                                <option value="10:00am">10:00am</option>
+                                <option value="11:00am">11:00am</option>
+                                <option value="12:00 noon">12:00 noon</option>
+                                <option value="1:00pm">1:00pm</option>
+                                <option value="2:00pm">2:00pm</option>
+                                <option value="3:00pm">3:00pm</option>
+                                <option value="4:00pm">4:00pm</option>
+                                <option value="5:00pm">5:00pm</option>
+                                <option value="6:00pm">6:00pm</option>
+                                <option value="7:00pm">7:00pm</option>
+                                <option value="8:00pm">8:00pm</option>
+                                <option value="9:00pm">9:00pm</option>
+                                <option value="10:00pm">10:00pm</option>
+                                <option value="11:00pm">11:00pm</option>
+                                <option value="12:00 midnight">12:00 midnight</option>
+                                <option value="1:00am">1:00am</option>
+                                <option value="2:00am">2:00am</option>
+                                <option value="3:00am">3:00am</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a start time.
                             </div>
                         </div>
                         <div class="col-12 col-md-3 mb-3">
+<<<<<<< HEAD
                             <label for="startTime" class="form-label">Start Time <span>*</span></label>
                             <input type="time" class="form-control" name="startTime" id="startTime" placeholder="" required disabled />
                             <div class="invalid-feedback" id="timeRangeError">
@@ -115,8 +198,72 @@ include "get_data_from_database/get_pool_table_info.php";
                             <input type="time" class="form-control" name="endTime" id="endTime" placeholder="" required disabled />
                             <div class="invalid-feedback" id="timeRangeError">
                                 Please enter a valid time range (end time must be after start time).
+=======
+                            <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
+                            <select class="form-control" name="selectEndTime" id="selectEndTime" required>
+                                <option value="" selected disabled>Select end time</option>
+                                <!-- Options will be dynamically added based on selected start time -->
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select an end time.
+>>>>>>> development
                             </div>
                         </div>
+                        
+                        <script>
+                            const endTimesMap = {
+                                "10:00am": ["12:00nn", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "11:00am": ["1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "12:00 noon": ["2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "1:00pm": ["3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "2:00pm": ["4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am"],
+                                "3:00pm": ["5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am"],
+                                "4:00pm": ["6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "5:00pm": ["7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "6:00pm": ["8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "7:00pm": ["9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "8:00pm": ["10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "9:00pm": ["11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "10:00pm": ["12:00 midnight", "1:00am", "2:00am", "3:00am"],
+                                "11:00pm": ["1:00am", "2:00am", "3:00am"],
+                                "12:00 midnight": ["2:00am", "3:00am", "4:00am", "5:00am"],
+                                "1:00am": ["3:00am", "4:00am", "5:00am"],
+                                "2:00am": ["4:00am", "5:00am"],
+                            };
+                        
+                            function updateEndTime() {
+                                const startTimeSelect = document.getElementById("selectStartTime");
+                                const endTimeSelect = document.getElementById("selectEndTime");
+                                const selectedStartTime = startTimeSelect.value;
+                        
+                                // Clear previous options
+                                endTimeSelect.innerHTML = '<option value="" selected disabled>Select end time</option>';
+                        
+                                // Define available end times based on selected start time
+                                const endTimes = endTimesMap[selectedStartTime] || [];
+                        
+                                // Add options to select end time
+                                endTimes.forEach(function (time) {
+                                    const option = document.createElement("option");
+                                    option.text = time;
+                                    option.value = time;
+                                    endTimeSelect.add(option);
+                                });
+                            }
+                        </script>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                              
+
+                        
                         <div class="col-12 col-md-3 mb-3">
                             <label for="selectTable" class="form-label">Select Table <span>*</span></label>
                             <select class="form-control" name="selectTable" id="selectTable" required onchange="this.setCustomValidity('')" disabled>
@@ -133,6 +280,7 @@ include "get_data_from_database/get_pool_table_info.php";
                             <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
                             <img src="./images/Seamless-Wavy-lines-Pattern-digital-Graphics-30696202-1.jpg" alt="" style="width: 100%; height: 100%;">
                         </div>
+<<<<<<< HEAD
                         <div class="col-12 col-md-12 mb-5">
                             <label for="validId" class="form-label">Valid ID <span>*</span></label>
                             <input type="file" class="form-control" name="validId" id="validId" accept="image/*" required onchange="validateImageUpload(this)" />
@@ -141,6 +289,9 @@ include "get_data_from_database/get_pool_table_info.php";
                             </div>
                         </div>                       
                         <input type="hidden" name="timeDifference" id="timeDifference" value="">                                      
+=======
+                                                             
+>>>>>>> development
                         <div class="col-12 col-md-2 mb-3 mb-md-0">
                             <button class="btn btn-primary w-100" name="submitReserve" type="submit">Submit form</button>
                         </div>
@@ -176,6 +327,7 @@ include "get_data_from_database/get_pool_table_info.php";
         });
     </script>
 
+<<<<<<< HEAD
     <script>// For Select Date
         document.getElementById('selectDate').addEventListener('keydown', function (event) {
             // Prevent typing numbers directly into the input field
@@ -197,6 +349,31 @@ include "get_data_from_database/get_pool_table_info.php";
             }
         });
     </script>
+=======
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const validityInput = document.querySelector("#validity");
+  
+        // Get today's date
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1; // Month is zero-indexed
+        const day = today.getDate();
+  
+        // Set the minimum date to today's date
+        const minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        validityInput.setAttribute("min", minDate);
+  
+        // Set the maximum date to 1 year from today's date
+        const maxDate = new Date(today.getTime() + (365 * 24 * 60 * 60 * 1000));
+        const maxYear = maxDate.getFullYear();
+        const maxMonth = maxDate.getMonth() + 1; // Month is zero-indexed
+        const maxDay = maxDate.getDate();
+        const maxDateString = `${maxYear}-${maxMonth.toString().padStart(2, '0')}-${maxDay.toString().padStart(2, '0')}`;
+        validityInput.setAttribute("max", maxDateString);
+    });
+  </script>
+>>>>>>> development
 
     <script> //For Time Start and Time End
         document.getElementById('startTime').addEventListener('input', validateTimeRange);
@@ -268,6 +445,7 @@ include "get_data_from_database/get_pool_table_info.php";
             var endTimeInput = document.getElementById('endTime');
             var selectTableInput = document.getElementById('selectTable');
 
+<<<<<<< HEAD
             if (this.value) {
                 startTimeInput.disabled = false;
                 startTimeInput.focus();
@@ -333,6 +511,9 @@ include "get_data_from_database/get_pool_table_info.php";
         }
     });
     </script>
+=======
+    
+>>>>>>> development
 
     <script> // Reset the form
         function resetForm() {
