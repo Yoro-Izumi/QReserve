@@ -68,10 +68,5 @@ $key = "TheGreatestNumberIs73";
                 
                 header("location:booking_form.php");
             }
-    
-
-<<<<<<< HEAD
 mysqli_close($conn);
-=======
->>>>>>> development
 ?>
