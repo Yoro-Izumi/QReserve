@@ -1,3 +1,7 @@
+<?php
+include "connect_database.php";
+include "get_data_from_database/get_reservation_info.php";
+?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
 <html lang="en" dir="ltr">
@@ -92,12 +96,12 @@
             <span class="links_name dropdown-toggle">Profile Management </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
-            <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+            <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
+            <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
           </ul>
         </li>
         <li>
-          <a href="reports.html">
+          <a href="reports.php">
             <i class="bx bx-pie-chart-alt-2"></i>
             <span class="links_name">Reports</span>
           </a>
@@ -111,7 +115,7 @@
               <div class="job">Web designer</div>
             </div>
           </div>
-          <a href="index.html">
+          <a href="logout.php">
             <i class="bx bx-log-out" id="log_out"></i>
           </a>
         </li>        
@@ -135,106 +139,29 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Tiger Nixon</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>61</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-success">Done</span></td>
+            <?php foreach($arrayReservationInfo as $reservations){
+              $reservationDate = $reservations['reservationDate'];
+              $reservationStatus = $reservation['reservationStatus'];
+              $reservationTimeStart = $reservations['reservationTimeStart'];
+                foreach($arrayCustomerInformation as $customerInfo){
+                  if($reservation['customerID'] == $customerInfo['customerID']){
+                    $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
+                    $contactNumber = decryptData($customerInfo['customerNumber'],$key);
+                    $email = decryptData($customerInfo['customerEmail'],$key);
+                  }  
+                }
+            ?>
+                <tr>
+                  <td><?php echo $customerName;?></td>
+                  <td><?php echo $reservationDate;?></td>
+                  <td><?php echo $reservationTimeStart;?></td>
+                  <td><?php echo $reservations['tableID'];?></td>
+                  <td><?php echo $contactNumber;?></td>
+                  <td><?php echo $email;?></td>
+                  <td><span class="badge bg-success"><?php echo $reservationStatus;?></span></td>
             </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-warning">Playing</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
+            <?php }?>
 
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
           </tbody>
         </table>
       </div>  

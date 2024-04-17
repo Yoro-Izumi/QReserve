@@ -1,12 +1,13 @@
 <?php
 session_start();
 include 'connect_database.php';
+include 'encodeDecode.php';
 include 'get_data_from_database/get_member_account.php';
 
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
 
-if (isset($_SESSION['username'])){
+if (isset($_SESSION['userID'])){
 	header('location:customer_dashboard.php');
 	die();
 }
@@ -16,11 +17,11 @@ if(isset($_POST['login_member'])){
   $password=mysqli_real_escape_string($conn,$_POST['password']);
     if(mysqli_num_rows($memberAccountConn) > 0){
         foreach($arrayMemberAccount as $membershipAccount){
-          if(decryptData($membershipAccount['membershipID'],$key) == $username){
+          if(decryptData($membershipAccount['membershipID'],$key) == $username && decryptData($membershipAccount['membershipPassword'],$key) == $password){
             echo '<script language="javascript">';
             echo 'alert("You are now logged in!")';
             echo '</script>';
-            $_SESSION['username'] = $username;
+            $_SESSION['userID'] = $membershipAccount['memberID'];
             header("location:customer_dashboard.php");
             exit();
         }

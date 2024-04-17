@@ -1,7 +1,7 @@
 <?php
 //get customer information with select query
 $getReservationInfoQuery = "SELECT * FROM pool_table_reservation";
-$reservationInfoConn = mysqli_query($conn,$getReservationInfoInfoQuery);
+$reservationInfoConn = mysqli_query($conn,$getReservationInfoQuery);
 $arrayReservationInfo = array();
     while($onerowRI = mysqli_fetch_assoc($reservationInfoConn)){
         // RI = Reservation Info

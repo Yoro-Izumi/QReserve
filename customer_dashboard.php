@@ -1,8 +1,23 @@
 <?php
 session_start();
-//  if(isset($_SESSION['username'])){
+ if(isset($_SESSION['userID'])){
   include "connect_database.php";
-  include "get_data_from_database/get_pool_table_info.php"
+  include "encodeDecode.php";
+  include "get_data_from_database/get_pool_table_info.php";
+  include "get_data_from_database/get_member_account.php";
+  include "get_data_from_database/get_customer_information.php";
+  $key = "TheGreatestNumberIs73";
+    foreach($arrayMemberAccount as $memberAccount){
+        if($memberAccount["memberID"] == $_SESSION["userID"]){
+          $customerID = $memberAccount['customerID'];
+          $validityDate = $memberAccount['validityDate'];
+            foreach($arrayCustomerInformation as $customerInformation){
+                if($customerInformation["customerID"] == $customerID){
+                  $customerName = decryptData($customerInformation['customerFirstName'],$key)." ".decryptData($customerInformation['customerMiddleName'],$key)." ".decryptData($customerInformation['customerLastName'],$key);
+                }
+            }
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,16 +59,16 @@ session_start();
         <ul class="all-links">
           <li><a href="customer_dashboard.php">Home</a></li>
           <li><a href="customer_account.php">Account</a></li>
-          <li><a href="#contact">Log Out</a></li>
+          <li><a href="logout.php">Log Out</a></li>
         </ul>
       </nav>
     </header>
 
 
-      <h3 class="krona-one-regular mt-5 pt-3 mb-0">Welcome *name ni customer*!</h3>
+      <h3 class="krona-one-regular mt-5 pt-3 mb-0">Welcome <?php echo $customerName;?>!</h3>
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="fw-bold mt-4 mb-0">Active Playing</h4>
-        <a href="booking_form.html" type="button" class="btn btn-primary fw-bold mb-0 mt-3" id="add-new-profile">Create Reservation</a>
+        <a href="booking_form.php" type="button" class="btn btn-primary fw-bold mb-0 mt-3" id="add-new-profile">Create Reservation</a>
       </div>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid table-container dashboard-square-kebab" id="home-active-playing">
@@ -94,7 +109,7 @@ session_start();
           <div class="col-md-4 mb-3">
             <div class="dashboard-square-kebab">
               Membership valid until
-              <h1>Validity Date</h1>
+              <h1><?php echo $validityDate;?></h1>
             </div>
           </div>
           <div class="col-md-4 mb-3">
@@ -258,9 +273,9 @@ session_start();
 </body>
 </html>
 <?php
- /* }
+ }
   else{
     header('location:customer_login.php');
     exit();
-  } */
+  } 
 ?>

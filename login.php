@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'connect_database.php';
+include 'encodeDecode.php';
 include 'get_data_from_database/get_admin_accounts.php';
 
 //encryptData($data,$key); decryptData($data,$key);
@@ -10,16 +11,16 @@ if (isset($_SESSION['adminUsername'])){
 	header('location:dashboard.php');
 	die();
 }
-if(isset($_POST['login_admin'])){
-  $adminUsername=mysqli_real_escape_string($conn,$_POST['username']);
-  $adminPassword=mysqli_real_escape_string($conn,$_POST['password']);
+if(isset($_POST['login'])){
+  $username=mysqli_real_escape_string($conn,$_POST['username']);
+  $password=mysqli_real_escape_string($conn,$_POST['password']);
   if(mysqli_num_rows($adminAccountConn) > 0){
     foreach($arrayAdminAccount as $adminAccount){
-      if(decryptData($adminAccount['adminUsername'],$key) == $adminUsername){
+      if(decryptData($adminAccount['adminUsername'],$key) == $username && decryptData($adminAccount['adminPassword'],$key) == $password){
         echo '<script language="javascript">';
                 echo 'alert("You are now logged in!")';
                 echo '</script>';
-        $_SESSION['admin_username'] = $adminUsername;
+        $_SESSION['userID'] = $adminAccount['adminID'];
         header("location:dashboard.php");
         exit();
 
@@ -115,11 +116,11 @@ if(isset($_POST['login_admin'])){
           <form action="login.php" method="POST">
             <h5 class="text-center fw-bold">Welcome!</h5>
             <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required />
+              <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required />
               <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating mb-3 position-relative">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required />
+              <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
               <label for="floatingPassword">Password</label>
               <button
                 class="btn btn-outline-secondary toggle-password position-absolute end-0 top-50 translate-middle-y p-4"
@@ -128,7 +129,7 @@ if(isset($_POST['login_admin'])){
               </button>
             </div>
             <div class="">
-              <button type="submit" class="btn btn-primary w-100 login-button">Sign In</button>
+              <button type="submit" name="login" class="btn btn-primary w-100 login-button">Sign In</button>
             </div>
           </form>
         </div>
@@ -136,7 +137,7 @@ if(isset($_POST['login_admin'])){
     </div>
   </section>
 
-  <script>// For password togggle
+  <script>// For password toggle
     document.addEventListener("DOMContentLoaded", function () {
       const togglePassword = document.querySelector(".toggle-password");
       const passwordInput = document.querySelector("#floatingPassword");

@@ -70,7 +70,7 @@
         <h1 class="krona-one-regular mb-0">QReserve</h1>
         <h6 class="m-0 pb-0 index-sub">BEVITORE SANTA ROSA</h6>
       </div>
-      <a href="login.html" type="button" class="btn btn-primary fw-bold" id="index-button">Click to start session</a>
+      <a href="login.php" type="button" class="btn btn-primary fw-bold" id="index-button">Click to start session</a>
     </div>
   </section>
 </body>
