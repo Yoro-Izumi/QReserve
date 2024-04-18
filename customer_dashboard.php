@@ -97,7 +97,18 @@ session_start();
               <td><?php echo $customerName;?></td>
               <td><?php echo $timeStarted[1];?></td>
               <td><?php echo $timeEnd[1];?></td>
-              <td><span class="badge bg-success"><?php echo $poolTableStatus;?></span></td>
+              <?php 
+                if($poolTableStatus == "Done" || $poolTableStatus == "Available"){
+                  $status = "badge bg-success";
+                }
+                else if($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting"){
+                  $status = "badge bg-warning";
+                }
+                else{
+                  $status = "badge bg-danger";
+                }
+              ?>
+              <td><span class="<?php echo $status;?>"><?php echo $poolTableStatus;?></span></td>
             </tr>
             <?php }?>
           </tbody>

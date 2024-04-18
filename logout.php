@@ -6,4 +6,4 @@ $key = "TheGreatestNumberIs73";
 session_start();
 session_destroy();
 unset($_SESSION['userID']);
-header("location:customer_login.php");
+header("location:index.php");

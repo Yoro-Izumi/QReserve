@@ -2,33 +2,59 @@
 session_start();
 include 'connect_database.php';
 include 'encodeDecode.php';
+include 'get_data_from_database/get_super_admin_accounts.php';
 include 'get_data_from_database/get_admin_accounts.php';
 
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
 
-if (isset($_SESSION['adminUsername'])){
-	header('location:dashboard.php');
-	die();
+if (isset($_SESSION['userID'])){
+ $userID = explode("  ",$_SESSION['userID']); 
+  if($userID[1] == 1){
+	  header('location:dashboard.php');
+	  die();
+  }
+  else if($userID[1] == 0){
+    header('location:dashboard.php');
+    die();
+  }
 }
 if(isset($_POST['login'])){
   $username=mysqli_real_escape_string($conn,$_POST['username']);
   $password=mysqli_real_escape_string($conn,$_POST['password']);
-  if(mysqli_num_rows($adminAccountConn) > 0){
-    foreach($arrayAdminAccount as $adminAccount){
-      if(decryptData($adminAccount['adminUsername'],$key) == $username && decryptData($adminAccount['adminPassword'],$key) == $password){
+  if(mysqli_num_rows($superAdminAccountConn) > 0){
+    foreach($arraySuperAdminAccount as $superAdminAccount){
+      if(decryptData($superAdminAccount['superAdminUsername'],$key) == $username && decryptData($superAdminAccount['superAdminPassword'],$key) == $password){
         echo '<script language="javascript">';
                 echo 'alert("You are now logged in!")';
                 echo '</script>';
-        $_SESSION['userID'] = $adminAccount['adminID'];
+        $_SESSION['userID'] = $superAdminAccount['superAdminID']."  1";
         header("location:dashboard.php");
         exit();
 
     }
       else{
-        echo '<script language="javascript">';
-                echo 'alert("Username and Password does not exist")';
-                echo '</script>';
+        /*echo '<script language="javascript">';
+        echo 'alert("Username and Password does not exist")';
+        echo '</script>'; */
+                if(mysqli_num_rows($adminAccountConn) > 0){
+                  foreach($arrayAdminAccount as $adminAccount){
+                    if(decryptData($adminAccount['adminUsername'],$key) == $username && decryptData($adminAccount['adminPassword'],$key) == $password){
+                      echo '<script language="javascript">';
+                              echo 'alert("You are now logged in!")';
+                              echo '</script>';
+                      $_SESSION['userID'] = $adminAccount['adminID']."  0";
+                      header("location:dashboard.php");
+                      exit();
+              
+                  }
+                    else{
+                      echo '<script language="javascript">';
+                              echo 'alert("Username and Password does not exist")';
+                              echo '</script>';
+                    }
+                  }
+                }
       }
     }
   }

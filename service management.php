@@ -1,3 +1,7 @@
+<?php
+include "connect_database.php";
+include "get_data_from_database/get_services.php";
+?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
 <html lang="en" dir="ltr">
@@ -52,21 +56,21 @@
          <span class="tooltip">Search</span>
       </li> -->
       <li>
-        <a href="dashboard.html">
+        <a href="dashboard.php">
           <i class="bx bx-home"></i>
           <span class="links_name">Home</span>
         </a>
         <span class="tooltip">Home</span>
       </li>
       <li>
-        <a href="reservations_viewing.html">
+        <a href="reservations_viewing.php">
           <i class="bx bx-book"></i>
           <span class="links_name">Reservations Viewing</span>
         </a>
         <span class="tooltip">Reservations</span>
       </li>
       <li>
-        <a href="service management.html">
+        <a href="service management.php">
           <i class="bx bx-aperture"></i>
           <span class="links_name">Service Management</span>
         </a>
@@ -79,12 +83,12 @@
           <span class="links_name dropdown-toggle">Profile Management </span>
         </a>
         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
-          <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+          <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
+          <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
         </ul>
       </li>
       <li>
-        <a href="reports.html">
+        <a href="reports.php">
           <i class="bx bx-pie-chart-alt-2"></i>
           <span class="links_name">Reports</span>
         </a>
@@ -98,7 +102,7 @@
             <div class="job">Web designer</div>
           </div>
         </div>
-        <a href="index.html">
+        <a href="logout.php">
           <i class="bx bx-log-out" id="log_out"></i>
         </a>
       </li>
@@ -124,85 +128,15 @@
           </tr>
         </thead>
         <tbody>
+        <?php foreach($arrayServices as $services){?>
           <tr>
-            <td><input type="checkbox"></td>
-            <td>Tiger Nixon</td>
-            <td>System Architect</td>
-            <td>Edinburgh</td>
-            <td>61</td>
+            <td><input type="checkbox" value="<?php echo $services['serviceID'];?>"></td>
+            <td><?php echo $services['serviceName'];?></td>
+            <td><?php echo $services['serviceRate'];?></td>
+            <td> </td>
+            <td><?php echo $services['serviceImage'];?></td>
           </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>System Architect</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>System Architect</td>
-            <td>Edinburgh</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>System Architect</td>
-
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>System Architect</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>System Architect</td>
-          </tr>
+        <?php }?>
         </tbody>
       </table>
       <div class="mt-3">

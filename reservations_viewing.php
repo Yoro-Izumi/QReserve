@@ -158,7 +158,18 @@ include "get_data_from_database/get_reservation_info.php";
                   <td><?php echo $reservations['tableID'];?></td>
                   <td><?php echo $contactNumber;?></td>
                   <td><?php echo $email;?></td>
-                  <td><span class="badge bg-success"><?php echo $reservationStatus;?></span></td>
+              <?php 
+                if($reservationStatus == "Paid" || $reservationStatus == "Done"){
+                  $status = "badge bg-success";
+                }
+                else if($poolTableStatus == "On Process" || $poolTableStatus == "Pending"){
+                  $status = "badge bg-warning";
+                }
+                else{
+                  $status = "badge bg-danger";
+                }
+              ?>
+                  <td><span class="<?php echo $status;?>"><?php echo $reservationStatus;?></span></td>
             </tr>
             <?php }?>
 
