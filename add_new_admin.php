@@ -1,3 +1,34 @@
+<?php
+include "connect_database.php";
+include "encodeDecode.php";
+$key = "TheGreatestNumberIs73";
+
+//if(isset($_SESSION["userSuperAdminID"])){
+  if(isset($_POST['submitAdmin'])){
+    $firstName = encryptData(mysqli_real_escape_string($conn,$_POST['firstName']),$key);
+    $lastName = encryptData(mysqli_real_escape_string($conn,$_POST['lastName']),$key);
+    $middleName = encryptData(mysqli_real_escape_string($conn,$_POST['middleName']),$key);
+    $email = encryptData(mysqli_real_escape_string($conn,$_POST['email']),$key);
+    $username = encryptData(mysqli_real_escape_string($conn,$_POST['username']),$key);
+    $password = encryptData(mysqli_real_escape_string($conn,$_POST['password']),$key);
+    $sex = mysqli_real_escape_string($conn,$_POST['sex']);
+    $contactNumber = encryptData(mysqli_real_escape_string($conn,$_POST['contactNumber']),$key);
+    $shift = explode(" - ",$_POST['adminShift']);
+
+    $qryInsertAdminInfo = "INSERT INTO `admin_info`(`adminInfoID`, `adminLastName`, `adminFirstName`, `adminMiddleName`, `adminSex`, `adminContactNumber`, `adminEmail`) VALUES (NULL,?,?,?,?,?,?)";
+    $conInsertAdminInfo = mysqli_prepare($conn,$qryInsertAdminInfo);    
+    mysqli_stmt_bind_param($conInsertAdminInfo,'ssssss',$lastName,$firstName,$middleName,$sex,$contactNumber,$email);
+    mysqli_stmt_execute($conInsertAdminInfo);
+
+    $adminInfoID = mysqli_insert_id($conn);
+
+    $qryInsertAdminAccount = "INSERT INTO `admin_accounts`(`adminID`, `adminInfoID`, `adminUsername`, `adminPassword`, `startShift`, `endShift`) VALUES (NULL,?,?,?,?,?)";
+    $conInsertAdminAccount = mysqli_prepare($conn,$qryInsertAdminAccount);
+    mysqli_stmt_bind_param($conInsertAdminAccount,'sssss',$adminInfoID,$username,$password,$shift[0],$shift[1]);
+    mysqli_stmt_execute($conInsertAdminAccount);
+
+  }
+?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
 <html lang="en" dir="ltr">
@@ -55,21 +86,21 @@
          <span class="tooltip">Search</span>
       </li> -->
       <li>
-        <a href="dashboard.html">
+        <a href="dashboard.php">
           <i class="bx bx-home"></i>
           <span class="links_name">Home</span>
         </a>
         <span class="tooltip">Home</span>
       </li>
       <li>
-        <a href="reservations_viewing.html">
+        <a href="reservations_viewing.php">
           <i class="bx bx-book"></i>
           <span class="links_name">Reservations Viewing</span>
         </a>
         <span class="tooltip">Reservations</span>
       </li>
       <li>
-        <a href="service management.html">
+        <a href="service management.php">
           <i class="bx bx-aperture"></i>
           <span class="links_name">Service Management</span>
         </a>
@@ -82,12 +113,12 @@
           <span class="links_name dropdown-toggle">Profile Management </span>
         </a>
         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
-          <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+          <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
+          <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
         </ul>
       </li>
       <li>
-        <a href="reports.html">
+        <a href="reports.php">
           <i class="bx bx-pie-chart-alt-2"></i>
           <span class="links_name">Reports</span>
         </a>
@@ -101,7 +132,7 @@
             <div class="job">Web designer</div>
           </div>
         </div>
-        <a href="index.html">
+        <a href="logout.php">
           <i class="bx bx-log-out" id="log_out"></i>
         </a>
       </li>
@@ -113,7 +144,7 @@
     <hr class="my-4">
     <div class="container-fluid" id="profmanage-add-new-profile">
       <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate
-        action="BABAGUHIN ITU.php" method="POST" enctype="multipart/form-data">
+        action="add_new_admin.php" method="POST" enctype="multipart/form-data">
         <div class="row">
           <div class="col-12 col-md-4 mb-3">
             <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -153,6 +184,19 @@
             <div class="invalid-feedback">
               Please enter a valid last name.
             </div>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+            <label for="adminSex" class="form-label">Sex <span>*</span></label>
+            <select class="form-control" name="sex" id="sex" required
+              onchange="this.setCustomValidity('')">
+              <option value="" selected disabled>Select Sex</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a shift.
+            </div>
           </div>
           <div class="col-12 col-md-4 mb-3">
             <label for="email" class="form-label">Email Address <span>*</span></label>
@@ -167,9 +211,22 @@
             </div>
           </div>
           <div class="col-12 col-md-4 mb-3">
-            <label for="contactNumber" class="form-label">Username <span>*</span></label>
+            <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
             <input type="text" class="form-control" name="contactNumber" id="contactNumber"
               placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11"
+              oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')"
+              oninput="this.setCustomValidity('')" />
+            <!-- <div class="valid-feedback">
+                      Looks good!
+                  </div> -->
+            <div class="invalid-feedback">
+              Please enter a valid contact number.
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <label for="contactNumber" class="form-label">Username <span>*</span></label>
+            <input type="text" class="form-control" name="username" id="contactNumber"
+              placeholder="Enter Username here" required pattern="^09\d{9}$" minlength="11" maxlength="11"
               oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')"
               oninput="this.setCustomValidity('')" />
             <!-- <div class="valid-feedback">
@@ -184,9 +241,9 @@
             <select class="form-control" name="adminShift" id="adminShift" required
               onchange="this.setCustomValidity('')">
               <option value="" selected disabled>Select shift</option>
-              <option value="10 AM - 6PM">10AM - 6PM</option>
-              <option value="6PM - 1AM">6PM - 1AM</option>
-              <option value="6PM - 3AM">6PM - 3AM</option>
+              <option value="10:00:00 - 18:00:00">10AM - 6PM</option>
+              <option value="18:00:00 - 1:00:00">6PM - 1AM</option>
+              <option value="18:00:00 - 3:00:00">6PM - 3AM</option>
             </select>
             <div class="invalid-feedback">
               Please select a shift.
@@ -229,14 +286,14 @@
         <!-- Buttons section -->
         <div class="row justify-content-end">
           <div class="col-12 col-md-2 mb-3 mb-md-0">
-            <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Create</button>
+            <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
           </div>
+          </form>
           <div class="col-12 col-md-2">
             <button class="btn btn-outline-primary w-100 cancel-button" type="reset"
               onclick="resetForm()">Cancel</button>
           </div>
         </div>
-      </form>
     </div>
   </section>
 
@@ -334,3 +391,7 @@
 </body>
 
 </html>
+<?php /* }
+else{
+header("location:customer_login.php");
+}*/?>

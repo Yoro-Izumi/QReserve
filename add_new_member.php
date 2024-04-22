@@ -1,3 +1,39 @@
+<?php 
+include "connect_database.php";
+include "encodeDecode.php";
+$key = "TheGreatestNumberIs73";
+
+    if(isset($_POST['submitMember'])){
+      $customerFirstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']),$key);
+      $customerLastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']),$key);
+      $customerMiddleName = encryptData(mysqli_real_escape_string( $conn, $_POST['middleName']),$key);
+      $customerEmail = encryptData(mysqli_real_escape_string($conn, $_POST['email']),$key);
+      $customerPhone = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']),$key);
+      $customerBirthdate = mysqli_real_escape_string($conn, $_POST['birthDate']);
+      $memberControlNumber = encryptData(mysqli_real_escape_string( $conn, $_POST['controlNumber']),$key);
+      $memberPassword = encryptData(mysqli_real_escape_string( $conn, $_POST['password']),$key);
+      $memberValidity = mysqli_real_escape_string( $conn, $_POST['validity']);
+      $x = "None"; $y = 1;
+
+      // Parse HTML date string into a DateTime object
+      $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
+
+      // Convert DateTime object to SQL date format (YYYY-MM-DD)
+      $sqlDate = $date->format('Y-m-d');
+
+      $qryInsertCustomerInfo = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`, `validID`) VALUES (NULL,?,?,?,?,?,?,?)";
+      $conInsertCustomerInfo = mysqli_prepare($conn, $qryInsertCustomerInfo);  
+      mysqli_stmt_bind_param($conInsertCustomerInfo, "sssssss", $customerFirstName, $customerLastName, $customerMiddleName, $customerBirthdate, $customerPhone, $customerEmail, $x);
+      mysqli_stmt_execute($conInsertCustomerInfo);
+      $customerID = mysqli_insert_id($conn);
+
+      $qryInsertMemberDetails = "INSERT INTO `member_details`(`memberID`, `membershipID`, `membershipPassword`, `customerID`, `creationDate`, `validityDate`, `perk_id`) VALUES (NULL,?,?,?,CURRENT_DATE,?,?)";
+      $conInsertMemberDetails = mysqli_prepare($conn, $qryInsertMemberDetails);
+      mysqli_stmt_bind_param($conInsertMemberDetails,"sssss",$memberControlNumber, $memberPassword, $customerID,$sqlDate,$y);
+      mysqli_stmt_execute($conInsertMemberDetails);
+
+    }
+?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
 <html lang="en" dir="ltr">
@@ -54,21 +90,21 @@
          <span class="tooltip">Search</span>
       </li> -->
       <li>
-        <a href="dashboard.html">
+        <a href="dashboard.php">
           <i class="bx bx-home"></i>
           <span class="links_name">Home</span>
         </a>
         <span class="tooltip">Home</span>
       </li>
       <li>
-        <a href="reservations_viewing.html">
+        <a href="reservations_viewing.php">
           <i class="bx bx-book"></i>
           <span class="links_name">Reservations Viewing</span>
         </a>
         <span class="tooltip">Reservations</span>
       </li>
       <li>
-        <a href="service management.html">
+        <a href="service management.php">
           <i class="bx bx-aperture"></i>
           <span class="links_name">Service Management</span>
         </a>
@@ -81,12 +117,12 @@
           <span class="links_name dropdown-toggle">Profile Management </span>
         </a>
         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
-          <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+          <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
+          <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
         </ul>
       </li>
       <li>
-        <a href="reports.html">
+        <a href="reports.php">
           <i class="bx bx-pie-chart-alt-2"></i>
           <span class="links_name">Reports</span>
         </a>
@@ -100,7 +136,7 @@
             <div class="job">Web designer</div>
           </div>
         </div>
-        <a href="index.html">
+        <a href="logout.php">
           <i class="bx bx-log-out" id="log_out"></i>
         </a>
       </li>
@@ -111,7 +147,7 @@
     <h4 class="krona-one-regular mt-5">Add New Member</h4>
     <hr class="my-4">
     <div class="container-fluid dashboard-square-kebab" id="profmanage-add-new-profile">
-      <form class="needs-validation" id="add-new-profile-form" novalidate action="BABAGUHIN ITU.php" method="POST"
+      <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST"
         enctype="multipart/form-data">
         <div class="row">
           <div class="col-12 col-md-4 mb-3">
@@ -250,14 +286,14 @@
         <!-- Buttons section -->
         <div class="row justify-content-end">
           <div class="col-12 col-md-2 mb-3 mb-md-0">
-            <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Create</button>
+            <button class="btn btn-primary w-100 create-button" name="submitMember" type="submit">Create</button>
           </div>
+          </form>
           <div class="col-12 col-md-2">
             <button class="btn btn-outline-primary w-100 cancel-button" type="reset"
               onclick="resetForm()">Cancel</button>
           </div>
         </div>
-      </form>
       
     </div>
   </section>

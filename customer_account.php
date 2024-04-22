@@ -1,6 +1,7 @@
 <?php
 session_start();
-    if (isset($_SESSION["userID"])){
+    if (isset($_SESSION["userMemberID"])){
+        $userID = $_SESSION['userMemberID'];
         include "connect_database.php";
         include "get_data_from_database/get_member_account.php";
         include "get_data_from_database/get_customer_information.php";
@@ -67,7 +68,7 @@ session_start();
                     <div class="row">
                         <?php
                             foreach($arrayMemberAccount as $memberAccount){
-                                if($memberAccount["memberID"] == $_SESSION["userID"]){
+                                if($memberAccount["memberID"] == $userID){
                                   $customerID = $memberAccount['customerID'];
                                     foreach($arrayCustomerInformation as $customerInformation){
                                         if($customerInformation["customerID"] == $customerID){
@@ -90,16 +91,16 @@ session_start();
                                                                     </div>
                                                                     <div class="col-12 col-md-4 mb-3">
                                                                         <label for="birthDate" class="form-label">Birthday<span>*</span></label>
-                                                                        <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
+                                                                        <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value = "<?php echo $customerInformation['customerBirthdate'];?>"/>
 
                                                                     </div>  
                                                                     <div class="col-12 col-md-4 mb-3">
                                                                         <label for="contactNumber" class="form-label">Contact Number</label>
-                                                                        <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
+                                                                        <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value = "<?php echo decryptData($customerInformation['customerNumber'],$key);?>" />
                                                                     </div>                                                                
                                                                     <div class="col-12 col-md-4 mb-3">
                                                                         <label for="email" class="form-label">Email Address</label>
-                                                                        <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
+                                                                        <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo decryptData($customerInformation['customerEmail'],$key);?>" />
                                                                     </div>
                         <?php 
                                         }

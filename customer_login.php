@@ -7,7 +7,7 @@ include 'get_data_from_database/get_member_account.php';
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
 
-if (isset($_SESSION['userID'])){
+if (isset($_SESSION['userMemberID'])){
 	header('location:customer_dashboard.php');
 	die();
 }
@@ -21,7 +21,7 @@ if(isset($_POST['login_member'])){
             echo '<script language="javascript">';
             echo 'alert("You are now logged in!")';
             echo '</script>';
-            $_SESSION['userID'] = $membershipAccount['memberID'];
+            $_SESSION['userMemberID'] = $membershipAccount['memberID'];
             header("location:customer_dashboard.php");
             exit();
         }

@@ -99,6 +99,7 @@ include "get_data_from_database/get_reservation_info.php";
           </ul>
         </li>
         <li>
+          <a href="reports.php"> 
             <i class="bx bx-pie-chart-alt-2"></i>
             <span class="links_name">Reports</span>
           </a>
@@ -112,6 +113,7 @@ include "get_data_from_database/get_reservation_info.php";
               <div class="job">Web designer</div>
             </div>
           </div>
+          <a href="logout.php">
             <i class="bx bx-log-out" id="log_out"></i>
           </a>
         </li>        
@@ -145,10 +147,16 @@ include "get_data_from_database/get_reservation_info.php";
                     $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
                     $contactNumber = decryptData($customerInfo['customerNumber'],$key);
                     $email = decryptData($customerInfo['customerEmail'],$key);
+                  }
+                  else{
+                    $customerName = "";
+                    $contactNumber = "";
+                    $email = "";
                   }  
                 }
             ?>
                 <tr>
+                  <td><input type="checkbox" value="<?php echo $reservations['reservationID'];?>"></td>
                   <td><?php echo $customerName;?></td>
                   <td><?php echo $reservationDate;?></td>
                   <td><?php echo $reservationTimeStart;?></td>
@@ -167,117 +175,8 @@ include "get_data_from_database/get_reservation_info.php";
                 }
               ?>
                   <td><span class="<?php echo $status;?>"><?php echo $reservationStatus;?></span></td>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Tiger Nixon</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>61</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-success">Done</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-warning">Playing</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>63</td>
-              <td><span class="badge bg-danger">Waiting</span></td>
-            </tr>
+              </tr>
+            <?php }?>  
           </tbody>
         </table>
       </div>  

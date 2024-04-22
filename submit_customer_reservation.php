@@ -23,7 +23,7 @@ $key = "TheGreatestNumberIs73";
                 $paymentID = 1;
                 $reservationStatus = "Pending";
 
-                // For uploading the ID
+                /* For uploading the ID
                 $idImage = $_FILES["validId"];
                 $idImageName = $_FILES["validId"]["name"];
                 $idImageSize = $_FILES["validId"]["size"];
@@ -38,7 +38,7 @@ $key = "TheGreatestNumberIs73";
                 $validId = $idImageNewName;
                 //Upload the image to the server
                 $idImageLocation = "uploadedImages/". $validId;
-                move_uploaded_file($idImageTmpName, $idImageLocation);
+                move_uploaded_file($idImageTmpName, $idImageLocation); */
 
                 //Query to insert data into the database
                 //For customer information

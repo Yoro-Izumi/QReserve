@@ -52,7 +52,7 @@ include "get_data_from_database/get_services.php"
           <h1 class="krona-one-regular mb-0">QReserve</h1>
           <h5 class="index-sub">BEVITORE SANTA ROSA</h5>
         </div>
-        <a href="customer_login.html" id="landing-button">BOOK NOW</a>
+        <a href="customer_login.php" id="landing-button">BOOK NOW</a>
       </div>
     </section>
 

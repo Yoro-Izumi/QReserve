@@ -8,16 +8,13 @@ include 'get_data_from_database/get_admin_accounts.php';
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
 
-if (isset($_SESSION['userID'])){
- $userID = explode("  ",$_SESSION['userID']); 
-  if($userID[1] == 1){
+if (isset($_SESSION['userSuperAdminID'])){
 	  header('location:dashboard.php');
 	  die();
-  }
-  else if($userID[1] == 0){
+}
+  else if(isset($_SESSION['userAdminID'])){
     header('location:dashboard.php');
     die();
-  }
 }
 if(isset($_POST['login'])){
   $username=mysqli_real_escape_string($conn,$_POST['username']);
@@ -28,7 +25,7 @@ if(isset($_POST['login'])){
         echo '<script language="javascript">';
                 echo 'alert("You are now logged in!")';
                 echo '</script>';
-        $_SESSION['userID'] = $superAdminAccount['superAdminID']."  1";
+        $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
         header("location:dashboard.php");
         exit();
 
@@ -43,7 +40,7 @@ if(isset($_POST['login'])){
                       echo '<script language="javascript">';
                               echo 'alert("You are now logged in!")';
                               echo '</script>';
-                      $_SESSION['userID'] = $adminAccount['adminID']."  0";
+                      $_SESSION['userAdminID'] = $adminAccount['adminID'];
                       header("location:dashboard.php");
                       exit();
               

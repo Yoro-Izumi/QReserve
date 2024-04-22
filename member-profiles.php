@@ -1,5 +1,9 @@
 <?php 
-include "";
+include "connect_database.php";
+include "get_data_from_database/get_member_account.php";
+include "get_data_from_database/get_customer_information.php";
+include "encodeDecode.php";
+$key = "TheGreatestNumberIs73";
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -70,21 +74,21 @@ include "";
          <span class="tooltip">Search</span>
       </li> -->
         <li>
-          <a href="dashboard.html">
+          <a href="dashboard.php">
             <i class="bx bx-home"></i>
             <span class="links_name">Home</span>
           </a>
           <span class="tooltip">Home</span>
         </li>
         <li>
-          <a href="reservations_viewing.html">
+          <a href="reservations_viewing.php">
             <i class="bx bx-book"></i>
             <span class="links_name">Reservations Viewing</span>
           </a>
           <span class="tooltip">Reservations</span>
         </li>
         <li>
-          <a href="service management.html">
+          <a href="service management.php">
             <i class="bx bx-aperture"></i>
             <span class="links_name">Service Management</span>
           </a>
@@ -97,12 +101,12 @@ include "";
             <span class="links_name dropdown-toggle">Profile Management </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
-            <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+            <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
+            <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
           </ul>
         </li>
         <li>
-          <a href="reports.html">
+          <a href="reports.php"> 
             <i class="bx bx-pie-chart-alt-2"></i>
             <span class="links_name">Reports</span>
           </a>
@@ -116,7 +120,7 @@ include "";
               <div class="job">Web designer</div>
             </div>
           </div>
-          <a href="index.html">
+          <a href="logout.php">
             <i class="bx bx-log-out" id="log_out"></i>
           </a>
         </li>        
@@ -136,101 +140,46 @@ include "";
               <tr>
                 <th>Actions</th>
                 <th>Name</th>
-                <th>Sex</th>
                 <th>Username</th>
+                <th>Birthday</th>
                 <th>Contact Number</th>
                 <th>Email Address</th>
+                <th>Validity</th>
               </tr>
           </thead>
           <tbody>
+          <?php
+            foreach($arrayMemberAccount as $memberAccount){ //get membership details as well as information of member
+              $memberID = $memberAccount["memberID"];
+              $memberUsername = decryptData($memberAccount["membershipID"],$key);
+              $membershipValidity = $memberAccount["validityDate"];
+                foreach($arrayCustomerInformation as $customerInfo){
+                    $customerID = $customerInfo["customerID"];
+                      if($customerInfo['customerID'] == $memberAccount["customerID"]){
+                        $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
+                        
+                        $customerBirthdate  = $customerInfo['customerBirthdate'];
+                        $customerPhone = decryptData($customerInfo['customerNumber'],$key);
+                        $customerEmail = decryptData($customerInfo['customerEmail'],$key);
+                      }  
+                      else{
+                        $customerName = " ";
+                        $customerBirthdate = " ";
+                        $customerPhone = " ";
+                        $customerEmail = " ";
+                      }
+                }
+          ?>
             <tr>
-              <td><input type="checkbox"></td> 
-              <td>Tiger Nixon</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>61</td>
-              <td>System Architect</td>
+              <td><input type="checkbox" value = "<?php echo $memberID;?>"></td> 
+              <td><?php echo $customerName;?></td>
+              <td><?php echo $memberUsername;?></td>
+              <td><?php echo $customerBirthdate;?></td>
+              <td><?php echo $customerPhone;?></td>
+              <td><?php echo $customerEmail;?></td>
+              <td><?php echo $membershipValidity;?></td>
             </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>Tokyo</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>System Architect</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td> 
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-            </tr>
+          <?php }?>
           </tbody>
         </table>
         <div class="mt-3">

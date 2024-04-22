@@ -1,6 +1,7 @@
 <?php
 session_start();
- if(isset($_SESSION['userID'])){
+ if(isset($_SESSION['userMemberID'])){
+  $userID = $_SESSION['userMemberID'];
   include "connect_database.php";
   include "encodeDecode.php";
   include "get_data_from_database/get_pool_table_info.php";
@@ -8,7 +9,7 @@ session_start();
   include "get_data_from_database/get_customer_information.php";
   $key = "TheGreatestNumberIs73";
     foreach($arrayMemberAccount as $memberAccount){
-        if($memberAccount["memberID"] == $_SESSION["userID"]){
+        if($memberAccount["memberID"] == $userID){
           $customerID = $memberAccount['customerID'];
           $validityDate = $memberAccount['validityDate'];
             foreach($arrayCustomerInformation as $customerInformation){

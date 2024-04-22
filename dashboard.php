@@ -2,8 +2,12 @@
 include "connect_database.php";
 include "encodeDecode.php";
 include "get_data_from_database/get_pool_table_info.php";
+include "get_data_from_database/get_walk_in.php";
+include "get_data_from_database/get_reservation_info.php";
 
 $key = "TheGreatestNumberIs73";
+
+$visitors = mysqli_num_rows($walkinDetailsConn) + mysqli_num_rows($reservationInfoConn);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -106,7 +110,7 @@ $key = "TheGreatestNumberIs73";
         </div>
         <a href="logout.php">
           <i class="bx bx-log-out" id="log_out"></i>
-        </a>
+        </a>   
       </li>
     </ul>
   </div>
@@ -126,85 +130,78 @@ $key = "TheGreatestNumberIs73";
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Tiger Nixon</td>
-            <td>System Architect</td>
-            <td>Edinburgh</td>
-            <td>61</td>
-            <td><span class="badge bg-success">Done</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-warning">Playing</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
-
-          <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td><span class="badge bg-danger">Waiting</span></td>
-          </tr>
+        <?php foreach($arrayWalkinDetails as $walkin){
+              $poolTableStatus = $walkin['walkinStatus']; 
+              $poolTableNumber = $walkin['tableID']; 
+              $timeStarted = explode(' ',$walkin['walkinTimeStart']);
+              $timeEnd = explode(' ',$walkin['walkinTimeEnd']);
+              foreach($arrayCustomerInformation as $customerInfo){
+                if($customerInfo['customerID'] == $walkin['customerID']){
+                  $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
+              }
+            }
+              
+            ?>
+            <tr>
+              <th><?php echo $poolTableNumber;?></th>
+              <td><?php echo $customerName;?></td>
+              <td><?php echo $timeStarted[1];?></td>
+              <td><?php echo $timeEnd[1];?></td>
+              <?php 
+                if($poolTableStatus == "Done" || $poolTableStatus == "Available"){
+                  $status = "badge bg-success";
+                }
+                else if($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting"){
+                  $status = "badge bg-warning";
+                }
+                else{
+                  $status = "badge bg-danger";
+                }
+              ?>
+              <td><span class="<?php echo $status;?>"><?php echo $poolTableStatus;?></span></td>
+            </tr>
+            <?php }?>
+            <?php foreach($arrayReservationInfo as $reservations){
+              $reservationDate = $reservations['reservationDate'];
+              $reservationStatus = $reservation['reservationStatus'];
+              $reservationTimeStart = $reservations['reservationTimeStart'];
+                foreach($arrayCustomerInformation as $customerInfo){
+                  if($reservation['customerID'] == $customerInfo['customerID']){
+                    $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
+                    $contactNumber = decryptData($customerInfo['customerNumber'],$key);
+                    $email = decryptData($customerInfo['customerEmail'],$key);
+                  }
+                  else{
+                    $customerName = "";
+                    $contactNumber = "";
+                    $email = "";
+                  }  
+                }
+              // Get the current time
+             // $current_time = date('Y-m-d H:i:s');
+              //if ($reservationTimeStart == $current_time){
+            ?>
+                <tr>
+                  <td><?php echo $customerName;?></td>
+                  <td><?php echo $reservationDate;?></td>
+                  <td><?php echo $reservationTimeStart;?></td>
+                  <td><?php echo $reservations['tableID'];?></td>
+                  <td><?php echo $contactNumber;?></td>
+                  <td><?php echo $email;?></td>
+              <?php 
+                if($reservationStatus == "Paid" || $reservationStatus == "Done"){
+                  $status = "badge bg-success";
+                }
+                else if($poolTableStatus == "On Process" || $poolTableStatus == "Pending"){
+                  $status = "badge bg-warning";
+                }
+                else{
+                  $status = "badge bg-danger";
+                }
+              ?>
+                  <td><span class="<?php echo $status;?>"><?php echo $reservationStatus;?></span></td>
+              </tr>
+            <?php }//}?>  
         </tbody>
       </table>
     </div>
@@ -214,7 +211,7 @@ $key = "TheGreatestNumberIs73";
         <div class="col-md-4 mb-3">
           <div class="dashboard-square-kebab">
             Number of Visitors
-            <h1>60</h1>
+            <h1><?php echo $visitors;?></h1>
           </div>
         </div>
         <div class="col-md-4 mb-3">
