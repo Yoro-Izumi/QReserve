@@ -1,12 +1,12 @@
 <?php
-session_start();
+
 include 'connect_database.php';
 include 'encodeDecode.php';
 include 'get_data_from_database/get_member_account.php';
 
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
-
+session_start();
 if (isset($_SESSION['userMemberID'])){
 	header('location:customer_dashboard.php');
 	die();

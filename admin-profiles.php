@@ -4,6 +4,8 @@ include "get_data_from_database/get_admin_accounts.php";
 include "get_data_from_database/get_admin_info.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
+session_start();
+if(isset($_SESSION["userSuperAdminID"])){
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -238,3 +240,6 @@ $key = "TheGreatestNumberIs73";
     </script>
   </body>
 </html>
+<?php } else{
+header("location:login.php");
+}?>?>

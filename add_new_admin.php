@@ -2,8 +2,8 @@
 include "connect_database.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
-
-//if(isset($_SESSION["userSuperAdminID"])){
+session_start();
+if(isset($_SESSION["userSuperAdminID"])){
   if(isset($_POST['submitAdmin'])){
     $firstName = encryptData(mysqli_real_escape_string($conn,$_POST['firstName']),$key);
     $lastName = encryptData(mysqli_real_escape_string($conn,$_POST['lastName']),$key);
@@ -391,7 +391,7 @@ $key = "TheGreatestNumberIs73";
 </body>
 
 </html>
-<?php /* }
+<?php  }
 else{
-header("location:customer_login.php");
-}*/?>
+header("location:login.php");
+}?>

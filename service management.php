@@ -1,6 +1,8 @@
 <?php
 include "connect_database.php";
 include "get_data_from_database/get_services.php";
+session_start();
+if(isset($_SESSION["userSuperAdminID"])){
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -199,3 +201,6 @@ include "get_data_from_database/get_services.php";
 </body>
 
 </html>
+<?php } else{
+header("location:login.php");
+}?>

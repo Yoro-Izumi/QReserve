@@ -8,6 +8,8 @@ include "get_data_from_database/get_reservation_info.php";
 $key = "TheGreatestNumberIs73";
 
 $visitors = mysqli_num_rows($walkinDetailsConn) + mysqli_num_rows($reservationInfoConn);
+session_start();
+if(isset($_SESSION["userSuperAdminID"])){
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -316,3 +318,6 @@ $visitors = mysqli_num_rows($walkinDetailsConn) + mysqli_num_rows($reservationIn
 </body>
 
 </html>
+<?php } else{
+header("location:login.php");
+}?>

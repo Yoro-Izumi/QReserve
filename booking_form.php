@@ -1,6 +1,8 @@
 <?php
 include "connect_database.php";
 include "get_data_from_database/get_pool_table_info.php";
+session_start();
+if (isset($_SESSION['userMemberID'])){
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -383,3 +385,7 @@ include "get_data_from_database/get_pool_table_info.php";
     </script>
 </body>
 </html>
+<?php }
+else{
+header("location:customer_login.php");
+}?>

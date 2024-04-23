@@ -1,3 +1,7 @@
+<?php
+session_start();
+if(isset($_SESSION["userSuperAdminID"])){
+?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
 <html lang="en" dir="ltr">
@@ -361,3 +365,6 @@
 </body>
 
 </html>
+<?php } else{
+header("location:login.php");
+}?>?>
