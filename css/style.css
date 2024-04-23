@@ -116,26 +116,14 @@ span {
     /* Center the <hr> horizontally */
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#home-active-playing, #home-number-of-customers, #home-services, #home-pubmats{
-=======
-#home-active-playing{
->>>>>>> development
-=======
 #home-active-playing {
->>>>>>> development
     background-color: #fff;
     border-radius: 10px;
     padding: 1%;
 }
 
 .carousel-height .carousel-item {
-<<<<<<< HEAD
-    height: 300px; /* Set your desired height here */
-=======
     height: 300px;
->>>>>>> development
     overflow: hidden;
 }
 
@@ -145,13 +133,7 @@ span {
     object-fit: cover;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-#customer-landing-logo{
-=======
 #customer-landing-logo {
->>>>>>> development
     width: 95px;
 }
 
@@ -178,10 +160,6 @@ span {
     background-color: white;
     /* Make the navbar toggler button white */
 }
-<<<<<<< HEAD
-  
->>>>>>> development
-=======
 
 
 .create-button{
@@ -206,4 +184,3 @@ span {
     font-weight: bold;
     color: #FFB800;
 }
->>>>>>> development

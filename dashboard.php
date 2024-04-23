@@ -120,7 +120,7 @@ if(isset($_SESSION["userSuperAdminID"])){
   <section class="home-section">
     <h4 class="krona-one-regular">Active Playing</h4>
     <hr class="my-4 mb-3 mt-3">
-    <div class="container-fluid" id="home-active-playing">
+    <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
       <table id="example" class="table table-striped" style="width: 100%">
         <thead>
           <tr>
@@ -320,4 +320,5 @@ if(isset($_SESSION["userSuperAdminID"])){
 </html>
 <?php } else{
 header("location:login.php");
+die();
 }?>
