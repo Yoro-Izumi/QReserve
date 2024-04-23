@@ -182,6 +182,6 @@ span {
 
 
 /* Add New Service Modal */
-#add-new-service-modal{
+.service-modal{
     max-width: 1000px;
 }
