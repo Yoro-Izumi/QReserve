@@ -59,7 +59,7 @@ if(isset($_SESSION["userSuperAdminID"])){
     <section class="home-section">
       <h4 class="krona-one-regular">Reservations</h4>
       <hr class="my-4 mb-3 mt-3">
-      <div class="container-fluid" id="home-active-playing">
+      <div class="container-fluid dashboard-square-kebab">
       <table id="example" class="table table-striped" style="width: 100%">
           <thead>
             <tr>

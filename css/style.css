@@ -116,12 +116,6 @@ span {
     /* Center the <hr> horizontally */
 }
 
-#home-active-playing {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 1%;
-}
-
 .carousel-height .carousel-item {
     height: 300px;
     overflow: hidden;
