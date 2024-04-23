@@ -8,54 +8,48 @@ include 'get_data_from_database/get_admin_accounts.php';
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
 
-if (isset($_SESSION['userSuperAdminID'])){
-	  header('location:dashboard.php');
-	  die();
+if (isset($_SESSION['userSuperAdminID'])) {
+  header('location:dashboard.php');
+  die();
+} else if (isset($_SESSION['userAdminID'])) {
+  header('location:dashboard.php');
+  die();
 }
-  else if(isset($_SESSION['userAdminID'])){
-    header('location:dashboard.php');
-    die();
-}
-if(isset($_POST['login'])){
-  $username=mysqli_real_escape_string($conn,$_POST['username']);
-  $password=mysqli_real_escape_string($conn,$_POST['password']);
-  if(mysqli_num_rows($superAdminAccountConn) > 0){
-    foreach($arraySuperAdminAccount as $superAdminAccount){
-      if(decryptData($superAdminAccount['superAdminUsername'],$key) == $username && decryptData($superAdminAccount['superAdminPassword'],$key) == $password){
+if (isset($_POST['login'])) {
+  $username = mysqli_real_escape_string($conn, $_POST['username']);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
+  if (mysqli_num_rows($superAdminAccountConn) > 0) {
+    foreach ($arraySuperAdminAccount as $superAdminAccount) {
+      if (decryptData($superAdminAccount['superAdminUsername'], $key) == $username && decryptData($superAdminAccount['superAdminPassword'], $key) == $password) {
         echo '<script language="javascript">';
-                echo 'alert("You are now logged in!")';
-                echo '</script>';
+        echo 'alert("You are now logged in!")';
+        echo '</script>';
         $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
         header("location:dashboard.php");
         exit();
-
-    }
-      else{
+      } else {
         /*echo '<script language="javascript">';
         echo 'alert("Username and Password does not exist")';
         echo '</script>'; */
-                if(mysqli_num_rows($adminAccountConn) > 0){
-                  foreach($arrayAdminAccount as $adminAccount){
-                    if(decryptData($adminAccount['adminUsername'],$key) == $username && decryptData($adminAccount['adminPassword'],$key) == $password){
-                      echo '<script language="javascript">';
-                              echo 'alert("You are now logged in!")';
-                              echo '</script>';
-                      $_SESSION['userAdminID'] = $adminAccount['adminID'];
-                      header("location:dashboard.php");
-                      exit();
-              
-                  }
-                    else{
-                      echo '<script language="javascript">';
-                              echo 'alert("Username and Password does not exist")';
-                              echo '</script>';
-                    }
-                  }
-                }
+        if (mysqli_num_rows($adminAccountConn) > 0) {
+          foreach ($arrayAdminAccount as $adminAccount) {
+            if (decryptData($adminAccount['adminUsername'], $key) == $username && decryptData($adminAccount['adminPassword'], $key) == $password) {
+              echo '<script language="javascript">';
+              echo 'alert("You are now logged in!")';
+              echo '</script>';
+              $_SESSION['userAdminID'] = $adminAccount['adminID'];
+              header("location:dashboard.php");
+              exit();
+            } else {
+              echo '<script language="javascript">';
+              echo 'alert("Username and Password does not exist")';
+              echo '</script>';
+            }
+          }
+        }
       }
     }
-  }
-  else{
+  } else {
     echo '<script language="javascript">';
     echo 'alert("Username and Password does not exist")';
     echo '</script>';
@@ -82,9 +76,7 @@ if(isset($_POST['login'])){
   <!-- Montserrat Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
   <style>
     .toggle-password {
@@ -142,35 +134,36 @@ if(isset($_POST['login'])){
               <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required />
               <label for="floatingInput">Email address</label>
             </div>
-            <div class="form-floating mb-3 position-relative">
+            <div class="form-floating mb-2 position-relative">
               <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
               <label for="floatingPassword">Password</label>
-              <button
-                class="btn btn-outline-secondary toggle-password position-absolute end-0 top-50 translate-middle-y p-4"
-                type="button">
+              <button class="btn btn-outline-secondary toggle-password position-absolute end-0 top-50 translate-middle-y p-4" type="button">
                 <i class="fas fa-eye"></i>
               </button>
             </div>
+            <a href="" class="forgot-password">Forgot Password</a>
             <div class="">
-              <button type="submit" name="login" class="btn btn-primary w-100 login-button">Sign In</button>
+              <button type="submit" name="login" class="btn btn-primary w-100 login-button mt-4">Sign In</button>
             </div>
           </form>
+
         </div>
       </div>
     </div>
   </section>
 
-  <script>// For password toggle
-    document.addEventListener("DOMContentLoaded", function () {
+  <script>
+    // For password toggle
+    document.addEventListener("DOMContentLoaded", function() {
       const togglePassword = document.querySelector(".toggle-password");
       const passwordInput = document.querySelector("#floatingPassword");
       const eyeIcon = togglePassword.querySelector("i");
 
-      togglePassword.addEventListener("click", function () {
+      togglePassword.addEventListener("click", function() {
         const type =
-          passwordInput.getAttribute("type") === "password"
-            ? "text"
-            : "password";
+          passwordInput.getAttribute("type") === "password" ?
+          "text" :
+          "password";
         passwordInput.setAttribute("type", type);
 
         // Toggle eye icon classes

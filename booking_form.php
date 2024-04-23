@@ -1,17 +1,27 @@
-<?php
-include "connect_database.php";
-include "get_data_from_database/get_pool_table_info.php";
-session_start();
-if (isset($_SESSION['userMemberID'])){
-?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book a Reservation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/landing.css">
+
+    <!-- Fontawesome Link for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+
+    <!-- Montserrat Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
   </head>
   <body class="body">
@@ -33,22 +43,18 @@ if (isset($_SESSION['userMemberID'])){
       </nav>
     </header>
 
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Document</title>
-</head>
-<body id="booking-page">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 text-center">
-                <h1 class="krona-one-regular mb-0">QReserve</h1>
+                <h1 class="krona-one-regular mt-5 mb-0">QReserve</h1>
                 <h6 id="booking-sub">BEVITORE SANTA ROSA</h6>
                 <hr class="my-4">
             </div>
         </div>
         <div class="row"> 
-            <div class="col-md-12" id="hello">
+            <div class="col-md-12">
                 <h3 class="fw-bold ps-4">Fill up the form</h3>
-                <form class="needs-validation" id="booking-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
+                <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-12 col-md-4 mb-3">
                             <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -172,6 +178,7 @@ if (isset($_SESSION['userMemberID'])){
                                 Please select a start time.
                             </div>
                         </div>
+                        
                         <div class="col-12 col-md-3 mb-3">
                             <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
                             <select class="form-control" name="selectEndTime" id="selectEndTime" required>
@@ -241,9 +248,16 @@ if (isset($_SESSION['userMemberID'])){
                             <label for="selectTable" class="form-label">Select Table <span>*</span></label>
                             <select class="form-control" name="selectTable" id="selectTable" required onchange="this.setCustomValidity('')" disabled>
                                 <option value="" selected disabled>Select table</option>
-                                <?php foreach($arrayPoolTables as $dataPT){?>
-                                <option value="<?php echo $dataPT['poolTableID'];?>">Table <?php echo $dataPT['poolTableNumber'];?></option>
-                                <?php } mysqli_close($conn);?>
+                                <option value="Table 1">Table 1</option>
+                                <option value="Table 2">Table 2</option>
+                                <option value="Table 3">Table 3</option>
+                                <option value="Table 4">Table 4</option>
+                                <option value="Table 5">Table 5</option>
+                                <option value="Table 6">Table 6</option>
+                                <option value="Table 7">Table 7</option>
+                                <option value="Table 8">Table 8</option>
+                                <option value="Table 9">Table 9</option>
+                                <option value="Table 10">Table 10</option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select a table.
@@ -257,35 +271,36 @@ if (isset($_SESSION['userMemberID'])){
                         <div class="col-12 col-md-2 mb-3 mb-md-0">
                             <button class="btn btn-primary w-100" name="submitReserve" type="submit">Submit form</button>
                         </div>
-                     </form>
                         <div class="col-12 col-md-2">
                             <button class="btn btn-outline-primary w-100" type="reset" onclick="resetForm()">Reset</button>
                         </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <script> // For Birthdate
-        document.getElementById('birthDate').addEventListener('keydown', function (event) {
-            // Prevent typing numbers directly into the input field
-            if (event.key >= '0' && event.key <= '9') {
-                event.preventDefault();
-            }
-        });
+    <script> //For birthdate
+        document.addEventListener('DOMContentLoaded', function () {
+            var birthDateInput = document.getElementById('birthDate');
     
-        
-        document.getElementById('birthDate').addEventListener('input', function () {
-            var birthDate = new Date(this.value);
+            // Set min and max date for birthdate input
             var currentDate = new Date();
             var minDate = new Date('1900-01-01');
-            var maxDate = new Date();
-            maxDate.setFullYear(currentDate.getFullYear() - 18);
+            var maxDate = new Date(currentDate);
+            maxDate.setFullYear(currentDate.getFullYear() - 18); // 18 years ago from current year
     
-            if (birthDate < minDate || birthDate > maxDate) {
-                this.setCustomValidity('Please enter a valid birthdate (minimum 1900 and at least 18 years ago).');
-            } else {
-                this.setCustomValidity('');
-            }
+            birthDateInput.min = minDate.toISOString().split('T')[0]; // Minimum date is 1900-01-01
+            birthDateInput.max = maxDate.toISOString().split('T')[0]; // Maximum date is 18 years ago
+    
+            birthDateInput.addEventListener('input', function () {
+                var selectedDate = new Date(this.value);
+    
+                if (selectedDate < minDate || selectedDate > maxDate) {
+                    this.setCustomValidity('Please enter a valid birthdate (minimum 1900 and at least 18 years ago).');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
         });
     </script>
 
@@ -313,36 +328,6 @@ if (isset($_SESSION['userMemberID'])){
     });
   </script>
 
-    <script> //For Time Start and Time End
-        document.getElementById('startTime').addEventListener('input', validateTimeRange);
-        document.getElementById('endTime').addEventListener('input', validateTimeRange);
-
-        function roundToNearestHour(time) {
-            var splitTime = time.split(':');
-            var hours = parseInt(splitTime[0], 10);
-            var roundedHours = Math.round(hours);
-            return roundedHours.toString().padStart(2, '0') + ':00';
-        }
-
-        function validateTimeRange() {
-            var startTimeInput = document.getElementById('startTime');
-            var endTimeInput = document.getElementById('endTime');
-
-            var startTime = roundToNearestHour(startTimeInput.value);
-            var endTime = roundToNearestHour(endTimeInput.value);
-
-            startTimeInput.value = startTime;
-            endTimeInput.value = endTime;
-
-            if (startTime >= endTime) {
-                document.getElementById('timeRangeError').style.display = 'block';
-                this.setCustomValidity('Please enter a valid time range (end time must be after start time).');
-            } else {
-                document.getElementById('timeRangeError').style.display = 'none';
-                this.setCustomValidity('');
-            }
-        }
-    </script>
 
     <script> //For File Upload
         function validateImageUpload(input) {
@@ -377,6 +362,9 @@ if (isset($_SESSION['userMemberID'])){
         })()
     </script>
 
+
+    
+
     <script> // Reset the form
         function resetForm() {
             document.querySelector('form').reset();
@@ -385,7 +373,3 @@ if (isset($_SESSION['userMemberID'])){
     </script>
 </body>
 </html>
-<?php }
-else{
-header("location:customer_login.php");
-}?>

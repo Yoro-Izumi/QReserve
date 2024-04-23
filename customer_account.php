@@ -74,8 +74,8 @@ session_start();
                                         if($customerInformation["customerID"] == $customerID){
                         ?>
                                                                     <div class="col-12 col-md-3 mb-3">
-                                                                        <label for="firstName" class="form-label">First Name</label>
-                                                                        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo decryptData($customerInformation['customerFirstName'],$key);?>" />
+                                                                        <label for="firstName" class="form-label fw-bold">First Name: ao3xjh</label>
+                                                                        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo decryptData($customerInformation['customerFirstName'],$key);?>" readonlyt/>
                                                                     </div>
                                                                     <div class="col-12 col-md-3 mb-3">
                                                                         <label for="middleName" class="form-label">Middle Name</label>

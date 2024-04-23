@@ -116,14 +116,14 @@ if(isset($_POST['login_member'])){
               <h5 class="text-center fw-bold">Welcome!</h5>
               <div class="form-floating mb-3">
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
                   id="floatingInput"
                   placeholder="name@example.com"
                   name = "username"
                   required
                 />
-                <label for="floatingInput">Email address</label>
+                <label for="floatingInput">Control Number</label>
               </div>
               <div class="form-floating mb-3 position-relative">
                 <input

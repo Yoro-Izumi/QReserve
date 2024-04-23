@@ -185,3 +185,10 @@ span {
 .service-modal{
     max-width: 1000px;
 }
+
+/* Forgot Password */
+.forgot-password {
+    text-decoration: none;
+    outline: none;
+    color: #0D2818;
+}
