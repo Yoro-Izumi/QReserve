@@ -1,8 +1,4 @@
 <?php
-include "connect_database.php";
-include "encodeDecode.php";
-
-$key = "TheGreatestNumberIs73";
 
    // if($conn){
         // Code to execute when the connection is successful
@@ -13,12 +9,19 @@ $key = "TheGreatestNumberIs73";
                 $customerBirthdate = mysqli_real_escape_string($conn,$_POST["birthDate"]);
                 $customerPhone = encryptData(mysqli_real_escape_string($conn,$_POST["contactNumber"]),$key);
                 $customerEmail = encryptData(mysqli_real_escape_string($conn,$_POST["email"]),$key);
-                $selectDate = mysqli_real_escape_string( $conn,$_POST["selectDate"]);
-                $startTime = mysqli_real_escape_string( $conn,$_POST["startTime"]);
-                $endTime = mysqli_real_escape_string( $conn,$_POST["endTime"]);
-                $timeDifference = mysqli_real_escape_string( $conn,$_POST["timeDifference"]);
-                $poolTable = mysqli_real_escape_string( $conn,$_POST["selectTable"]);
-                $customerID = 1;
+                $selectDate = mysqli_real_escape_string($conn,$_POST["validity"]);
+                $timeDifference = 0;
+                $selectStartTime = mysqli_real_escape_string($conn,$_POST["selectStartTime"]);
+                $selectEndTime = mysqli_real_escape_string($conn,$_POST["selectEndTime"]);
+                $sTime = explode(":",$selectStartTime); $startTime = (int)$sTime[0];
+                $eTime = explode(":",$selectEndTime); $endTime = (int)$eTime[0];
+                    if($startTime < $endTime){
+                        $timeDifference = $endTime - $startTime;
+                    }
+                    else{
+                        $timeDifference = $startTime - $endTime;
+                    }
+                $poolTable = mysqli_real_escape_string($conn,$_POST["selectTable"]);
                 $hoursID = $timeDifference;
                 $paymentID = 1;
                 $reservationStatus = "Pending";
@@ -42,12 +45,12 @@ $key = "TheGreatestNumberIs73";
 
                 //Query to insert data into the database
                 //For customer information
-                $insertCustomerInfoQuery = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`,`validID`) VALUES (NULL,?,?,?,?,?,?,?)";   
-                $prepareInsertCustomerInfo = mysqli_prepare($conn,$insertCustomerInfoQuery);
-                mysqli_stmt_bind_param($prepareInsertCustomerInfo,"sssssss",$customerFirstName,$customerLastName,$customerMiddleName,$customerBirthdate,$customerPhone,$customerEmail,$validId);
-                mysqli_stmt_execute($prepareInsertCustomerInfo);
+                //$insertCustomerInfoQuery = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`,`validID`) VALUES (NULL,?,?,?,?,?,?,?)";   
+                //$prepareInsertCustomerInfo = mysqli_prepare($conn,$insertCustomerInfoQuery);
+                //mysqli_stmt_bind_param($prepareInsertCustomerInfo,"sssssss",$customerFirstName,$customerLastName,$customerMiddleName,$customerBirthdate,$customerPhone,$customerEmail,$validId);
+                //mysqli_stmt_execute($prepareInsertCustomerInfo);
 
-                $customerID = mysqli_insert_id($conn); //Get the primary key of customer_information in order to set the key as foreign key to another table
+                //$customerID = mysqli_insert_id($conn); //Get the primary key of customer_information in order to set the key as foreign key to another table
 
                 //For payment history to update later if customer paid
                 $p = 0;
@@ -63,10 +66,9 @@ $key = "TheGreatestNumberIs73";
                 //                   INSERT INTO `pool_table_reservation`(`reservationID`, `tableID`, `customerID`, `hoursID`, `paymentID`, `reservationDate`, `reservationTimeStart`, `reservationTimeEnd`, `reservationStatus`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9])
                 $reservationQuery = "INSERT INTO `pool_table_reservation`(`reservationID`, `tableID`, `customerID`, `hoursID`, `paymentID`, `reservationDate`, `reservationTimeStart`, `reservationTimeEnd`, `reservationStatus`) VALUES (NULL,?,?,?,?,?,?,?,?)";
                 $reservationPrepare = mysqli_prepare($conn,$reservationQuery);
-                mysqli_stmt_bind_param($reservationPrepare,"iiiissss",$poolTable,$customerID,$hoursID,$paymentID,$selectDate,$startTime,$endTime,$reservationStatus);
+                mysqli_stmt_bind_param($reservationPrepare,"iiiissss",$poolTable,$customerID,$hoursID,$paymentID,$selectDate,$selectStartTime,$selectEndTime,$reservationStatus);
                 mysqli_stmt_execute($reservationPrepare);
                 
                 header("location:booking_form.php");
             }
 mysqli_close($conn);
-?>

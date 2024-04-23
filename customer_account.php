@@ -69,6 +69,7 @@ session_start();
                         <?php
                             foreach($arrayMemberAccount as $memberAccount){
                                 if($memberAccount["memberID"] == $userID){
+                                  $memberControlNumber = $memberAccount['membershipID'];
                                   $customerID = $memberAccount['customerID'];
                                     foreach($arrayCustomerInformation as $customerInformation){
                                         if($customerInformation["customerID"] == $customerID){
@@ -87,7 +88,7 @@ session_start();
                                                                     </div>
                                                                     <div class="col-12 col-md-3 mb-3">
                                                                         <label for="firstName" class="form-label">Control Number</label>
-                                                                        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
+                                                                        <input type="text" class="form-control" name="controlNumber" id="controlNumber" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo decryptData($memberControlNumber,$key);?>"/>
                                                                     </div>
                                                                     <div class="col-12 col-md-4 mb-3">
                                                                         <label for="birthDate" class="form-label">Birthday<span>*</span></label>

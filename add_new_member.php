@@ -10,7 +10,7 @@ if(isset($_SESSION["userSuperAdminID"])){
       $customerMiddleName = encryptData(mysqli_real_escape_string( $conn, $_POST['middleName']),$key);
       $customerEmail = encryptData(mysqli_real_escape_string($conn, $_POST['email']),$key);
       $customerPhone = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']),$key);
-      $customerBirthdate = mysqli_real_escape_string($conn, $_POST['birthDate']);
+      $birthdate = mysqli_real_escape_string($conn, $_POST['birthDate']);
       $memberControlNumber = encryptData(mysqli_real_escape_string( $conn, $_POST['controlNumber']),$key);
       $memberPassword = encryptData(mysqli_real_escape_string( $conn, $_POST['password']),$key);
       $memberValidity = mysqli_real_escape_string( $conn, $_POST['validity']);
@@ -21,6 +21,12 @@ if(isset($_SESSION["userSuperAdminID"])){
 
       // Convert DateTime object to SQL date format (YYYY-MM-DD)
       $sqlDate = $date->format('Y-m-d');
+
+      // Parse HTML date string into a DateTime object
+      $bdate = DateTime::createFromFormat('Y-m-d', $birthdate);
+
+      // Convert DateTime object to SQL date format (YYYY-MM-DD)
+      $customerBirthdate = $bdate->format('Y-m-d');
 
       $qryInsertCustomerInfo = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`, `validID`) VALUES (NULL,?,?,?,?,?,?,?)";
       $conInsertCustomerInfo = mysqli_prepare($conn, $qryInsertCustomerInfo);  
