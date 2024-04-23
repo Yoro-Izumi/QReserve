@@ -67,21 +67,21 @@
          <span class="tooltip">Search</span>
       </li> -->
         <li>
-          <a href="dashboard.html">
+          <a href="dashboard.php">
             <i class="bx bx-home"></i>
             <span class="links_name">Home</span>
           </a>
           <span class="tooltip">Home</span>
         </li>
         <li>
-          <a href="reservations_viewing.html">
+          <a href="reservations_viewing.php">
             <i class="bx bx-book"></i>
             <span class="links_name">Reservations Viewing</span>
           </a>
           <span class="tooltip">Reservations</span>
         </li>
         <li>
-          <a href="service management.html">
+          <a href="service management.php">
             <i class="bx bx-aperture"></i>
             <span class="links_name">Service Management</span>
           </a>
@@ -89,17 +89,17 @@
         </li>
         
         <li class="nav-item dropdown">
-          <a class="nav-link" href="profile_management.html" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link" href="profile_management.php" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bx bx-user"></i>
             <span class="links_name dropdown-toggle">Profile Management </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
-            <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+            <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
+            <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
           </ul>
         </li>
         <li>
-          <a href="reports.html">
+          <a href="reports.php">
             <i class="bx bx-pie-chart-alt-2"></i>
             <span class="links_name">Reports</span>
           </a>
@@ -113,7 +113,7 @@
               <div class="job">Web designer</div>
             </div>
           </div>
-          <a href="index.html">
+          <a href="index.php">
             <i class="bx bx-log-out" id="log_out"></i>
           </a>
         </li>        
@@ -123,7 +123,7 @@
     <section class="home-section">
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="krona-one-regular mt-5">Profile Management</h4>
-        <a href="add_new_profile.html" type="button" class="btn btn-primary fw-bold mb-0 mt-5" id="add-new-profile">Add New Profile</a>
+        <a href="add_new_profile.php" type="button" class="btn btn-primary fw-bold mb-0 mt-5" id="add-new-profile">Add New Profile</a>
       </div>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid" id="profile-management">

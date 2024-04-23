@@ -112,7 +112,7 @@ include "get_data_from_database/get_services.php";
   <section class="home-section">
     <div class="d-flex justify-content-between align-items-center">
       <h4 class="krona-one-regular mt-">Service Management</h4>
-      <a href="add_new_service.html" type="button" class="btn btn-primary fw-bold mb-0" id="add-new-profile">Add New Service</a>
+      <a href="add_new_service.php" type="button" class="btn btn-primary fw-bold mb-0" id="add-new-profile">Add New Service</a>
     </div>
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid dashboard-square-kebab" id="profile-management">

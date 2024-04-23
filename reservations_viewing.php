@@ -69,21 +69,21 @@ include "get_data_from_database/get_reservation_info.php";
          <span class="tooltip">Search</span>
       </li> -->
         <li>
-          <a href="dashboard.html">
+          <a href="dashboard.php">
             <i class="bx bx-home"></i>
             <span class="links_name">Home</span>
           </a>
           <span class="tooltip">Home</span>
         </li>
         <li>
-          <a href="reservations_viewing.html">
+          <a href="reservations_viewing.php">
             <i class="bx bx-book"></i>
             <span class="links_name">Reservations Viewing</span>
           </a>
           <span class="tooltip">Reservations</span>
         </li>
         <li>
-          <a href="service management.html">
+          <a href="service management.php">
             <i class="bx bx-aperture"></i>
             <span class="links_name">Service Management</span>
           </a>

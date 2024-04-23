@@ -55,28 +55,28 @@
          <span class="tooltip">Search</span>
       </li> -->
       <li>
-        <a href="dashboard.html">
+        <a href="dashboard.php">
           <i class="bx bx-home"></i>
           <span class="links_name">Home</span>
         </a>
         <span class="tooltip">Home</span>
       </li>
       <li>
-        <a href="reservations_viewing.html">
+        <a href="reservations_viewing.php">
           <i class="bx bx-book"></i>
           <span class="links_name">Reservations Viewing</span>
         </a>
         <span class="tooltip">Reservations</span>
       </li>
       <li>
-        <a href="service management.html">
+        <a href="service management.php">
           <i class="bx bx-aperture"></i>
           <span class="links_name">Service Management</span>
         </a>
         <span class="tooltip">Services</span>
       </li>
       <li>
-        <a href="profile_management.html">
+        <a href="profile_management.php">
           <i class="bx bx-user"></i>
           <span class="links_name">Profile Management</span>
         </a>
@@ -89,12 +89,12 @@
           <span class="links_name dropdown-toggle">Profile Management </span>
         </a>
         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="admin-profiles.html">Admin Accounts</a></li>
-          <li><a class="dropdown-item" href="member-profiles.html">Member Accounts</a></li>
+          <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
+          <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
         </ul>
       </li> -->
       <li>
-        <a href="reports.html">
+        <a href="reports.php">
           <i class="bx bx-pie-chart-alt-2"></i>
           <span class="links_name">Reports</span>
         </a>
@@ -108,7 +108,7 @@
             <div class="job">Web designer</div>
           </div>
         </div>
-        <a href="index.html">
+        <a href="index.php">
           <i class="bx bx-log-out" id="log_out"></i>
         </a>
       </li>

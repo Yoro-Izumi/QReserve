@@ -130,7 +130,7 @@ $key = "TheGreatestNumberIs73";
     <section class="home-section">
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="krona-one-regular">Member Accounts</h4>
-        <a href="add_new_member.html" type="button" class="btn btn-primary fw-bold mb-0" id="add-new-profile">Add New Member</a>
+        <a href="add_new_member.php" type="button" class="btn btn-primary fw-bold mb-0" id="add-new-profile">Add New Member</a>
       </div>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="profile-management">

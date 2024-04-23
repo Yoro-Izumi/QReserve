@@ -46,8 +46,8 @@ session_start();
           </svg>
         </label>
         <ul class="all-links">
-            <li><a href="customer_dashboard.html">Home</a></li>
-            <li><a href="customer_account.html">Account</a></li>
+            <li><a href="customer_dashboard.php">Home</a></li>
+            <li><a href="customer_account.php">Account</a></li>
             <li><a href="#contact">Log Out</a></li>
         </ul>
       </nav>
