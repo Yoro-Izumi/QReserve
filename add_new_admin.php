@@ -216,20 +216,21 @@ if(isset($_SESSION["userSuperAdminID"])){
             </div>
           </div>
         </div>
-
-
-
-        <!-- Buttons section -->
-        <div class="row justify-content-end">
+                  <!-- Buttons section -->
+                  <div class="row justify-content-end">
           <div class="col-12 col-md-2 mb-3 mb-md-0">
             <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
           </div>
-          </form>
           <div class="col-12 col-md-2">
             <button class="btn btn-outline-primary w-100 cancel-button" type="reset"
               onclick="resetForm()">Cancel</button>
           </div>
         </div>
+
+
+
+          </form>
+
     </div>
   </section>
 

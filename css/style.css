@@ -158,24 +158,25 @@ span {
 .create-button{
     background-color: #0D2818 !important;
     color: white;
-    border: none;
+    border-color: #0D2818 !important; /* Set the desired color for the outline */
+
 }
 
 .create-button:hover{
     background-color: #020202 !important;
     font-weight: bold;
-    color: #FFB800;
+    color: #FFB800 !important;
 }
 
 .cancel-button {
     border-color: #0D2818 !important; /* Set the desired color for the outline */
-    color: #0D2818;
+    color: #0D2818!important;
 }
 
 .cancel-button:hover{
     background-color: #0D2818 !important;
     font-weight: bold;
-    color: #FFB800;
+    color: #FFB800 !important;
 }
 
 
