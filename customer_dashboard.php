@@ -60,7 +60,7 @@ session_start();
         <ul class="all-links">
           <li><a href="customer_dashboard.php">Home</a></li>
           <li><a href="customer_account.php">Account</a></li>
-          <li><a href="logout.php">Log Out</a></li>
+          <li><a href="customer_logout.php">Log Out</a></li>
         </ul>
       </nav>
     </header>

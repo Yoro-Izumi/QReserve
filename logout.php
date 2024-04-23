@@ -16,11 +16,4 @@ if (isset($_SESSION['userAdminID'])){
         die();
      }
 
-   else if(isset($_SESSION['userMemberID'])){
-      session_destroy();
-    unset($_SESSION['userMemberID']);
-    header('location:customer_landing.php');
-    die();
-
-}
 
