@@ -77,7 +77,6 @@ session_start();
           <thead>
             <tr>
               <th>Pool Table</th>
-              <th>Name</th>
               <th>Time Started</th>
               <th>Expected End Time</th>
               <th>Status</th>
@@ -95,7 +94,6 @@ session_start();
             ?>
             <tr>
               <th><?php echo $poolTableNumber;?></th>
-              <td><?php echo $customerName;?></td>
               <td><?php echo $timeStarted[1];?></td>
               <td><?php echo $timeEnd[1];?></td>
               <?php 

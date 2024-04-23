@@ -10,7 +10,6 @@ if (isset($_SESSION['userAdminID'])){
         die();
 }
      else if(isset($_SESSION['userSuperAdminID'])){
-      session_start();
       session_destroy();
         unset($_SESSION['userSuperAdmin']);
         header('location:index.php');
@@ -18,9 +17,8 @@ if (isset($_SESSION['userAdminID'])){
      }
 
    else if(isset($_SESSION['userMemberID'])){
-      session_start();
       session_destroy();
-    unset($_SESSION['userID']);
+    unset($_SESSION['userMemberID']);
     header('location:customer_landing.php');
     die();
 

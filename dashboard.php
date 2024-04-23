@@ -132,17 +132,14 @@ if(isset($_SESSION["userSuperAdminID"])){
           </tr>
         </thead>
         <tbody>
-        <?php foreach($arrayWalkinDetails as $walkin){
-              $poolTableStatus = $walkin['walkinStatus']; 
-              $poolTableNumber = $walkin['tableID']; 
-              $timeStarted = explode(' ',$walkin['walkinTimeStart']);
-              $timeEnd = explode(' ',$walkin['walkinTimeEnd']);
-              foreach($arrayCustomerInformation as $customerInfo){
-                if($customerInfo['customerID'] == $walkin['customerID']){
-                  $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
+        <?php foreach($arrayPoolTables as $poolTables){
+              if($poolTables['customerName'] == NULL){
+                $customerName = "None";
               }
-            }
-              
+              else{ $customerName = $poolTables['customerName']; }
+              $poolTableStatus = $poolTables['poolTableStatus']; $poolTableNumber = $poolTables['poolTableNumber']; 
+              $timeStarted = explode(' ',$poolTables['timeStarted']); 
+              $timeEnd = explode(' ',$poolTables['timeEnd']);
             ?>
             <tr>
               <th><?php echo $poolTableNumber;?></th>
@@ -163,47 +160,6 @@ if(isset($_SESSION["userSuperAdminID"])){
               <td><span class="<?php echo $status;?>"><?php echo $poolTableStatus;?></span></td>
             </tr>
             <?php }?>
-            <?php foreach($arrayReservationInfo as $reservations){
-              $reservationDate = $reservations['reservationDate'];
-              $reservationStatus = $reservation['reservationStatus'];
-              $reservationTimeStart = $reservations['reservationTimeStart'];
-                foreach($arrayCustomerInformation as $customerInfo){
-                  if($reservation['customerID'] == $customerInfo['customerID']){
-                    $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
-                    $contactNumber = decryptData($customerInfo['customerNumber'],$key);
-                    $email = decryptData($customerInfo['customerEmail'],$key);
-                  }
-                  else{
-                    $customerName = "";
-                    $contactNumber = "";
-                    $email = "";
-                  }  
-                }
-              // Get the current time
-             // $current_time = date('Y-m-d H:i:s');
-              //if ($reservationTimeStart == $current_time){
-            ?>
-                <tr>
-                  <td><?php echo $customerName;?></td>
-                  <td><?php echo $reservationDate;?></td>
-                  <td><?php echo $reservationTimeStart;?></td>
-                  <td><?php echo $reservations['tableID'];?></td>
-                  <td><?php echo $contactNumber;?></td>
-                  <td><?php echo $email;?></td>
-              <?php 
-                if($reservationStatus == "Paid" || $reservationStatus == "Done"){
-                  $status = "badge bg-success";
-                }
-                else if($poolTableStatus == "On Process" || $poolTableStatus == "Pending"){
-                  $status = "badge bg-warning";
-                }
-                else{
-                  $status = "badge bg-danger";
-                }
-              ?>
-                  <td><span class="<?php echo $status;?>"><?php echo $reservationStatus;?></span></td>
-              </tr>
-            <?php }//}?>  
         </tbody>
       </table>
     </div>
