@@ -82,7 +82,7 @@ if(isset($_SESSION["userSuperAdminID"])){
       <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate
         action="add_new_admin.php" method="POST" enctype="multipart/form-data">
         <div class="row">
-          <div class="col-12 col-md-4 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <label for="firstName" class="form-label">First Name <span>*</span></label>
             <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here"
               required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"
@@ -95,7 +95,7 @@ if(isset($_SESSION["userSuperAdminID"])){
               Please enter a valid first name.
             </div>
           </div>
-          <div class="col-12 col-md-4 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <label for="middleName" class="form-label">Middle Name</label>
             <input type="text" class="form-control" name="middleName" id="middleName"
               placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"
@@ -108,7 +108,7 @@ if(isset($_SESSION["userSuperAdminID"])){
               Please enter a valid middle name.
             </div>
           </div>
-          <div class="col-12 col-md-4 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <label for="lastName" class="form-label">Last Name <span>*</span></label>
             <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here"
               required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"
@@ -121,7 +121,20 @@ if(isset($_SESSION["userSuperAdminID"])){
               Please enter a valid last name.
             </div>
             </div>
-            <div class="col-12 col-md-4 mb-3">
+            <div class="col-12 col-md-3 mb-3">
+            <label for="contactNumber" class="form-label">Username <span>*</span></label>
+            <input type="text" class="form-control" name="username" id="contactNumber"
+              placeholder="Enter Username here" required pattern="^09\d{9}$" minlength="11" maxlength="11"
+              oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')"
+              oninput="this.setCustomValidity('')" />
+            <!-- <div class="valid-feedback">
+                      Looks good!
+                  </div> -->
+            <div class="invalid-feedback">
+              Please enter a valid username.
+            </div>
+          </div>
+            <div class="col-12 col-md-3 mb-3">
             <label for="adminSex" class="form-label">Sex <span>*</span></label>
             <select class="form-control" name="sex" id="sex" required
               onchange="this.setCustomValidity('')">
@@ -134,7 +147,7 @@ if(isset($_SESSION["userSuperAdminID"])){
               Please select a shift.
             </div>
           </div>
-          <div class="col-12 col-md-4 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <label for="email" class="form-label">Email Address <span>*</span></label>
             <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here"
               required oninvalid="this.setCustomValidity('Please enter a valid email address')"
@@ -146,7 +159,7 @@ if(isset($_SESSION["userSuperAdminID"])){
               Please enter a valid email address.
             </div>
           </div>
-          <div class="col-12 col-md-4 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
             <input type="text" class="form-control" name="contactNumber" id="contactNumber"
               placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11"
@@ -159,20 +172,7 @@ if(isset($_SESSION["userSuperAdminID"])){
               Please enter a valid contact number.
             </div>
           </div>
-          <div class="col-12 col-md-4 mb-3">
-            <label for="contactNumber" class="form-label">Username <span>*</span></label>
-            <input type="text" class="form-control" name="username" id="contactNumber"
-              placeholder="Enter Username here" required pattern="^09\d{9}$" minlength="11" maxlength="11"
-              oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')"
-              oninput="this.setCustomValidity('')" />
-            <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
-            <div class="invalid-feedback">
-              Please enter a valid contact number.
-            </div>
-          </div>
-          <div class="col-12 col-md-4 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <label for="adminShift" class="form-label">Shift <span>*</span></label>
             <select class="form-control" name="adminShift" id="adminShift" required
               onchange="this.setCustomValidity('')">
