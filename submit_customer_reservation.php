@@ -9,7 +9,7 @@
                 $customerBirthdate = mysqli_real_escape_string($conn,$_POST["birthDate"]);
                 $customerPhone = encryptData(mysqli_real_escape_string($conn,$_POST["contactNumber"]),$key);
                 $customerEmail = encryptData(mysqli_real_escape_string($conn,$_POST["email"]),$key);
-                $selectDate = mysqli_real_escape_string($conn,$_POST["validity"]);
+                $selectDate = mysqli_real_escape_string($conn,$_POST["selectDate"]);
                 $timeDifference = 0;
                 $selectStartTime = mysqli_real_escape_string($conn,$_POST["selectStartTime"]);
                 $selectEndTime = mysqli_real_escape_string($conn,$_POST["selectEndTime"]);
