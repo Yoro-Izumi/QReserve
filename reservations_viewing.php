@@ -83,8 +83,9 @@ if(isset($_SESSION["userSuperAdminID"])){
               $reservationDate = $reservations['reservationDate'];
               $reservationStatus = $reservations['reservationStatus'];
               $reservationTimeStart = $reservations['reservationTimeStart'];
+              $reservationTimeEnd = $reservations['reservationTimeEnd'];
                 foreach($arrayCustomerInformation as $customerInfo){
-                  if($reservations['customerID'] == $customerInfo['customerID']){
+                  if($customerInfo['customerID'] == $reservations['customerID']){
                     $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
                     $contactNumber = decryptData($customerInfo['customerNumber'],$key);
                     $email = decryptData($customerInfo['customerEmail'],$key);
@@ -100,7 +101,7 @@ if(isset($_SESSION["userSuperAdminID"])){
                   <td><input type="checkbox" value="<?php echo $reservations['reservationID'];?>"></td>
                   <td><?php echo $customerName;?></td>
                   <td><?php echo $reservationDate;?></td>
-                  <td><?php echo $reservationTimeStart;?></td>
+                  <td><?php echo $reservationTimeStart;?> - <?php echo $reservationTimeEnd;?></td>
                   <td><?php echo $reservations['tableID'];?></td>
                   <td><?php echo $contactNumber;?></td>
                   <td><?php echo $email;?></td>

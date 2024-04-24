@@ -116,7 +116,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="birthDate" class="form-label">Birthday<span>*</span></label>
-                                <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerBirthdate ?>;" />
+                                <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerBirthdate; ?>" />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -146,9 +146,9 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-3 mb-3">
                                 <label for="validity" class="form-label">Select Date <span>*</span></label>
-                                <input type="date" class="form-control" name="validity" id="validity" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" />
+                                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" />
                                 <div class="invalid-feedback">
-                                    Please enter a valid birthdate.
+                                    Please select a date.
                                 </div>
                             </div>
 
