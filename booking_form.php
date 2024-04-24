@@ -86,7 +86,7 @@ if (isset($_SESSION['userMemberID'])) {
                         <div class="row">
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="firstName" class="form-label">First Name <span>*</span></label>
-                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $customerFirstName; ?>" />
+                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $customerFirstName; ?>"  />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -96,7 +96,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" value="<?php echo $customerMiddleName; ?>" />
+                                <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" value="<?php echo $customerMiddleName; ?>"  />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -106,7 +106,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" value="<?php echo $customerLastName; ?>" />
+                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" value="<?php echo $customerLastName; ?>"  />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -126,7 +126,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value="<?php echo $customerNumber; ?>" />
+                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value="<?php echo $customerNumber; ?>"  />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -136,7 +136,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="email" class="form-label">Email Address <span>*</span></label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo $customerEmail; ?>" />
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo $customerEmail; ?>"  />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -145,7 +145,7 @@ if (isset($_SESSION['userMemberID'])) {
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-                                <label for="validity" class="form-label">Validity Date <span>*</span></label>
+                                <label for="validity" class="form-label">Select Date <span>*</span></label>
                                 <input type="date" class="form-control" name="validity" id="validity" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" />
                                 <div class="invalid-feedback">
                                     Please enter a valid birthdate.
@@ -304,17 +304,17 @@ if (isset($_SESSION['userMemberID'])) {
                                 <img src="./images/Seamless-Wavy-lines-Pattern-digital-Graphics-30696202-1.jpg" alt="" style="width: 100%; height: 100%;">
                             </div>
                         </div>
-                            <div class="row justify-content-end mt-5">
-                                <div class="col-12 col-md-2 mb-3 mb-md-0">
-                                    <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
-                                </div>
-                    <div class="col-12 col-md-2">
-                        <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
-                    </div>
+                        <div class="row justify-content-end mt-5">
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Create</button>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                </form>
             </div>
-        </div>
         </div>
 
         <script>
