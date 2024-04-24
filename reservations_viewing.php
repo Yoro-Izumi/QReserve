@@ -1,7 +1,12 @@
 <?php
 include "connect_database.php";
 include "get_data_from_database/get_reservation_info.php";
+include "get_data_from_database/get_customer_information.php";
+include "encodeDecode.php";
+$key = "TheGreatestNumberIs73";
 session_start();
+
+
 if(isset($_SESSION["userSuperAdminID"])){
 ?>
 <!DOCTYPE html>
@@ -76,10 +81,10 @@ if(isset($_SESSION["userSuperAdminID"])){
           <tbody>
             <?php foreach($arrayReservationInfo as $reservations){
               $reservationDate = $reservations['reservationDate'];
-              $reservationStatus = $reservation['reservationStatus'];
+              $reservationStatus = $reservations['reservationStatus'];
               $reservationTimeStart = $reservations['reservationTimeStart'];
                 foreach($arrayCustomerInformation as $customerInfo){
-                  if($reservation['customerID'] == $customerInfo['customerID']){
+                  if($reservations['customerID'] == $customerInfo['customerID']){
                     $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
                     $contactNumber = decryptData($customerInfo['customerNumber'],$key);
                     $email = decryptData($customerInfo['customerEmail'],$key);
@@ -99,18 +104,17 @@ if(isset($_SESSION["userSuperAdminID"])){
                   <td><?php echo $reservations['tableID'];?></td>
                   <td><?php echo $contactNumber;?></td>
                   <td><?php echo $email;?></td>
-              <?php 
-                if($reservationStatus == "Paid" || $reservationStatus == "Done"){
-                  $status = "badge bg-success";
-                }
-                else if($poolTableStatus == "On Process" || $poolTableStatus == "Pending"){
-                  $status = "badge bg-warning";
-                }
-                else{
-                  $status = "badge bg-danger";
-                }
-              ?>
-                  <td><span class="<?php echo $status;?>"><?php echo $reservationStatus;?></span></td>
+                  <?php 
+if($reservationStatus == "Paid" || $reservationStatus == "Done"){
+    $status = "badge bg-success";
+} else if($reservationStatus == "On Process" || $reservationStatus == "Pending"){
+    $status = "badge bg-warning";
+} else{
+    $status = "badge bg-danger";
+}
+?>
+<td><span class="<?php echo $status;?>"><?php echo $reservationStatus;?></span></td>
+
               </tr>
             <?php }?>  
           </tbody>
