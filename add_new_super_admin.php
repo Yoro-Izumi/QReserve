@@ -2,21 +2,11 @@
 include "connect_database.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
-include "get_data_from_database/get_shifts.php";
-session_start();
 date_default_timezone_set('Asia/Manila');
-if(isset($_SESSION["userSuperAdminID"])){
-  $superAdminID = $_SESSION["userSuperAdminID"];
-  if(isset($_POST['submitAdmin'])){
-    $firstName = encryptData(mysqli_real_escape_string($conn,$_POST['firstName']),$key);
-    $lastName = encryptData(mysqli_real_escape_string($conn,$_POST['lastName']),$key);
-    $middleName = encryptData(mysqli_real_escape_string($conn,$_POST['middleName']),$key);
+  if(isset($_POST['submitSuperAdmin'])){
     $email = encryptData(mysqli_real_escape_string($conn,$_POST['email']),$key);
     $username = encryptData(mysqli_real_escape_string($conn,$_POST['username']),$key);
     $password = mysqli_real_escape_string($conn,$_POST['password']);
-    $sex = encryptData(mysqli_real_escape_string($conn,$_POST['sex']),$key);
-    $contactNumber = encryptData(mysqli_real_escape_string($conn,$_POST['contactNumber']),$key);
-    $shift = intVal($_POST['adminShift']);
 
     // Hash the password using Argon2
     $options = [
@@ -26,21 +16,12 @@ if(isset($_SESSION["userSuperAdminID"])){
     ];
     $hashedPassword = password_hash($password, PASSWORD_ARGON2I, $options);
 
-    // here is where information of admin is inserted
-    $qryInsertAdminInfo = "INSERT INTO `admin_info`(`adminInfoID`, `adminLastName`, `adminFirstName`, `adminMiddleName`, `adminSex`, `adminContactNumber`, `adminEmail`) VALUES (NULL,?,?,?,?,?,?)";
-    $conInsertAdminInfo = mysqli_prepare($conn,$qryInsertAdminInfo);    
-    mysqli_stmt_bind_param($conInsertAdminInfo,'ssssss',$lastName,$firstName,$middleName,$sex,$contactNumber,$email);
-    mysqli_stmt_execute($conInsertAdminInfo);
-
-    //get the id of admin info that was inserted
-    $adminInfoID = mysqli_insert_id($conn);
-
-    //here is where the admin account is inserted
-    $qryInsertAdminAccount = "INSERT INTO `admin_accounts`(`adminID`, `superAdminID`, `adminInfoID`,`adminShiftID`, `adminUsername`, `adminPassword`) VALUES (NULL,?,?,?,?,?)";
-    $conInsertAdminAccount = mysqli_prepare($conn,$qryInsertAdminAccount);
-    mysqli_stmt_bind_param($conInsertAdminAccount,'iiiss',$superAdminID,$adminInfoID,$shift,$username,$hashedPassword);
-    mysqli_stmt_execute($conInsertAdminAccount);
-
+    //here is where the super admin account is inserted
+    $qryInsertSuperAdminAccount = "INSERT INTO `super_admin`(`superAdminID`, `superAdminUsername`, `superAdminPassword`, `superAdminEmail`) VALUES (NULL,?,?,?)";
+    $conInsertSuperAdminAccount = mysqli_prepare($conn,$qryInsertSuperAdminAccount);
+    mysqli_stmt_bind_param($conInsertSuperAdminAccount,'sss',$username,$hashedPassword,$email);
+    mysqli_stmt_execute($conInsertSuperAdminAccount);
+    header("location:Refresh:0");
   }
 ?>
 <!DOCTYPE html>
@@ -94,51 +75,12 @@ if(isset($_SESSION["userSuperAdminID"])){
     <hr class="my-4">
     <div class="container-fluid" id="profmanage-add-new-profile">
       <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate
-        action="add_new_admin.php" method="POST" enctype="multipart/form-data">
+        action="add_new_super_admin.php" method="POST" enctype="multipart/form-data">
         <div class="row">
-          <div class="col-12 col-md-3 mb-3">
-            <label for="firstName" class="form-label">First Name <span>*</span></label>
-            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here"
-              required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"
-              oninvalid="this.setCustomValidity('Please enter a valid first name')"
-              oninput="this.setCustomValidity('')" />
-            <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
-            <div class="invalid-feedback">
-              Please enter a valid first name.
-            </div>
-          </div>
-          <div class="col-12 col-md-3 mb-3">
-            <label for="middleName" class="form-label">Middle Name</label>
-            <input type="text" class="form-control" name="middleName" id="middleName"
-              placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"
-              oninvalid="this.setCustomValidity('Please enter a valid middle name')"
-              oninput="this.setCustomValidity('')" />
-            <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
-            <div class="invalid-feedback">
-              Please enter a valid middle name.
-            </div>
-          </div>
-          <div class="col-12 col-md-3 mb-3">
-            <label for="lastName" class="form-label">Last Name <span>*</span></label>
-            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here"
-              required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"
-              oninvalid="this.setCustomValidity('Please enter a valid last name')"
-              oninput="this.setCustomValidity('')" />
-            <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
-            <div class="invalid-feedback">
-              Please enter a valid last name.
-            </div>
-            </div>
             <div class="col-12 col-md-3 mb-3">
             <label for="contactNumber" class="form-label">Username <span>*</span></label>
             <input type="text" class="form-control" name="username" id="contactNumber"
-              placeholder="Enter Username here" required pattern="^09\d{9}$" minlength="11" maxlength="11"
+              placeholder="Enter Username here" required pattern="^09\d{9}$"
               oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')"
               oninput="this.setCustomValidity('')" />
             <!-- <div class="valid-feedback">
@@ -146,19 +88,6 @@ if(isset($_SESSION["userSuperAdminID"])){
                   </div> -->
             <div class="invalid-feedback">
               Please enter a valid username.
-            </div>
-          </div>
-            <div class="col-12 col-md-3 mb-3">
-            <label for="adminSex" class="form-label">Sex <span>*</span></label>
-            <select class="form-control" name="sex" id="sex" required
-              onchange="this.setCustomValidity('')">
-              <option value="" selected disabled>Select Sex</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Others">Others</option>
-            </select>
-            <div class="invalid-feedback">
-              Please select a shift.
             </div>
           </div>
           <div class="col-12 col-md-3 mb-3">
@@ -171,50 +100,6 @@ if(isset($_SESSION["userSuperAdminID"])){
             </div> -->
             <div class="invalid-feedback">
               Please enter a valid email address.
-            </div>
-          </div>
-          <div class="col-12 col-md-3 mb-3">
-            <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-            <input type="text" class="form-control" name="contactNumber" id="contactNumber"
-              placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11"
-              oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')"
-              oninput="this.setCustomValidity('')" />
-            <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
-            <div class="invalid-feedback">
-              Please enter a valid contact number.
-            </div>
-          </div>
-          <div class="col-12 col-md-3 mb-3">
-            <label for="adminShift" class="form-label">Shift <span>*</span></label>
-            <select class="form-control" name="adminShift" id="adminShift" required
-              onchange="this.setCustomValidity('')">
-              <option value="" selected disabled>Select shift</option>
-              <?php // get the shifts in the db so that select shift will be dynamic in case shifts are edited
-                foreach($arrayShifts as $shift){
-                  $tempShiftStart = explode(":",$shift['shiftTimeStart']);
-                  $tempShiftEnd = explode(":",$shift['shiftTimeEnd']); 
-                  //convert tempShift variables to integers
-                  $shiftStartHour = intval($tempShiftStart[0]);
-                  $shiftEndHour = intval($tempShiftEnd[0]);
-
-                  if($shiftStartHour >= 13){
-                    $shiftStart = ($shiftStartHour - 12) . ":" . $tempShiftStart[1] . " PM";
-                  } else {
-                    $shiftStart = $shiftStartHour . ":" . $tempShiftStart[1] . " AM";
-                  }
-
-                  if($shiftEndHour >= 13){
-                    $shiftEnd = ($shiftEndHour - 12) . ":" . $tempShiftEnd[1] . " PM";
-                  } else {
-                    $shiftEnd = $shiftEndHour . ":" . $tempShiftEnd[1] . " AM";
-                  }?>
-                  <option value="<?php echo $shift['adminShiftID'];?>"><?php echo $shiftStart." - ".$shiftEnd;?></option>
-                  <?php } ?>
-            </select>
-            <div class="invalid-feedback">
-              Please select a shift.
             </div>
           </div>
           <div class="col-12 col-md-6 mb-3">
@@ -251,7 +136,7 @@ if(isset($_SESSION["userSuperAdminID"])){
                   <!-- Buttons section -->
                   <div class="row justify-content-end">
           <div class="col-12 col-md-2 mb-3 mb-md-0">
-            <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
+            <button class="btn btn-primary w-100 create-button" name="submitSuperAdmin" type="submit">Create</button>
           </div>
           <div class="col-12 col-md-2">
             <button class="btn btn-outline-primary w-100 cancel-button" type="reset"
@@ -360,7 +245,3 @@ if(isset($_SESSION["userSuperAdminID"])){
 </body>
 
 </html>
-<?php  }
-else{
-header("location:login.php");
-}?>

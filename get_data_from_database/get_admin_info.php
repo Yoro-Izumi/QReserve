@@ -1,5 +1,5 @@
 <?php
-//get customer information with select query
+//get admin information with select query
 $getAdminInfoQuery = "SELECT * FROM admin_info";
 $adminInfoConn = mysqli_query($conn,$getAdminInfoQuery);
 $arrayAdminInfo = array();

@@ -7,6 +7,7 @@ include 'get_data_from_database/get_member_account.php';
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
 session_start();
+date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION['userMemberID'])){
 	header('location:customer_dashboard.php');
 	die();
@@ -17,7 +18,7 @@ if(isset($_POST['login_member'])){
   $password=mysqli_real_escape_string($conn,$_POST['password']);
     if(mysqli_num_rows($memberAccountConn) > 0){
         foreach($arrayMemberAccount as $membershipAccount){
-          if(decryptData($membershipAccount['membershipID'],$key) == $username && decryptData($membershipAccount['membershipPassword'],$key) == $password){
+          if(decryptData($membershipAccount['membershipID'],$key) == $username && password_verify($password, $membershipAccount['membershipPassword'])){
             echo '<script language="javascript">';
             echo 'alert("You are now logged in!")';
             echo '</script>';

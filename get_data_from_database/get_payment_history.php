@@ -1,6 +1,7 @@
 <?php
 //get customer information with select query
-$getPaymentHistoryQuery = "SELECT * FROM payment_history";
+$getPaymentHistoryQuery =   "SELECT ph.*,ci.* FROM payment_history ph
+                            LEFT JOIN customer_info ci ON ph.customerID = ci.customerID ";
 $paymentHistoryConn = mysqli_query($conn,$getPaymentHistoryQuery);
 $arrayPaymentHistory = array();
     while($onerowPH  = mysqli_fetch_assoc($paymentHistoryConn)){
@@ -9,5 +10,8 @@ $arrayPaymentHistory = array();
         $arrayPaymentHistory[] = $onerowPH;
     }
    // foreach($arraydata as $data){
-
+/*"SELECT ac.*,ai.*,sh.* 
+FROM admin_accounts ac
+INNER JOIN admin_info ai ON ac.adminInfoID = ai.adminInfoID
+INNER JOIN admin_shift sh ON ac.adminShiftID = sh.adminShiftID" */
 ?>

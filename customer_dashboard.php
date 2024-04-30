@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Manila');
  if(isset($_SESSION['userMemberID'])){
   $userID = $_SESSION['userMemberID'];
   include "connect_database.php";
@@ -90,7 +91,7 @@ session_start();
               else{ $customerName = $poolTables['customerName']; }
               $poolTableStatus = $poolTables['poolTableStatus']; $poolTableNumber = $poolTables['poolTableNumber']; 
               $timeStarted = explode(' ',$poolTables['timeStarted']); 
-              $timeEnd = explode(' ',$poolTables['timeEnd']);
+              $timeEnd = explode(' ',$poolTables['timeEnd']); 
             ?>
             <tr>
               <th><?php echo $poolTableNumber;?></th>

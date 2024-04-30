@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION['userMemberID'])) {
     $userID = $_SESSION['userMemberID'];
     include "connect_database.php";
@@ -18,7 +19,7 @@ if (isset($_SESSION['userMemberID'])) {
                     $customerFirstName = decryptData($customerInformation['customerFirstName'], $key);
                     $customerLastName = decryptData($customerInformation['customerLastName'], $key);
                     $customerMiddleName = decryptData($customerInformation['customerMiddleName'], $key);
-                    $customerBirthdate = $customerInformation['customerBirthdate'];
+                    $customerBirthdate = decryptData($customerInformation['customerBirthdate'], $key);
                     $customerNumber = decryptData($customerInformation['customerNumber'], $key);
                     $customerEmail = decryptData($customerInformation['customerEmail'], $key);
                 }

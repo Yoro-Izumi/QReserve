@@ -1,13 +1,14 @@
 <?php
-include "connect_database.php";
-include "get_data_from_database/get_reservation_info.php";
-include "get_data_from_database/get_customer_information.php";
-include "encodeDecode.php";
-$key = "TheGreatestNumberIs73";
 session_start();
-
+date_default_timezone_set('Asia/Manila');
 
 if(isset($_SESSION["userSuperAdminID"])){
+  include "connect_database.php";
+  include "get_data_from_database/get_reservation_info.php";
+  include "get_data_from_database/get_member_account.php";
+  include "encodeDecode.php";
+  $key = "TheGreatestNumberIs73";
+ 
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -84,25 +85,26 @@ if(isset($_SESSION["userSuperAdminID"])){
               $reservationStatus = $reservations['reservationStatus'];
               $reservationTimeStart = $reservations['reservationTimeStart'];
               $reservationTimeEnd = $reservations['reservationTimeEnd'];
-                foreach($arrayCustomerInformation as $customerInfo){
-                  if($customerInfo['customerID'] == $reservations['customerID']){
-                    $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
-                    $contactNumber = decryptData($customerInfo['customerNumber'],$key);
-                    $email = decryptData($customerInfo['customerEmail'],$key);
+              $tableNumber = $reservations['poolTableNumber'];
+                foreach($arrayMemberAccount as $members){
+                  if($members['memberID'] == $reservations['memberID']){
+                    $customerName = decryptData($members['customerFirstName'],$key)." ".decryptData($members['customerMiddleName'],$key)." ".decryptData($members['customerLastName'],$key);
+                    $contactNumber = decryptData($members['customerNumber'],$key);
+                    $email = decryptData($members['customerEmail'],$key);
                   }
                   else{
                     $customerName = "";
                     $contactNumber = "";
                     $email = "";
-                  }  
-                }
+                  }
+                }  
             ?>
                 <tr>
                   <td><input type="checkbox" value="<?php echo $reservations['reservationID'];?>"></td>
                   <td><?php echo $customerName;?></td>
                   <td><?php echo $reservationDate;?></td>
                   <td><?php echo $reservationTimeStart;?> - <?php echo $reservationTimeEnd;?></td>
-                  <td><?php echo $reservations['tableID'];?></td>
+                  <td><?php echo $tableNumber;?></td>
                   <td><?php echo $contactNumber;?></td>
                   <td><?php echo $email;?></td>
                   <?php 

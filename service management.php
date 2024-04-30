@@ -1,8 +1,9 @@
 <?php
-include "connect_database.php";
-include "get_data_from_database/get_services.php";
 session_start();
+date_default_timezone_set('Asia/Manila');
 if(isset($_SESSION["userSuperAdminID"])){
+  include "connect_database.php";
+  include "get_data_from_database/get_services.php";
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -67,11 +68,12 @@ if(isset($_SESSION["userSuperAdminID"])){
           </tr>
         </thead>
         <tbody>
-        <?php foreach($arrayServices as $services){?>
+        <?php foreach($arrayServices as $services){
+        ?>
           <tr>
             <td><input type="checkbox" value="<?php echo $services['serviceID'];?>"></td>
             <td><?php echo $services['serviceName'];?></td>
-            <td><?php echo $services['serviceRate'];?></td>
+            <td><?php echo $services['normalPrice'];?></td>
             <td> </td>
             <td><?php echo $services['serviceImage'];?></td>
           </tr>

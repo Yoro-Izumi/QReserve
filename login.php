@@ -1,5 +1,7 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Manila');
+
 include 'connect_database.php';
 include 'encodeDecode.php';
 include 'get_data_from_database/get_super_admin_accounts.php';
@@ -11,51 +13,70 @@ $key = "TheGreatestNumberIs73";
 if (isset($_SESSION['userSuperAdminID'])) {
   header('location:dashboard.php');
   die();
-} else if (isset($_SESSION['userAdminID'])) {
-  header('location:dashboard.php');
+}
+if (isset($_SESSION['userAdminID'])) {
+  header('location:logout.php');
   die();
 }
+
 if (isset($_POST['login'])) {
   $username = mysqli_real_escape_string($conn, $_POST['username']);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+  $loggedIn = false;
+
   if (mysqli_num_rows($superAdminAccountConn) > 0) {
     foreach ($arraySuperAdminAccount as $superAdminAccount) {
-      if (decryptData($superAdminAccount['superAdminUsername'], $key) == $username && decryptData($superAdminAccount['superAdminPassword'], $key) == $password) {
-        echo '<script language="javascript">';
-        echo 'alert("You are now logged in!")';
-        echo '</script>';
+      if (decryptData($superAdminAccount['superAdminUsername'], $key) == $username && password_verify($password, $superAdminAccount['superAdminPassword'])) {
         $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
-        header("location:dashboard.php");
-        exit();
-      } else {
-        /*echo '<script language="javascript">';
-        echo 'alert("Username and Password does not exist")';
-        echo '</script>'; */
-        if (mysqli_num_rows($adminAccountConn) > 0) {
-          foreach ($arrayAdminAccount as $adminAccount) {
-            if (decryptData($adminAccount['adminUsername'], $key) == $username && decryptData($adminAccount['adminPassword'], $key) == $password) {
-              echo '<script language="javascript">';
-              echo 'alert("You are now logged in!")';
-              echo '</script>';
-              $_SESSION['userAdminID'] = $adminAccount['adminID'];
-              header("location:dashboard.php");
-              exit();
-            } else {
-              echo '<script language="javascript">';
-              echo 'alert("Username and Password does not exist")';
-              echo '</script>';
-            }
-          }
-        }
+        $loggedIn = true;
+        $logUser = "superAdmin:".$superAdmin['$superAdminID'];
+        break;
       }
     }
-  } else {
+  }
+
+  if (!$loggedIn && mysqli_num_rows($adminAccountConn) > 0) {
+    foreach ($arrayAdminAccount as $adminAccount) {
+      if (decryptData($adminAccount['adminUsername'], $key) == $username && password_verify($password, $adminAccount['adminPassword'])) {
+        $_SESSION['userAdminID'] = $adminAccount['adminID'];
+        $loggedIn = true;
+        $logUser = "admin:".$adminAccount['$adminID'];
+        break;
+      }
+    }
+  }
+
+  if ($loggedIn) {
+    echo '<script language="javascript">';
+    echo 'alert("You are now logged in!")';
+    echo '</script>';
+
+    $accountType = explode(":",$logUser);
+
+    if($account[0] == "adminID"){
+    $_SESSION['userAdmin'] = $accountType[1];
+    header("location:logout.php");
+    exit();
+    }
+
+    else{
+    $_SESSION['userSuperAdmin'] = $accountType[1];
+    header("location:dashboard.php");
+    exit();
+  }
+
+  } 
+  
+  else {
     echo '<script language="javascript">';
     echo 'alert("Username and Password does not exist")';
     echo '</script>';
   }
+
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

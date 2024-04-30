@@ -1,6 +1,7 @@
 <?php
 include "connect_database.php";
-include "get_data_from_database/get_services.php"
+include "get_data_from_database/get_services.php";
+date_default_timezone_set('Asia/Manila');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,13 +61,13 @@ include "get_data_from_database/get_services.php"
       <h2>Our Services</h2>
       <!-- <p>Explore our wide range of camping gear services.</p> -->
       <ul class="cards">
-      <?php foreach($arrayServices as $services){?>
+      <?php foreach($arrayServices as $services){ ?>
         <li class="card">
           <img src="./images/Services/<?php echo $services['serviceImage'];?>" alt="img">
           <h3><?php echo $services['serviceName'];?></h3>
-          <p>Rate: <?php echo $services['serviceRate'];?></p> <!--  Eto yung tatawagin sa DB -->
-        </li>
-        <?php }?>
+              <p>Rate: <?php echo $services['normalPrice'];?></p><!--  Eto yung tatawagin sa DB -->
+          
+            </li> <?php }?>
       </ul>
     </section>
 

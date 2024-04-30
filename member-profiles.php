@@ -1,9 +1,14 @@
 <?php 
+session_start();
+date_default_timezone_set('Asia/Manila');
 include "connect_database.php";
 include "get_data_from_database/get_member_account.php";
 include "get_data_from_database/get_customer_information.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
+
+if(isset($_SESSION["userSuperAdminID"])){
+  $superAdminID = $_SESSION["userSuperAdminID"];
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -85,22 +90,11 @@ $key = "TheGreatestNumberIs73";
               $memberID = $memberAccount["memberID"];
               $memberUsername = decryptData($memberAccount["membershipID"],$key);
               $membershipValidity = $memberAccount["validityDate"];
-                foreach($arrayCustomerInformation as $customerInfo){
-                    $customerID = $customerInfo["customerID"];
-                      if($customerInfo['customerID'] == $memberAccount["customerID"]){
-                        $customerName = decryptData($customerInfo['customerFirstName'],$key)." ".decryptData($customerInfo['customerMiddleName'],$key)." ".decryptData($customerInfo['customerLastName'],$key);
-                        
-                        $customerBirthdate  = $customerInfo['customerBirthdate'];
-                        $customerPhone = decryptData($customerInfo['customerNumber'],$key);
-                        $customerEmail = decryptData($customerInfo['customerEmail'],$key);
-                      }  
-                      else{
-                        $customerName = " ";
-                        $customerBirthdate = " ";
-                        $customerPhone = " ";
-                        $customerEmail = " ";
-                      }
-                }
+              $customerName = decryptData($memberAccount['customerFirstName'],$key)." ".decryptData($memberAccount['customerMiddleName'],$key)." ".decryptData($memberAccount['customerLastName'],$key);
+              $customerBirthdate = decryptData($memberAccount['customerBirthdate'],$key);
+              $customerPhone = decryptData($memberAccount['customerNumber'],$key);                      
+              $customerEmail = decryptData($memberAccount['customerEmail'],$key);
+                      
           ?>
             <tr>
               <td><input type="checkbox" value = "<?php echo $memberID;?>"></td> 
@@ -173,3 +167,4 @@ $key = "TheGreatestNumberIs73";
     </script>
   </body>
 </html>
+<?php }else{header("location:dashboard.php");}?>

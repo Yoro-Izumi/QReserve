@@ -5,6 +5,7 @@ include "get_data_from_database/get_admin_info.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 session_start();
+date_default_timezone_set('Asia/Manila');
 if(isset($_SESSION["userSuperAdminID"])){
 ?>
 <!DOCTYPE html>
@@ -85,21 +86,11 @@ if(isset($_SESSION["userSuperAdminID"])){
             foreach($arrayAdminAccount as $adminAccount){ //get membership details as well as information of member
               $adminID = $adminAccount["adminID"];
               $adminUsername = decryptData($adminAccount["adminUsername"],$key);
-                foreach($arrayAdminInfo as $adminInfo){
-                      if($adminInfo['adminInfoID'] == $adminAccount["adminInfoID"]){
-                        $adminName = decryptData($adminInfo['adminFirstName'],$key)." ".decryptData($adminInfo['adminMiddleName'],$key)." ".decryptData($adminInfo['adminLastName'],$key);
-                        
-                        $adminSex = $adminInfo['adminSex'];
-                        $adminPhone = decryptData($adminInfo['adminContactNumber'],$key);
-                        $adminEmail = decryptData($adminInfo['adminEmail'],$key);
-                      }  
-                      else{
-                        $adminName = " ";
-                        $adminSex = " ";
-                        $adminPhone = " ";
-                        $adminEmail = " ";
-                      }
-                }
+              $adminName = decryptData($adminAccount['adminFirstName'],$key)." ".decryptData($adminAccount['adminMiddleName'],$key)." ".decryptData($adminAccount['adminLastName'],$key);
+              $adminSex = decryptData($adminAccount['adminSex'],$key)   ;
+              $adminPhone = decryptData($adminAccount['adminContactNumber'],$key);
+              $adminEmail = decryptData($adminAccount['adminEmail'],$key);
+                    
           ?>
             <tr>
               <td><input type="checkbox" value = "<?php echo $adminID;?>"></td> 

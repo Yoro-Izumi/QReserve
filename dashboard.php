@@ -1,15 +1,7 @@
 <?php
-include "connect_database.php";
-include "encodeDecode.php";
-include "get_data_from_database/get_pool_table_info.php";
-include "get_data_from_database/get_walk_in.php";
-include "get_data_from_database/get_reservation_info.php";
-
-$key = "TheGreatestNumberIs73";
-
-$visitors = mysqli_num_rows($walkinDetailsConn) + mysqli_num_rows($reservationInfoConn);
 session_start();
 if(isset($_SESSION["userSuperAdminID"])){
+$visitors = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -122,45 +114,7 @@ if(isset($_SESSION["userSuperAdminID"])){
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
       <table id="example" class="table table-striped" style="width: 100%">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Pool Table</th>
-            <th>Time Started</th>
-            <th>Expected End Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php foreach($arrayPoolTables as $poolTables){
-              if($poolTables['customerName'] == NULL){
-                $customerName = "None";
-              }
-              else{ $customerName = $poolTables['customerName']; }
-              $poolTableStatus = $poolTables['poolTableStatus']; $poolTableNumber = $poolTables['poolTableNumber']; 
-              $timeStarted = explode(' ',$poolTables['timeStarted']); 
-              $timeEnd = explode(' ',$poolTables['timeEnd']);
-            ?>
-            <tr>
-              <th><?php echo $poolTableNumber;?></th>
-              <td><?php echo $customerName;?></td>
-              <td><?php echo $timeStarted[1];?></td>
-              <td><?php echo $timeEnd[1];?></td>
-              <?php 
-                if($poolTableStatus == "Done" || $poolTableStatus == "Available"){
-                  $status = "badge bg-success";
-                }
-                else if($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting"){
-                  $status = "badge bg-warning";
-                }
-                else{
-                  $status = "badge bg-danger";
-                }
-              ?>
-              <td><span class="<?php echo $status;?>"><?php echo $poolTableStatus;?></span></td>
-            </tr>
-            <?php }?>
-        </tbody>
+       <!--table data is dynamicaly updated and is from pool_table.php-->
       </table>
     </div>
 
@@ -271,6 +225,27 @@ if(isset($_SESSION["userSuperAdminID"])){
       }
     }
   </script>
+  <script>
+        $(document).ready(function(){
+            // Function to update table content
+            function updateTable() {
+                $.ajax({
+                    url: 'pool_table.php',
+                    type: 'GET',
+                    success: function(response) {
+                        $('#example').html(response);
+                    }
+                });
+            }
+
+            // Initial table update
+            updateTable();
+
+            // Refresh table every 5 seconds
+            setInterval(updateTable, 1000); // Adjust interval as needed
+        });
+    </script>
+
 </body>
 
 </html>
