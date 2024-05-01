@@ -27,7 +27,7 @@ if (isset($_POST['login'])) {
 
   if (mysqli_num_rows($superAdminAccountConn) > 0) {
     foreach ($arraySuperAdminAccount as $superAdminAccount) {
-      if (decryptData($superAdminAccount['superAdminUsername'], $key) == $username && password_verify($password, $superAdminAccount['superAdminPassword'])) {
+      if (decryptData($superAdminAccount['superAdminEmail'], $key) == $username && password_verify($password, $superAdminAccount['superAdminPassword'])) {
         $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
         $loggedIn = true;
         $logUser = "superAdmin:".$superAdmin['$superAdminID'];
@@ -38,7 +38,7 @@ if (isset($_POST['login'])) {
 
   if (!$loggedIn && mysqli_num_rows($adminAccountConn) > 0) {
     foreach ($arrayAdminAccount as $adminAccount) {
-      if (decryptData($adminAccount['adminUsername'], $key) == $username && password_verify($password, $adminAccount['adminPassword'])) {
+      if (decryptData($adminAccount['adminEmail'], $key) == $username && password_verify($password, $adminAccount['adminPassword'])) {
         $_SESSION['userAdminID'] = $adminAccount['adminID'];
         $loggedIn = true;
         $logUser = "admin:".$adminAccount['$adminID'];
