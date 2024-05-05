@@ -71,10 +71,10 @@ if(isset($_SESSION["userSuperAdminID"])){
         <?php foreach($arrayServices as $services){
         ?>
           <tr>
-            <td><input type="checkbox" value="<?php echo $services['serviceID'];?>"></td>
+            <td><input type="checkbox" class="service-checkbox" name="serviceID[]" value="<?php echo $services['serviceID']; ?>"></td>
             <td><?php echo $services['serviceName'];?></td>
             <td><?php echo $services['normalPrice'];?></td>
-            <td> </td>
+            <td><?php echo $services['serviceCapacity'];?></td>
             <td><?php echo $services['serviceImage'];?></td>
           </tr>
         <?php }?>
@@ -105,7 +105,7 @@ if(isset($_SESSION["userSuperAdminID"])){
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <form class="needs-validation" id="add-new-profile-form" novalidate action="BABAGUHIN ITU.php" method="POST" enctype="multipart/form-data">
+      <form class="needs-validation" id="add-new-service-form" novalidate action="service_crud.php" method="POST" enctype="multipart/form-data">
         <div class="row">
           <div class="col-12 col-md-12 mb-3">
             <label for="serviceName" class="form-label">Service Name <span>*</span></label>
@@ -126,7 +126,7 @@ if(isset($_SESSION["userSuperAdminID"])){
           </div>
           <div class="col-12 col-md-6 mb-3">
             <label for="text" class="form-label">Capacity <span>*</span></label>
-            <input type="email" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" required oninvalid="this.setCustomValidity('Please enter a valid capacity')" oninput="this.setCustomValidity('')" />
+            <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" required oninvalid="this.setCustomValidity('Please enter a valid capacity')" oninput="this.setCustomValidity('')" />
             <!-- <div class="valid-feedback">
                 Looks good!
             </div> -->
@@ -136,18 +136,17 @@ if(isset($_SESSION["userSuperAdminID"])){
           </div>
           <div class="col-12 col-md-12 mb-3">
             <label for="image" class="form-label">Image <span>*</span></label>
-            <input type="file" class="form-control" name="image" id="image" accept=".jpg, .jpeg, .png" required>
+            <input type="file" class="form-control" name="serviceImage" id="image" accept=".jpg, .jpeg, .png" required>
             <div class="invalid-feedback">
               Please enter a valid capacity.
             </div>
           </div>
         </div>
-      </form>
       </div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-service-modal" data-bs-toggle="modal">Confirm</button>
-        <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-      </div>
+      <button type="button" name="add_service_button" id="add_service_button" class="btn btn-primary create-button" data-bs-target="#confirm-add-service-modal" data-bs-toggle="modal">Confirm</button> 
+      <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button> 
+    </div>
     </div>
   </div>
 </div>
@@ -164,7 +163,8 @@ if(isset($_SESSION["userSuperAdminID"])){
         dito nakalagay yung mga inputs from the previous modal.
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
+        <button type="submit" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
+        </form>
         <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -201,7 +201,7 @@ if(isset($_SESSION["userSuperAdminID"])){
         Are you sure you want to delete this service?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary create-button" data-bs-target="#success-delete-modal" data-bs-toggle="modal">Confirm</button>
+        <button type="button" id="confirm-delete-button" class="btn btn-primary create-button" data-bs-target="#success-delete-modal" data-bs-toggle="modal">Confirm</button>
         <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -367,7 +367,6 @@ if(isset($_SESSION["userSuperAdminID"])){
 
         // Format the rate with Philippine Peso sign and commas for thousands separator
         rate =
-          "₱" +
           parseFloat(rate).toLocaleString(undefined, {
             minimumFractionDigits: 2,
           });
@@ -377,6 +376,75 @@ if(isset($_SESSION["userSuperAdminID"])){
       });
     });
   </script>
+  <!--script for crud service-->
+  <script>
+    //add service
+    $(document).ready(function(){
+        $('#confirm_add_service_button').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#add-new-service-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'service_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    alert(response); // For demonstration purposes, you can display an alert with the response
+                    location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+<!--script that disables button if no check box is clicked-->
+<script>
+  $(document).ready(function() {
+    $('input[type="checkbox"]').change(function() {
+        var anyChecked = $('input[type="checkbox"]:checked').length > 0;
+        $('edit-service').prop('disabled', !anyChecked);
+        $('delete-service').prop('disabled', !anyChecked);
+    });
+  });
+</script>
+<!--script for deleting service-->
+<script>
+  $(document).ready(function(){
+        // AJAX code to handle deletion
+        $("#confirm-delete-button").click(function(){
+            // Array to store IDs of selected rows
+            var selectedRows = [];
+
+            // Iterate through each checked checkbox
+            $(".service-checkbox:checked").each(function(){
+                // Push the value (ID) of checked checkbox into the array
+                selectedRows.push($(this).val());
+            });
+
+            // AJAX call to send selected rows IDs to delete script
+            $.ajax({
+                url: "service_crud.php",
+                type: "POST",
+                data: {selectedRows: selectedRows},
+                success: function(response){
+                    // Reload the page or update the table as needed
+                    location.reload(); // For example, reload the page after deletion
+                },
+                error: function(xhr, status, error){
+                    //console.error("Error:", error);
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 
 </html>

@@ -35,7 +35,7 @@ if(isset($_POST['login_member'])){
     }
     else{
       echo '<script language="javascript">';
-      echo 'alert("Username and Password does not exist")';
+      echo 'alert("Account does not exist")';
       echo '</script>';
     }
   }
