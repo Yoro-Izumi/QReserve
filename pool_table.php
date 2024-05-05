@@ -1,10 +1,10 @@
 <?php 
   include "connect_database.php";
   include "encodeDecode.php";
-  include "get_data_from_database/get_pool_table_info.php";
-  include "get_data_from_database/get_walk_in.php";
-  include "get_data_from_database/get_reservation_info.php";
-  include "get_data_from_database/get_customer_information.php";
+  include "src/get_data_from_database/get_pool_table_info.php";
+  include "src/get_data_from_database/get_walk_in.php";
+  include "src/get_data_from_database/get_reservation_info.php";
+  include "src/get_data_from_database/get_customer_information.php";
 
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');

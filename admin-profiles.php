@@ -1,7 +1,7 @@
 <?php 
 include "connect_database.php";
-include "get_data_from_database/get_admin_accounts.php";
-include "get_data_from_database/get_admin_info.php";
+include "src/get_data_from_database/get_admin_accounts.php";
+include "src/get_data_from_database/get_admin_info.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 session_start();
@@ -56,8 +56,8 @@ if(isset($_SESSION["userSuperAdminID"])){
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- External CSS -->
-    <link rel="stylesheet" href="./css/sidebar.css" />
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="src/css/sidebar.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
   </head>
   <body>
   <?php include "superadmin_sidebar.php"; ?>

@@ -4,8 +4,8 @@ date_default_timezone_set('Asia/Manila');
 
 include 'connect_database.php';
 include 'encodeDecode.php';
-include 'get_data_from_database/get_super_admin_accounts.php';
-include 'get_data_from_database/get_admin_accounts.php';
+include 'src/get_data_from_database/get_super_admin_accounts.php';
+include 'src/get_data_from_database/get_admin_accounts.php';
 
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
@@ -85,8 +85,8 @@ if (isset($_POST['login'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
 
-  <link rel="stylesheet" href="./css/landing.css">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="src/css/landing.css">
+  <link rel="stylesheet" href="src/css/style.css">
 
   <!-- Fontawesome Link for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -143,7 +143,7 @@ if (isset($_POST['login'])) {
   <section class="homepage" id="home">
     <div class="content container-fluid">
       <div class="text">
-        <img src="./images/Bevitore Billiards Hall Logo.png" alt="" height="150px">
+        <img src="src/images/Bevitore Billiards Hall Logo.png" alt="" height="150px">
         <h1 class="krona-one-regular mb-0">QReserve</h1>
         <h6 class="m-0 pb-0 index-sub">BEVITORE SANTA ROSA</h6>
       </div>

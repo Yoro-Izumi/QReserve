@@ -38,8 +38,8 @@ $visitors = 0;
   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
   <!-- External CSS -->
-  <link rel="stylesheet" href="./css/sidebar.css" />
-  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="src/css/sidebar.css" />
+  <link rel="stylesheet" href="src/css/style.css" />
 </head>
 
 <body class="body">
@@ -131,13 +131,13 @@ $visitors = 0;
             <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img src="./images/Services/Membership.jpg" class="d-block w-100" alt="..." />
+                  <img src="src/images/Services/Membership.jpg" class="d-block w-100" alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
+                  <img src="src/images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
+                  <img src="src/images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
                 </div>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel"
@@ -159,15 +159,15 @@ $visitors = 0;
             <div id="pubmat-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img src="./images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100"
+                  <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100"
                     alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100"
+                  <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100"
                     alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100"
+                  <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100"
                     alt="..." />
                 </div>
               </div>

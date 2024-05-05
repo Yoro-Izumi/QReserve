@@ -28,7 +28,7 @@
         <span class="tooltip">Reservations</span>
       </li>
       <li>
-        <a href="service management.php">
+        <a href="service_management.php">
           <i class="bx bx-aperture"></i>
           <span class="links_name">Service Management</span>
         </a>
