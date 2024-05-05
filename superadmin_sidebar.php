@@ -3,7 +3,7 @@
 <body>
 <div class="sidebar">
     <div class="logo-details">
-      <img src="./images/Bevitore-logo.png" class="img-fluid icon" id="sidebar-logo" />
+      <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="sidebar-logo" />
       <div class="logo_name krona-one-regular ms-2 mb-0">QReserve</div>
       <i class="bx bx-menu" id="btn"></i>
     </div>

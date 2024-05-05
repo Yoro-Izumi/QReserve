@@ -2,7 +2,6 @@ body {
     font-family: "Montserrat", sans-serif;
     background-color: #E4E9F7;
     min-height: 100vh;
-    /* margin: 2%; */
     padding: 2%;
 }
 
@@ -29,8 +28,8 @@ span {
     min-height: 100vh;
 }
 
-#index-logo {
-    width: 200px;
+.bevitore-logo {
+    width: 10%;
 }
 
 #index-button,
@@ -67,7 +66,7 @@ span {
 .login .login-button:hover {
     color: #FFB800;
     font-weight: bold;
-    background-color: #0D2818;
+    background-color: #011509;
     border: none;
 
 }
@@ -95,14 +94,6 @@ span {
     margin: 2%;
 
 }
-
-/* .login-form{
-    background-color: #FFB800;
-    color: #020202 !important;
-    max-width: 400px;
-    margin: auto;
-    padding: 1%;
-} */
 
 #booking-sub {
     letter-spacing: 10px;
@@ -191,5 +182,10 @@ span {
 .forgot-password {
     text-decoration: none;
     outline: none;
-    color: #0D2818;
+    color: #0D2818 !important;
+}
+
+.forgot-password:hover {
+  font-weight: bold;
+  color: #0D2818 !important;
 }

@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
       if (decryptData($superAdminAccount['superAdminEmail'], $key) == $username && password_verify($password, $superAdminAccount['superAdminPassword'])) {
         $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
         $loggedIn = true;
-        $logUser = "superAdmin:".$superAdmin['$superAdminID'];
+        $logUser = "superAdmin:" . $superAdmin['$superAdminID'];
         break;
       }
     }
@@ -41,7 +41,7 @@ if (isset($_POST['login'])) {
       if (decryptData($adminAccount['adminEmail'], $key) == $username && password_verify($password, $adminAccount['adminPassword'])) {
         $_SESSION['userAdminID'] = $adminAccount['adminID'];
         $loggedIn = true;
-        $logUser = "admin:".$adminAccount['$adminID'];
+        $logUser = "admin:" . $adminAccount['$adminID'];
         break;
       }
     }
@@ -52,28 +52,22 @@ if (isset($_POST['login'])) {
     echo 'alert("You are now logged in!")';
     echo '</script>';
 
-    $accountType = explode(":",$logUser);
+    $accountType = explode(":", $logUser);
 
-    if($account[0] == "adminID"){
-    $_SESSION['userAdmin'] = $accountType[1];
-    header("location:logout.php");
-    exit();
+    if ($account[0] == "adminID") {
+      $_SESSION['userAdmin'] = $accountType[1];
+      header("location:logout.php");
+      exit();
+    } else {
+      $_SESSION['userSuperAdmin'] = $accountType[1];
+      header("location:dashboard.php");
+      exit();
     }
-
-    else{
-    $_SESSION['userSuperAdmin'] = $accountType[1];
-    header("location:dashboard.php");
-    exit();
-  }
-
-  } 
-  
-  else {
+  } else {
     echo '<script language="javascript">';
     echo 'alert("Username and Password does not exist")';
     echo '</script>';
   }
-
 }
 ?>
 
@@ -100,40 +94,40 @@ if (isset($_POST['login'])) {
   <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
   <style>
-    .toggle-password {
-      height: 20px;
-      border: none;
-      outline: none;
+    /* Eye Toggle */
+    button.toggle-password {
+      border: none !important;
+      outline: none !important;
       padding: 0;
+      margin: 0;
       display: flex;
       justify-content: center;
-      /* Center horizontally */
       align-items: center;
-      /* Center vertically */
+      background-color: transparent !important;
+      color: gray;
+      margin-right: 5%;
     }
 
-    .toggle-password:focus {
-      outline: none;
-      border: none;
+    button.toggle-password:hover {
+      background-color: transparent !important;
+      color: black !important;
     }
 
-    .toggle-password:hover {
-      background-color: transparent;
-      border: none;
-      color: black;
+    button.toggle-password:focus,
+    button.toggle-password:active {
+      background-color: transparent !important;
+      color: gray !important;
     }
 
-    .toggle-password i {
+    button.toggle-password i {
       pointer-events: none;
-      border: none;
     }
 
-    /* Additional styles to adjust the icon size */
-    .toggle-password i {
+    button.toggle-password i {
       font-size: 1.2rem;
-      /* Adjust the size as needed */
     }
   </style>
+
 
 </head>
 
@@ -158,10 +152,11 @@ if (isset($_POST['login'])) {
             <div class="form-floating mb-2 position-relative">
               <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
               <label for="floatingPassword">Password</label>
-              <button class="btn btn-outline-secondary toggle-password position-absolute end-0 top-50 translate-middle-y p-4" type="button">
-                <i class="fas fa-eye"></i>
+              <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
+                <i class="fas fa-eye-slash"></i>
               </button>
             </div>
+
             <a href="" class="forgot-password">Forgot Password</a>
             <div class="">
               <button type="submit" name="login" class="btn btn-primary w-100 login-button mt-4">Sign In</button>
