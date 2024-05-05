@@ -4,8 +4,8 @@ date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION['userMemberID'])) {
     $userID = $_SESSION['userMemberID'];
     include "connect_database.php";
-    include "get_data_from_database/get_member_account.php";
-    include "get_data_from_database/get_customer_information.php";
+    include "src/get_data_from_database/get_member_account.php";
+    include "src/get_data_from_database/get_customer_information.php";
     include "encodeDecode.php";
     $key = "TheGreatestNumberIs73";
 
@@ -35,8 +35,8 @@ if (isset($_SESSION['userMemberID'])) {
         <meta charset="UTF-8" />
         <title>Book a Reservation</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./css/style.css">
-        <link rel="stylesheet" href="./css/landing.css">
+        <link rel="stylesheet" href="src/css/style.css">
+        <link rel="stylesheet" href="src/css/landing.css">
 
         <!-- Fontawesome Link for Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -56,7 +56,7 @@ if (isset($_SESSION['userMemberID'])) {
     <body class="body">
         <header>
             <nav class="navbar p-0">
-                <img src="./images/Bevitore-logo.png" id="customer-landing-logo" />
+                <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
                 <input type="checkbox" id="menu-toggler">
                 <label for="menu-toggler" id="hamburger-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
@@ -302,7 +302,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-12 mb-3 mb-4">
                                 <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
-                                <img src="./images/Seamless-Wavy-lines-Pattern-digital-Graphics-30696202-1.jpg" alt="" style="width: 100%; height: 100%;">
+                                <img src="src/images/Seamless-Wavy-lines-Pattern-digital-Graphics-30696202-1.jpg" alt="" style="width: 100%; height: 100%;">
                             </div>
                         </div>
                         <div class="row justify-content-end mt-5">

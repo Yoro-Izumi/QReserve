@@ -1,6 +1,6 @@
 <?php
 include "connect_database.php";
-include "get_data_from_database/get_services.php";
+include "src/get_data_from_database/get_services.php";
 date_default_timezone_set('Asia/Manila');
 ?>
 <!DOCTYPE html>
@@ -9,8 +9,8 @@ date_default_timezone_set('Asia/Manila');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bevitore Sta Ro</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/landing.css">
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/landing.css">
 
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -29,7 +29,7 @@ date_default_timezone_set('Asia/Manila');
   <body id="customer-landing">
     <header>
       <nav class="navbar">
-        <img src="./images/Bevitore-logo.png" id="customer-landing-logo" />
+        <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
         <input type="checkbox" id="menu-toggler">
         <label for="menu-toggler" id="hamburger-btn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
@@ -63,7 +63,7 @@ date_default_timezone_set('Asia/Manila');
       <ul class="cards">
       <?php foreach($arrayServices as $services){ ?>
         <li class="card">
-          <img src="./images/Services/<?php echo $services['serviceImage'];?>" alt="img">
+          <img src="src/images/Services/<?php echo $services['serviceImage'];?>" alt="img">
           <h3><?php echo $services['serviceName'];?></h3>
               <p>Rate: <?php echo $services['normalPrice'];?></p><!--  Eto yung tatawagin sa DB -->
           
@@ -75,22 +75,22 @@ date_default_timezone_set('Asia/Manila');
       <h2>Amenities</h2>
       <ul class="cards">
         <li class="card">
-          <img src="./images/Services/Billiards Hall.jpg" alt="img">
+          <img src="src/images/Services/Billiards Hall.jpg" alt="img">
         </li>
         <li class="card">
-          <img src="./images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="img">
+          <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="img">
         </li>
         <li class="card">
-          <img src="./images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
+          <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
         </li>
         <li class="card">
-          <img src="./images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" alt="">
+          <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" alt="">
         </li>
         <li class="card">
-          <img src="./images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="">
+          <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="">
         </li>
         <li class="card">
-          <img src="./images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
+          <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
         </li>
       </ul>
     </section>

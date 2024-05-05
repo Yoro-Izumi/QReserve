@@ -3,7 +3,7 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 if(isset($_SESSION["userSuperAdminID"])){
   include "connect_database.php";
-  include "get_data_from_database/get_services.php";
+  include "src/get_data_from_database/get_services.php";
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -41,8 +41,8 @@ if(isset($_SESSION["userSuperAdminID"])){
   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
   <!-- External CSS -->
-  <link rel="stylesheet" href="./css/sidebar.css" />
-  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="src/css/sidebar.css" />
+  <link rel="stylesheet" href="src/css/style.css" />
 </head>
 
 <body>

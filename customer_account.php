@@ -4,8 +4,8 @@ date_default_timezone_set('Asia/Manila');
     if (isset($_SESSION["userMemberID"])){
         $userID = $_SESSION['userMemberID'];
         include "connect_database.php";
-        include "get_data_from_database/get_member_account.php";
-        include "get_data_from_database/get_customer_information.php";
+        include "src/get_data_from_database/get_member_account.php";
+        include "src/get_data_from_database/get_customer_information.php";
         include "encodeDecode.php";
         $key = "TheGreatestNumberIs73";
 ?>
@@ -15,8 +15,8 @@ date_default_timezone_set('Asia/Manila');
     <meta charset="UTF-8" />
     <title>Account</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/landing.css">
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/landing.css">
 
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -38,7 +38,7 @@ date_default_timezone_set('Asia/Manila');
   <body class="body">
     <header>
         <nav class="navbar p-0">
-        <img src="./images/Bevitore-logo.png" id="customer-landing-logo" />
+        <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
         <input type="checkbox" id="menu-toggler">
         <label for="menu-toggler" id="hamburger-btn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">

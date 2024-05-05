@@ -2,8 +2,8 @@
 session_start();
 date_default_timezone_set('Asia/Manila');
 include "connect_database.php";
-include "get_data_from_database/get_member_account.php";
-include "get_data_from_database/get_customer_information.php";
+include "src/get_data_from_database/get_member_account.php";
+include "src/get_data_from_database/get_customer_information.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 
@@ -58,8 +58,8 @@ if(isset($_SESSION["userSuperAdminID"])){
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- External CSS -->
-    <link rel="stylesheet" href="./css/sidebar.css" />
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="src/css/sidebar.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
   </head>
   <body>
   <?php include "superadmin_sidebar.php"; ?>

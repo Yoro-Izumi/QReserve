@@ -38,77 +38,12 @@ $visitors = 0;
   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
   <!-- External CSS -->
-  <link rel="stylesheet" href="./css/sidebar.css" />
-  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="src/css/sidebar.css" />
+  <link rel="stylesheet" href="src/css/style.css" />
 </head>
 
 <body class="body">
-  <div class="sidebar">
-    <div class="logo-details">
-      <img src="./images/Bevitore-logo.png" class="img-fluid icon" id="sidebar-logo" />
-      <div class="logo_name krona-one-regular ms-2 mb-0">QReserve</div>
-      <i class="bx bx-menu" id="btn"></i>
-    </div>
-    <ul class="nav-list">
-      <!-- <li>
-          <i class='bx bx-search' ></i>
-         <input type="text" placeholder="Search...">
-         <span class="tooltip">Search</span>
-      </li> -->
-      <li>
-        <a href="dashboard.php">
-          <i class="bx bx-home"></i>
-          <span class="links_name">Home</span>
-        </a>
-        <span class="tooltip">Home</span>
-      </li>
-      <li>
-        <a href="reservations_viewing.php">
-          <i class="bx bx-book"></i>
-          <span class="links_name">Reservations Viewing</span>
-        </a>
-        <span class="tooltip">Reservations</span>
-      </li>
-      <li>
-        <a href="service management.php">
-          <i class="bx bx-aperture"></i>
-          <span class="links_name">Service Management</span>
-        </a>
-        <span class="tooltip">Services</span>
-      </li>
-
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bx bx-user"></i>
-          <span class="links_name dropdown-toggle">Profile Management </span>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
-          <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="reports.php">
-          <i class="bx bx-pie-chart-alt-2"></i>
-          <span class="links_name">Reports</span>
-        </a>
-        <span class="tooltip">Reports</span>
-      </li>
-
-      <li class="profile">
-        <div class="profile-details">
-          <div class="name_job">
-            <div class="name">Prem Shahi</div>
-            <div class="job">Web designer</div>
-          </div>
-        </div>
-        <a href="logout.php">
-          <i class="bx bx-log-out" id="log_out"></i>
-        </a>   
-      </li>
-    </ul>
-  </div>
-
+<?php include "superadmin_sidebar.php"; ?>
   <section class="home-section">
     <h4 class="krona-one-regular">Active Playing</h4>
     <hr class="my-4 mb-3 mt-3">
@@ -131,13 +66,13 @@ $visitors = 0;
             <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img src="./images/Services/Membership.jpg" class="d-block w-100" alt="..." />
+                  <img src="src/images/Services/Membership.jpg" class="d-block w-100" alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
+                  <img src="src/images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
+                  <img src="src/images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
                 </div>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel"
@@ -159,15 +94,15 @@ $visitors = 0;
             <div id="pubmat-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img src="./images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100"
+                  <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100"
                     alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100"
+                  <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100"
                     alt="..." />
                 </div>
                 <div class="carousel-item">
-                  <img src="./images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100"
+                  <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100"
                     alt="..." />
                 </div>
               </div>

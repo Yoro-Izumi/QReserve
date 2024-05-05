@@ -1,0 +1,191 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #E4E9F7;
+    min-height: 100vh;
+    padding: 2%;
+}
+
+body#customer-landing {
+    padding: 0%;
+}
+
+span {
+    color: #FF0000;
+}
+
+.krona-one-regular {
+    font-family: "Krona One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#index-body {
+    background-image: linear-gradient(to bottom right, #0D2818, #020202);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.bevitore-logo {
+    width: 10%;
+}
+
+#index-button,
+#add-new-profile {
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: #FFB800;
+    color: #0D2818;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+#index-button:hover {
+    transform: scale(1.1);
+}
+
+.login {
+    background-color: #FFB800;
+    color: #020202 !important;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    max-width: 450px;
+    padding: 1%;
+}
+
+.login .login-button {
+    background-color: #0D2818;
+    border: none;
+    padding: 3%;
+    font-size: large;
+}
+
+.login .login-button:hover {
+    color: #FFB800;
+    font-weight: bold;
+    background-color: #011509;
+    border: none;
+
+}
+
+.index-sub {
+    color: #FFB800;
+    letter-spacing: 10px;
+}
+
+#customer-page-login {
+    width: 100%;
+    position: relative;
+
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#booking-form {
+    background-color: #fff;
+    color: #020202 !important;
+    padding: 2%;
+    margin: 2%;
+
+}
+
+#booking-sub {
+    letter-spacing: 10px;
+    color: #FFB800;
+}
+
+#login-divider {
+    width: 100%;
+    /* Ensure the <hr> spans the full width */
+    margin: 20px auto;
+    /* Center the <hr> horizontally */
+}
+
+
+#home-active-playing, #home-number-of-customers, #home-services, #home-pubmats{
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1%;
+}
+
+.carousel-height .carousel-item {
+    height: 300px; /* Set your desired height here */
+    height: 300px;
+    overflow: hidden;
+}
+
+.carousel-height .carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+
+/* Head */
+#customer-landing-logo {
+    width: 95px;
+}
+
+.dashboard-square-kebab {
+    padding: 2%;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Soft shadow */
+}
+
+#customer-navbar .navbar-toggler {
+    background-color: white;
+    /* Make the navbar toggler button white */
+}
+  
+/* Development */
+.create-button{
+    background-color: #0D2818 !important;
+    color: white;
+    border-color: #0D2818 !important; /* Set the desired color for the outline */
+
+}
+
+.create-button:hover{
+    background-color: #020202 !important;
+    font-weight: bold;
+    color: #FFB800 !important;
+}
+
+.cancel-button {
+    border-color: #0D2818 !important; /* Set the desired color for the outline */
+    color: #0D2818!important;
+}
+
+.cancel-button:hover{
+    background-color: #0D2818 !important;
+    font-weight: bold;
+    color: #FFB800 !important;
+}
+
+
+
+
+/* Add New Service Modal */
+.service-modal{
+    max-width: 1000px;
+}
+
+/* Forgot Password */
+.forgot-password {
+    text-decoration: none;
+    outline: none;
+    color: #0D2818 !important;
+}
+
+.forgot-password:hover {
+  font-weight: bold;
+  color: #0D2818 !important;
+}
