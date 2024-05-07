@@ -103,7 +103,7 @@ if (isset($_POST['login_member'])) {
 
   <div class="homepage" id="home">
     <div class="content container-fluid">
-    <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
+      <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
       <h1 class="qreserve" id="index-qreserve">QReserve</h1>
       <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
       <div class="container-fluid login">
@@ -111,11 +111,11 @@ if (isset($_POST['login_member'])) {
           <form action="customer_login.php" method="POST">
             <h5 class="text-center fw-bold">Welcome!</h5>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="username" required />
+              <input type="text" class="form-control" id="floatingInput" placeholder="" name="username" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
               <label for="floatingInput">Control Number</label>
             </div>
             <div class="form-floating mb-3 position-relative">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required />
+              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" maxlength="30" required />
               <label for="floatingPassword">Password</label>
               <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
                 <i class="fas fa-eye-slash"></i>

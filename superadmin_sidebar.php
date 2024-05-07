@@ -56,7 +56,7 @@
       <li class="profile">
         <div class="profile-details">
           <div class="name_job">
-            <div class="name">Prem Shahi</div>
+            <div class="name">Admin Name</div>
             <div class="job">Web designer</div>
           </div>
         </div>

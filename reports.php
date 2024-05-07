@@ -63,73 +63,32 @@
     }
   </style>
 
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">
-    google.charts.load("current", {
-      packages: ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
+<!-- 1st Graph -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-    function drawChart() {
-      var data = new google.visualization.arrayToDataTable([
-        ['Threat', 'Attacks'],
-        ['Chandrian', 38],
-        ['Ghosts', 12],
-        ['Ghouls', 6],
-        ['UFOs', 44],
-        ['Vampires', 28],
-        ['Zombies', 88]
-      ]);
+<!-- 2nd Graph -->
 
-      var options = {
-        legend: 'none',
-        colors: ['#760946'],
-        lineWidth: 4,
-        vAxis: {
-          gridlines: {
-            count: 4
-          }
-        }
-      };
-
-      function placeMarker(dataTable) {
-        var cli = this.getChartLayoutInterface();
-        var chartArea = cli.getChartAreaBoundingBox();
-        // "Zombies" is element #5.
-        document.querySelector('.overlay-marker').style.top = Math.floor(cli.getYLocation(dataTable.getValue(5, 1))) - 50 + "px";
-        document.querySelector('.overlay-marker').style.left = Math.floor(cli.getXLocation(5)) - 10 + "px";
-      };
-
-      var chart = new google.visualization.LineChart(document.getElementById('line-chart-marker'));
-      google.visualization.events.addListener(chart, 'ready',
-        placeMarker.bind(chart, data));
-      chart.draw(data, options);
-    }
-  </script>
 </head>
 
 <body class="body">
   <?php include "superadmin_sidebar.php"; ?>
 
   <section class="home-section">
-    <h4 class="krona-one-regular">Reports</h4>
+    <h4 class="qreserve">Reports</h4>
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid dashboard-square-kebab mb-4" id="reports-first-graph">
-      <div class="chartWithMarkerOverlay">
-
-        <div id="line-chart-marker" style="width: 700px; height: 500px;"></div>
-
-        <div class="overlay-text">
-          <div style="font-family:'Arial Black'; font-size: 128px;">88</div>
-          <div style="color: #b44; font-family:'Arial Black'; font-size: 32px; letter-spacing: .21em; margin-top:50px; margin-left:5px;">zombie</div>
-          <div style="color: #444; font-family:'Arial Black'; font-size: 32px; letter-spacing: .15em; margin-top:15px; margin-left:5px;">attacks</div>
-        </div>
-
-        <div class="overlay-marker">
-          <img src="https://developers.google.com/chart/interactive/images/zombie_150.png" height="50">
-        </div>
-
-      </div>
+    <figure class="highcharts-figure1">
+    <div id="container"></div>
+    <p class="highcharts-description">
+        Basic line chart showing trends in a dataset. This chart includes the
+        <code>series-label</code> module, which adds a label to each line for
+        enhanced readability.
+    </p>
+</figure>
 
       <!-- Buttons section -->
       <div class="row justify-content-end">
@@ -140,7 +99,6 @@
     </div>
     <div class="container-fluid dashboard-square-kebab mb-4" id="reports-second-graph">
       <h1>2nd Graph</h1>
-
       <!-- Buttons section -->
       <div class="row justify-content-end">
         <div class="col-12 col-md-2 mb-3 mb-md-0">
@@ -187,6 +145,90 @@
       }
     }
   </script>
+
+
+
+<!-- 1st Graph JS -->
+<script>
+  Highcharts.chart('container', {
+
+title: {
+    text: 'U.S Solar Employment Growth',
+    align: 'left'
+},
+
+subtitle: {
+    text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+    align: 'left'
+},
+
+yAxis: {
+    title: {
+        text: 'Number of Employees'
+    }
+},
+
+xAxis: {
+    accessibility: {
+        rangeDescription: 'Range: 2010 to 2020'
+    }
+},
+
+legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+},
+
+plotOptions: {
+    series: {
+        label: {
+            connectorAllowed: false
+        },
+        pointStart: 2010
+    }
+},
+
+series: [{
+    name: 'Installation & Developers',
+    data: [43934, 48656, 65165, 81827, 112143, 142383,
+        171533, 165174, 155157, 161454, 154610]
+}, {
+    name: 'Manufacturing',
+    data: [24916, 37941, 29742, 29851, 32490, 30282,
+        38121, 36885, 33726, 34243, 31050]
+}, {
+    name: 'Sales & Distribution',
+    data: [11744, 30000, 16005, 19771, 20185, 24377,
+        32147, 30912, 29243, 29213, 25663]
+}, {
+    name: 'Operations & Maintenance',
+    data: [null, null, null, null, null, null, null,
+        null, 11164, 11218, 10077]
+}, {
+    name: 'Other',
+    data: [21908, 5548, 8105, 11248, 8989, 11816, 18274,
+        17300, 13053, 11906, 10073]
+}],
+
+responsive: {
+    rules: [{
+        condition: {
+            maxWidth: 500
+        },
+        chartOptions: {
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom'
+            }
+        }
+    }]
+}
+
+});
+
+</script>
 </body>
 
 </html>

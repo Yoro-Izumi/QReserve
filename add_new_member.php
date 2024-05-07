@@ -158,7 +158,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-6 mb-3">
               <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
-              <input type="text" class="form-control" name="controlNumber" id="controlNumber" placeholder="Enter control number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
+              <input type="text" class="form-control" id="controlNumber"  placeholder="Enter control number here" name="controlNumber" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
               <!-- <div class="valid-feedback">
                     Looks good!
                 </div> -->
@@ -178,7 +178,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <div class="input-group">
                 <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
-                  <i class="fas fa-eye"></i>
+                  <i class="fas fa-eye-slash"></i>
                 </button>
               </div>
               <div class="invalid-feedback" id="passwordError">
@@ -190,7 +190,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <div class="input-group">
                 <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
-                  <i class="fas fa-eye"></i>
+                  <i class="fas fa-eye-slash"></i>
                 </button>
               </div>
               <div class="feedback" id="passwordMatchFeedback"></div>
@@ -207,7 +207,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
+              <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
+              <button class="btn btn-primary w-100 create-button" name="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
             </div>
         </form>
         <div class="col-12 col-md-2">

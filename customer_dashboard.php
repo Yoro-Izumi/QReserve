@@ -67,7 +67,7 @@ if (isset($_SESSION['userMemberID'])) {
     </header>
 
 
-    <h3 class="krona-one-regular mt-5 pt-3 mb-0">Welcome <?php echo $customerName; ?>!</h3>
+    <h3 class="qreserve mt-5 pt-3 mb-0">Welcome <?php echo $customerName; ?>!</h3>
     <div class="d-flex justify-content-between align-items-center">
       <h4 class="fw-bold mt-4 mb-0">Active Playing</h4>
       <a href="booking_form.php" type="button" class="btn btn-primary fw-bold mb-0 mt-3 create-reservation" id="create-reservation">Create Reservation</a>

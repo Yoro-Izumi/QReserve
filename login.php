@@ -63,10 +63,8 @@ if (isset($_POST['login'])) {
       header("location:dashboard.php");
       exit();
     }
-  } else {
-    echo '<script language="javascript">';
-    echo 'alert("Username and Password does not exist")';
-    echo '</script>';
+  }     else {
+    $error_message = "Username and Password are mismatched."; // Set error message
   }
 }
 ?>
@@ -140,6 +138,13 @@ if (isset($_POST['login'])) {
         <div class="row">
           <form action="login.php" method="POST">
             <h5 class="text-center fw-bold">Welcome!</h5>
+
+            <?php if (!empty($error_message)) : ?>
+      <div class="alert alert-danger" role="alert">
+        <?php echo $error_message; ?>
+      </div>
+    <?php endif; ?>
+
             <div class="form-floating mb-3">
               <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required />
               <label for="floatingInput">Email address</label>

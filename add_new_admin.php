@@ -91,7 +91,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Add New Admin</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_admin.php" method="POST" enctype="multipart/form-data">
+      <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_admin.php" method="POST" enctype="multipart/form-data">
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -199,7 +199,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <label for="password" class="form-label">Password <span>*</span></label>
               <div class="input-group">
                 <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required />
-                <button class="btn btn-secondary" type="button" id="password-toggle-1">
+                <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
                   <i class="fas fa-eye"></i>
                 </button>
               </div>
@@ -211,7 +211,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
               <div class="input-group">
                 <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
-                <button class="btn btn-secondary" type="button" id="password-toggle-2">
+                <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
                   <i class="fas fa-eye"></i>
                 </button>
               </div>
@@ -227,12 +227,16 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-admin-modal" data-bs-toggle="modal">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
             </div>
             <div class="col-12 col-md-2">
-              <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
+              <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
+              <a href="admin-profiles.php" class="btn btn-outline-primary w-100 cancel-button">Cancel</a>
             </div>
           </div>
+
+
+
         </form>
 
       </div>

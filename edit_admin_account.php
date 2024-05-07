@@ -91,7 +91,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Edit Admin Account</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_admin.php" method="POST" enctype="multipart/form-data">
+        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="edit_admin_account.php" method="POST" enctype="multipart/form-data">
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
