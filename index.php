@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bevitore Sta Rosa</title>
 
-  <link rel="stylesheet" href="src/css/landing.css">
+  <!-- <link rel="stylesheet" href="src/css/landing.css"> -->
   <link rel="stylesheet" href="src/css/style.css">
 
   <!-- Fontawesome Link for Icons -->
@@ -19,19 +19,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
 </head>
 
-<body id="customer-landing">
-  <section class="homepage" id="home">
-    <div class="content container-fluid">
-      <div class="text">
-        <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo"  class="bevitore-logo">
-        <h1 class="krona-one-regular mb-0">QReserve</h1>
-        <h6 class="m-0 pb-0 index-sub">BEVITORE SANTA ROSA</h6>
-      </div>
-      <a href="login.php" type="button" class="btn btn-primary fw-bold" id="index-button">Click to start session</a>
+<body class="index-landing">
+  <div class="container-fluid homepage">
+    <div class="home">
+      <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
+      <h1 class="qreserve" id="index-qreserve">QReserve</h1>
+      <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
+      <a href="login.php" type="button" class="btn btn-primary fw-bold start-button" id="index-button">Click to start session</a>
     </div>
-  </section>
+  </div>
 </body>
 
 </html>

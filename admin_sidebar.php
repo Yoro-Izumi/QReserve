@@ -27,36 +27,11 @@
         </a>
         <span class="tooltip">Reservations</span>
       </li>
-      <li>
-        <a href="service_management.php">
-          <i class="bx bx-aperture"></i>
-          <span class="links_name">Service Management</span>
-        </a>
-        <span class="tooltip">Services</span>
-      </li>
-
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bx bx-user"></i>
-          <span class="links_name dropdown-toggle">Profile Management </span>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
-          <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="reports.php">
-          <i class="bx bx-pie-chart-alt-2"></i>
-          <span class="links_name">Reports</span>
-        </a>
-        <span class="tooltip">Reports</span>
-      </li>
 
       <li class="profile">
         <div class="profile-details">
           <div class="name_job">
-            <div class="name">Admin Name</div>
+            <div class="name">Prem Shahi</div>
             <div class="job">Web designer</div>
           </div>
         </div>

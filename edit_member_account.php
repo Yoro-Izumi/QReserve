@@ -84,6 +84,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <link rel="stylesheet" href="src/css/style.css" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
     <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
   </head>
 
@@ -91,7 +92,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <?php include "superadmin_sidebar.php"; ?>
 
     <section class="home-section">
-      <h4 class="qreserve mt-5">Add New Member</h4>
+      <h4 class="qreserve mt-5">Edit Member Account</h4>
       <hr class="my-4">
       <div class="container-fluid dashboard-square-kebab" id="profmanage-add-new-profile">
         <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data">
@@ -158,7 +159,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-6 mb-3">
               <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
-              <input type="text" class="form-control" id="controlNumber"  placeholder="Enter control number here" name="controlNumber" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
+              <input type="text" class="form-control" name="controlNumber" id="controlNumber" placeholder="Enter control number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
                     Looks good!
                 </div> -->
@@ -178,7 +179,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <div class="input-group">
                 <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
-                  <i class="fas fa-eye-slash"></i>
+                  <i class="fas fa-eye"></i>
                 </button>
               </div>
               <div class="invalid-feedback" id="passwordError">
@@ -190,7 +191,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <div class="input-group">
                 <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
-                  <i class="fas fa-eye-slash"></i>
+                  <i class="fas fa-eye"></i>
                 </button>
               </div>
               <div class="feedback" id="passwordMatchFeedback"></div>
@@ -207,12 +208,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
-              <button class="btn btn-primary w-100 create-button" name="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
+              <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
             </div>
         </form>
         <div class="col-12 col-md-2">
-          <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
+          <!-- <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
+          <a href="member-profiles.php" class="btn btn-outline-primary w-100 cancel-button">Cancel</a>
         </div>
       </div>
 
@@ -222,19 +223,18 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
 
     <!-- Modals -->
-    <!-- Confirmation Add Service Modal -->
+    <!-- Confirmation Add Member Modal -->
     <div class="modal fade" id="confirm-add-new-member-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-        <div class="modal-content">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
           <div class="modal-header">
             <h2 class="modal-title  fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
           <div class="modal-body">
-            dito nakalagay yung mga contents sa naunang modal
+            Are you sure you want to edit this account?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-target="#" data-bs-toggle="modal">Cancel</button>
             <button type="button" class="btn btn-primary create-button" data-bs-target="#success-add-member-modal" data-bs-toggle="modal">Confirm</button>
           </div>
         </div>

@@ -2,22 +2,21 @@
 include "connect_database.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
+include "src/get_data_from_database/get_shifts.php";
 session_start();
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
-  $userSuperAdmin = $_SESSION["userSuperAdminID"];
-  if (isset($_POST['submitMember'])) {
-    $customerFirstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
-    $customerLastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
-    $customerMiddleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
-    $customerEmail = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
-    $customerPhone = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
-    $customerBirthdate = encryptData(mysqli_real_escape_string($conn, $_POST['birthDate']), $key);
-    $memberControlNumber = encryptData(mysqli_real_escape_string($conn, $_POST['controlNumber']), $key);
-    $memberPassword = mysqli_real_escape_string($conn, $_POST['password']);
-    $memberValidity = mysqli_real_escape_string($conn, $_POST['validity']);
-    $x = "None";
-    $y = 1;
+  $superAdminID = $_SESSION["userSuperAdminID"];
+  if (isset($_POST['submitAdmin'])) {
+    $firstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
+    $lastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
+    $middleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
+    $email = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
+    $username = encryptData(mysqli_real_escape_string($conn, $_POST['username']), $key);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $sex = encryptData(mysqli_real_escape_string($conn, $_POST['sex']), $key);
+    $contactNumber = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
+    $shift = intVal($_POST['adminShift']);
 
     // Hash the password using Argon2
     $options = [
@@ -25,25 +24,22 @@ if (isset($_SESSION["userSuperAdminID"])) {
       'time_cost' => 4,       // 4 iterations (default)
       'threads' => 3,         // Use 3 threads for processing (default)
     ];
-    $hashedPassword = password_hash($memberPassword, PASSWORD_ARGON2I, $options);
+    $hashedPassword = password_hash($password, PASSWORD_ARGON2I, $options);
 
-    // Parse HTML date string into a DateTime object
-    $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
-    // Convert DateTime object to SQL date format (YYYY-MM-DD)
-    $sqlDate = $date->format('Y-m-d');
-    //current date
-    $currentDate = date('Y-m-d');
+    // here is where information of admin is inserted
+    $qryInsertAdminInfo = "INSERT INTO `admin_info`(`adminInfoID`, `adminLastName`, `adminFirstName`, `adminMiddleName`, `adminSex`, `adminContactNumber`, `adminEmail`) VALUES (NULL,?,?,?,?,?,?)";
+    $conInsertAdminInfo = mysqli_prepare($conn, $qryInsertAdminInfo);
+    mysqli_stmt_bind_param($conInsertAdminInfo, 'ssssss', $lastName, $firstName, $middleName, $sex, $contactNumber, $email);
+    mysqli_stmt_execute($conInsertAdminInfo);
 
-    $qryInsertCustomerInfo = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`) VALUES (NULL,?,?,?,?,?,?)";
-    $conInsertCustomerInfo = mysqli_prepare($conn, $qryInsertCustomerInfo);
-    mysqli_stmt_bind_param($conInsertCustomerInfo, "ssssss", $customerFirstName, $customerLastName, $customerMiddleName, $customerBirthdate, $customerPhone, $customerEmail);
-    mysqli_stmt_execute($conInsertCustomerInfo);
-    $customerID = mysqli_insert_id($conn);
+    //get the id of admin info that was inserted
+    $adminInfoID = mysqli_insert_id($conn);
 
-    $qryInsertMemberDetails = "INSERT INTO `member_details`(`memberID`, `membershipID`, `perk_id`, `membershipPassword`, `customerID`, `creationDate`, `validityDate`, `superAdminID`) VALUES (NULL,?,?,?,?,?,?,?)";
-    $conInsertMemberDetails = mysqli_prepare($conn, $qryInsertMemberDetails);
-    mysqli_stmt_bind_param($conInsertMemberDetails, "sssssss", $memberControlNumber, $y, $hashedPassword, $customerID, $currentDate, $sqlDate, $userSuperAdmin);
-    mysqli_stmt_execute($conInsertMemberDetails);
+    //here is where the admin account is inserted
+    $qryInsertAdminAccount = "INSERT INTO `admin_accounts`(`adminID`, `superAdminID`, `adminInfoID`,`adminShiftID`, `adminUsername`, `adminPassword`) VALUES (NULL,?,?,?,?,?)";
+    $conInsertAdminAccount = mysqli_prepare($conn, $qryInsertAdminAccount);
+    mysqli_stmt_bind_param($conInsertAdminAccount, 'iiiss', $superAdminID, $adminInfoID, $shift, $username, $hashedPassword);
+    mysqli_stmt_execute($conInsertAdminAccount);
   }
 ?>
   <!DOCTYPE html>
@@ -52,7 +48,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
   <head>
     <meta charset="UTF-8" />
-    <title>Member Profile</title>
+    <title>Admin Profiles</title>
+
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -91,12 +88,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <?php include "superadmin_sidebar.php"; ?>
 
     <section class="home-section">
-      <h4 class="qreserve mt-5">Add New Member</h4>
+      <h4 class="qreserve mt-5">Edit Admin Account</h4>
       <hr class="my-4">
-      <div class="container-fluid dashboard-square-kebab" id="profmanage-add-new-profile">
-        <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data">
+      <div class="container-fluid" id="profmanage-add-new-profile">
+        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="edit_admin_account.php" method="POST" enctype="multipart/form-data">
           <div class="row">
-            <div class="col-12 col-md-4 mb-3">
+            <div class="col-12 col-md-3 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
               <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
@@ -106,7 +103,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 Please enter a valid first name.
               </div>
             </div>
-            <div class="col-12 col-md-4 mb-3">
+            <div class="col-12 col-md-3 mb-3">
               <label for="middleName" class="form-label">Middle Name</label>
               <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
@@ -116,7 +113,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 Please enter a valid middle name.
               </div>
             </div>
-            <div class="col-12 col-md-4 mb-3">
+            <div class="col-12 col-md-3 mb-3">
               <label for="lastName" class="form-label">Last Name <span>*</span></label>
               <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
@@ -126,17 +123,29 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 Please enter a valid last name.
               </div>
             </div>
-            <div class="col-12 col-md-4 mb-3">
-              <label for="birthDate" class="form-label">Birthday<span>*</span></label>
-              <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
+            <div class="col-12 col-md-3 mb-3">
+              <label for="contactNumber" class="form-label">Username <span>*</span></label>
+              <input type="text" class="form-control" name="username" id="contactNumber" placeholder="Enter Username here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
-                    Looks good!
-                </div> -->
+                      Looks good!
+                  </div> -->
               <div class="invalid-feedback">
-                Please enter a valid birthdate.
+                Please enter a valid username.
               </div>
             </div>
-            <div class="col-12 col-md-4 mb-3">
+            <div class="col-12 col-md-3 mb-3">
+              <label for="adminSex" class="form-label">Sex <span>*</span></label>
+              <select class="form-control" name="sex" id="sex" required onchange="this.setCustomValidity('')">
+                <option value="" selected disabled>Select Sex</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a shift.
+              </div>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
               <label for="email" class="form-label">Email Address <span>*</span></label>
               <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
@@ -146,7 +155,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 Please enter a valid email address.
               </div>
             </div>
-            <div class="col-12 col-md-4 mb-3">
+            <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
               <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
@@ -156,21 +165,34 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 Please enter a valid contact number.
               </div>
             </div>
-            <div class="col-12 col-md-6 mb-3">
-              <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
-              <input type="text" class="form-control" id="controlNumber"  placeholder="Enter control number here" name="controlNumber" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
-              <!-- <div class="valid-feedback">
-                    Looks good!
-                </div> -->
+            <div class="col-12 col-md-3 mb-3">
+              <label for="adminShift" class="form-label">Shift <span>*</span></label>
+              <select class="form-control" name="adminShift" id="adminShift" required onchange="this.setCustomValidity('')">
+                <option value="" selected disabled>Select shift</option>
+                <?php // get the shifts in the db so that select shift will be dynamic in case shifts are edited
+                foreach ($arrayShifts as $shift) {
+                  $tempShiftStart = explode(":", $shift['shiftTimeStart']);
+                  $tempShiftEnd = explode(":", $shift['shiftTimeEnd']);
+                  //convert tempShift variables to integers
+                  $shiftStartHour = intval($tempShiftStart[0]);
+                  $shiftEndHour = intval($tempShiftEnd[0]);
+
+                  if ($shiftStartHour >= 13) {
+                    $shiftStart = ($shiftStartHour - 12) . ":" . $tempShiftStart[1] . " PM";
+                  } else {
+                    $shiftStart = $shiftStartHour . ":" . $tempShiftStart[1] . " AM";
+                  }
+
+                  if ($shiftEndHour >= 13) {
+                    $shiftEnd = ($shiftEndHour - 12) . ":" . $tempShiftEnd[1] . " PM";
+                  } else {
+                    $shiftEnd = $shiftEndHour . ":" . $tempShiftEnd[1] . " AM";
+                  } ?>
+                  <option value="<?php echo $shift['adminShiftID']; ?>"><?php echo $shiftStart . " - " . $shiftEnd; ?></option>
+                <?php } ?>
+              </select>
               <div class="invalid-feedback">
-                Please enter a valid contact number.
-              </div>
-            </div>
-            <div class="col-12 col-md-6 mb-3">
-              <label for="validity" class="form-label">Validity Date <span>*</span></label>
-              <input type="date" class="form-control" name="validity" id="validity" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
-              <div class="invalid-feedback">
-                Please enter a valid birthdate.
+                Please select a shift.
               </div>
             </div>
             <div class="col-12 col-md-6 mb-3">
@@ -178,7 +200,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <div class="input-group">
                 <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
-                  <i class="fas fa-eye-slash"></i>
+                  <i class="fas fa-eye"></i>
                 </button>
               </div>
               <div class="invalid-feedback" id="passwordError">
@@ -190,7 +212,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <div class="input-group">
                 <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
-                  <i class="fas fa-eye-slash"></i>
+                  <i class="fas fa-eye"></i>
                 </button>
               </div>
               <div class="feedback" id="passwordMatchFeedback"></div>
@@ -202,67 +224,23 @@ if (isset($_SESSION["userSuperAdminID"])) {
               </div>
             </div>
           </div>
-
-
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
-              <button class="btn btn-primary w-100 create-button" name="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
             </div>
+            <div class="col-12 col-md-2">
+              <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
+              <a href="admin-profiles.php" class="btn btn-outline-primary w-100 cancel-button">Cancel</a>
+            </div>
+          </div>
+
+
+
         </form>
-        <div class="col-12 col-md-2">
-          <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
-        </div>
-      </div>
 
       </div>
     </section>
-
-
-
-    <!-- Modals -->
-    <!-- Confirmation Add Service Modal -->
-    <div class="modal fade" id="confirm-add-new-member-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
-          </div>
-          <div class="modal-body">
-            dito nakalagay yung mga contents sa naunang modal
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-target="#success-add-member-modal" data-bs-toggle="modal">Confirm</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Success Add New Service Modal -->
-    <div class="modal fade" id="success-add-member-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="wait">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
-          </div>
-          <div class="modal-body">
-            You have successfully registered a new account.
-          </div>
-          <div class="modal-footer">
-            <a href="member-profiles.php" class="btn btn-primary create-button" id="proceed">Proceed</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
 
     <script>
       //For Sidebar
@@ -355,56 +333,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       });
     </script>
 
-    <!-- For Birthdate -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var birthDateInput = document.getElementById('birthDate');
-
-        // Set min and max date for birthdate input
-        var currentDate = new Date();
-        var minDate = new Date('1900-01-01');
-        var maxDate = new Date(currentDate);
-        maxDate.setFullYear(currentDate.getFullYear() - 18); // 18 years ago from current year
-
-        birthDateInput.min = minDate.toISOString().split('T')[0]; // Minimum date is 1900-01-01
-        birthDateInput.max = maxDate.toISOString().split('T')[0]; // Maximum date is 18 years ago
-
-        birthDateInput.addEventListener('input', function() {
-          var selectedDate = new Date(this.value);
-
-          if (selectedDate < minDate || selectedDate > maxDate) {
-            this.setCustomValidity('Please enter a valid birthdate (minimum 1900 and at least 18 years ago).');
-          } else {
-            this.setCustomValidity('');
-          }
-        });
-      });
-    </script>
-
-    <!-- For Validity Date -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const validityInput = document.querySelector("#validity");
-
-        // Get today's date
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth() + 1; // Month is zero-indexed
-        const day = today.getDate();
-
-        // Set the minimum date to today's date
-        const minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-        validityInput.setAttribute("min", minDate);
-
-        // Set the maximum date to 1 year from today's date
-        const maxDate = new Date(today.getTime() + (365 * 24 * 60 * 60 * 1000));
-        const maxYear = maxDate.getFullYear();
-        const maxMonth = maxDate.getMonth() + 1; // Month is zero-indexed
-        const maxDay = maxDate.getDate();
-        const maxDateString = `${maxYear}-${maxMonth.toString().padStart(2, '0')}-${maxDay.toString().padStart(2, '0')}`;
-        validityInput.setAttribute("max", maxDateString);
-      });
-    </script>
 
   </body>
 

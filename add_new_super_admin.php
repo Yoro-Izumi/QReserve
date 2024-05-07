@@ -3,26 +3,26 @@ include "connect_database.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
-  if(isset($_POST['submitSuperAdmin'])){
-    $email = encryptData(mysqli_real_escape_string($conn,$_POST['email']),$key);
-    $username = encryptData(mysqli_real_escape_string($conn,$_POST['username']),$key);
-    $password = mysqli_real_escape_string($conn,$_POST['password']);
+if (isset($_POST['submitSuperAdmin'])) {
+  $email = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
+  $username = encryptData(mysqli_real_escape_string($conn, $_POST['username']), $key);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // Hash the password using Argon2
-    $options = [
-    'memory_cost' => 1<<17, // 128MB memory cost (default)
+  // Hash the password using Argon2
+  $options = [
+    'memory_cost' => 1 << 17, // 128MB memory cost (default)
     'time_cost' => 4,       // 4 iterations (default)
     'threads' => 3,         // Use 3 threads for processing (default)
-    ];
-    $hashedPassword = password_hash($password, PASSWORD_ARGON2I, $options);
+  ];
+  $hashedPassword = password_hash($password, PASSWORD_ARGON2I, $options);
 
-    //here is where the super admin account is inserted
-    $qryInsertSuperAdminAccount = "INSERT INTO `super_admin`(`superAdminID`, `superAdminUsername`, `superAdminPassword`, `superAdminEmail`) VALUES (NULL,?,?,?)";
-    $conInsertSuperAdminAccount = mysqli_prepare($conn,$qryInsertSuperAdminAccount);
-    mysqli_stmt_bind_param($conInsertSuperAdminAccount,'sss',$username,$hashedPassword,$email);
-    mysqli_stmt_execute($conInsertSuperAdminAccount);
-    header("location:Refresh:0");
-  }
+  //here is where the super admin account is inserted
+  $qryInsertSuperAdminAccount = "INSERT INTO `super_admin`(`superAdminID`, `superAdminUsername`, `superAdminPassword`, `superAdminEmail`) VALUES (NULL,?,?,?)";
+  $conInsertSuperAdminAccount = mysqli_prepare($conn, $qryInsertSuperAdminAccount);
+  mysqli_stmt_bind_param($conInsertSuperAdminAccount, 'sss', $username, $hashedPassword, $email);
+  mysqli_stmt_execute($conInsertSuperAdminAccount);
+  header("location:Refresh:0");
+}
 ?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -42,9 +42,7 @@ date_default_timezone_set('Asia/Manila');
   <!-- Online Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
   <!-- Datatables -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
@@ -65,24 +63,21 @@ date_default_timezone_set('Asia/Manila');
   <link rel="stylesheet" href="./css/style.css" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
 </head>
 
 <body>
-<?php include "superadmin_sidebar.php"; ?>
+  <?php include "superadmin_sidebar.php"; ?>
 
   <section class="home-section">
     <h4 class="krona-one-regular mt-5">Add New Admin</h4>
     <hr class="my-4">
     <div class="container-fluid" id="profmanage-add-new-profile">
-      <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate
-        action="add_new_super_admin.php" method="POST" enctype="multipart/form-data">
+      <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_super_admin.php" method="POST" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-12 col-md-3 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <label for="contactNumber" class="form-label">Username <span>*</span></label>
-            <input type="text" class="form-control" name="username" id="contactNumber"
-              placeholder="Enter Username here" required pattern="^09\d{9}$"
-              oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')"
-              oninput="this.setCustomValidity('')" />
+            <input type="text" class="form-control" name="username" id="contactNumber" placeholder="Enter Username here" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
             <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -92,9 +87,7 @@ date_default_timezone_set('Asia/Manila');
           </div>
           <div class="col-12 col-md-3 mb-3">
             <label for="email" class="form-label">Email Address <span>*</span></label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here"
-              required oninvalid="this.setCustomValidity('Please enter a valid email address')"
-              oninput="this.setCustomValidity('')" />
+            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
             <!-- <div class="valid-feedback">
                 Looks good!
             </div> -->
@@ -105,8 +98,7 @@ date_default_timezone_set('Asia/Manila');
           <div class="col-12 col-md-6 mb-3">
             <label for="password" class="form-label">Password <span>*</span></label>
             <div class="input-group">
-              <input type="password" class="form-control" name="password" id="password"
-                placeholder="Enter password here" required />
+              <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required />
               <button class="btn btn-secondary" type="button" id="password-toggle-1">
                 <i class="fas fa-eye"></i>
               </button>
@@ -118,8 +110,7 @@ date_default_timezone_set('Asia/Manila');
           <div class="col-12 col-md-6 mb-5">
             <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
             <div class="input-group">
-              <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
-                placeholder="Re-enter password here" required />
+              <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
               <button class="btn btn-secondary" type="button" id="password-toggle-2">
                 <i class="fas fa-eye"></i>
               </button>
@@ -133,25 +124,25 @@ date_default_timezone_set('Asia/Manila');
             </div>
           </div>
         </div>
-                  <!-- Buttons section -->
-                  <div class="row justify-content-end">
+        <!-- Buttons section -->
+        <div class="row justify-content-end">
           <div class="col-12 col-md-2 mb-3 mb-md-0">
             <button class="btn btn-primary w-100 create-button" name="submitSuperAdmin" type="submit">Create</button>
           </div>
           <div class="col-12 col-md-2">
-            <button class="btn btn-outline-primary w-100 cancel-button" type="reset"
-              onclick="resetForm()">Cancel</button>
+            <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
           </div>
         </div>
 
 
 
-          </form>
+      </form>
 
     </div>
   </section>
 
-  <script> //For Sidebar
+  <script>
+    //For Sidebar
     let sidebar = document.querySelector(".sidebar");
     let closeBtn = document.querySelector("#btn");
     let searchBtn = document.querySelector(".bx-search");
@@ -180,16 +171,16 @@ date_default_timezone_set('Asia/Manila');
 
   <!-- Updated script for password toggle -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const togglePassword1 = document.querySelector("#password-toggle-1");
       const passwordInput1 = document.querySelector("#password");
       const eyeIcon1 = togglePassword1.querySelector("i");
 
-      togglePassword1.addEventListener("click", function () {
+      togglePassword1.addEventListener("click", function() {
         const type =
-          passwordInput1.getAttribute("type") === "password"
-            ? "text"
-            : "password";
+          passwordInput1.getAttribute("type") === "password" ?
+          "text" :
+          "password";
         passwordInput1.setAttribute("type", type);
 
         // Toggle eye icon classes
@@ -201,11 +192,11 @@ date_default_timezone_set('Asia/Manila');
       const passwordInput2 = document.querySelector("#confirmPassword");
       const eyeIcon2 = togglePassword2.querySelector("i");
 
-      togglePassword2.addEventListener("click", function () {
+      togglePassword2.addEventListener("click", function() {
         const type =
-          passwordInput2.getAttribute("type") === "password"
-            ? "text"
-            : "password";
+          passwordInput2.getAttribute("type") === "password" ?
+          "text" :
+          "password";
         passwordInput2.setAttribute("type", type);
 
         // Toggle eye icon classes
@@ -217,14 +208,14 @@ date_default_timezone_set('Asia/Manila');
 
   <!-- For password checking -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const passwordInput = document.querySelector("#password");
       const confirmPasswordInput = document.querySelector("#confirmPassword");
       const passwordMatchFeedback = document.querySelector("#passwordMatchFeedback");
       const passwordMatch = document.querySelector("#passwordMatch");
       const passwordMismatch = document.querySelector("#passwordMismatch");
 
-      confirmPasswordInput.addEventListener("input", function () {
+      confirmPasswordInput.addEventListener("input", function() {
         const password = passwordInput.value;
         const confirmPassword = confirmPasswordInput.value;
 
