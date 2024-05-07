@@ -1,10 +1,11 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION['userMemberID'])) {
     $userID = $_SESSION['userMemberID'];
     include "connect_database.php";
-    include "get_data_from_database/get_member_account.php";
-    include "get_data_from_database/get_customer_information.php";
+    include "src/get_data_from_database/get_member_account.php";
+    include "src/get_data_from_database/get_customer_information.php";
     include "encodeDecode.php";
     $key = "TheGreatestNumberIs73";
 
@@ -18,7 +19,7 @@ if (isset($_SESSION['userMemberID'])) {
                     $customerFirstName = decryptData($customerInformation['customerFirstName'], $key);
                     $customerLastName = decryptData($customerInformation['customerLastName'], $key);
                     $customerMiddleName = decryptData($customerInformation['customerMiddleName'], $key);
-                    $customerBirthdate = $customerInformation['customerBirthdate'];
+                    $customerBirthdate = decryptData($customerInformation['customerBirthdate'], $key);
                     $customerNumber = decryptData($customerInformation['customerNumber'], $key);
                     $customerEmail = decryptData($customerInformation['customerEmail'], $key);
                 }
@@ -34,8 +35,8 @@ if (isset($_SESSION['userMemberID'])) {
         <meta charset="UTF-8" />
         <title>Book a Reservation</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./css/style.css">
-        <link rel="stylesheet" href="./css/landing.css">
+        <link rel="stylesheet" href="src/css/style.css">
+        <link rel="stylesheet" href="src/css/landing.css">
 
         <!-- Fontawesome Link for Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -50,12 +51,13 @@ if (isset($_SESSION['userMemberID'])) {
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+        <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
     </head>
 
     <body class="body">
         <header>
             <nav class="navbar p-0">
-                <img src="./images/Bevitore-logo.png" id="customer-landing-logo" />
+                <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
                 <input type="checkbox" id="menu-toggler">
                 <label for="menu-toggler" id="hamburger-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
@@ -86,7 +88,7 @@ if (isset($_SESSION['userMemberID'])) {
                         <div class="row">
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="firstName" class="form-label">First Name <span>*</span></label>
-                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $customerFirstName; ?>"  />
+                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $customerFirstName; ?>" />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -96,7 +98,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" value="<?php echo $customerMiddleName; ?>"  />
+                                <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" value="<?php echo $customerMiddleName; ?>" />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -106,7 +108,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" value="<?php echo $customerLastName; ?>"  />
+                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" value="<?php echo $customerLastName; ?>" />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -126,7 +128,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value="<?php echo $customerNumber; ?>"  />
+                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value="<?php echo $customerNumber; ?>" />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -136,7 +138,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="email" class="form-label">Email Address <span>*</span></label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo $customerEmail; ?>"  />
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo $customerEmail; ?>" />
                                 <!-- <div class="valid-feedback">
                                 Looks good!
                             </div> -->
@@ -301,7 +303,7 @@ if (isset($_SESSION['userMemberID'])) {
                             </div>
                             <div class="col-12 col-md-12 mb-3 mb-4">
                                 <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
-                                <img src="./images/Seamless-Wavy-lines-Pattern-digital-Graphics-30696202-1.jpg" alt="" style="width: 100%; height: 100%;">
+                                <img src="src/images/map.png" alt="" style="width: 100%; height: 100%;">
                             </div>
                         </div>
                         <div class="row justify-content-end mt-5">
@@ -402,8 +404,6 @@ if (isset($_SESSION['userMemberID'])) {
                     })
             })()
         </script>
-
-
 
 
         <script>

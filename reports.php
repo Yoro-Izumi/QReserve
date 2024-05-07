@@ -14,9 +14,7 @@
   <!-- Online Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
   <!-- Datatables -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
@@ -33,36 +31,45 @@
   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
   <!-- External CSS -->
-  <link rel="stylesheet" href="./css/sidebar.css" />
-  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="src/css/sidebar.css" />
+  <link rel="stylesheet" href="src/css/style.css" />
 
-
+  <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
   <!-- Try ko lang to -->
   <style>
-   .chartWithMarkerOverlay {
-       position: relative;
-       width: 700px;
-   }
-   .overlay-text {
-       width: 200px;
-       height: 200px;
-       position: absolute;
-       top: 50px;   /* chartArea top */
-       left: 200px; /* chartArea left */
-   }
-   .overlay-marker {
-       width: 50px;
-       height: 50px;
-       position: absolute;
-       top: 53px;   /* chartArea top */
-       left: 528px; /* chartArea left */
-   }
+    .chartWithMarkerOverlay {
+      position: relative;
+      width: 700px;
+    }
+
+    .overlay-text {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      top: 50px;
+      /* chartArea top */
+      left: 200px;
+      /* chartArea left */
+    }
+
+    .overlay-marker {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 53px;
+      /* chartArea top */
+      left: 528px;
+      /* chartArea left */
+    }
   </style>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
-    google.charts.load("current", {packages:['corechart']});
+    google.charts.load("current", {
+      packages: ['corechart']
+    });
     google.charts.setOnLoadCallback(drawChart);
+
     function drawChart() {
       var data = new google.visualization.arrayToDataTable([
         ['Threat', 'Attacks'],
@@ -78,7 +85,11 @@
         legend: 'none',
         colors: ['#760946'],
         lineWidth: 4,
-        vAxis: { gridlines: { count: 4 } }
+        vAxis: {
+          gridlines: {
+            count: 4
+          }
+        }
       };
 
       function placeMarker(dataTable) {
@@ -98,27 +109,27 @@
 </head>
 
 <body class="body">
-<?php include "superadmin_sidebar.php"; ?>
+  <?php include "superadmin_sidebar.php"; ?>
 
   <section class="home-section">
     <h4 class="krona-one-regular">Reports</h4>
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid dashboard-square-kebab mb-4" id="reports-first-graph">
-    <div class="chartWithMarkerOverlay">
+      <div class="chartWithMarkerOverlay">
 
-<div id="line-chart-marker" style="width: 700px; height: 500px;"></div>
+        <div id="line-chart-marker" style="width: 700px; height: 500px;"></div>
 
-<div class="overlay-text">
- <div style="font-family:'Arial Black'; font-size: 128px;">88</div>
- <div style="color: #b44; font-family:'Arial Black'; font-size: 32px; letter-spacing: .21em; margin-top:50px; margin-left:5px;">zombie</div>
- <div style="color: #444; font-family:'Arial Black'; font-size: 32px; letter-spacing: .15em; margin-top:15px; margin-left:5px;">attacks</div>
-</div>
+        <div class="overlay-text">
+          <div style="font-family:'Arial Black'; font-size: 128px;">88</div>
+          <div style="color: #b44; font-family:'Arial Black'; font-size: 32px; letter-spacing: .21em; margin-top:50px; margin-left:5px;">zombie</div>
+          <div style="color: #444; font-family:'Arial Black'; font-size: 32px; letter-spacing: .15em; margin-top:15px; margin-left:5px;">attacks</div>
+        </div>
 
-<div class="overlay-marker">
- <img src="https://developers.google.com/chart/interactive/images/zombie_150.png" height="50">
-</div>
+        <div class="overlay-marker">
+          <img src="https://developers.google.com/chart/interactive/images/zombie_150.png" height="50">
+        </div>
 
-</div>
+      </div>
 
       <!-- Buttons section -->
       <div class="row justify-content-end">
@@ -150,7 +161,8 @@
     </div>
   </section>
 
-  <script>//For sidebar
+  <script>
+    //For sidebar
     let sidebar = document.querySelector(".sidebar");
     let closeBtn = document.querySelector("#btn");
     let searchBtn = document.querySelector(".bx-search");

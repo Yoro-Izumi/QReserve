@@ -1,3 +1,7 @@
+<?php
+include "connect_database.php";
+date_default_timezone_set('Asia/Manila');
+?>
 <!DOCTYPE html>
 <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
 <html lang="en" dir="ltr">

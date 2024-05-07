@@ -1,9 +1,11 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Manila');
+
 include 'connect_database.php';
 include 'encodeDecode.php';
-include 'get_data_from_database/get_super_admin_accounts.php';
-include 'get_data_from_database/get_admin_accounts.php';
+include 'src/get_data_from_database/get_super_admin_accounts.php';
+include 'src/get_data_from_database/get_admin_accounts.php';
 
 //encryptData($data,$key); decryptData($data,$key);
 $key = "TheGreatestNumberIs73";
@@ -11,43 +13,55 @@ $key = "TheGreatestNumberIs73";
 if (isset($_SESSION['userSuperAdminID'])) {
   header('location:dashboard.php');
   die();
-} else if (isset($_SESSION['userAdminID'])) {
-  header('location:dashboard.php');
+}
+if (isset($_SESSION['userAdminID'])) {
+  header('location:logout.php');
   die();
 }
+
 if (isset($_POST['login'])) {
   $username = mysqli_real_escape_string($conn, $_POST['username']);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+  $loggedIn = false;
+
   if (mysqli_num_rows($superAdminAccountConn) > 0) {
     foreach ($arraySuperAdminAccount as $superAdminAccount) {
-      if (decryptData($superAdminAccount['superAdminUsername'], $key) == $username && decryptData($superAdminAccount['superAdminPassword'], $key) == $password) {
-        echo '<script language="javascript">';
-        echo 'alert("You are now logged in!")';
-        echo '</script>';
+      if (decryptData($superAdminAccount['superAdminEmail'], $key) == $username && password_verify($password, $superAdminAccount['superAdminPassword'])) {
         $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
-        header("location:dashboard.php");
-        exit();
-      } else {
-        /*echo '<script language="javascript">';
-        echo 'alert("Username and Password does not exist")';
-        echo '</script>'; */
-        if (mysqli_num_rows($adminAccountConn) > 0) {
-          foreach ($arrayAdminAccount as $adminAccount) {
-            if (decryptData($adminAccount['adminUsername'], $key) == $username && decryptData($adminAccount['adminPassword'], $key) == $password) {
-              echo '<script language="javascript">';
-              echo 'alert("You are now logged in!")';
-              echo '</script>';
-              $_SESSION['userAdminID'] = $adminAccount['adminID'];
-              header("location:dashboard.php");
-              exit();
-            } else {
-              echo '<script language="javascript">';
-              echo 'alert("Username and Password does not exist")';
-              echo '</script>';
-            }
-          }
-        }
+        $loggedIn = true;
+        $logUser = "superAdmin:" . $superAdmin['$superAdminID'];
+        break;
       }
+    }
+  }
+
+  if (!$loggedIn && mysqli_num_rows($adminAccountConn) > 0) {
+    foreach ($arrayAdminAccount as $adminAccount) {
+      if (decryptData($adminAccount['adminEmail'], $key) == $username && password_verify($password, $adminAccount['adminPassword'])) {
+        $_SESSION['userAdminID'] = $adminAccount['adminID'];
+        $loggedIn = true;
+        $logUser = "admin:" . $adminAccount['$adminID'];
+        break;
+      }
+    }
+  }
+
+  if ($loggedIn) {
+    echo '<script language="javascript">';
+    echo 'alert("You are now logged in!")';
+    echo '</script>';
+
+    $accountType = explode(":", $logUser);
+
+    if ($account[0] == "adminID") {
+      $_SESSION['userAdmin'] = $accountType[1];
+      header("location:logout.php");
+      exit();
+    } else {
+      $_SESSION['userSuperAdmin'] = $accountType[1];
+      header("location:dashboard.php");
+      exit();
     }
   } else {
     echo '<script language="javascript">';
@@ -56,6 +70,7 @@ if (isset($_POST['login'])) {
   }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,8 +79,7 @@ if (isset($_POST['login'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
 
-  <link rel="stylesheet" href="./css/landing.css">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="src/css/style.css">
 
   <!-- Fontawesome Link for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -77,55 +91,51 @@ if (isset($_POST['login'])) {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-
+  <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
   <style>
-    .toggle-password {
-      height: 20px;
-      border: none;
-      outline: none;
+    /* Eye Toggle */
+    button.toggle-password {
+      border: none !important;
+      outline: none !important;
       padding: 0;
+      margin: 0;
       display: flex;
       justify-content: center;
-      /* Center horizontally */
       align-items: center;
-      /* Center vertically */
+      background-color: transparent !important;
+      color: gray;
+      margin-right: 5%;
     }
 
-    .toggle-password:focus {
-      outline: none;
-      border: none;
+    button.toggle-password:hover {
+      background-color: transparent !important;
+      color: black !important;
     }
 
-    .toggle-password:hover {
-      background-color: transparent;
-      border: none;
-      color: black;
+    button.toggle-password:focus,
+    button.toggle-password:active {
+      background-color: transparent !important;
+      color: gray !important;
     }
 
-    .toggle-password i {
+    button.toggle-password i {
       pointer-events: none;
-      border: none;
     }
 
-    /* Additional styles to adjust the icon size */
-    .toggle-password i {
+    button.toggle-password i {
       font-size: 1.2rem;
-      /* Adjust the size as needed */
     }
   </style>
 
+
 </head>
 
-<body id="customer-landing">
-
-  <!-- <section class="homepage" id="home"> -->
-  <section class="homepage" id="home">
-    <div class="content container-fluid">
-      <div class="text">
-        <img src="./images/Bevitore Billiards Hall Logo.png" alt="" height="150px">
-        <h1 class="krona-one-regular mb-0">QReserve</h1>
-        <h6 class="m-0 pb-0 index-sub">BEVITORE SANTA ROSA</h6>
-      </div>
+<body class="index-landing">
+  <div class="container-fluid homepage">
+    <div class="home">
+      <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
+      <h1 class="qreserve" id="index-qreserve">QReserve</h1>
+      <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
       <div class="container-fluid login">
         <div class="row">
           <form action="login.php" method="POST">
@@ -137,10 +147,11 @@ if (isset($_POST['login'])) {
             <div class="form-floating mb-2 position-relative">
               <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
               <label for="floatingPassword">Password</label>
-              <button class="btn btn-outline-secondary toggle-password position-absolute end-0 top-50 translate-middle-y p-4" type="button">
-                <i class="fas fa-eye"></i>
+              <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
+                <i class="fas fa-eye-slash"></i>
               </button>
             </div>
+
             <a href="" class="forgot-password">Forgot Password</a>
             <div class="">
               <button type="submit" name="login" class="btn btn-primary w-100 login-button mt-4">Sign In</button>
@@ -150,7 +161,8 @@ if (isset($_POST['login'])) {
         </div>
       </div>
     </div>
-  </section>
+  </div>
+
 
   <script>
     // For password toggle
