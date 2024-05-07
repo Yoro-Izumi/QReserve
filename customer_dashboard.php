@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('Asia/Manila');
- if(isset($_SESSION['userMemberID'])){
+if (isset($_SESSION['userMemberID'])) {
   $userID = $_SESSION['userMemberID'];
   include "connect_database.php";
   include "encodeDecode.php";
@@ -9,20 +9,21 @@ date_default_timezone_set('Asia/Manila');
   include "src/get_data_from_database/get_member_account.php";
   include "src/get_data_from_database/get_customer_information.php";
   $key = "TheGreatestNumberIs73";
-    foreach($arrayMemberAccount as $memberAccount){
-        if($memberAccount["memberID"] == $userID){
-          $customerID = $memberAccount['customerID'];
-          $validityDate = $memberAccount['validityDate'];
-            foreach($arrayCustomerInformation as $customerInformation){
-                if($customerInformation["customerID"] == $customerID){
-                  $customerName = decryptData($customerInformation['customerFirstName'],$key)." ".decryptData($customerInformation['customerMiddleName'],$key)." ".decryptData($customerInformation['customerLastName'],$key);
-                }
-            }
+  foreach ($arrayMemberAccount as $memberAccount) {
+    if ($memberAccount["memberID"] == $userID) {
+      $customerID = $memberAccount['customerID'];
+      $validityDate = $memberAccount['validityDate'];
+      foreach ($arrayCustomerInformation as $customerInformation) {
+        if ($customerInformation["customerID"] == $customerID) {
+          $customerName = decryptData($customerInformation['customerFirstName'], $key) . " " . decryptData($customerInformation['customerMiddleName'], $key) . " " . decryptData($customerInformation['customerLastName'], $key);
         }
+      }
     }
+  }
 ?>
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <title>Home</title>
@@ -37,16 +38,15 @@ date_default_timezone_set('Asia/Manila');
     <!-- Montserrat Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
     <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+    <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
   </head>
+
   <body class="body">
     <header>
       <nav class="navbar p-0">
@@ -54,8 +54,8 @@ date_default_timezone_set('Asia/Manila');
         <input type="checkbox" id="menu-toggler">
         <label for="menu-toggler" id="hamburger-btn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z"/>
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z" />
           </svg>
         </label>
         <ul class="all-links">
@@ -67,185 +67,121 @@ date_default_timezone_set('Asia/Manila');
     </header>
 
 
-      <h3 class="krona-one-regular mt-5 pt-3 mb-0">Welcome <?php echo $customerName;?>!</h3>
-      <div class="d-flex justify-content-between align-items-center">
-        <h4 class="fw-bold mt-4 mb-0">Active Playing</h4>
-        <a href="booking_form.php" type="button" class="btn btn-primary fw-bold mb-0 mt-3" id="add-new-profile">Create Reservation</a>
-      </div>
-      <hr class="my-4 mb-3 mt-3">
-      <div class="container-fluid table-container dashboard-square-kebab" id="home-active-playing">
-        <table id="example" class="table table-striped" style="width: 100%">
-          <thead>
+    <h3 class="krona-one-regular mt-5 pt-3 mb-0">Welcome <?php echo $customerName; ?>!</h3>
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="fw-bold mt-4 mb-0">Active Playing</h4>
+      <a href="booking_form.php" type="button" class="btn btn-primary fw-bold mb-0 mt-3 create-reservation" id="create-reservation">Create Reservation</a>
+    </div>
+    <hr class="my-4 mb-3 mt-3">
+    <div class="container-fluid table-container dashboard-square-kebab" id="home-active-playing">
+      <table id="example" class="table table-striped" style="width: 100%">
+        <thead>
+          <tr>
+            <th>Pool Table</th>
+            <th>Time Started</th>
+            <th>Expected End Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($arrayPoolTables as $poolTables) {
+            if ($poolTables['customerName'] == NULL) {
+              $customerName = "None";
+            } else {
+              $customerName = $poolTables['customerName'];
+            }
+            $poolTableStatus = $poolTables['poolTableStatus'];
+            $poolTableNumber = $poolTables['poolTableNumber'];
+            $timeStarted = explode(' ', $poolTables['timeStarted']);
+            $timeEnd = explode(' ', $poolTables['timeEnd']);
+          ?>
             <tr>
-              <th>Pool Table</th>
-              <th>Time Started</th>
-              <th>Expected End Time</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($arrayPoolTables as $poolTables){
-              if($poolTables['customerName'] == NULL){
-                $customerName = "None";
+              <th><?php echo $poolTableNumber; ?></th>
+              <td><?php echo $timeStarted[1]; ?></td>
+              <td><?php echo $timeEnd[1]; ?></td>
+              <?php
+              if ($poolTableStatus == "Done" || $poolTableStatus == "Available") {
+                $status = "badge bg-success";
+              } else if ($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting") {
+                $status = "badge bg-warning";
+              } else {
+                $status = "badge bg-danger";
               }
-              else{ $customerName = $poolTables['customerName']; }
-              $poolTableStatus = $poolTables['poolTableStatus']; $poolTableNumber = $poolTables['poolTableNumber']; 
-              $timeStarted = explode(' ',$poolTables['timeStarted']); 
-              $timeEnd = explode(' ',$poolTables['timeEnd']); 
-            ?>
-            <tr>
-              <th><?php echo $poolTableNumber;?></th>
-              <td><?php echo $timeStarted[1];?></td>
-              <td><?php echo $timeEnd[1];?></td>
-              <?php 
-                if($poolTableStatus == "Done" || $poolTableStatus == "Available"){
-                  $status = "badge bg-success";
-                }
-                else if($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting"){
-                  $status = "badge bg-warning";
-                }
-                else{
-                  $status = "badge bg-danger";
-                }
               ?>
-              <td><span class="<?php echo $status;?>"><?php echo $poolTableStatus;?></span></td>
+              <td><span class="<?php echo $status; ?>"><?php echo $poolTableStatus; ?></span></td>
             </tr>
-            <?php }?>
-          </tbody>
-        </table>
-      </div>
+          <?php } ?>
+        </tbody>
+      </table>
+    </div>
 
-      <div class="container-fluid mt-4">
-        <div class="row justify-content-center text-center">
-          <div class="col-md-4 mb-3">
-            <div class="dashboard-square-kebab">
-              Membership valid until
-              <h1><?php echo $validityDate;?></h1>
-            </div>
+    <div class="container-fluid mt-4">
+      <div class="row justify-content-center text-center">
+        <div class="col-md-4 mb-3">
+          <div class="dashboard-square-kebab">
+            Membership valid until
+            <h1><?php echo $validityDate; ?></h1>
           </div>
-          <div class="col-md-4 mb-3">
-            <div class="dashboard-square-kebab">
-              <div
-              id="service-carousel"
-              class="carousel slide carousel-height"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img
-                    src="src/images/Services/Membership.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="src/images/Services/Billiards Hall.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="src/images/Services//KTV Room 1.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-              </div>
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#service-carousel"
-                data-bs-slide="prev"
-              >
-                <span
-                  class="carousel-control-prev-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#service-carousel"
-                data-bs-slide="next"
-              >
-                <span
-                  class="carousel-control-next-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-            </div>
-          </div>
-  
-          <div class="col-md-4 mb-3">
-            <div class="dashboard-square-kebab">
-              <div
-              id="pubmat-carousel"
-              class="carousel slide carousel-height"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img
-                    src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-              </div>
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#pubmat-carousel"
-                data-bs-slide="prev"
-              >
-                <span
-                  class="carousel-control-prev-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#pubmat-carousel"
-                data-bs-slide="next"
-              >
-                <span
-                  class="carousel-control-next-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-            </div>
-          </div>  
-  
         </div>
+        <div class="col-md-4 mb-3">
+          <div class="dashboard-square-kebab">
+            <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="src/images/Services/Membership.jpg" class="d-block w-100" alt="..." />
+                </div>
+                <div class="carousel-item">
+                  <img src="src/images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
+                </div>
+                <div class="carousel-item">
+                  <img src="src/images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#service-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <div class="dashboard-square-kebab">
+            <div id="pubmat-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100" alt="..." />
+                </div>
+                <div class="carousel-item">
+                  <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100" alt="..." />
+                </div>
+                <div class="carousel-item">
+                  <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100" alt="..." />
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#pubmat-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#pubmat-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
-      
+    </div>
+
 
 
     <script>
-      $(document).ready(function () {
+      $(document).ready(function() {
         $("#example").DataTable({
           paging: true,
           lengthChange: false, // Disable length change
@@ -256,22 +192,22 @@ date_default_timezone_set('Asia/Manila');
           responsive: true,
         });
       });
-    
+
       let sidebar = document.querySelector(".sidebar");
       let closeBtn = document.querySelector("#btn");
       let searchBtn = document.querySelector(".bx-search");
-    
+
       closeBtn.addEventListener("click", () => {
         sidebar.classList.toggle("open");
         menuBtnChange(); //calling the function(optional)
       });
-    
+
       searchBtn.addEventListener("click", () => {
         // Sidebar open when you click on the search icon
         sidebar.classList.toggle("open");
         menuBtnChange(); //calling the function(optional)
       });
-    
+
       // following are the code to change sidebar button(optional)
       function menuBtnChange() {
         if (sidebar.classList.contains("open")) {
@@ -281,12 +217,12 @@ date_default_timezone_set('Asia/Manila');
         }
       }
     </script>
-</body>
-</html>
+  </body>
+
+  </html>
 <?php
- }
-  else{
-    header('location:customer_login.php');
-    exit();
-  } 
+} else {
+  header('location:customer_login.php');
+  exit();
+}
 ?>

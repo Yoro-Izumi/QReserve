@@ -79,7 +79,6 @@ if (isset($_POST['login'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
 
-  <link rel="stylesheet" href="src/css/landing.css">
   <link rel="stylesheet" href="src/css/style.css">
 
   <!-- Fontawesome Link for Icons -->
@@ -92,7 +91,7 @@ if (isset($_POST['login'])) {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-
+  <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
   <style>
     /* Eye Toggle */
     button.toggle-password {
@@ -131,16 +130,12 @@ if (isset($_POST['login'])) {
 
 </head>
 
-<body id="customer-landing">
-
-  <!-- <section class="homepage" id="home"> -->
-  <section class="homepage" id="home">
-    <div class="content container-fluid">
-      <div class="text">
-        <img src="src/images/Bevitore Billiards Hall Logo.png" alt="" height="150px">
-        <h1 class="krona-one-regular mb-0">QReserve</h1>
-        <h6 class="m-0 pb-0 index-sub">BEVITORE SANTA ROSA</h6>
-      </div>
+<body class="index-landing">
+  <div class="container-fluid homepage">
+    <div class="home">
+      <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
+      <h1 class="qreserve" id="index-qreserve">QReserve</h1>
+      <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
       <div class="container-fluid login">
         <div class="row">
           <form action="login.php" method="POST">
@@ -166,7 +161,8 @@ if (isset($_POST['login'])) {
         </div>
       </div>
     </div>
-  </section>
+  </div>
+
 
   <script>
     // For password toggle
