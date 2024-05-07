@@ -26,7 +26,7 @@ date_default_timezone_set('Asia/Manila');
 
 </head>
 
-<body id="customer-landing">
+<body class="customer-landing">
   <header>
     <nav class="navbar">
       <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />

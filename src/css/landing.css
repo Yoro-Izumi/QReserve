@@ -10,11 +10,12 @@ html {
   scroll-behavior: smooth;
 }
 
-#customer-landing {
+.customer-landing {
   background: #f2f2f2;
   font-family: "Montserrat", sans-serif;
   min-height: 100vh;
   padding: 0%;
+  
 }
 
 header {

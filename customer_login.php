@@ -63,53 +63,49 @@ if (isset($_POST['login_member'])) {
   <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
 
   <style>
-    .toggle-password {
-      height: 20px;
-      border: none;
-      outline: none;
+    /* Eye Toggle */
+    button.toggle-password {
+      border: none !important;
+      outline: none !important;
       padding: 0;
+      margin: 0;
       display: flex;
       justify-content: center;
-      /* Center horizontally */
       align-items: center;
-      /* Center vertically */
+      background-color: transparent !important;
+      color: gray;
+      margin-right: 5%;
     }
 
-    .toggle-password:focus {
-      outline: none;
-      border: none;
+    button.toggle-password:hover {
+      background-color: transparent !important;
+      color: black !important;
     }
 
-    .toggle-password:hover {
-      background-color: transparent;
-      border: none;
-      color: black;
+    button.toggle-password:focus,
+    button.toggle-password:active {
+      background-color: transparent !important;
+      color: gray !important;
     }
 
-    .toggle-password i {
+    button.toggle-password i {
       pointer-events: none;
-      border: none;
     }
 
-    /* Additional styles to adjust the icon size */
-    .toggle-password i {
+    button.toggle-password i {
       font-size: 1.2rem;
-      /* Adjust the size as needed */
     }
   </style>
 
 </head>
 
-<body id="customer-landing">
+<body class="customer-landing">
 
-  <!-- <section class="homepage" id="home"> -->
-  <section class="homepage" id="home">
+  <div class="homepage" id="home">
     <div class="content container-fluid">
-      <div class="text">
-        <img src="src/images/Bevitore Billiards Hall Logo.png" alt="" height="150px">
-        <h1 class="krona-one-regular mb-0">QReserve</h1>
-        <h6 class="m-0 pb-0 index-sub">BEVITORE SANTA ROSA</h6>
-      </div>
+    <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
+      <h1 class="qreserve" id="index-qreserve">QReserve</h1>
+      <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
       <div class="container-fluid login">
         <div class="row">
           <form action="customer_login.php" method="POST">
@@ -121,8 +117,8 @@ if (isset($_POST['login_member'])) {
             <div class="form-floating mb-3 position-relative">
               <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required />
               <label for="floatingPassword">Password</label>
-              <button class="btn btn-outline-secondary toggle-password position-absolute end-0 top-50 translate-middle-y p-4" type="button">
-                <i class="fas fa-eye"></i>
+              <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
+                <i class="fas fa-eye-slash"></i>
               </button>
             </div>
             <div class="">
@@ -132,10 +128,10 @@ if (isset($_POST['login_member'])) {
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <script>
-    // For password togggle
+    // For password toggle
     document.addEventListener("DOMContentLoaded", function() {
       const togglePassword = document.querySelector(".toggle-password");
       const passwordInput = document.querySelector("#floatingPassword");
