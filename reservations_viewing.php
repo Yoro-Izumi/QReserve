@@ -60,59 +60,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab">
         <table id="example" class="table table-striped" style="width: 100%">
-          <thead>
-            <tr>
-              <th>Actions</th>
-              <th>Name</th>
-              <th>Date of Reservation</th>
-              <th>Time of Reservation</th>
-              <th>Pool Table</th>
-              <th>Contact Number</th>
-              <th>Email Address</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($arrayReservationInfo as $reservations) {
-              $reservationDate = $reservations['reservationDate'];
-              $reservationStatus = $reservations['reservationStatus'];
-              $reservationTimeStart = $reservations['reservationTimeStart'];
-              $reservationTimeEnd = $reservations['reservationTimeEnd'];
-              $tableNumber = $reservations['poolTableNumber'];
-              foreach ($arrayMemberAccount as $members) {
-                if ($members['memberID'] == $reservations['memberID']) {
-                  $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
-                  $contactNumber = decryptData($members['customerNumber'], $key);
-                  $email = decryptData($members['customerEmail'], $key);
-                } else {
-                  $customerName = "";
-                  $contactNumber = "";
-                  $email = "";
-                }
-              }
-            ?>
-              <tr>
-                <td><input type="checkbox" value="<?php echo $reservations['reservationID']; ?>"></td>
-                <td><?php echo $customerName; ?></td>
-                <td><?php echo $reservationDate; ?></td>
-                <td><?php echo $reservationTimeStart; ?> - <?php echo $reservationTimeEnd; ?></td>
-                <td><?php echo $tableNumber; ?></td>
-                <td><?php echo $contactNumber; ?></td>
-                <td><?php echo $email; ?></td>
-                <?php
-                if ($reservationStatus == "Paid" || $reservationStatus == "Done") {
-                  $status = "badge bg-success";
-                } else if ($reservationStatus == "On Process" || $reservationStatus == "Pending") {
-                  $status = "badge bg-warning";
-                } else {
-                  $status = "badge bg-danger";
-                }
-                ?>
-                <td><span class="<?php echo $status; ?>"><?php echo $reservationStatus; ?></span></td>
-
-              </tr>
-            <?php } ?>
-          </tbody>
+          <!--dynamically updates table when new data is entered-->
         </table>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
@@ -245,6 +193,28 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }
       }
     </script>
+
+<script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'reservation_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#example').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+    </script>
+
   </body>
 
   </html>

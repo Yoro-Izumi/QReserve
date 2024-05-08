@@ -7,40 +7,6 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   $superAdminID = $_SESSION["userSuperAdminID"];
-  if (isset($_POST['submitAdmin'])) {
-    $firstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
-    $lastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
-    $middleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
-    $email = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
-    $username = encryptData(mysqli_real_escape_string($conn, $_POST['username']), $key);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $sex = encryptData(mysqli_real_escape_string($conn, $_POST['sex']), $key);
-    $contactNumber = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
-    $shift = intVal($_POST['adminShift']);
-
-    // Hash the password using Argon2
-    $options = [
-      'memory_cost' => 1 << 17, // 128MB memory cost (default)
-      'time_cost' => 4,       // 4 iterations (default)
-      'threads' => 3,         // Use 3 threads for processing (default)
-    ];
-    $hashedPassword = password_hash($password, PASSWORD_ARGON2I, $options);
-
-    // here is where information of admin is inserted
-    $qryInsertAdminInfo = "INSERT INTO `admin_info`(`adminInfoID`, `adminLastName`, `adminFirstName`, `adminMiddleName`, `adminSex`, `adminContactNumber`, `adminEmail`) VALUES (NULL,?,?,?,?,?,?)";
-    $conInsertAdminInfo = mysqli_prepare($conn, $qryInsertAdminInfo);
-    mysqli_stmt_bind_param($conInsertAdminInfo, 'ssssss', $lastName, $firstName, $middleName, $sex, $contactNumber, $email);
-    mysqli_stmt_execute($conInsertAdminInfo);
-
-    //get the id of admin info that was inserted
-    $adminInfoID = mysqli_insert_id($conn);
-
-    //here is where the admin account is inserted
-    $qryInsertAdminAccount = "INSERT INTO `admin_accounts`(`adminID`, `superAdminID`, `adminInfoID`,`adminShiftID`, `adminUsername`, `adminPassword`) VALUES (NULL,?,?,?,?,?)";
-    $conInsertAdminAccount = mysqli_prepare($conn, $qryInsertAdminAccount);
-    mysqli_stmt_bind_param($conInsertAdminAccount, 'iiiss', $superAdminID, $adminInfoID, $shift, $username, $hashedPassword);
-    mysqli_stmt_execute($conInsertAdminAccount);
-  }
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -227,7 +193,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin" type="submit">Create</button>
             </div>
             <div class="col-12 col-md-2">
               <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
@@ -377,7 +343,33 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
+ <script>
+    //add admin
+    $(document).ready(function(){
+        $('#submitAdmin').click(function(e){
+            e.preventDefault();
 
+            var formData = new FormData($('#add-new-profile-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    alert(response); // For demonstration purposes, you can display an alert with the response
+                    location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 
   </body>
 

@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serviceImageNewName = $serviceName .".". $serviceImageActualExt; 
         $serviceImage = $serviceImageNewName;
         //Upload the image to the server
-        $serviceImageLocation = "images/Services/". $serviceImage;
+        $serviceImageLocation = "src/images/Services/". $serviceImage;
         move_uploaded_file($serviceImageTmpName, $serviceImageLocation); 
 
         //add price
@@ -63,7 +63,7 @@ if(isset($_POST['selectedRows'])){
             $serviceImage = $rowGetServiceImage['serviceImage']."";
             
             // Define the directory path where the image files are stored
-            $directory = 'images/Services/';
+            $directory = 'src/images/Services/';
 
             // Check if the file exists before attempting to delete it
             if (file_exists($directory . $serviceImage)) {

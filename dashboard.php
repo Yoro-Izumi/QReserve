@@ -48,6 +48,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <section class="home-section">
       <h4 class="qreserve">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
+      
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
           <!--table data is dynamicaly updated and is from pool_table.php-->

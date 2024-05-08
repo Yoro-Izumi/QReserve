@@ -6,45 +6,6 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   $userSuperAdmin = $_SESSION["userSuperAdminID"];
-  if (isset($_POST['submitMember'])) {
-    $customerFirstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
-    $customerLastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
-    $customerMiddleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
-    $customerEmail = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
-    $customerPhone = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
-    $customerBirthdate = encryptData(mysqli_real_escape_string($conn, $_POST['birthDate']), $key);
-    $memberControlNumber = encryptData(mysqli_real_escape_string($conn, $_POST['controlNumber']), $key);
-    $memberPassword = mysqli_real_escape_string($conn, $_POST['password']);
-    $memberValidity = mysqli_real_escape_string($conn, $_POST['validity']);
-    $x = "None";
-    $y = 1;
-
-    // Hash the password using Argon2
-    $options = [
-      'memory_cost' => 1 << 17, // 128MB memory cost (default)
-      'time_cost' => 4,       // 4 iterations (default)
-      'threads' => 3,         // Use 3 threads for processing (default)
-    ];
-    $hashedPassword = password_hash($memberPassword, PASSWORD_ARGON2I, $options);
-
-    // Parse HTML date string into a DateTime object
-    $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
-    // Convert DateTime object to SQL date format (YYYY-MM-DD)
-    $sqlDate = $date->format('Y-m-d');
-    //current date
-    $currentDate = date('Y-m-d');
-
-    $qryInsertCustomerInfo = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`) VALUES (NULL,?,?,?,?,?,?)";
-    $conInsertCustomerInfo = mysqli_prepare($conn, $qryInsertCustomerInfo);
-    mysqli_stmt_bind_param($conInsertCustomerInfo, "ssssss", $customerFirstName, $customerLastName, $customerMiddleName, $customerBirthdate, $customerPhone, $customerEmail);
-    mysqli_stmt_execute($conInsertCustomerInfo);
-    $customerID = mysqli_insert_id($conn);
-
-    $qryInsertMemberDetails = "INSERT INTO `member_details`(`memberID`, `membershipID`, `perk_id`, `membershipPassword`, `customerID`, `creationDate`, `validityDate`, `superAdminID`) VALUES (NULL,?,?,?,?,?,?,?)";
-    $conInsertMemberDetails = mysqli_prepare($conn, $qryInsertMemberDetails);
-    mysqli_stmt_bind_param($conInsertMemberDetails, "sssssss", $memberControlNumber, $y, $hashedPassword, $customerID, $currentDate, $sqlDate, $userSuperAdmin);
-    mysqli_stmt_execute($conInsertMemberDetails);
-  }
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -208,7 +169,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
               <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
-              <button class="btn btn-primary w-100 create-button" name="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitMember" id="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
             </div>
         </form>
         <div class="col-12 col-md-2">
@@ -405,6 +366,34 @@ if (isset($_SESSION["userSuperAdminID"])) {
         validityInput.setAttribute("max", maxDateString);
       });
     </script>
+
+<script>
+    //add admin
+    $(document).ready(function(){
+        $('#submitMember').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#add-new-profile-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'member_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    alert(response); // For demonstration purposes, you can display an alert with the response
+                    location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 
   </body>
 

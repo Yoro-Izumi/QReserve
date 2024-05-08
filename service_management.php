@@ -57,32 +57,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid dashboard-square-kebab" id="profile-management">
       <table id="example" class="table table-striped" style="width: 100%">
-        <thead>
-          <tr>
-          <tr>
-            <th>Actions</th>
-            <th>Service Name</th>
-            <th>Rates</th>
-            <th>Capacity</th>
-            <th>Image</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php foreach($arrayServices as $services){
-        ?>
-          <tr>
-            <td><input type="checkbox" class="service-checkbox" name="serviceID[]" value="<?php echo $services['serviceID']; ?>"></td>
-            <td><?php echo $services['serviceName'];?></td>
-            <td><?php echo $services['normalPrice'];?></td>
-            <td><?php echo $services['serviceCapacity'];?></td>
-            <td><?php echo $services['serviceImage'];?></td>
-          </tr>
-        <?php }?>
-        </tbody>
+        <!--dynamically changes the table when new data is inserted-->
       </table>
       <div class="mt-3">
         <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal" id="delete-service">Delete Selected</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service">Delete Selected</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service">Edit Selected</button>
         <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
       </div>
@@ -129,33 +108,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <!-- <div class="valid-feedback">
                 Looks good!
             </div> -->
-            <div class="invalid-feedback">
-              Please enter a valid capacity.
-            </div>
-          </div>
-          <div class="col-12 col-md-12 mb-3">
-            <label for="image" class="form-label">Image <span>*</span></label>
-            <input type="file" class="form-control" name="serviceImage" id="image" accept=".jpg, .jpeg, .png" required>
-            <div class="invalid-feedback">
-              Please enter a valid capacity.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-      <button type="button" name="add_service_button" id="add_service_button" class="btn btn-primary create-button" data-bs-target="#confirm-add-service-modal" data-bs-toggle="modal">Confirm</button> 
-      <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button> 
-    </div>
-    </div>
-  </div>
-</div>
                   <div class="invalid-feedback">
                     Please enter a valid capacity.
                   </div>
                 </div>
                 <div class="col-12 col-md-12 mb-3">
                   <label for="image" class="form-label">Image <span>*</span></label>
-                  <input type="file" class="form-control" name="image" id="image" accept=".jpg, .jpeg, .png" required>
+                  <input type="file" class="form-control" name="serviceImage" id="serviceImage" accept=".jpg, .jpeg, .png" required>
                   <div class="invalid-feedback">
                     Please enter a valid capacity.
                   </div>
@@ -165,7 +124,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal" id="confirm_add_service_button">Confirm</button>
           </div>
         </div>
       </div>
@@ -254,6 +213,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h1 class="modal-title  fw-bold text-center" id="staticBackdropLabel"><img src="src/images/icons/pencil.gif" alt="Wait Icon" class="modal-icons">Edit Service</h1>
           </div>
           <div class="modal-body">
+            <form type="hidden" id="editForm"><input id="editID" value=""></form>
             <form class="needs-validation" id="add-new-profile-form" novalidate action="BABAGUHIN ITU.php" method="POST" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-12 col-md-12 mb-3">
@@ -461,7 +421,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
 <script>
   $(document).ready(function(){
         // AJAX code to handle deletion
-        $("#confirm-delete-button").click(function(){
+        $("#delete-service").click(function(){
             // Array to store IDs of selected rows
             var selectedRows = [];
 
@@ -487,6 +447,84 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
     });
 </script>
+
+<script>
+  $(document).ready(function() {
+    var intervalID; // Define intervalID variable outside to make it accessible across functions
+
+    // Function to update table content
+    function updateTable() {
+      $.ajax({
+        url: 'service_table.php', // Change this to the PHP file that contains the table content
+        type: 'GET',
+        success: function(response) {
+          $('#example').html(response);
+          attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
+        }
+      });
+    }
+
+    // Function to start interval
+    function startInterval() {
+      intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
+    }
+
+    // Function to stop interval
+    function stopInterval() {
+      clearInterval(intervalID);
+    }
+
+    // Attach event listeners for checkboxes
+    function attachCheckboxListeners() {
+      const checkboxes = document.querySelectorAll('.service-checkbox');
+const checkboxValue = document.getElementById('editID');
+var editServiceButton = document.getElementById('edit-service');
+var deleteServiceButton = document.getElementById('delete-service');
+var checkedCount = 0;
+
+editServiceButton.disabled = true;
+
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            checkedCount++;
+            if (checkedCount === 1) {
+                // If only one checkbox is checked, set its value
+                checkboxValue.value = this.value;
+            }
+        } else {
+            checkedCount--;
+            if (checkedCount === 1) {
+                // If only one checkbox remains checked after unchecking this one, find and set its value
+                const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
+                if (remainingCheckbox) {
+                    checkboxValue.value = remainingCheckbox.value;
+                }
+            } else {
+                // If no or multiple checkboxes are checked, clear the value
+                checkboxValue.value = " ";
+            }
+        }
+        editServiceButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
+          
+        // Stop or start interval based on checkbox status
+        if (checkedCount > 0) {
+            stopInterval();
+        } else {
+            startInterval();
+        }
+    });
+});
+
+    }
+
+    // Initial table update and start interval
+    updateTable();
+    startInterval();
+  });
+</script>
+
+
 
   </body>
 

@@ -60,41 +60,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="profile-management">
         <table id="example" class="table table-striped" style="width: 100%">
-          <thead>
-            <tr>
-            <tr>
-              <th>Actions</th>
-              <th>Name</th>
-              <th>Username</th>
-              <th>Birthday</th>
-              <th>Contact Number</th>
-              <th>Email Address</th>
-              <th>Validity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            foreach ($arrayMemberAccount as $memberAccount) { //get membership details as well as information of member
-              $memberID = $memberAccount["memberID"];
-              $memberUsername = decryptData($memberAccount["membershipID"], $key);
-              $membershipValidity = $memberAccount["validityDate"];
-              $customerName = decryptData($memberAccount['customerFirstName'], $key) . " " . decryptData($memberAccount['customerMiddleName'], $key) . " " . decryptData($memberAccount['customerLastName'], $key);
-              $customerBirthdate = decryptData($memberAccount['customerBirthdate'], $key);
-              $customerPhone = decryptData($memberAccount['customerNumber'], $key);
-              $customerEmail = decryptData($memberAccount['customerEmail'], $key);
-
-            ?>
-              <tr>
-                <td><input type="checkbox" value="<?php echo $memberID; ?>"></td>
-                <td><?php echo $customerName; ?></td>
-                <td><?php echo $memberUsername; ?></td>
-                <td><?php echo $customerBirthdate; ?></td>
-                <td><?php echo $customerPhone; ?></td>
-                <td><?php echo $customerEmail; ?></td>
-                <td><?php echo $membershipValidity; ?></td>
-              </tr>
-            <?php } ?>
-          </tbody>
+          <!--member will dynamically update when new data is inserted-->
         </table>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button>
@@ -198,6 +164,27 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }
       }
     </script>
+    <script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'member_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#example').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+    </script>
+
   </body>
 
   </html>
