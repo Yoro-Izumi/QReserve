@@ -46,5 +46,27 @@ if (isset($_SESSION["userSuperAdminID"])) {
     mysqli_stmt_execute($conInsertMemberDetails);
     unset($_POST['firstName']);
   }
+
+  if(isset($_POST['selectedRows'])){ 
+    $selectedRows = $_POST['selectedRows'];
+        foreach($selectedRows as $rowId){
+            //delete member account
+            $qryDeleteMemberAccount = "DELETE FROM `member_details` WHERE customerID = ?";
+            $connDeleteMemberAccount = mysqli_prepare($conn, $qryDeleteMemberAccount);
+            mysqli_stmt_bind_param($connDeleteMemberAccount,'i',$rowId);
+            mysqli_stmt_execute($connDeleteMemberAccount);
+
+            //delete member info (customer_information)
+            $qryDeleteMemberInfo = "DELETE FROM `customer_info` WHERE customerID = ?";
+            $connDeleteMemberInfo = mysqli_prepare($conn, $qryDeleteMemberInfo);
+            mysqli_stmt_bind_param($connDeleteMemberInfo,'i',$rowId);
+            mysqli_stmt_execute($connDeleteMemberInfo);
+        }
+      // Assuming you want to return a success message
+        echo "Rows deleted successfully";
+        unset($_POST['selectedRows']);
 }
+
+}
+
 ?>

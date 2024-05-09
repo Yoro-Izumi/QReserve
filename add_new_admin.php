@@ -359,7 +359,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 contentType: false,
                 success: function(response){
                     // Handle success response here
-                    alert(response); // For demonstration purposes, you can display an alert with the response
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
                     location.reload();
                   },
                 error: function(xhr, status, error){

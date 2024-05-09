@@ -41,7 +41,7 @@ foreach ($arrayReservationInfo as $reservations) {
   }
 echo"
   <tr>
-    <td><input type='checkbox' value='{$reservations['reservationID']}'></td>
+    <td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>
     <td>$customerName</td>
     <td>$reservationDate</td>
     <td>$reservationTimeStart - $reservationTimeEnd</td>

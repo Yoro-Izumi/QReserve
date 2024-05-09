@@ -23,7 +23,7 @@ echo"
 <tbody>";
 
 foreach ($arrayMemberAccount as $memberAccount) { //get membership details as well as information of member
-  $memberID = $memberAccount["memberID"];
+  $customerID = $memberAccount["customerID"];
   $memberUsername = decryptData($memberAccount["membershipID"], $key);
   $membershipValidity = $memberAccount["validityDate"];
   $customerName = decryptData($memberAccount['customerFirstName'], $key) . " " . decryptData($memberAccount['customerMiddleName'], $key) . " " . decryptData($memberAccount['customerLastName'], $key);
@@ -32,7 +32,7 @@ foreach ($arrayMemberAccount as $memberAccount) { //get membership details as we
   $customerEmail = decryptData($memberAccount['customerEmail'], $key);
 echo"
   <tr>
-    <td><input type='checkbox' value='$memberID'></td>
+    <td><input class='member-checkbox' type='checkbox' value='$customerID'></td>
     <td>$customerName</td>
     <td>$memberUsername</td>
     <td>$customerBirthdate</td>

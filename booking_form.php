@@ -26,7 +26,7 @@ if (isset($_SESSION['userMemberID'])) {
             }
         }
     }
-    include "submit_customer_reservation.php";
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -50,6 +50,12 @@ if (isset($_SESSION['userMemberID'])) {
         <!-- Bootstrap 5 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+        <!-- jQuery -->
+        <script src="src/js/jquery-3.7.1.js"></script>
+        <!-- Datatables JS -->
+        <script src="src/js/jquery.dataTables.min.js"></script>
+        <script src="src/js/dataTables.bootstrap5.min.js"></script>
 
         <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
     </head>
@@ -84,7 +90,7 @@ if (isset($_SESSION['userMemberID'])) {
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="fw-bold ps-4">Fill up the form</h3>
-                    <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate action="booking_form.php" method="POST" enctype="multipart/form-data">
+                    <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate>
                         <div class="row">
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -304,7 +310,7 @@ if (isset($_SESSION['userMemberID'])) {
                         </div>
                         <div class="row justify-content-end mt-5">
                             <div class="col-12 col-md-2 mb-3 mb-md-0">
-                                <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Create</button>
+                                <button class="btn btn-primary w-100 create-button" name="submitReserve" id="submitReserve" type="submit">Create</button>
                             </div>
                             <div class="col-12 col-md-2">
                                 <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
@@ -422,7 +428,33 @@ if (isset($_SESSION['userMemberID'])) {
         document.getElementById('hiddenEmail').value = document.getElementById('email').value;
     });
 </script>
+<script>
+    //add admin
+    $(document).ready(function(){
+        $('#submitReserve').click(function(e){
+            e.preventDefault();
 
+            var formData = new FormData($('#booking-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'reservation_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 
 
     </body>

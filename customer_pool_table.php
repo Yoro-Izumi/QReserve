@@ -13,7 +13,6 @@ date_default_timezone_set('Asia/Manila');
 
 echo "<thead>
           <tr>
-            <th>Name</th>
             <th>Pool Table</th>
             <th>Time Started</th>
             <th>Expected End Time</th>
@@ -49,18 +48,17 @@ $currentTime = date('H:i:s');
 
                 }
                 else{
-                  $poolStatus = "Available";
-                  $insertTimeEnd = $currentDate." 00:00:00";
-                  $insertTimeStart = $currentDate." 00:00:00"; 
-                  $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-                  $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-                  mysqli_stmt_bind_param($stmt, "siss", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
-                  mysqli_stmt_execute($stmt);
-              }
+                    $poolStatus = "Available";
+                    $insertTimeEnd = $currentDate." 00:00:00";
+                    $insertTimeStart = $currentDate." 00:00:00"; 
+                    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+                    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+                    mysqli_stmt_bind_param($stmt, "siss", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
+                    mysqli_stmt_execute($stmt);
+                }
             }
             
             echo "<tr>
-              <td>".$customerName."</td>
               <td>".$poolTableNumber."</td>
               <td>".$timeStarted[1]."</td>
               <td>".$timeEnd[1]."</td>";

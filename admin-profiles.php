@@ -103,7 +103,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully deleted this account.
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button onclick="reload()" class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
@@ -263,7 +263,7 @@ function attachCheckboxListeners() {
                 data: {selectedRows: selectedRows},
                 success: function(response){
                     // Reload the page or update the table as needed
-                    location.reload(); // For example, reload the page after deletion
+                   // location.reload(); // For example, reload the page after deletion
                 },
                 error: function(xhr, status, error){
                     //console.error("Error:", error);
@@ -271,6 +271,11 @@ function attachCheckboxListeners() {
             });
         });
     });
+
+//reload page
+function reload(){
+  location.reload();
+}
 </script>
 
   </body>

@@ -143,7 +143,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="submit" onclick="reload()" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
         </form>
           </div>
         </div>
@@ -162,7 +162,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully deleted this service.
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button onclick="reload()" class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
@@ -198,7 +198,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully deleted this service.
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button onclick="reload()" class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
@@ -289,7 +289,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully edited this service.
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button onclick="reload()" class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
@@ -396,8 +396,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 contentType: false,
                 success: function(response){
                     // Handle success response here
-                    alert(response); // For demonstration purposes, you can display an alert with the response
-                    location.reload();
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    //location.reload();
                   },
                 error: function(xhr, status, error){
                     // Handle error
@@ -438,7 +438,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 data: {selectedRows: selectedRows},
                 success: function(response){
                     // Reload the page or update the table as needed
-                    location.reload(); // For example, reload the page after deletion
+                    //location.reload(); // For example, reload the page after deletion
                 },
                 error: function(xhr, status, error){
                     //console.error("Error:", error);
@@ -522,6 +522,11 @@ checkboxes.forEach(checkbox => {
     updateTable();
     startInterval();
   });
+
+//reload page
+function reload(){
+  location.reload();
+}
 </script>
 
 
