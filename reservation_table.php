@@ -28,16 +28,19 @@ foreach ($arrayReservationInfo as $reservations) {
   $reservationTimeStart = $reservations['reservationTimeStart'];
   $reservationTimeEnd = $reservations['reservationTimeEnd'];
   $tableNumber = $reservations['poolTableNumber'];
+
+  // minove ko lang to ayaw kasi lumabas sa table
   foreach ($arrayMemberAccount as $members) {
     if ($members['memberID'] == $reservations['memberID']) {
       $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
       $contactNumber = decryptData($members['customerNumber'], $key);
       $email = decryptData($members['customerEmail'], $key);
-    } else {
-      $customerName = "";
-      $contactNumber = "";
-      $email = "";
-    }
+    } 
+    // else {
+    //   $customerName = "";
+    //   $contactNumber = "";
+    //   $email = "";
+    // }
   }
 echo"
   <tr>
