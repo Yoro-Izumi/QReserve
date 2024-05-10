@@ -163,7 +163,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
 
-      <h4 class="qreserve">Number of Reservations </h4>
+      <!-- <h4 class="qreserve">Number of Reservations </h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab mb-4" id="reports-third-graph">
         <figure class="highcharts-figure1">
@@ -175,7 +175,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Generate Report</button>
           </div>
         </div>
-      </div>
+      </div> -->
     </section>
 
     <script>

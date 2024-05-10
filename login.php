@@ -15,9 +15,11 @@ if (isset($_SESSION['userSuperAdminID'])) {
   die();
 }
 if (isset($_SESSION['userAdminID'])) {
-  header('location:logout.php');
+  header('location:admin_dashboard.php');
   die();
 }
+
+$error_message = ""; // Initialize error message variable
 
 if (isset($_POST['login'])) {
   $username = mysqli_real_escape_string($conn, $_POST['username']);
@@ -51,22 +53,23 @@ if (isset($_POST['login'])) {
     echo '<script language="javascript">';
     echo 'alert("You are now logged in!")';
     echo '</script>';
-
+  
     $accountType = explode(":", $logUser);
-
-    if ($account[0] == "adminID") {
+  
+    if ($accountType[0] == "admin") {
       $_SESSION['userAdmin'] = $accountType[1];
-      header("location:logout.php");
+      header("location:admin_dashboard.php");
       exit();
-    } else {
+    } else if ($accountType[0] == "superAdmin") {
       $_SESSION['userSuperAdmin'] = $accountType[1];
       header("location:dashboard.php");
       exit();
     }
-  }     else {
+  } else {
     $error_message = "Username and Password are mismatched."; // Set error message
   }
 }
+
 ?>
 
 <!DOCTYPE html>

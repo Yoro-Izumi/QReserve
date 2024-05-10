@@ -149,12 +149,13 @@ if (isset($_SESSION['userMemberID'])) {
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-                                <label for="validity" class="form-label">Select Date <span>*</span></label>
-                                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" />
-                                <div class="invalid-feedback">
-                                    Please select a date.
-                                </div>
-                            </div>
+  <label for="validity" class="form-label">Select Date <span>*</span></label>
+  <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
+  <div class="invalid-feedback">
+    Please select a date.
+  </div>
+</div>
+
 
                             <!-- <div class="col-12 col-md-3 mb-3">
                             <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>

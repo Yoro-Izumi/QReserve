@@ -25,18 +25,12 @@ if(isset($_POST['login_member'])){
             $_SESSION['userMemberID'] = $membershipAccount['memberID'];
             header("location:customer_dashboard.php");
             exit();
+        }else {
+          $error_message = "Username and Password are mismatched.";
         }
-          else{
-            echo '<script language="javascript">';
-            echo 'alert("Username and Password does not exist")';
-            echo '</script>';
-          }
-        }
-    }
-    else{
-      echo '<script language="javascript">';
-      echo 'alert("Account does not exist")';
-      echo '</script>';
+      }
+    } else {
+      $error_message = "Account does not exist.";
     }
   }
 
@@ -112,6 +106,12 @@ if(isset($_POST['login_member'])){
         <div class="row">
           <form action="customer_login.php" method="POST">
             <h5 class="text-center fw-bold">Welcome!</h5>
+
+            <?php if (!empty($error_message)) : ?>
+      <div class="alert alert-danger" role="alert">
+        <?php echo $error_message; ?>
+      </div>
+    <?php endif; ?>
             <div class="form-floating mb-3">
               <input type="text" class="form-control" id="floatingInput" placeholder="" name="username" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
               <label for="floatingInput">Control Number</label>
@@ -123,6 +123,8 @@ if(isset($_POST['login_member'])){
                 <i class="fas fa-eye-slash"></i>
               </button>
             </div>
+
+            <a href="" class="forgot-password">Forgot Password</a>
             <div class="">
               <button type="submit" class="btn btn-primary w-100 login-button" name="login_member" href="#" role="button">Sign In</button>
             </div>

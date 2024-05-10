@@ -122,7 +122,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <form class="needs-validation dashboard-square-kebab" id="edit-admin-form" novalidate>
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
-              <input name="adminID" id="adminID" value="">
+              <!-- <input name="adminID" id="adminID" value=""> -->
               <label for="firstName" class="form-label">First Name <span>*</span></label>
               <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <div class="invalid-feedback">

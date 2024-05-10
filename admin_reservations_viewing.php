@@ -1,23 +1,17 @@
 <?php
-include "connect_database.php";
-include "src/get_data_from_database/get_admin_accounts.php";
-include "src/get_data_from_database/get_admin_info.php";
-include "encodeDecode.php";
-$key = "TheGreatestNumberIs73";
 session_start();
-date_default_timezone_set('Asia/Manila');
-if (isset($_SESSION["userSuperAdminID"])) {
-  // Your code here
-
+if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { // Check for admin session too
+  $visitors = 0;
 ?>
-
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
   <html lang="en" dir="ltr">
 
   <head>
     <meta charset="UTF-8" />
-    <title>Admin Profiles</title>
+    <title>Reservations</title>
+    <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
+
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,67 +45,97 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
   </head>
 
-  <body>
-    <?php include "superadmin_sidebar.php"; ?>
+  <body class="body">
+  <?php include "admin_sidebar.php"; ?>
 
     <section class="home-section">
-      
-      <div class="d-flex justify-content-between align-items-center">
-        <h4 class="qreserve">Admin Accounts</h4>
-        <a href="add_new_admin.php" type="button" class="btn btn-primary fw-bold start-button" id="add-new-profile">Add New Admin</a>
-      </div>
+      <h4 class="qreserve">Reservations</h4>
       <hr class="my-4 mb-3 mt-3">
-      <div class="container-fluid dashboard-square-kebab" id="profile-management">
+      <div class="container-fluid dashboard-square-kebab">
         <table id="example" class="table table-striped" style="width: 100%">
-          <!--dynamically updates the table when new data is entered-->
+          <!--dynamically updates table when new data is entered-->
         </table>
-        <div><form type="hidden" id="pass-admin" name="pass-admin"><input type="hidden" id="edit-admin-val" name="edit-admin-val" value=""></form></div>
-        <div class="mt-3">
-          <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>
-          <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
-
-          <button type="button" id="edit-admin" class="btn btn-primary" >Edit Selected</button>
-          <button type="button" class="btn btn-danger" id="delete-admin" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-service">Delete Selected</button>
-          
-        </div>
       </div>
     </section>
 
 
-    <!-- Delete Modal -->
-    <div class="modal fade" id="delete-admin-account-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Modals -->
+    <!-- Accept Reservation Modals -->
+    <div class="modal fade" id="accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="wait">
           <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="warning"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Warning!</h2>
+            <h2 class="modal-title  fw-bold text-center" id="warning"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
           </div>
           <div class="modal-body">
-            Are you sure you want to delete this account?
+            Are you sure you want to accept this reservation?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" id="confirm-delete-admin" class="btn btn-primary create-button" data-bs-target="#success-delete-admin-account-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" id="confirm-accept-reservation" class="btn btn-primary create-button" data-bs-target="#success-accept-modal" data-bs-toggle="modal">Confirm</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Success Delete Modal -->
-    <div class="modal fade" id="success-delete-admin-account-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Success Accept Reservation Modals -->
+    <div class="modal fade" id="success-accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="wait">
           <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="deleted"><img src="src/images/icons/trash-bin.gif" alt="Delete Icon" class="modal-icons">Deleted!</h2>
+            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Success Icon" class="modal-icons">Sucess!</h2>
           </div>
           <div class="modal-body">
-            You have successfully deleted this account.
+            You have successfully accepted this reservation.
           </div>
           <div class="modal-footer">
-            <button onclick="reload()" class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button class="btn btn-primary create-button" onclick="reload()" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
     </div>
+
+
+    <!-- Reject Reservation Modals -->
+    <div class="modal fade" id="reject-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title  fw-bold text-center" id="warning"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to reject this reservation?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" id="confirm-reject-reservation" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Reject Reservation Modals -->
+    <div class="modal fade" id="success-reject-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title  fw-bold text-center" id="deleted"><img src="src/images/icons/cancel.gif" alt="Wait Icon" class="modal-icons">Rejected!</h2>
+          </div>
+          <div class="modal-body">
+            You have successfully rejected this reservation.
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary create-button" onclick="reload()" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
 
 
 
@@ -132,19 +156,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
 
-      // JavaScript functions for handling bulk actions
-      function deleteSelected() {
-        // Implement delete logic here
-        console.log("Delete selected rows");
-      }
-
-      function editSelected() {
-        // Implement edit logic here
-        console.log("Edit selected rows");
-      }
-    </script>
-
-    <script>
       let sidebar = document.querySelector(".sidebar");
       let closeBtn = document.querySelector("#btn");
       let searchBtn = document.querySelector(".bx-search");
@@ -177,7 +188,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     // Function to update table content
     function updateTable() {
       $.ajax({
-        url: 'admin_table.php', // Change this to the PHP file that contains the table content
+        url: 'reservation_table.php', // Change this to the PHP file that contains the table content
         type: 'GET',
         success: function(response) {
           $('#example').html(response);
@@ -198,12 +209,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
     // Attach event listeners for checkboxes
 function attachCheckboxListeners() {
-    const checkboxes = document.querySelectorAll('.admin-checkbox');
-    var editAdminButton = document.getElementById('edit-admin');
-    var deleteAdminButton = document.getElementById('delete-admin');
+    const checkboxes = document.querySelectorAll('.reservation-checkbox');
+    //var editReservationButton = document.getElementById('edit-reservation');
+    //var deleteReservationButton = document.getElementById('delete-reservation');
     var checkedCount = 0; var checkBoxValue;
 
-    editAdminButton.disabled = true;
+    //editAdminButton.disabled = true;
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function () {
@@ -221,14 +232,13 @@ function attachCheckboxListeners() {
                     const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
                     if (remainingCheckbox) {
                         checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
-                        document.getElementById('edit-admin-val').value = remainingCheckbox.value;
                     }
                 } else {
                     // If no or multiple checkboxes are checked, clear the value
                     checkboxValue.value = " "; // You need to define checkboxValue
                 }
             }
-            editAdminButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
+            //editAdminButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
 
             // Stop or start interval based on checkbox status
             if (checkedCount > 0) {
@@ -247,25 +257,25 @@ function attachCheckboxListeners() {
   });
 </script>
 
-<!--script for deleting admin-->
+<!--script updating reservation status-->
 <script>
   $(document).ready(function(){
-        // AJAX code to handle deletion
-        $("#confirm-delete-admin").click(function(){
+        // AJAX code to handle reject reservation
+        $("#confirm-reject-reservation").click(function(){
             // Array to store IDs of selected rows
-            var selectedRows = [];
+            var selectedRowsReject = [];
 
             // Iterate through each checked checkbox
-            $(".admin-checkbox:checked").each(function(){
+            $(".reservation-checkbox:checked").each(function(){
                 // Push the value (ID) of checked checkbox into the array
-                selectedRows.push($(this).val());
+                selectedRowsReject.push($(this).val());
             });
 
             // AJAX call to send selected rows IDs to delete script
             $.ajax({
-                url: "admin_crud.php",
+                url: "reservation_crud.php",
                 type: "POST",
-                data: {selectedRows: selectedRows},
+                data: {selectedRowsReject: selectedRowsReject},
                 success: function(response){
                     // Reload the page or update the table as needed
                    // location.reload(); // For example, reload the page after deletion
@@ -277,47 +287,43 @@ function attachCheckboxListeners() {
         });
     });
 
-//reload page
+    $(document).ready(function(){
+        // AJAX code to handle accept reservation
+        $("#confirm-accept-reservation").click(function(){
+            // Array to store IDs of selected rows
+            var selectedRowsAccept = [];
+
+            // Iterate through each checked checkbox
+            $(".reservation-checkbox:checked").each(function(){
+                // Push the value (ID) of checked checkbox into the array
+                selectedRowsAccept.push($(this).val());
+            });
+
+            // AJAX call to send selected rows IDs to delete script
+            $.ajax({
+                url: "reservation_crud.php",
+                type: "POST",
+                data: {selectedRowsAccept: selectedRowsAccept},
+                success: function(response){
+                    // Reload the page or update the table as needed
+                   // location.reload(); // For example, reload the page after deletion
+                },
+                error: function(xhr, status, error){
+                    //console.error("Error:", error);
+                }
+            });
+        });
+    });
+
 function reload(){
   location.reload();
 }
 </script>
 
-<script>
-var val;
-function getSelected(checkbox) {
-  if (checkbox.checked) {
-    val = checkbox.value;
-
-    // Assign values to input fields
-    document.getElementById("edit-admin-val").value = val;
-  }
-}
-</script>
-
-<script>
-        $(document).ready(function(){
-            $("#edit-admin").click(function(){
-                var formData = $("#pass-admin").serialize(); // Serialize form data
-                
-                $.ajax({
-                    url: "edit_admin_account.php",
-                    type: "POST",
-                    data: formData,
-                    success: function(response){
-                        // Redirect to check_data.php if success
-                        window.location.href = "edit_admin_account.php";
-                    }
-                });
-            });
-        });
-</script>
-
-
 
   </body>
 
   </html>
-  <?php } else {
+<?php } else {
   header("location:login.php");
 } ?>

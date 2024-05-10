@@ -65,7 +65,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
           <button type="button" id="accept-reservation" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accept-modal" id="accept-service">Accept Selected</button>
-          <button type="button" id="reject-reservation" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject-modal" id="reject-service">Reject Selected</button>
+          <button type="button" id="reject-reservation" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject-modal">Reject Selected</button>
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
         </div>
       </div>
@@ -143,19 +143,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script>
       $(document).ready(function() {
         $("#example").DataTable({
