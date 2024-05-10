@@ -573,6 +573,65 @@ checkboxes.forEach(checkbox => {
       }
     </script>
 
+</script>
+
+<script>
+function getSelected(checkbox) {
+  if (checkbox.checked) {
+    var row = checkbox.parentNode.parentNode; // Get the row containing the checkbox
+    var cells = row.getElementsByTagName("td");
+    
+    // Retrieve data from cells
+    var name = cells[1].innerText; // Service Name
+    var rate = cells[2].innerText; // Rates
+    var capacity = cells[3].innerText; // Capacity
+    var image = cells[4].innerText; // Image URL
+    
+    // Assign values to input fields
+    document.getElementById("editServiceName").value = name;
+    document.getElementById("editServiceRate").value = rate;
+    document.getElementById("capacity").value = capacity; // Updated ID
+    // Image input field doesn't have an ID in your HTML, so I'm assuming it's named "editImage"
+    // Display image (assuming image is a URL)
+    //var imgPreview = document.getElementById("editImagePreview");
+    //imgPreview.src = "src/images/Services"+image;
+  }
+}
+</script>
+
+<script>
+  //edit service
+    $(document).ready(function(){
+        $('#confirm-edit-service').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#edit-new-service-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'service_crud.php', // Replace 'admin_crud.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    //location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+  function reload(){
+    location.reload();
+  }
+</script>
+
+
+
 
 
   </body>
