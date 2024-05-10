@@ -47,7 +47,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   <body class="body">
   <?php include "admin_sidebar.php"; ?>
     <section class="home-section">
-      <h4 class="qreserve">admin Playing</h4>
+      <h4 class="qreserve">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">

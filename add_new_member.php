@@ -55,6 +55,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Add New Member</h4>
       <hr class="my-4">
       <div class="container-fluid dashboard-square-kebab" id="profmanage-add-new-profile">
+      <!-- <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data"> -->
       <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data">
           <div class="row">
             <div class="col-12 col-md-4 mb-3">
@@ -99,24 +100,50 @@ if (isset($_SESSION["userSuperAdminID"])) {
               </div>
             </div>
             <div class="col-12 col-md-4 mb-3">
-              <label for="email" class="form-label">Email Address <span>*</span></label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
-              <div class="invalid-feedback">
-                Please enter a valid Gmail address (e.g., yourname@gmail.com).
-              </div>
-            </div>
+  <label for="email" class="form-label">Email Address <span>*</span></label>
+  <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required 
+    oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" 
+    oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" 
+    onkeyup="validateEmail(this.value)"
+  />
+  <div class="invalid-feedback">
+    Please enter a valid Gmail address (e.g., yourname@gmail.com).
+  </div>
+</div>
+
+<script>
+function validateEmail(email) {
+  var pattern = /^[\w-\.]+@gmail\.com$/i;
+  var inputField = document.getElementById('email');
+  if (!pattern.test(email)) {
+    inputField.setCustomValidity('Please enter a valid Gmail address (e.g., yourname@gmail.com).');
+  } else {
+    inputField.setCustomValidity('');
+    if (email.endsWith('@gmail.com')) {
+      var atIndex = email.indexOf('@');
+      inputField.value = email.substring(0, atIndex + 10); // +10 to include "@gmail.com"
+    }
+  }
+}
+</script>
+
+
             <div class="col-12 col-md-4 mb-3">
-              <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
-              <div class="invalid-feedback">
-                Please enter a valid contact number.
-              </div>
-            </div>
+  <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
+  <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" 
+    oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')"
+    oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')"
+    onkeypress="return /[0-9]/i.test(event.key) && (this.value.length < 2 || /^09/.test(this.value))"
+  />
+  <div class="invalid-feedback">
+    Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces.
+  </div>
+</div>
             <div class="col-12 col-md-6 mb-3">
               <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
               <input type="text" class="form-control" name="controlNumber" id="controlNumber" placeholder="Enter control number here." pattern="\d{2}-\d{4}" title="" maxlength="7" minlength="7" required oninvalid="this.setCustomValidity('Please enter the code in the format 01-0001')" oninput="handleInput(event); this.value = this.value.replace(/[^0-9\- ]/g, '')" />
               <div class="invalid-feedback">
-                Please enter a valid contact number.
+                Please enter a valid control number.
               </div>
             </div>
             <div class="col-12 col-md-6 mb-3">
@@ -162,10 +189,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
               <button class="btn btn-primary w-100 create-button" name="submitMember" id="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
             </div>
-        </form>
-        <div class="col-12 col-md-2">
+            <div class="col-12 col-md-2">
           <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
         </div>
+        </form>
+
       </div>
 
       </div>
@@ -183,7 +211,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
           <div class="modal-body">
-            dito nakalagay yung mga contents sa naunang modal
+            ...
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
@@ -372,7 +400,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       });
     </script>
 
-    <script>
+<script>
       //add admin
       $(document).ready(function() {
         $('#submitMember').click(function(e) {
@@ -386,11 +414,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
             data: formData,
             processData: false,
             contentType: false,
-            // success: function(response) {
-            //   // Handle success response here
-            //   alert(response); // For demonstration purposes, you can display an alert with the response
-            //   location.reload();
-            // },
+            success: function(response) {
+              // Handle success response here
+              //alert(response); // For demonstration purposes, you can display an alert with the response
+              location.reload();
+            },
             error: function(xhr, status, error) {
               // Handle error
               console.error(xhr.responseText);
@@ -399,6 +427,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
+
+
+
+
+
+    
+
 
 
 
@@ -418,6 +453,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }
       }
     </script>
+
+
+
 
   </body>
 

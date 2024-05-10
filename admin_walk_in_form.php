@@ -48,17 +48,16 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
     <?php include "admin_sidebar.php"; ?>
     <section class="home-section">
       <div class="container-fluid">
-        <!-- <div class="row">
+        <div class="row">
                 <div class="col-12 text-center">
                     <h1 class="qreserve mb-0">QReserve</h1>
                     <h6 id="booking-sub">BEVITORE SANTA ROSA</h6>
                     <hr class="my-4">
                 </div>
-            </div> -->
+            </div>
         <div class="row">
           <div class="col-md-12">
             <h3 class="fw-bold ps-4">Fill up the form</h3>
-            <hr class="my-4">
             <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate>
               <div class="row">
                 <div class="col-12 col-md-4 mb-3">

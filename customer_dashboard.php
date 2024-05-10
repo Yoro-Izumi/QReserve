@@ -66,6 +66,7 @@ if (isset($_SESSION['userMemberID'])) {
         </label>
         <ul class="all-links">
           <li><a href="customer_dashboard.php">Home</a></li>
+          <li><a href="customer_account.php">Reservations</a></li>
           <li><a href="customer_account.php">Account</a></li>
           <li><a href="customer_logout.php">Log Out</a></li>
         </ul>

@@ -99,12 +99,13 @@ if(isset($_POST['login_member'])){
 
   <div class="homepage" id="home">
     <div class="content container-fluid">
+    <div class="home">
       <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
       <h1 class="qreserve" id="index-qreserve">QReserve</h1>
       <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
       <div class="container-fluid login">
         <div class="row">
-          <form action="customer_login.php" method="POST">
+        <form action="customer_login.php" method="POST">
             <h5 class="text-center fw-bold">Welcome!</h5>
 
             <?php if (!empty($error_message)) : ?>
@@ -116,7 +117,7 @@ if(isset($_POST['login_member'])){
               <input type="text" class="form-control" id="floatingInput" placeholder="" name="username" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
               <label for="floatingInput">Control Number</label>
             </div>
-            <div class="form-floating mb-3 position-relative">
+            <div class="form-floating mb-2 position-relative">
               <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" maxlength="30" required />
               <label for="floatingPassword">Password</label>
               <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
@@ -126,11 +127,13 @@ if(isset($_POST['login_member'])){
 
             <a href="" class="forgot-password">Forgot Password</a>
             <div class="">
-              <button type="submit" class="btn btn-primary w-100 login-button" name="login_member" href="#" role="button">Sign In</button>
+              <button type="submit" class="btn btn-primary w-100 login-button mt-4" name="login_member" href="#" role="button">Sign In</button>
             </div>
           </form>
+
         </div>
       </div>
+    </div>
     </div>
   </div>
 

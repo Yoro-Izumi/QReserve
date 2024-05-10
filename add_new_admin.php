@@ -57,7 +57,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Add New Admin</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-      <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_admin.php" method="POST" enctype="multipart/form-data">
+        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_admin.php" method="POST" enctype="multipart/form-data">
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -109,11 +109,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" onkeypress="return /[0-9]/i.test(event.key) && (this.value.length < 2 || /^09/.test(this.value))" />
               <div class="invalid-feedback">
-                Please enter a valid contact number.
+                Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces.
               </div>
             </div>
+
+
             <div class="col-12 col-md-3 mb-3">
               <label for="adminShift" class="form-label">Shift <span>*</span></label>
               <select class="form-control" name="adminShift" id="adminShift" required onchange="this.setCustomValidity('')">
@@ -174,7 +176,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin" type="submit">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin" type="submit" data-bs-target="#confirm-add-new-admin-modal" data-bs-toggle="modal">Create</button>
             </div>
             <div class="col-12 col-md-2">
               <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
@@ -199,7 +201,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
           <div class="modal-body">
-            dito nakalagay yung mga contents sa naunang modal
+            ...
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
@@ -333,33 +335,33 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
- <script>
-    //add admin
-    $(document).ready(function(){
-        $('#submitAdmin').click(function(e){
-            e.preventDefault();
+    <script>
+      //add admin
+      $(document).ready(function() {
+        $('#submitAdmin').click(function(e) {
+          e.preventDefault();
 
-            var formData = new FormData($('#add-new-profile-form')[0]);
+          var formData = new FormData($('#add-new-profile-form')[0]);
 
-            $.ajax({
-                type: 'POST',
-                url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response){
-                    // Handle success response here
-                    //alert(response); // For demonstration purposes, you can display an alert with the response
-                    location.reload();
-                  },
-                error: function(xhr, status, error){
-                    // Handle error
-                    console.error(xhr.responseText);
-                }
-            });
+          $.ajax({
+            type: 'POST',
+            url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              // Handle success response here
+              //alert(response); // For demonstration purposes, you can display an alert with the response
+              location.reload();
+            },
+            error: function(xhr, status, error) {
+              // Handle error
+              console.error(xhr.responseText);
+            }
+          });
         });
-    });
-</script>
+      });
+    </script>
 
 
 

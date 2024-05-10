@@ -123,7 +123,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="resetForm()">Cancel</button>
-                <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal" id="confirm_add_service_button">Confirm</button>
+                <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal" id="add_service_button">Confirm</button>
               </div>
             </form>
           </div>
@@ -141,7 +141,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
           <div class="modal-body">
-            dito nakalagay yung mga contents sa naunang modal
+            ...
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
@@ -375,7 +375,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <script>
       //add service
       $(document).ready(function() {
-        $('#confirm_add_service_button').click(function(e) {
+        $('#add_service_button').click(function(e) {
           e.preventDefault();
 
           var formData = new FormData($('#add-new-service-form')[0]);
@@ -399,6 +399,39 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
+
+<script>
+      //add admin
+      $(document).ready(function() {
+        $('#submitAdmin').click(function(e) {
+          e.preventDefault();
+
+          var formData = new FormData($('#add-new-profile-form')[0]);
+
+          $.ajax({
+            type: 'POST',
+            url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              // Handle success response here
+              //alert(response); // For demonstration purposes, you can display an alert with the response
+              location.reload();
+            },
+            error: function(xhr, status, error) {
+              // Handle error
+              console.error(xhr.responseText);
+            }
+          });
+        });
+      });
+    </script>
+
+
+
+
+
 
     <!--script that disables button if no check box is clicked-->
     <script>

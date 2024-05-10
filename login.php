@@ -53,9 +53,9 @@ if (isset($_POST['login'])) {
     echo '<script language="javascript">';
     echo 'alert("You are now logged in!")';
     echo '</script>';
-  
+
     $accountType = explode(":", $logUser);
-  
+
     if ($accountType[0] == "admin") {
       $_SESSION['userAdmin'] = $accountType[1];
       header("location:admin_dashboard.php");
@@ -143,10 +143,10 @@ if (isset($_POST['login'])) {
             <h5 class="text-center fw-bold">Welcome!</h5>
 
             <?php if (!empty($error_message)) : ?>
-      <div class="alert alert-danger" role="alert">
-        <?php echo $error_message; ?>
-      </div>
-    <?php endif; ?>
+              <div class="alert alert-danger" role="alert">
+                <?php echo $error_message; ?>
+              </div>
+            <?php endif; ?>
 
             <div class="form-floating mb-3">
               <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required />
