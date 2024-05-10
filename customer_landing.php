@@ -58,18 +58,41 @@ date_default_timezone_set('Asia/Manila');
   </section>
 
   <section class="services" id="services">
-    <h2>Our Services</h2>
-    <!-- <p>Explore our wide range of camping gear services.</p> -->
-    <ul class="cards">
-      <?php foreach ($arrayServices as $services) { ?>
+      <h2>Our Services</h2>
+      <!-- <p>Explore our wide range of camping gear services.</p> -->
+      <ul class="cards">
         <li class="card">
-          <img src="src/images/Services/<?php echo $services['serviceImage']; ?>" alt="img">
-          <h3><?php echo $services['serviceName']; ?></h3>
-          <p>Rate: <?php echo $services['normalPrice']; ?></p><!--  Eto yung tatawagin sa DB -->
-
-        </li> <?php } ?>
-    </ul>
-  </section>
+          <img src="src/images/Services/Billiards Hall.jpg" alt="img">
+          <h3>Billiards</h3>
+          <p>Rate: ₱150/hr</p>
+        </li>
+        <li class="card">
+          <img src="src/images/Services/KTV Room 1.jpg" alt="img">
+          <h3>KTV Room 1</h3>
+          <p>Rate: ₱5000/2hrs</p>
+        </li>
+        <li class="card">
+          <img src="src/images/Services/KTV Room 2.jpg" alt="img">
+          <h3>KTV Room 2</h3>
+          <p>Rate: ₱3000/2hrs</p>
+        </li>
+        <li class="card">
+          <img src="src/images/Services/KTV Room 3.jpg" alt="img">
+          <h3>KTV Room 3</h3>
+          <p>Rate: ₱3000/2hrs</p>
+        </li>
+        <li class="card">
+          <img src="src/images/Services/Karaoke.jpg" alt="img">
+          <h3>Karaoke Night</h3>
+          <p>Rate: Free</p>
+        </li>
+        <li class="card">
+          <img src="src/images/Services/Membership.jpg" alt="img">
+          <h3>Membership</h3>
+          <p>Rate: 250</p>
+        </li>
+      </ul>
+    </section>
 
   <section class="amenities" id="amenities">
     <h2>Amenities</h2>
