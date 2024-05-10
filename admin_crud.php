@@ -93,5 +93,39 @@ if(isset($_POST['selectedRows'])){
         unset($_POST['selectedRows']);
 }
 
+if (isset($_POST['adminID'])) {
+  $adminID = mysqli_real_escape_string($conn, $_POST['adminID']);
+  $firstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
+  $lastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
+  $middleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
+  $email = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
+  $username = encryptData(mysqli_real_escape_string($conn, $_POST['username']), $key);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
+  $sex = encryptData(mysqli_real_escape_string($conn, $_POST['sex']), $key);
+  $contactNumber = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
+  $shift = intVal($_POST['adminShift']);
+
+  // Hash the password using Argon2
+  $options = [
+    'memory_cost' => 1 << 17, // 128MB memory cost (default)
+    'time_cost' => 4,       // 4 iterations (default)
+    'threads' => 3,         // Use 3 threads for processing (default)
+  ];
+  $hashedPassword = password_hash($password, PASSWORD_ARGON2I, $options);
+
+  // here is where information of admin is inserted
+  $qryUpdateAdminInfo = "UPDATE `admin_info` SET adminLastName`=?,`adminFirstName`=?,`adminMiddleName`=?,`adminSex`=?,`adminContactNumber`=?,`adminEmail`=? WHERE `adminInfoID`=?";
+  $conUpdateAdminInfo = mysqli_prepare($conn, $qryUpdateAdminInfo);
+  mysqli_stmt_bind_param($conUpdateAdminInfo,'ssssssi', $lastName, $firstName, $middleName, $sex, $contactNumber, $email, $adminID);
+  mysqli_stmt_execute($conUpdateAdminInfo);
+
+  //here is where the admin account is inserted
+  $qryUpdateAdminAccount = "INSERT INTO `admin_accounts` SET `superAdminID`=?,`adminShiftID`=?,`adminUsername`=?,`adminPassword`=? WHERE `adminInfoID`=?";
+  $conUpdateAdminAccount = mysqli_prepare($conn, $qryUpdateAdminAccount);
+  mysqli_stmt_bind_param($conUpdateAdminAccount, 'iiiss', $superAdminID, $shift, $username, $hashedPassword, $adminID);
+  mysqli_stmt_execute($conUpdateAdminAccount);
+
+  unset($_POST['adminID']);
+}
 
 }

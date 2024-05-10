@@ -213,12 +213,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h1 class="modal-title  fw-bold text-center" id="staticBackdropLabel"><img src="src/images/icons/pencil.gif" alt="Wait Icon" class="modal-icons">Edit Service</h1>
           </div>
           <div class="modal-body">
-            <form type="hidden" id="editForm"><input id="editID" value=""></form>
-            <form class="needs-validation" id="add-new-profile-form" novalidate action="BABAGUHIN ITU.php" method="POST" enctype="multipart/form-data">
+            
+            <form class="needs-validation" id="edit-new-service-form" novalidate>
+              <input type="hidden" name="editID" id="editID" value="">
               <div class="row">
                 <div class="col-12 col-md-12 mb-3">
                   <label for="serviceName" class="form-label">Service Name <span>*</span></label>
-                  <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
+                  <input type="text" class="form-control" name="editServiceName" id="editServiceName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">
                     Please enter a valid first name.
@@ -228,14 +229,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <label for="serviceRate" class="form-label">Rate</label>
                   <div class="input-group">
                     <span class="input-group-text">₱</span>
-                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here" pattern="^\d+(\.\d{1,2})?$" required oninvalid="this.setCustomValidity('Please enter a valid rate')" oninput="this.setCustomValidity('')" />
+                    <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here" pattern="^\d+(\.\d{1,2})?$" required oninvalid="this.setCustomValidity('Please enter a valid rate')" oninput="this.setCustomValidity('')" />
                   </div>
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">Please enter a valid rate.</div>
                 </div>
                 <div class="col-12 col-md-6 mb-3">
                   <label for="text" class="form-label">Capacity <span>*</span></label>
-                  <input type="email" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" required oninvalid="this.setCustomValidity('Please enter a valid capacity')" oninput="this.setCustomValidity('')" />
+                  <input type="email" class="form-control" name="editCapacity" id="editCapacity" placeholder="Enter service capacity here" required oninvalid="this.setCustomValidity('Please enter a valid capacity')" oninput="this.setCustomValidity('')" />
                   <!-- <div class="valid-feedback">
                 Looks good!
             </div> -->
@@ -245,7 +246,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
                 <div class="col-12 col-md-12 mb-3">
                   <label for="image" class="form-label">Image <span>*</span></label>
-                  <input type="file" class="form-control" name="image" id="image" accept=".jpg, .jpeg, .png" required>
+                  <input type="file" class="form-control" name="editImage" id="editImage" accept=".jpg, .jpeg, .png" required>
                   <div class="invalid-feedback">
                     Please enter a valid capacity.
                   </div>
@@ -273,7 +274,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-target="#edit-modal" data-bs-toggle="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-target="#success-edit-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" id="confirm-edit-service" class="btn btn-primary create-button" data-bs-target="#success-edit-modal" data-bs-toggle="modal">Confirm</button>
           </div>
         </div>
       </div>
@@ -488,9 +489,12 @@ checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', function () {
         if (this.checked) {
             checkedCount++;
+            
             if (checkedCount === 1) {
                 // If only one checkbox is checked, set its value
-                checkboxValue.value = this.value;
+            checkboxValue.value = this.value;
+                
+                
             }
         } else {
             checkedCount--;
@@ -528,6 +532,61 @@ function reload(){
   location.reload();
 }
 </script>
+
+<script>
+function getSelected(checkbox) {
+  if (checkbox.checked) {
+    var row = checkbox.parentNode.parentNode; // Get the row containing the checkbox
+    var cells = row.getElementsByTagName("td");
+    
+    // Retrieve data from cells
+    var name = cells[1].innerText; // Service Name
+    var rate = cells[2].innerText; // Rates
+    var capacity = cells[3].innerText; // Capacity
+    var image = cells[4].innerText; // Image URL
+    
+    // Assign values to input fields
+    document.getElementById("editServiceName").value = name;
+    document.getElementById("editServiceRate").value = rate;
+    document.getElementById("editCapacity").value = capacity; // Updated ID
+    // Image input field doesn't have an ID in your HTML, so I'm assuming it's named "editImage"
+    // Display image (assuming image is a URL)
+    //var imgPreview = document.getElementById("editImagePreview");
+    //imgPreview.src = "src/images/Services"+image;
+  }
+}
+</script>
+
+<script>
+  //edit service
+    $(document).ready(function(){
+        $('#confirm-edit-service').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#edit-new-service-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'service_crud.php', // Replace 'admin_crud.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    //location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+
+
 
 
 

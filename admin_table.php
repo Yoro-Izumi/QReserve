@@ -29,7 +29,7 @@ foreach ($arrayAdminAccount as $adminAccount) { //get membership details as well
   $adminEmail = decryptData($adminAccount['adminEmail'], $key);
 echo "
   <tr>
-    <td><input type='checkbox' class='admin-checkbox' value='$adminInfoID'></td>
+    <td><input onchange='getSelected(this)' type='checkbox' class='admin-checkbox' value='$adminInfoID'></td>
     <td>$adminName</td>
     <td>$adminSex</td>
     <td>$adminUsername</td>

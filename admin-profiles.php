@@ -55,6 +55,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <?php include "superadmin_sidebar.php"; ?>
 
     <section class="home-section">
+      
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="qreserve">Admin Accounts</h4>
         <a href="add_new_admin.php" type="button" class="btn btn-primary fw-bold start-button" id="add-new-profile">Add New Admin</a>
@@ -64,10 +65,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <table id="example" class="table table-striped" style="width: 100%">
           <!--dynamically updates the table when new data is entered-->
         </table>
+        <div><form type="hidden" id="pass-admin" name="pass-admin"><input type="hidden" id="edit-admin-val" name="edit-admin-val" value=""></form></div>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>
           <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
-          <a href="edit_admin_account.php" type="button" id="edit-admin" class="btn btn-primary">Edit Selected</a>
+          <button  id="edit-admin" class="btn btn-primary">Edit Selected</but>
           <button type="button" class="btn btn-danger" id="delete-admin" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-service">Delete Selected</button>
         </div>
       </div>
@@ -217,6 +219,7 @@ function attachCheckboxListeners() {
                     const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
                     if (remainingCheckbox) {
                         checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
+                        document.getElementById('edit-admin-val').value = remainingCheckbox.value;
                     }
                 } else {
                     // If no or multiple checkboxes are checked, clear the value
@@ -277,6 +280,38 @@ function reload(){
   location.reload();
 }
 </script>
+
+<script>
+var val;
+function getSelected(checkbox) {
+  if (checkbox.checked) {
+    val = checkbox.value;
+
+    // Assign values to input fields
+    document.getElementById("edit-admin-val").value = val;
+  }
+}
+</script>
+
+<script>
+        $(document).ready(function(){
+            $("#edit-admin").click(function(){
+                var formData = $("#pass-admin").serialize(); // Serialize form data
+                
+                $.ajax({
+                    url: "edit_admin_account.php",
+                    type: "POST",
+                    data: formData,
+                    success: function(response){
+                        // Redirect to check_data.php if success
+                        window.location.href = "edit_admin_account.php";
+                    }
+                });
+            });
+        });
+</script>
+
+
 
   </body>
 

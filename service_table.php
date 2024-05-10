@@ -18,7 +18,7 @@ echo"
         foreach($arrayServices as $services){
         echo"
           <tr>
-            <td><input type='checkbox' class='service-checkbox' name='serviceID[]' value='{$services['serviceID']}'></td>
+            <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='{$services['serviceID']}'></td>
             <td>{$services['serviceName']}</td>
             <td>{$services['normalPrice']}</td>
             <td>{$services['serviceCapacity']}</td>

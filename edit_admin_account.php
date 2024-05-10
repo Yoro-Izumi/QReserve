@@ -3,10 +3,38 @@ include "connect_database.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 include "src/get_data_from_database/get_shifts.php";
+include "src/get_data_from_database/get_admin_accounts.php";
+include "src/get_data_from_database/get_admin_info.php";
+
 session_start();
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   $superAdminID = $_SESSION["userSuperAdminID"];
+
+  // Initialize variables with default values
+  $ID = $adminID = $adminInfoID = $adminUsername = $adminName = $adminSex = $adminPhone = $adminEmail = $shiftTimeStart = $shiftTimeEnd = "";
+  
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {//if(isset($_POST['edit-admin-val'])){ 
+    // Retrieve the value of 'passID'
+    $ID = $_POST['edit-admin-val'];
+      if($adminAccount['adminInfoID'] == $ID){
+          // Populate variables with data from $adminAccount array
+          $adminID = $adminAccount['adminID'];
+          $adminInfoID = $adminAccount['adminInfoID'];
+          $adminUsername = decryptData($adminAccount['adminUsername'], $key);
+          $adminName = decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key);
+          $adminSex = decryptData($adminAccount['adminSex'], $key);
+          $adminPhone = decryptData($adminAccount['adminContactNumber'], $key);
+          $adminEmail = decryptData($adminAccount['adminEmail'], $key);
+          $shiftTimeStart = $adminAccount['shiftTimeStart'];
+          $shiftTimeEnd = $adminAccount['shiftTimeEnd'];
+      } else {
+          // Handle the case where $_POST['passID'] does not match
+          // For example, you could return an error response or set variables to default values
+      }
+  }
+  
+
   if (isset($_POST['submitAdmin'])) {
     $firstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
     $lastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
@@ -91,9 +119,10 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Edit Admin Account</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="edit_admin_account.php" method="POST" enctype="multipart/form-data">
+        <form class="needs-validation dashboard-square-kebab" id="edit-admin-form" novalidate>
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
+              <input name="adminID" id="adminID" value="">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
               <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
@@ -227,7 +256,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin" type="submit">Create</button>
             </div>
             <div class="col-12 col-md-2">
               <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
@@ -332,6 +361,34 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
+
+<script>
+    //add admin
+    $(document).ready(function(){
+        $('#submitAdmin').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#edit-admin-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 
 
   </body>

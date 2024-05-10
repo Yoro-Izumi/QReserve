@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "connect_database.php";
+include "src/get_data_from_database/get_services.php";
+include "src/get_data_from_database/get_table_hours_price.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(isset($_POST['serviceName'])){
@@ -45,9 +47,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         unset($_POST['serviceRate']);
     }
 }
-    if(isset($_POST['update_service_button'])){
-       // $qryUpdateService = "UPDATE `services` SET `serviceID`=[value-1],`serviceName`=[value-2],`serviceCapacity`=[value-3],`serviceRate`=[value-4],`serviceImage`=[value-5],`superAdminID`=[value-6] WHERE serviceID = ?";
+    if(isset($_POST['editID'])){
+    //editID editServiceName editServiceRate editCapacity editImage
+    
+    $newServiceID = mysqli_real_escape_string($conn, $_POST['editID']);
+    $newServiceName = mysqli_real_escape_string($conn, $_POST['editServiceName']);
+    $newServiceCapacity = mysqli_real_escape_string($conn, $_POST['editCapacity']);
+    $newServiceRate = mysqli_real_escape_string($conn, $_POST['editServiceRate']);
 
+    foreach($arrayServices as $services){
+        //(int)$eTime[0]
+        if($services['serviceID'] == $newServiceID){
+            
+            $hoursID = $services['serviceRate'];
+            $hours = 1;
+            $qryUpdatePriceHour = "UPDATE `hour_price` SET `numberOfHours`=?,`normalPrice`=?,`succeedingHourPrice`=? WHERE `hoursID`=?";
+            $connUpdatePriceHour = mysqli_prepare($conn, $qryUpdatePriceHour);
+            mysqli_stmt_bind_param($connUpdatePriceHour,'iiii',$hours,$newServiceRate,$newServiceRate,$hoursID);
+            mysqli_stmt_execute($connUpdatePriceHour);
+
+            //$ID = mysqli_insert_id($conn);
+
+            $serviceImage = $services['serviceImage'];
+
+            $directory = 'src/images/Services/';
+
+            // Check if the file exists before attempting to delete it
+            if (file_exists($directory . $serviceImage)) {
+                unlink($directory . $serviceImage);
+            if (unlink($directory . $serviceImage)) {
+                echo "Image '$serviceImage' has been deleted successfully.";
+            } else {
+                echo "Failed to delete the image.";
+            }
+            } else {
+                echo "Image '$serviceImage' does not exist.";
+            }
+        }
+            
+    } 
+       // For uploading the service image
+       $newServiceImage = $_FILES["editImage"];
+       $newServiceImageName = $_FILES["editImage"]["name"];
+       $newServiceImageSize = $_FILES["editImage"]["size"];
+       $newServiceImageTmpName = $_FILES["editImage"]["tmp_name"];
+       $newServiceImageError = $_FILES["editImage"]["error"];
+       $newServiceImageType = $_FILES["editImage"]["type"];
+
+       //To change the name of image to have a unique name then move it to a different location
+       $newServiceImageExt = explode(".",$newServiceImageName); //separate the actual name of file to its extension
+       $newServiceImageActualExt = strtolower(end($newServiceImageExt)); // image extension lower cased
+       $newServiceImageNewName = $newServiceName .".". $newServiceImageActualExt; 
+       $newImage = $newServiceImageNewName;
+       //Upload the image to the server
+       $newServiceImageLocation = "src/images/Services/". $newImage;
+       move_uploaded_file($newServiceImageTmpName, $newServiceImageLocation); 
+        // $qryUpdateService = "UPDATE `services` SET `serviceID`=[value-1],`serviceName`=[value-2],`serviceCapacity`=[value-3],`serviceRate`=[value-4],`serviceImage`=[value-5],`superAdminID`=[value-6] WHERE serviceID = ?";
+        $qryUpdateService = "UPDATE `services` SET `serviceName`= ?,`serviceCapacity`=?,`serviceImage`=?,`superAdminID`=? WHERE serviceID = ?";
+        $connUpdateService = mysqli_prepare($conn, $qryUpdateService);
+        mysqli_stmt_bind_param($connUpdateService,'sissi',$newServiceName,$newServiceCapacity,$newImage,$_SESSION["userSuperAdminID"],$newServiceID);
+        mysqli_stmt_execute($connUpdateService);
+            
     }
 
 if(isset($_POST['selectedRows'])){ 
