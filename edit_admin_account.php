@@ -124,17 +124,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-3 mb-3">
               <input name="adminID" id="adminID" value="">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
-              <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
-              <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
+              <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid first name.
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="middleName" class="form-label">Middle Name</label>
-              <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" />
+              <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -144,7 +141,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="lastName" class="form-label">Last Name <span>*</span></label>
-              <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" />
+              <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -154,7 +151,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Username <span>*</span></label>
-              <input type="text" class="form-control" name="username" id="contactNumber" placeholder="Enter Username here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
+              <input type="text" class="form-control" name="username" id="username" placeholder="Enter last name here" required maxlength="15" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -164,7 +161,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="adminSex" class="form-label">Sex <span>*</span></label>
-              <select class="form-control" name="sex" id="sex" required onchange="this.setCustomValidity('')">
+              <select class="form-control" name="adminSex" id="adminSex" required onchange="this.setCustomValidity('')">
                 <option value="" selected disabled>Select Sex</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -176,20 +173,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="email" class="form-label">Email Address <span>*</span></label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
-              <!-- <div class="valid-feedback">
-                Looks good!
-            </div> -->
+              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
-                Please enter a valid email address.
+                Please enter a valid Gmail address (e.g., yourname@gmail.com).
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
-              <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
+              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid contact number.
               </div>
@@ -271,6 +262,19 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </section>
 
+        <!-- For trimming whitespacecs -->
+        <script>
+      function handleInput(event) {
+        const inputValue = event.target.value.trim(); // Remove leading and trailing whitespaces
+        const lastChar = inputValue.slice(-1); // Get the last character of the input
+
+        // Check if the input is only whitespaces and it's not the last character
+        if (inputValue === '' || (inputValue === ' ' && lastChar !== ' ')) {
+          event.target.value = ''; // Clear the input if it's only whitespaces
+        }
+      }
+    </script>
+    
     <script>
       //For Sidebar
       let sidebar = document.querySelector(".sidebar");
