@@ -14,18 +14,25 @@
          <span class="tooltip">Search</span>
       </li> -->
       <li>
-        <a href="dashboard.php">
+        <a href="admin_dashboard.php">
           <i class="bx bx-home"></i>
           <span class="links_name">Home</span>
         </a>
         <span class="tooltip">Home</span>
       </li>
       <li>
-        <a href="reservations_viewing.php">
+        <a href="admin_reservations_viewing.php">
           <i class="bx bx-book"></i>
           <span class="links_name">Reservations Viewing</span>
         </a>
         <span class="tooltip">Reservations</span>
+      </li>
+      <li>
+        <a href="admin_walk_in_form.php">
+          <i class="bx bx-file"></i>
+          <span class="links_name">Walk-In Form</span>
+        </a>
+        <span class="tooltip">Walk-In</span>
       </li>
 
       <li class="profile">

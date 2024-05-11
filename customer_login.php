@@ -13,32 +13,40 @@ if (isset($_SESSION['userMemberID'])) {
   die();
 }
 
-if (isset($_POST['login_member'])) {
-  $username = mysqli_real_escape_string($conn, $_POST['username']);
-  $password = mysqli_real_escape_string($conn, $_POST['password']);
-  if (mysqli_num_rows($memberAccountConn) > 0) {
-    foreach ($arrayMemberAccount as $membershipAccount) {
-      if (decryptData($membershipAccount['membershipID'], $key) == $username && password_verify($password, $membershipAccount['membershipPassword'])) {
-        echo '<script language="javascript">';
-        echo 'alert("You are now logged in!")';
-        echo '</script>';
-        $_SESSION['userMemberID'] = $membershipAccount['memberID'];
-        header("location:customer_dashboard.php");
-        exit();
-      } else {
-        echo '<script language="javascript">';
-        echo 'alert("Username and Password does not exist")';
-        echo '</script>';
+$error_message = ""; // Initialize error message variable
+
+if(isset($_POST['login_member'])){                                                                
+  $username=mysqli_real_escape_string($conn,$_POST['username']);
+  $password=mysqli_real_escape_string($conn,$_POST['password']);
+  $usernameExists = false;
+
+  if(mysqli_num_rows($memberAccountConn) > 0){
+    foreach($arrayMemberAccount as $membershipAccount){
+      if(decryptData($membershipAccount['membershipID'],$key) == $username){
+        $usernameExists = true;
+        if(password_verify($password, $membershipAccount['membershipPassword'])){
+          echo '<script language="javascript">';
+          echo 'alert("You are now logged in!")';
+          echo '</script>';
+          $_SESSION['userMemberID'] = $membershipAccount['memberID'];
+          header("location:customer_dashboard.php");
+          exit();
+        }else {
+          $error_message = "Username and Password are mismatched.";
+        }
+        break; // No need to continue looping once username is found
       }
     }
-  } else {
-    echo '<script language="javascript">';
-    echo 'alert("Username and Password does not exist")';
-    echo '</script>';
+  }
+
+  if (!$usernameExists) {
+    $error_message = "Account does not exist.";
   }
 }
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,79 +71,86 @@ if (isset($_POST['login_member'])) {
   <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
 
   <style>
-    .toggle-password {
-      height: 20px;
-      border: none;
-      outline: none;
+    /* Eye Toggle */
+    button.toggle-password {
+      border: none !important;
+      outline: none !important;
       padding: 0;
+      margin: 0;
       display: flex;
       justify-content: center;
-      /* Center horizontally */
       align-items: center;
-      /* Center vertically */
+      background-color: transparent !important;
+      color: gray;
+      margin-right: 5%;
     }
 
-    .toggle-password:focus {
-      outline: none;
-      border: none;
+    button.toggle-password:hover {
+      background-color: transparent !important;
+      color: black !important;
     }
 
-    .toggle-password:hover {
-      background-color: transparent;
-      border: none;
-      color: black;
+    button.toggle-password:focus,
+    button.toggle-password:active {
+      background-color: transparent !important;
+      color: gray !important;
     }
 
-    .toggle-password i {
+    button.toggle-password i {
       pointer-events: none;
-      border: none;
     }
 
-    /* Additional styles to adjust the icon size */
-    .toggle-password i {
+    button.toggle-password i {
       font-size: 1.2rem;
-      /* Adjust the size as needed */
     }
   </style>
 
 </head>
 
-<body id="customer-landing">
+<body class="customer-landing">
 
-  <!-- <section class="homepage" id="home"> -->
-  <section class="homepage" id="home">
+  <div class="homepage" id="home">
     <div class="content container-fluid">
-      <div class="text">
-        <img src="src/images/Bevitore Billiards Hall Logo.png" alt="" height="150px">
-        <h1 class="krona-one-regular mb-0">QReserve</h1>
-        <h6 class="m-0 pb-0 index-sub">BEVITORE SANTA ROSA</h6>
-      </div>
+    <div class="home">
+      <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
+      <h1 class="qreserve" id="index-qreserve">QReserve</h1>
+      <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
       <div class="container-fluid login">
         <div class="row">
-          <form action="customer_login.php" method="POST">
+        <form action="customer_login.php" method="POST">
             <h5 class="text-center fw-bold">Welcome!</h5>
+
+            <?php if (!empty($error_message)) : ?>
+      <div class="alert alert-danger" role="alert">
+        <?php echo $error_message; ?>
+      </div>
+    <?php endif; ?>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="username" required />
+              <input type="text" class="form-control" id="floatingInput" placeholder="" name="username" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
               <label for="floatingInput">Control Number</label>
             </div>
-            <div class="form-floating mb-3 position-relative">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required />
+            <div class="form-floating mb-2 position-relative">
+              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" maxlength="30" required />
               <label for="floatingPassword">Password</label>
-              <button class="btn btn-outline-secondary toggle-password position-absolute end-0 top-50 translate-middle-y p-4" type="button">
-                <i class="fas fa-eye"></i>
+              <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
+                <i class="fas fa-eye-slash"></i>
               </button>
             </div>
+
+            <a href="" class="forgot-password">Forgot Password</a>
             <div class="">
-              <button type="submit" class="btn btn-primary w-100 login-button" name="login_member" href="#" role="button">Sign In</button>
+              <button type="submit" class="btn btn-primary w-100 login-button mt-4" name="login_member" href="#" role="button">Sign In</button>
             </div>
           </form>
+
         </div>
       </div>
     </div>
-  </section>
+    </div>
+  </div>
 
   <script>
-    // For password togggle
+    // For password toggle
     document.addEventListener("DOMContentLoaded", function() {
       const togglePassword = document.querySelector(".toggle-password");
       const passwordInput = document.querySelector("#floatingPassword");

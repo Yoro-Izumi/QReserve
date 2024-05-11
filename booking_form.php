@@ -26,7 +26,7 @@ if (isset($_SESSION['userMemberID'])) {
             }
         }
     }
-    include "submit_customer_reservation.php";
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -51,6 +51,12 @@ if (isset($_SESSION['userMemberID'])) {
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+        <!-- jQuery -->
+        <script src="src/js/jquery-3.7.1.js"></script>
+        <!-- Datatables JS -->
+        <script src="src/js/jquery.dataTables.min.js"></script>
+        <script src="src/js/dataTables.bootstrap5.min.js"></script>
+
         <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
     </head>
 
@@ -66,9 +72,10 @@ if (isset($_SESSION['userMemberID'])) {
                     </svg>
                 </label>
                 <ul class="all-links">
-                    <li><a href="customer_dashboard.php">Home</a></li>
-                    <li><a href="customer_account.php">Account</a></li>
-                    <li><a href="customer_logout.php">Log Out</a></li>
+                <li><a href="customer_dashboard.php">Home</a></li>
+          <li><a href="customer_account.php">Reservations</a></li>
+          <li><a href="customer_account.php">Account</a></li>
+          <li><a href="customer_logout.php">Log Out</a></li>
                 </ul>
             </nav>
         </header>
@@ -76,7 +83,7 @@ if (isset($_SESSION['userMemberID'])) {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h1 class="krona-one-regular mt-5 mb-0">QReserve</h1>
+                    <h1 class="qreserve mt-5 mb-0">QReserve</h1>
                     <h6 id="booking-sub">BEVITORE SANTA ROSA</h6>
                     <hr class="my-4">
                 </div>
@@ -84,75 +91,72 @@ if (isset($_SESSION['userMemberID'])) {
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="fw-bold ps-4">Fill up the form</h3>
-                    <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate action="booking_form.php" method="POST" enctype="multipart/form-data">
+                    <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate>
                         <div class="row">
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="firstName" class="form-label">First Name <span>*</span></label>
-                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $customerFirstName; ?>" />
-                                <!-- <div class="valid-feedback">
-                                Looks good!
-                            </div> -->
+                                <!-- <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $customerFirstName; ?>" /> -->
+                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" readonly value="<?php echo $customerFirstName; ?>" />
+                                <input type="hidden" name="hiddenFirstName" id="hiddenFirstName" value="<?php echo $customerFirstName; ?>" />
                                 <div class="invalid-feedback">
                                     Please enter a valid first name.
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" value="<?php echo $customerMiddleName; ?>" />
-                                <!-- <div class="valid-feedback">
-                                Looks good!
-                            </div> -->
+                                <!-- <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" value="<?php echo $customerMiddleName; ?>" /> -->
+                                <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" readonly value="<?php echo $customerMiddleName; ?>" />
+                                <input type="hidden" name="hiddenMiddleName" id="hiddenMiddleName" value="<?php echo $customerMiddleName; ?>" />
                                 <div class="invalid-feedback">
                                     Please enter a valid middle name.
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" value="<?php echo $customerLastName; ?>" />
-                                <!-- <div class="valid-feedback">
-                                Looks good!
-                            </div> -->
+                                <!-- <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" value="<?php echo $customerLastName; ?>" /> -->
+                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" readonly value="<?php echo $customerLastName; ?>" />
+                                <input type="hidden" name="hiddenLastName" id="hiddenLastName" value="<?php echo $customerLastName; ?>" />
                                 <div class="invalid-feedback">
                                     Please enter a valid last name.
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="birthDate" class="form-label">Birthday<span>*</span></label>
-                                <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerBirthdate; ?>" />
-                                <!-- <div class="valid-feedback">
-                                Looks good!
-                            </div> -->
+                                <!-- <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerBirthdate; ?>" /> -->
+                                <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" readonly value="<?php echo $customerBirthdate; ?>" />
+                                <input type="hidden" name="hiddenBirthDate" id="hiddenBirthDate" value="<?php echo $customerBirthdate; ?>" />
+
                                 <div class="invalid-feedback">
                                     Please enter a valid birthdate.
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value="<?php echo $customerNumber; ?>" />
-                                <!-- <div class="valid-feedback">
-                                Looks good!
-                            </div> -->
+                                <!-- <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value="<?php echo $customerNumber; ?>" /> -->
+                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" readonly value="<?php echo $customerNumber; ?>" />
+                                <input type="hidden" name="hiddenContactNumber" id="hiddenContactNumber" value="<?php echo $customerNumber; ?>" />
+
                                 <div class="invalid-feedback">
                                     Please enter a valid contact number.
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label for="email" class="form-label">Email Address <span>*</span></label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo $customerEmail; ?>" />
-                                <!-- <div class="valid-feedback">
-                                Looks good!
-                            </div> -->
+                                <!-- <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo $customerEmail; ?>" /> -->
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" readonly value="<?php echo $customerEmail; ?>" />
+                                <input type="hidden" name="hiddenEmail" id="hiddenEmail" value="<?php echo $customerEmail; ?>" />
                                 <div class="invalid-feedback">
                                     Please enter a valid email address.
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-                                <label for="validity" class="form-label">Select Date <span>*</span></label>
-                                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" />
-                                <div class="invalid-feedback">
-                                    Please select a date.
-                                </div>
-                            </div>
+  <label for="validity" class="form-label">Select Date <span>*</span></label>
+  <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
+  <div class="invalid-feedback">
+    Please select a date.
+  </div>
+</div>
+
 
                             <!-- <div class="col-12 col-md-3 mb-3">
                             <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
@@ -308,7 +312,7 @@ if (isset($_SESSION['userMemberID'])) {
                         </div>
                         <div class="row justify-content-end mt-5">
                             <div class="col-12 col-md-2 mb-3 mb-md-0">
-                                <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Create</button>
+                                <button class="btn btn-primary w-100 create-button" name="submitReserve" id="submitReserve" type="submit">Create</button>
                             </div>
                             <div class="col-12 col-md-2">
                                 <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
@@ -413,6 +417,48 @@ if (isset($_SESSION['userMemberID'])) {
                 location.reload();
             }
         </script>
+
+<!-- For the readonly fields -->
+<script>
+    // Populate hidden fields with readonly field values
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('hiddenFirstName').value = document.getElementById('firstName').value;
+        document.getElementById('hiddenMiddleName').value = document.getElementById('middleName').value;
+        document.getElementById('hiddenLastName').value = document.getElementById('lastName').value;
+        document.getElementById('hiddenBirthDate').value = document.getElementById('birthDate').value;
+        document.getElementById('hiddenContactNumber').value = document.getElementById('contactNumber').value;
+        document.getElementById('hiddenEmail').value = document.getElementById('email').value;
+    });
+</script>
+<script>
+    //add admin
+    $(document).ready(function(){
+        $('#submitReserve').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#booking-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'reservation_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+
     </body>
 
     </html>

@@ -44,6 +44,12 @@ if (isset($_SESSION['userMemberID'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+    <!-- jQuery -->
+    <script src="src/js/jquery-3.7.1.js"></script>
+    <!-- Datatables JS -->
+    <script src="src/js/jquery.dataTables.min.js"></script>
+    <script src="src/js/dataTables.bootstrap5.min.js"></script>
+
     <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
   </head>
 
@@ -60,6 +66,7 @@ if (isset($_SESSION['userMemberID'])) {
         </label>
         <ul class="all-links">
           <li><a href="customer_dashboard.php">Home</a></li>
+          <li><a href="customer_account.php">Reservations</a></li>
           <li><a href="customer_account.php">Account</a></li>
           <li><a href="customer_logout.php">Log Out</a></li>
         </ul>
@@ -67,52 +74,16 @@ if (isset($_SESSION['userMemberID'])) {
     </header>
 
 
-    <h3 class="krona-one-regular mt-5 pt-3 mb-0">Welcome <?php echo $customerName; ?>!</h3>
+    <h3 class="qreserve mt-5 pt-3 mb-0">Welcome <?php echo $customerName; ?>!</h3>
     <div class="d-flex justify-content-between align-items-center">
       <h4 class="fw-bold mt-4 mb-0">Active Playing</h4>
       <a href="booking_form.php" type="button" class="btn btn-primary fw-bold mb-0 mt-3 create-reservation" id="create-reservation">Create Reservation</a>
     </div>
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid table-container dashboard-square-kebab" id="home-active-playing">
-      <table id="example" class="table table-striped" style="width: 100%">
-        <thead>
-          <tr>
-            <th>Pool Table</th>
-            <th>Time Started</th>
-            <th>Expected End Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($arrayPoolTables as $poolTables) {
-            if ($poolTables['customerName'] == NULL) {
-              $customerName = "None";
-            } else {
-              $customerName = $poolTables['customerName'];
-            }
-            $poolTableStatus = $poolTables['poolTableStatus'];
-            $poolTableNumber = $poolTables['poolTableNumber'];
-            $timeStarted = explode(' ', $poolTables['timeStarted']);
-            $timeEnd = explode(' ', $poolTables['timeEnd']);
-          ?>
-            <tr>
-              <th><?php echo $poolTableNumber; ?></th>
-              <td><?php echo $timeStarted[1]; ?></td>
-              <td><?php echo $timeEnd[1]; ?></td>
-              <?php
-              if ($poolTableStatus == "Done" || $poolTableStatus == "Available") {
-                $status = "badge bg-success";
-              } else if ($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting") {
-                $status = "badge bg-warning";
-              } else {
-                $status = "badge bg-danger";
-              }
-              ?>
-              <td><span class="<?php echo $status; ?>"><?php echo $poolTableStatus; ?></span></td>
-            </tr>
-          <?php } ?>
-        </tbody>
-      </table>
+    <table id="example" class="table table-striped" style="width: 100%">
+          <!--table data is dynamicaly updated and is from pool_table.php-->
+        </table>
     </div>
 
     <div class="container-fluid mt-4">
@@ -217,6 +188,28 @@ if (isset($_SESSION['userMemberID'])) {
         }
       }
     </script>
+
+<script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'customer_pool_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#example').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+</script>
+
   </body>
 
   </html>

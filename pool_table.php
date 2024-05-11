@@ -48,6 +48,15 @@ $currentTime = date('H:i:s');
                     mysqli_stmt_execute($stmt);
 
                 }
+                else{
+                  $poolStatus = "Available";
+                  $insertTimeEnd = $currentDate." 00:00:00";
+                  $insertTimeStart = $currentDate." 00:00:00"; 
+                  $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+                  $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+                  mysqli_stmt_bind_param($stmt, "siss", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
+                  mysqli_stmt_execute($stmt);
+              }
             }
             
             echo "<tr>

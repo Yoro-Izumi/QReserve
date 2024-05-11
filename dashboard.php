@@ -44,10 +44,17 @@ if (isset($_SESSION["userSuperAdminID"])) {
   </head>
 
   <body class="body">
-    <?php include "superadmin_sidebar.php"; ?>
+  <?php
+      if(isset($_SESSION['userSuperAdminID'])) {
+          include "superadmin_sidebar.php";
+      } else {
+          include "admin_sidebar.php";
+      }
+  ?>
     <section class="home-section">
       <h4 class="qreserve">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
+      
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
           <!--table data is dynamicaly updated and is from pool_table.php-->

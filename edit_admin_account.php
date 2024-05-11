@@ -3,10 +3,38 @@ include "connect_database.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 include "src/get_data_from_database/get_shifts.php";
+include "src/get_data_from_database/get_admin_accounts.php";
+include "src/get_data_from_database/get_admin_info.php";
+
 session_start();
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   $superAdminID = $_SESSION["userSuperAdminID"];
+
+  // Initialize variables with default values
+  $ID = $adminID = $adminInfoID = $adminUsername = $adminName = $adminSex = $adminPhone = $adminEmail = $shiftTimeStart = $shiftTimeEnd = "";
+  
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {//if(isset($_POST['edit-admin-val'])){ 
+    // Retrieve the value of 'passID'
+    $ID = $_POST['edit-admin-val'];
+      if($adminAccount['adminInfoID'] == $ID){
+          // Populate variables with data from $adminAccount array
+          $adminID = $adminAccount['adminID'];
+          $adminInfoID = $adminAccount['adminInfoID'];
+          $adminUsername = decryptData($adminAccount['adminUsername'], $key);
+          $adminName = decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key);
+          $adminSex = decryptData($adminAccount['adminSex'], $key);
+          $adminPhone = decryptData($adminAccount['adminContactNumber'], $key);
+          $adminEmail = decryptData($adminAccount['adminEmail'], $key);
+          $shiftTimeStart = $adminAccount['shiftTimeStart'];
+          $shiftTimeEnd = $adminAccount['shiftTimeEnd'];
+      } else {
+          // Handle the case where $_POST['passID'] does not match
+          // For example, you could return an error response or set variables to default values
+      }
+  }
+  
+
   if (isset($_POST['submitAdmin'])) {
     $firstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
     $lastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
@@ -91,21 +119,19 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Edit Admin Account</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_admin.php" method="POST" enctype="multipart/form-data">
+        <form class="needs-validation dashboard-square-kebab" id="edit-admin-form" novalidate>
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
+              <!-- <input name="adminID" id="adminID" value=""> -->
               <label for="firstName" class="form-label">First Name <span>*</span></label>
-              <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" />
-              <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
+              <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid first name.
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="middleName" class="form-label">Middle Name</label>
-              <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" />
+              <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -115,7 +141,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="lastName" class="form-label">Last Name <span>*</span></label>
-              <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" />
+              <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -125,7 +151,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Username <span>*</span></label>
-              <input type="text" class="form-control" name="username" id="contactNumber" placeholder="Enter Username here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
+              <input type="text" class="form-control" name="username" id="username" placeholder="Enter last name here" required maxlength="15" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -135,7 +161,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="adminSex" class="form-label">Sex <span>*</span></label>
-              <select class="form-control" name="sex" id="sex" required onchange="this.setCustomValidity('')">
+              <select class="form-control" name="adminSex" id="adminSex" required onchange="this.setCustomValidity('')">
                 <option value="" selected disabled>Select Sex</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -147,20 +173,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="email" class="form-label">Email Address <span>*</span></label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
-              <!-- <div class="valid-feedback">
-                Looks good!
-            </div> -->
+              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
-                Please enter a valid email address.
+                Please enter a valid Gmail address (e.g., yourname@gmail.com).
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
-              <!-- <div class="valid-feedback">
-                      Looks good!
-                  </div> -->
+              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid contact number.
               </div>
@@ -227,7 +247,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin" type="submit">Create</button>
             </div>
             <div class="col-12 col-md-2">
               <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
@@ -242,6 +262,19 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </section>
 
+        <!-- For trimming whitespacecs -->
+        <script>
+      function handleInput(event) {
+        const inputValue = event.target.value.trim(); // Remove leading and trailing whitespaces
+        const lastChar = inputValue.slice(-1); // Get the last character of the input
+
+        // Check if the input is only whitespaces and it's not the last character
+        if (inputValue === '' || (inputValue === ' ' && lastChar !== ' ')) {
+          event.target.value = ''; // Clear the input if it's only whitespaces
+        }
+      }
+    </script>
+    
     <script>
       //For Sidebar
       let sidebar = document.querySelector(".sidebar");
@@ -332,6 +365,34 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
+
+<script>
+    //add admin
+    $(document).ready(function(){
+        $('#submitAdmin').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#edit-admin-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 
 
   </body>

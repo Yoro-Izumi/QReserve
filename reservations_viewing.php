@@ -60,64 +60,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab">
         <table id="example" class="table table-striped" style="width: 100%">
-          <thead>
-            <tr>
-              <th>Actions</th>
-              <th>Name</th>
-              <th>Date of Reservation</th>
-              <th>Time of Reservation</th>
-              <th>Pool Table</th>
-              <th>Contact Number</th>
-              <th>Email Address</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($arrayReservationInfo as $reservations) {
-              $reservationDate = $reservations['reservationDate'];
-              $reservationStatus = $reservations['reservationStatus'];
-              $reservationTimeStart = $reservations['reservationTimeStart'];
-              $reservationTimeEnd = $reservations['reservationTimeEnd'];
-              $tableNumber = $reservations['poolTableNumber'];
-              foreach ($arrayMemberAccount as $members) {
-                if ($members['memberID'] == $reservations['memberID']) {
-                  $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
-                  $contactNumber = decryptData($members['customerNumber'], $key);
-                  $email = decryptData($members['customerEmail'], $key);
-                } else {
-                  $customerName = "";
-                  $contactNumber = "";
-                  $email = "";
-                }
-              }
-            ?>
-              <tr>
-                <td><input type="checkbox" value="<?php echo $reservations['reservationID']; ?>"></td>
-                <td><?php echo $customerName; ?></td>
-                <td><?php echo $reservationDate; ?></td>
-                <td><?php echo $reservationTimeStart; ?> - <?php echo $reservationTimeEnd; ?></td>
-                <td><?php echo $tableNumber; ?></td>
-                <td><?php echo $contactNumber; ?></td>
-                <td><?php echo $email; ?></td>
-                <?php
-                if ($reservationStatus == "Paid" || $reservationStatus == "Done") {
-                  $status = "badge bg-success";
-                } else if ($reservationStatus == "On Process" || $reservationStatus == "Pending") {
-                  $status = "badge bg-warning";
-                } else {
-                  $status = "badge bg-danger";
-                }
-                ?>
-                <td><span class="<?php echo $status; ?>"><?php echo $reservationStatus; ?></span></td>
-
-              </tr>
-            <?php } ?>
-          </tbody>
+          <!--dynamically updates table when new data is entered-->
         </table>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accept-modal" id="accept-service">Accept Selected</button>
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject-modal" id="reject-service">Reject Selected</button>
+          <button type="button" id="accept-reservation" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accept-modal" id="accept-service">Accept Selected</button>
+          <button type="button" id="reject-reservation" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject-modal">Reject Selected</button>
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
         </div>
       </div>
@@ -137,7 +85,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-target="#success-accept-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" id="confirm-accept-reservation" class="btn btn-primary create-button" data-bs-target="#success-accept-modal" data-bs-toggle="modal">Confirm</button>
           </div>
         </div>
       </div>
@@ -154,7 +102,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully accepted this reservation.
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button class="btn btn-primary create-button" onclick="reload()" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
@@ -169,11 +117,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h2 class="modal-title  fw-bold text-center" id="warning"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
           </div>
           <div class="modal-body">
-            Are you sure you want to delete this reservation?
+            Are you sure you want to reject this reservation?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" id="confirm-reject-reservation" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
           </div>
         </div>
       </div>
@@ -190,24 +138,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully rejected this reservation.
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button class="btn btn-primary create-button" onclick="reload()" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script>
       $(document).ready(function() {
         $("#example").DataTable({
@@ -245,6 +180,147 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }
       }
     </script>
+
+<script>
+  $(document).ready(function() {
+    var intervalID; // Define intervalID variable outside to make it accessible across functions
+
+    // Function to update table content
+    function updateTable() {
+      $.ajax({
+        url: 'reservation_table.php', // Change this to the PHP file that contains the table content
+        type: 'GET',
+        success: function(response) {
+          $('#example').html(response);
+          attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
+        }
+      });
+    }
+
+    // Function to start interval
+    function startInterval() {
+      intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
+    }
+
+    // Function to stop interval
+    function stopInterval() {
+      clearInterval(intervalID);
+    }
+
+    // Attach event listeners for checkboxes
+function attachCheckboxListeners() {
+    const checkboxes = document.querySelectorAll('.reservation-checkbox');
+    //var editReservationButton = document.getElementById('edit-reservation');
+    //var deleteReservationButton = document.getElementById('delete-reservation');
+    var checkedCount = 0; var checkBoxValue;
+
+    //editAdminButton.disabled = true;
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                checkedCount++;
+                if (checkedCount === 1) {
+                    // If only one checkbox is checked, set its value
+                    // Ensure that checkboxValue is defined and refers to the appropriate element
+                    checkboxValue = this.value; // You need to define checkboxValue
+                }
+            } else {
+                checkedCount--;
+                if (checkedCount === 1) {
+                    // If only one checkbox remains checked after unchecking this one, find and set its value
+                    const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
+                    if (remainingCheckbox) {
+                        checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
+                    }
+                } else {
+                    // If no or multiple checkboxes are checked, clear the value
+                    checkboxValue.value = " "; // You need to define checkboxValue
+                }
+            }
+            //editAdminButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
+
+            // Stop or start interval based on checkbox status
+            if (checkedCount > 0) {
+                stopInterval();
+            } else {
+                startInterval();
+            }
+        });
+    });
+}
+
+
+    // Initial table update and start interval
+    updateTable();
+    startInterval();
+  });
+</script>
+
+<!--script updating reservation status-->
+<script>
+  $(document).ready(function(){
+        // AJAX code to handle reject reservation
+        $("#confirm-reject-reservation").click(function(){
+            // Array to store IDs of selected rows
+            var selectedRowsReject = [];
+
+            // Iterate through each checked checkbox
+            $(".reservation-checkbox:checked").each(function(){
+                // Push the value (ID) of checked checkbox into the array
+                selectedRowsReject.push($(this).val());
+            });
+
+            // AJAX call to send selected rows IDs to delete script
+            $.ajax({
+                url: "reservation_crud.php",
+                type: "POST",
+                data: {selectedRowsReject: selectedRowsReject},
+                success: function(response){
+                    // Reload the page or update the table as needed
+                   // location.reload(); // For example, reload the page after deletion
+                },
+                error: function(xhr, status, error){
+                    //console.error("Error:", error);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function(){
+        // AJAX code to handle accept reservation
+        $("#confirm-accept-reservation").click(function(){
+            // Array to store IDs of selected rows
+            var selectedRowsAccept = [];
+
+            // Iterate through each checked checkbox
+            $(".reservation-checkbox:checked").each(function(){
+                // Push the value (ID) of checked checkbox into the array
+                selectedRowsAccept.push($(this).val());
+            });
+
+            // AJAX call to send selected rows IDs to delete script
+            $.ajax({
+                url: "reservation_crud.php",
+                type: "POST",
+                data: {selectedRowsAccept: selectedRowsAccept},
+                success: function(response){
+                    // Reload the page or update the table as needed
+                   // location.reload(); // For example, reload the page after deletion
+                },
+                error: function(xhr, status, error){
+                    //console.error("Error:", error);
+                }
+            });
+        });
+    });
+
+function reload(){
+  location.reload();
+}
+</script>
+
+
   </body>
 
   </html>

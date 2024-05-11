@@ -48,9 +48,10 @@ if (isset($_SESSION["userMemberID"])) {
                     </svg>
                 </label>
                 <ul class="all-links">
-                    <li><a href="customer_dashboard.php">Home</a></li>
-                    <li><a href="customer_account.php">Account</a></li>
-                    <li><a href="customer_logout.php">Log Out</a></li>
+                <li><a href="customer_dashboard.php">Home</a></li>
+          <li><a href="customer_account.php">Reservations</a></li>
+          <li><a href="customer_account.php">Account</a></li>
+          <li><a href="customer_logout.php">Log Out</a></li>
                 </ul>
             </nav>
         </header>
@@ -58,7 +59,7 @@ if (isset($_SESSION["userMemberID"])) {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h1 class="krona-one-regular mt-5 pt-3 mb-0">QReserve</h1>
+                    <h1 class="qreserve mt-5 pt-3 mb-0">QReserve</h1>
                     <h6 id="booking-sub">BEVITORE SANTA ROSA</h6>
                     <hr class="my-4">
                 </div>
@@ -66,7 +67,7 @@ if (isset($_SESSION["userMemberID"])) {
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="fw-bold ps-4">My Account</h3>
-                    <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
+                    <form class="needs-validation dashboard-square-kebab" id="account-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
                         <div class="row">
                             <?php
                             foreach ($arrayMemberAccount as $memberAccount) {
@@ -81,33 +82,20 @@ if (isset($_SESSION["userMemberID"])) {
                                 }
                             }
                             ?>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label fw-bold">First Name: ao3xjh</label>
-                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $customerFirstName; ?>" readonly />
+                            <div class="col-12 col-md-12 mb-3 ">
+                                <label for="firstName" class="form-label customer-account" >First Name: <h1 class="customer-account-field" id="customer-name"><?php echo $customerFirstName; ?> <?php echo $customerMiddleName; ?> <?php echo $customerLastName; ?></h1></label>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-                                <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" name="middleName" id="middleName" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="this.setCustomValidity('')" value="<?php echo $customerMiddleName; ?>" readonly />
+                                <label for="firstName" class="form-label customer-account">Control Number: <h4 class="customer-account-field" id="customer-name"><?php echo $memberControlNumber; ?></h4></label>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-                                <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="this.setCustomValidity('')" value="<?php echo $customerLastName; ?>" readonly />
+                                <label for="firstName" class="form-label customer-account">Birthdate: <h4 class="customer-account-field" id="customer-name"><?php echo $customerBirthdate; ?></h4></label>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label">Control Number</label>
-                                <input type="text" class="form-control" name="controlNumber" id="controlNumber" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="this.setCustomValidity('')" value="<?php echo $memberControlNumber; ?>" readonly />
+                                <label for="firstName" class="form-label customer-account">Contact Number: <h4 class="customer-account-field" id="customer-name"><?php echo $customerNumber; ?></h4></label>
                             </div>
-                            <div class="col-12 col-md-4 mb-3">
-                                <label for="birthDate" class="form-label">Birthday<span>*</span></label>
-                                <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerBirthdate; ?>" readonly />
-                            </div>
-                            <div class="col-12 col-md-4 mb-3">
-                                <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" required pattern="^09\d{9}$" minlength="11" maxlength="11" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" value="<?php echo $customerNumber; ?>" readonly />
-                            </div>
-                            <div class="col-12 col-md-4 mb-3">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" value="<?php echo $customerEmail; ?>" readonly />
+                            <div class="col-12 col-md-3 mb-3">
+                                <label for="firstName" class="form-label customer-account">Email Address: <h4 class="customer-account-field" id="customer-name"><?php echo $customerEmail; ?></h4></label>
                             </div>
                     </form>
 

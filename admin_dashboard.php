@@ -1,8 +1,9 @@
 <?php
 session_start();
-if (isset($_SESSION["userSuperAdminID"])) {
+if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { // Check for admin session too
   $visitors = 0;
 ?>
+
   <!DOCTYPE html>
   <html lang="en" dir="ltr">
 
