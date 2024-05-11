@@ -13,11 +13,11 @@ echo"
 <tr>
   <th>Actions</th>
   <th>Name</th>
-  <th>Username</th>
+  <th>Control Number</th>
   <th>Birthday</th>
   <th>Contact Number</th>
   <th>Email Address</th>
-  <th>Validity</th>
+  <th>Validity Date</th>
 </tr>
 </thead>
 <tbody>";

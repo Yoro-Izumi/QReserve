@@ -16,6 +16,7 @@ echo"
   <th>Username</th>
   <th>Contact Number</th>
   <th>Email Address</th>
+  <th>Shift</th>
 </tr>
 </thead>
 <tbody>";
@@ -27,6 +28,7 @@ foreach ($arrayAdminAccount as $adminAccount) { //get membership details as well
   $adminSex = decryptData($adminAccount['adminSex'], $key);
   $adminPhone = decryptData($adminAccount['adminContactNumber'], $key);
   $adminEmail = decryptData($adminAccount['adminEmail'], $key);
+  $adminShift = ($adminAccount['shiftTimeStart']) . " - " . ($adminAccount['shiftTimeEnd']);
 echo "
   <tr>
     <td><input onchange='getSelected(this)' type='checkbox' class='admin-checkbox' value='$adminInfoID'></td>
@@ -35,6 +37,7 @@ echo "
     <td>$adminUsername</td>
     <td>$adminPhone</td>
     <td>$adminEmail</td>
+    <td>$adminShift</td>
   </tr>";
 }
 echo "</tbody>";

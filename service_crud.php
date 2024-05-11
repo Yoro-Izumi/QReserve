@@ -8,7 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(isset($_POST['serviceName'])){
         $serviceName = mysqli_real_escape_string($conn, $_POST['serviceName']);
         $serviceCapacity = mysqli_real_escape_string($conn, $_POST['capacity']);
-        $serviceRate = mysqli_real_escape_string($conn, $_POST['serviceRate']);
+
+        // Remove the peso sign and commas from the service rate
+        $serviceRateWithPeso = mysqli_real_escape_string($conn, $_POST['serviceRate']);
+        $serviceRate = str_replace(['₱', ',', '.'], '', $serviceRateWithPeso);
 
         // For uploading the service image
         $serviceImage = $_FILES["serviceImage"];
@@ -18,28 +21,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serviceImageError = $_FILES["serviceImage"]["error"];
         $serviceImageType = $_FILES["serviceImage"]["type"];
 
-        //To change the name of image to have a unique name then move it to a different location
-        $serviceImageExt = explode(".",$serviceImageName); //separate the actual name of file to its extension
-        $serviceImageActualExt = strtolower(end($serviceImageExt)); // image extension lower cased
-        $serviceImageNewName = $serviceName .".". $serviceImageActualExt; 
+        //To change the name of the image to have a unique name then move it to a different location
+        $serviceImageExt = explode(".", $serviceImageName); // Separate the actual name of the file to its extension
+        $serviceImageActualExt = strtolower(end($serviceImageExt)); // Image extension lower-cased
+        $serviceImageNewName = $serviceName . "." . $serviceImageActualExt;
         $serviceImage = $serviceImageNewName;
-        //Upload the image to the server
-        $serviceImageLocation = "src/images/Services/". $serviceImage;
-        move_uploaded_file($serviceImageTmpName, $serviceImageLocation); 
+        // Upload the image to the server
+        $serviceImageLocation = "src/images/Services/" . $serviceImage;
+        move_uploaded_file($serviceImageTmpName, $serviceImageLocation);
 
-        //add price
+        // add price
         $hour = 1;
         $qryAddNewPrice = "INSERT INTO `hour_price`(`hoursID`, `numberOfHours`, `normalPrice`, `succeedingHourPrice`) VALUES (NULL,?,?,?)";
         $connAddNewPrice = mysqli_prepare($conn, $qryAddNewPrice);
-        mysqli_stmt_bind_param($connAddNewPrice,'iii',$hour,$serviceRate,$serviceRate);
+        mysqli_stmt_bind_param($connAddNewPrice, 'iii', $hour, $serviceRate, $serviceRate);
         mysqli_stmt_execute($connAddNewPrice);
 
         $priceID = mysqli_insert_id($conn);
 
-        //add new service
+        // add new service
         $qryAddNewService = "INSERT INTO `services`(`serviceID`, `serviceName`, `serviceCapacity`, `serviceRate`, `serviceImage`, `superAdminID`) VALUES (NULL,?,?,?,?,?)";
         $connAddNewService = mysqli_prepare($conn, $qryAddNewService);
-        mysqli_stmt_bind_param($connAddNewService,'siisi',$serviceName,$serviceCapacity,$priceID,$serviceImage,$_SESSION["userSuperAdminID"]);
+        mysqli_stmt_bind_param($connAddNewService, 'siisi', $serviceName, $serviceCapacity, $priceID, $serviceImage, $_SESSION["userSuperAdminID"]);
         mysqli_stmt_execute($connAddNewService);
 
         unset($_POST['serviceName']);
@@ -47,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         unset($_POST['serviceRate']);
     }
 }
+
     if(isset($_POST['editID'])){
     //editID editServiceName editServiceRate editCapacity editImage
     

@@ -212,12 +212,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
       Highcharts.chart('container1', {
 
         title: {
-          text: 'U.S Solar Employment Growth',
+          text: '',
           align: 'left'
         },
 
         subtitle: {
-          text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+          text: '',
           align: 'left'
         },
 

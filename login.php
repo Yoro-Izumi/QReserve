@@ -25,52 +25,79 @@ if (isset($_POST['login'])) {
   $username = mysqli_real_escape_string($conn, $_POST['username']);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-  $loggedIn = false;
-
+  // Check if the username exists in either super admin or admin accounts
+  $usernameExists = false;
   if (mysqli_num_rows($superAdminAccountConn) > 0) {
     foreach ($arraySuperAdminAccount as $superAdminAccount) {
-      if (decryptData($superAdminAccount['superAdminEmail'], $key) == $username && password_verify($password, $superAdminAccount['superAdminPassword'])) {
-        $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
-        $loggedIn = true;
-        $logUser = "superAdmin:" . $superAdmin['$superAdminID'];
+      if (decryptData($superAdminAccount['superAdminEmail'], $key) == $username) {
+        $usernameExists = true;
         break;
       }
     }
   }
-
-  if (!$loggedIn && mysqli_num_rows($adminAccountConn) > 0) {
+  if (!$usernameExists && mysqli_num_rows($adminAccountConn) > 0) {
     foreach ($arrayAdminAccount as $adminAccount) {
-      if (decryptData($adminAccount['adminEmail'], $key) == $username && password_verify($password, $adminAccount['adminPassword'])) {
-        $_SESSION['userAdminID'] = $adminAccount['adminID'];
-        $loggedIn = true;
-        $logUser = "admin:" . $adminAccount['$adminID'];
+      if (decryptData($adminAccount['adminEmail'], $key) == $username) {
+        $usernameExists = true;
         break;
       }
     }
   }
 
-  if ($loggedIn) {
-    echo '<script language="javascript">';
-    echo 'alert("You are now logged in!")';
-    echo '</script>';
-
-    $accountType = explode(":", $logUser);
-
-    if ($accountType[0] == "admin") {
-      $_SESSION['userAdmin'] = $accountType[1];
-      header("location:admin_dashboard.php");
-      exit();
-    } else if ($accountType[0] == "superAdmin") {
-      $_SESSION['userSuperAdmin'] = $accountType[1];
-      header("location:dashboard.php");
-      exit();
-    }
+  if (!$usernameExists) {
+    $error_message = "Account does not exist."; // Set error message
   } else {
-    $error_message = "Username and Password are mismatched."; // Set error message
+    // Username exists, now check password
+    $loggedIn = false;
+
+    if (mysqli_num_rows($superAdminAccountConn) > 0) {
+      foreach ($arraySuperAdminAccount as $superAdminAccount) {
+        if (decryptData($superAdminAccount['superAdminEmail'], $key) == $username && password_verify($password, $superAdminAccount['superAdminPassword'])) {
+          $_SESSION['userSuperAdminID'] = $superAdminAccount['superAdminID'];
+          $loggedIn = true;
+          $logUser = "superAdmin:" . $superAdminAccount['$superAdminID'];
+          break;
+        }
+      }
+    }
+
+    if (!$loggedIn && mysqli_num_rows($adminAccountConn) > 0) {
+      foreach ($arrayAdminAccount as $adminAccount) {
+        if (decryptData($adminAccount['adminEmail'], $key) == $username && password_verify($password, $adminAccount['adminPassword'])) {
+          $_SESSION['userAdminID'] = $adminAccount['adminID'];
+          $loggedIn = true;
+          $logUser = "admin:" . $adminAccount['$adminID'];
+          break;
+        }
+      }
+    }
+
+    if ($loggedIn) {
+      echo '<script language="javascript">';
+      echo 'alert("You are now logged in!")';
+      echo '</script>';
+
+      $accountType = explode(":", $logUser);
+
+      if ($accountType[0] == "admin") {
+        $_SESSION['userAdmin'] = $accountType[1];
+        header("location:admin_dashboard.php");
+        exit();
+      } else if ($accountType[0] == "superAdmin") {
+        $_SESSION['userSuperAdmin'] = $accountType[1];
+        header("location:dashboard.php");
+        exit();
+      }
+    } else {
+      $error_message = "Username and Password are mismatched."; // Set error message
+    }
   }
 }
-
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">

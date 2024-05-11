@@ -13,28 +13,40 @@ if (isset($_SESSION['userMemberID'])) {
   die();
 }
 
+$error_message = ""; // Initialize error message variable
+
 if(isset($_POST['login_member'])){                                                                
   $username=mysqli_real_escape_string($conn,$_POST['username']);
   $password=mysqli_real_escape_string($conn,$_POST['password']);
-    if(mysqli_num_rows($memberAccountConn) > 0){
-        foreach($arrayMemberAccount as $membershipAccount){
-          if(decryptData($membershipAccount['membershipID'],$key) == $username && password_verify($password, $membershipAccount['membershipPassword'])){
-            echo '<script language="javascript">';
-            echo 'alert("You are now logged in!")';
-            echo '</script>';
-            $_SESSION['userMemberID'] = $membershipAccount['memberID'];
-            header("location:customer_dashboard.php");
-            exit();
+  $usernameExists = false;
+
+  if(mysqli_num_rows($memberAccountConn) > 0){
+    foreach($arrayMemberAccount as $membershipAccount){
+      if(decryptData($membershipAccount['membershipID'],$key) == $username){
+        $usernameExists = true;
+        if(password_verify($password, $membershipAccount['membershipPassword'])){
+          echo '<script language="javascript">';
+          echo 'alert("You are now logged in!")';
+          echo '</script>';
+          $_SESSION['userMemberID'] = $membershipAccount['memberID'];
+          header("location:customer_dashboard.php");
+          exit();
         }else {
           $error_message = "Username and Password are mismatched.";
         }
+        break; // No need to continue looping once username is found
       }
-    } else {
-      $error_message = "Account does not exist.";
     }
   }
 
+  if (!$usernameExists) {
+    $error_message = "Account does not exist.";
+  }
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

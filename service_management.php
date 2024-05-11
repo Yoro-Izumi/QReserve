@@ -97,7 +97,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <label for="serviceRate" class="form-label">Rate</label>
                   <div class="input-group">
                     <span class="input-group-text">₱</span>
-                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="2" required pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" required />
+                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="5" minlength="2" required pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" required />
+                    <!-- <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[₱]?[0-9,.-]*" oninput="this.value = this.value.replace(/[^₱0-9,.-]/g, '')" title="Please enter a valid rate." maxlength="10" required /> -->
+
                   </div>
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">Please enter a valid rate.</div>
@@ -400,36 +402,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       });
     </script>
 
-<script>
-      //add admin
-      $(document).ready(function() {
-        $('#submitAdmin').click(function(e) {
-          e.preventDefault();
-
-          var formData = new FormData($('#add-new-profile-form')[0]);
-
-          $.ajax({
-            type: 'POST',
-            url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-              // Handle success response here
-              //alert(response); // For demonstration purposes, you can display an alert with the response
-              location.reload();
-            },
-            error: function(xhr, status, error) {
-              // Handle error
-              console.error(xhr.responseText);
-            }
-          });
-        });
-      });
-    </script>
-
-
-
 
 
 
@@ -601,6 +573,53 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script> -->
+
+    <!-- <script>
+      $(document).ready(function() {
+  // Update the displayed value when the input changes
+  $('#serviceRate').on('input', function() {
+    // Get the entered value without the currency symbol and commas
+    var inputValue = $(this).val().replace(/^₱|,/g, '');
+
+    // Remove non-numeric characters
+    var numericValue = inputValue.replace(/[^\d.]/g, '');
+
+    // Remove leading zeros
+    numericValue = numericValue.replace(/^0+(\d)/, '$1');
+
+    // Format with commas for thousands or hundred thousands
+    numericValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Limit to two decimal places
+    var parts = numericValue.split('.');
+    if (parts.length > 1) {
+      numericValue = parts[0] + '.' + parts[1].slice(0, 2);
+    }
+
+    // Update the input value with the formatted value and add the currency symbol
+    $(this).val(numericValue === '0' ? '' : '₱' + numericValue);
+  });
+
+  // Submit the form with the formatted value when needed
+  $('#add-new-service').submit(function() {
+    // Remove currency symbol and commas before submitting the form
+    var inputValue = $('#serviceRate').val().replace(/^₱|,/g, '');
+    var numericValue = inputValue.replace(/[^\d.]/g, '');
+
+    // Remove leading zeros
+    numericValue = numericValue.replace(/^0+(\d)/, '$1');
+
+    // Store the numeric value separately for comparison
+    $('#serviceRate').data('numericValue', numericValue);
+
+    // Keep the formatted value with the currency symbol for display
+    $('#serviceRate').val(numericValue === '0' ? '' : '₱' + numericValue);
+  });
+});
+
+    </script> -->
+
+
 
     <!-- Resets the Edit Modal when Cancel is selected -->
     <script>
