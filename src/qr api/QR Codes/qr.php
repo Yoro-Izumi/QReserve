@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
     <html lang="en">
         <head>
-            <!--value of qr will depend on the value inside textInput-->
-            <input type="hidden" id="textInput" value="qr code">
+            value of qr will depend on the value inside textInput
+            <input type="hidden" id="qrInput" value="qr code">
             <img id="qrcodeImage" src="" alt="QR Code Image">
         </head>    
-    </html>
+    </html>-->
 
     <script>
 
@@ -13,10 +13,10 @@
         // Add an input or on change event listener to the text input
         window.addEventListener('load', function() {
            // Get the text input and QR code image elements
-        var textInput = document.getElementById('textInput');
+        var textInput = document.getElementById('qrInput');
         var qrCodeImgElement = document.getElementById('qrcodeImage');   
           // Get the current value of the text input
-          var inputValue = textInput.value;
+          var inputValue = qrInput.value;
       
           // Generate QR code using qrcode-generator library
           var typeNumber = 4; // Adjust this value as needed

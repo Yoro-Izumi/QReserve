@@ -56,7 +56,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4">
       <div class="container-fluid dashboard-square-kebab" id="profmanage-add-new-profile">
       <!-- <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data"> -->
-      <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data">
+      <form class="needs-validation" id="add-new-profile-form" novalidate>
           <div class="row">
             <div class="col-12 col-md-4 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -182,17 +182,17 @@ function validateEmail(email) {
             </div>
           </div>
 
-
+        </form>
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
               <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
-              <button class="btn btn-primary w-100 create-button" name="submitMember" id="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
+              <button class="btn btn-primary w-100 create-button" name="submitMember" id="submitMember" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
             </div>
             <div class="col-12 col-md-2">
           <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
         </div>
-        </form>
+        
 
       </div>
 
@@ -215,7 +215,7 @@ function validateEmail(email) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-target="#success-add-member-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" id="confirm-add-new-member-modal-button" class="btn btn-primary create-button" data-bs-target="#success-add-member-modal" data-bs-toggle="modal">Confirm</button>
           </div>
         </div>
       </div>
@@ -323,8 +323,8 @@ function validateEmail(email) {
       });
     </script>
 
-    <!-- For password checking -->
-    <script>
+     <!-- For password checking -->
+     <script>
       document.addEventListener("DOMContentLoaded", function() {
         const passwordInput = document.querySelector("#password");
         const confirmPasswordInput = document.querySelector("#confirmPassword");
@@ -346,6 +346,22 @@ function validateEmail(email) {
             passwordMismatch.style.display = "block";
           }
         });
+
+        passwordInput.addEventListener("input", function() {
+          const password = passwordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+
+          if (password === confirmPassword) {
+            passwordMatchFeedback.innerHTML = "";
+            passwordMatch.style.display = "block";
+            passwordMismatch.style.display = "none";
+          } else {
+            passwordMatchFeedback.innerHTML = "";
+            passwordMatch.style.display = "none";
+            passwordMismatch.style.display = "block";
+          }
+        });
+
       });
     </script>
 
@@ -403,8 +419,8 @@ function validateEmail(email) {
 <script>
       //add admin
       $(document).ready(function() {
-        $('#submitMember').click(function(e) {
-          e.preventDefault();
+        $('#confirm-add-new-member-modal-button').click(function(e) {
+          e.preventDefault(); 
 
           var formData = new FormData($('#add-new-profile-form')[0]);
 
@@ -417,7 +433,8 @@ function validateEmail(email) {
             success: function(response) {
               // Handle success response here
               //alert(response); // For demonstration purposes, you can display an alert with the response
-              location.reload();
+              //location.reload();
+              $('#success-add-member-modal').modal('show');
             },
             error: function(xhr, status, error) {
               // Handle error
@@ -428,11 +445,6 @@ function validateEmail(email) {
       });
     </script>
 
-
-
-
-
-    
 
 
 

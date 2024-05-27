@@ -70,7 +70,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>
           <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
 
-          <button type="button" id="edit-admin" class="btn btn-primary" >Edit Selected</button>
+          <button type="button" id="edit-admin" class="btn btn-primary">Edit Selected</button>
           <button type="button" class="btn btn-danger" id="delete-admin" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-service">Delete Selected</button>
           
         </div>
@@ -296,7 +296,7 @@ function getSelected(checkbox) {
 </script>
 
 <script>
-        $(document).ready(function(){
+        /*$(document).ready(function(){
             $("#edit-admin").click(function(){
                 var formData = $("#pass-admin").serialize(); // Serialize form data
                 
@@ -310,6 +310,14 @@ function getSelected(checkbox) {
                     }
                 });
             });
+        });
+*/
+      $("#edit-admin").click(function(){
+            // Get the value from the input field
+            var value = document.getElementById('edit-admin-val').value;
+
+            // Redirect to the PHP file with the value as a query parameter
+            window.location.href = 'edit_admin_account.php?value=' + encodeURIComponent(value);
         });
 </script>
 

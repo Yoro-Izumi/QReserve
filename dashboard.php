@@ -58,6 +58,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
           <!--table data is dynamicaly updated and is from pool_table.php-->
+
         </table>
       </div>
 
@@ -180,6 +181,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
+
     </script>
 
   </body>

@@ -65,9 +65,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button>
           <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>          -->
-          <a href="edit_member_account.php" type="button" class="btn btn-primary" id="edit-member">Edit Selected</a>
+          <button type="button" class="btn btn-primary" id="edit-member">Edit Selected</button>
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-member-account-modal" id="delete-member">Delete Selected</button>
-
+          <input type="hidden" id="edit-member-val" value="">
         </div>
       </div>
     </section>
@@ -207,6 +207,7 @@ function attachCheckboxListeners() {
                     // If only one checkbox is checked, set its value
                     // Ensure that checkboxValue is defined and refers to the appropriate element
                     checkboxValue = this.value; // You need to define checkboxValue
+                    document.getElementById('edit-member-val').value =  this.value;
                 }
             } else {
                 checkedCount--;
@@ -215,7 +216,8 @@ function attachCheckboxListeners() {
                     const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
                     if (remainingCheckbox) {
                         checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
-                    }
+                        document.getElementById('edit-member-val').value =  remainingCheckbox.value;
+                      }
                 } else {
                     // If no or multiple checkboxes are checked, clear the value
                     checkboxValue.value = " "; // You need to define checkboxValue
@@ -274,6 +276,14 @@ function attachCheckboxListeners() {
 function reload(){
   location.reload();
 }
+//send data to edit member page
+$("#edit-member").click(function(){
+            // Get the value from the input field
+            var value = document.getElementById('edit-member-val').value;
+
+            // Redirect to the PHP file with the value as a query parameter
+            window.location.href = 'edit_member_account.php?value=' + encodeURIComponent(value);
+        });
 </script>
 
   </body>

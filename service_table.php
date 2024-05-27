@@ -20,7 +20,7 @@ echo"
           <tr>
             <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='{$services['serviceID']}'></td>
             <td>{$services['serviceName']}</td>
-            <td>₱{$services['normalPrice']}</td>
+            <td>₱{$services['serviceRate']}</td>
             <td>{$services['serviceCapacity']}</td>
             <td>{$services['serviceImage']}</td>
           </tr>";

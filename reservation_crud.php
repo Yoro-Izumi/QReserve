@@ -64,7 +64,7 @@ if (isset($_SESSION['userMemberID'])) {
           $reservationStatus = "On Process";
 
           //For reservation information
-          $reservationQuery = "INSERT INTO `pool_table_reservation`(`reservationID`, `tableID`, `memberID`, `paymentID`,`adminID`, `serviceID`, `reservationDate`, `reservationTimeStart`, `reservationTimeEnd`, `reservationStatus`) VALUES (NULL,?,?,NULL,NULL,1,?,?,?,?)";
+          $reservationQuery = "INSERT INTO `pool_table_reservation`(`reservationID`, `tableID`, `memberID`, `paymentID`,`superAdminID`, `serviceID`, `reservationDate`, `reservationTimeStart`, `reservationTimeEnd`, `reservationStatus`) VALUES (NULL,?,?,NULL,NULL,1,?,?,?,?)";
           $reservationPrepare = mysqli_prepare($conn,$reservationQuery);
           mysqli_stmt_bind_param($reservationPrepare,"iissss",$poolTable,$userID,$selectDate,$selectStartTime,$selectEndTime,$reservationStatus);
           mysqli_stmt_execute($reservationPrepare);

@@ -2,152 +2,143 @@
 session_start();
 include "connect_database.php";
 include "src/get_data_from_database/get_services.php";
-include "src/get_data_from_database/get_table_hours_price.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if(isset($_POST['serviceName'])){
+    if (isset($_POST['serviceName'])) {
         $serviceName = mysqli_real_escape_string($conn, $_POST['serviceName']);
-        $serviceCapacity = mysqli_real_escape_string($conn, $_POST['capacity']);
-
-        // Remove the peso sign and commas from the service rate
+        $serviceCapacity = (int) mysqli_real_escape_string($conn, $_POST['capacity']);
         $serviceRateWithPeso = mysqli_real_escape_string($conn, $_POST['serviceRate']);
-        $serviceRate = str_replace(['₱', ',', '.'], '', $serviceRateWithPeso);
+        $serviceRate = (int) $serviceRateWithPeso;
 
         // For uploading the service image
         $serviceImage = $_FILES["serviceImage"];
-        $serviceImageName = $_FILES["serviceImage"]["name"];
-        $serviceImageSize = $_FILES["serviceImage"]["size"];
-        $serviceImageTmpName = $_FILES["serviceImage"]["tmp_name"];
-        $serviceImageError = $_FILES["serviceImage"]["error"];
-        $serviceImageType = $_FILES["serviceImage"]["type"];
+        $serviceImageName = $serviceImage["name"];
+        $serviceImageTmpName = $serviceImage["tmp_name"];
+        $serviceImageError = $serviceImage["error"];
 
-        //To change the name of the image to have a unique name then move it to a different location
-        $serviceImageExt = explode(".", $serviceImageName); // Separate the actual name of the file to its extension
-        $serviceImageActualExt = strtolower(end($serviceImageExt)); // Image extension lower-cased
-        $serviceImageNewName = $serviceName . "." . $serviceImageActualExt;
-        $serviceImage = $serviceImageNewName;
-        // Upload the image to the server
-        $serviceImageLocation = "src/images/Services/" . $serviceImage;
-        move_uploaded_file($serviceImageTmpName, $serviceImageLocation);
+        // Ensure there's no error in file upload
+        if ($serviceImageError === UPLOAD_ERR_OK) {
+            $serviceImageExt = explode(".", $serviceImageName);
+            $serviceImageActualExt = strtolower(end($serviceImageExt));
+            $serviceImageNewName = $serviceName . "." . $serviceImageActualExt;
+            $serviceImageLocation = "src/images/Services/" . $serviceImageNewName;
 
-        // add price
-        $hour = 1;
-        $qryAddNewPrice = "INSERT INTO `hour_price`(`hoursID`, `numberOfHours`, `normalPrice`, `succeedingHourPrice`) VALUES (NULL,?,?,?)";
-        $connAddNewPrice = mysqli_prepare($conn, $qryAddNewPrice);
-        mysqli_stmt_bind_param($connAddNewPrice, 'iii', $hour, $serviceRate, $serviceRate);
-        mysqli_stmt_execute($connAddNewPrice);
-
-        $priceID = mysqli_insert_id($conn);
-
-        // add new service
-        $qryAddNewService = "INSERT INTO `services`(`serviceID`, `serviceName`, `serviceCapacity`, `serviceRate`, `serviceImage`, `superAdminID`) VALUES (NULL,?,?,?,?,?)";
-        $connAddNewService = mysqli_prepare($conn, $qryAddNewService);
-        mysqli_stmt_bind_param($connAddNewService, 'siisi', $serviceName, $serviceCapacity, $priceID, $serviceImage, $_SESSION["userSuperAdminID"]);
-        mysqli_stmt_execute($connAddNewService);
-
-        unset($_POST['serviceName']);
-        unset($_POST['capacity']);
-        unset($_POST['serviceRate']);
-    }
-}
-
-    if(isset($_POST['editID'])){
-    //editID editServiceName editServiceRate editCapacity editImage
-    
-    $newServiceID = mysqli_real_escape_string($conn, $_POST['editID']);
-    $newServiceName = mysqli_real_escape_string($conn, $_POST['editServiceName']);
-    $newServiceCapacity = mysqli_real_escape_string($conn, $_POST['editCapacity']);
-    $newServiceRate = mysqli_real_escape_string($conn, $_POST['editServiceRate']);
-
-    foreach($arrayServices as $services){
-        //(int)$eTime[0]
-        if($services['serviceID'] == $newServiceID){
-            
-            $hoursID = $services['serviceRate'];
-            $hours = 1;
-            $qryUpdatePriceHour = "UPDATE `hour_price` SET `numberOfHours`=?,`normalPrice`=?,`succeedingHourPrice`=? WHERE `hoursID`=?";
-            $connUpdatePriceHour = mysqli_prepare($conn, $qryUpdatePriceHour);
-            mysqli_stmt_bind_param($connUpdatePriceHour,'iiii',$hours,$newServiceRate,$newServiceRate,$hoursID);
-            mysqli_stmt_execute($connUpdatePriceHour);
-
-            //$ID = mysqli_insert_id($conn);
-
-            $serviceImage = $services['serviceImage'];
-
-            $directory = 'src/images/Services/';
-
-            // Check if the file exists before attempting to delete it
-            if (file_exists($directory . $serviceImage)) {
-                unlink($directory . $serviceImage);
-            if (unlink($directory . $serviceImage)) {
-                echo "Image '$serviceImage' has been deleted successfully.";
+            // Upload the image
+            if (move_uploaded_file($serviceImageTmpName, $serviceImageLocation)) {
+                $qryAddNewService = "INSERT INTO `services` (`serviceName`, `serviceCapacity`, `serviceRate`, `serviceImage`, `superAdminID`) VALUES (?, ?, ?, ?, ?)";
+                $connAddNewService = mysqli_prepare($conn, $qryAddNewService);
+                mysqli_stmt_bind_param($connAddNewService, 'siisi', $serviceName, $serviceCapacity, $serviceRate, $serviceImageNewName, $_SESSION["userSuperAdminID"]);
+                
+                if (mysqli_stmt_execute($connAddNewService)) {
+                    echo "Service added successfully.";
+                } else {
+                    echo "Error adding service: " . mysqli_error($conn);
+                }
             } else {
-                echo "Failed to delete the image.";
+                echo "Error uploading the image.";
             }
-            } else {
-                echo "Image '$serviceImage' does not exist.";
-            }
+        } else {
+            echo "Error in file upload: " . $serviceImageError;
         }
-            
-    } 
-       // For uploading the service image
-       $newServiceImage = $_FILES["editImage"];
-       $newServiceImageName = $_FILES["editImage"]["name"];
-       $newServiceImageSize = $_FILES["editImage"]["size"];
-       $newServiceImageTmpName = $_FILES["editImage"]["tmp_name"];
-       $newServiceImageError = $_FILES["editImage"]["error"];
-       $newServiceImageType = $_FILES["editImage"]["type"];
 
-       //To change the name of image to have a unique name then move it to a different location
-       $newServiceImageExt = explode(".",$newServiceImageName); //separate the actual name of file to its extension
-       $newServiceImageActualExt = strtolower(end($newServiceImageExt)); // image extension lower cased
-       $newServiceImageNewName = $newServiceName .".". $newServiceImageActualExt; 
-       $newImage = $newServiceImageNewName;
-       //Upload the image to the server
-       $newServiceImageLocation = "src/images/Services/". $newImage;
-       move_uploaded_file($newServiceImageTmpName, $newServiceImageLocation); 
-        // $qryUpdateService = "UPDATE `services` SET `serviceID`=[value-1],`serviceName`=[value-2],`serviceCapacity`=[value-3],`serviceRate`=[value-4],`serviceImage`=[value-5],`superAdminID`=[value-6] WHERE serviceID = ?";
-        $qryUpdateService = "UPDATE `services` SET `serviceName`= ?,`serviceCapacity`=?,`serviceImage`=?,`superAdminID`=? WHERE serviceID = ?";
-        $connUpdateService = mysqli_prepare($conn, $qryUpdateService);
-        mysqli_stmt_bind_param($connUpdateService,'sissi',$newServiceName,$newServiceCapacity,$newImage,$_SESSION["userSuperAdminID"],$newServiceID);
-        mysqli_stmt_execute($connUpdateService);
-            
+        unset($_POST['serviceName'], $_POST['capacity'], $_POST['serviceRate']);
     }
 
-if(isset($_POST['selectedRows'])){ 
-    $selectedRows = $_POST['selectedRows'];
-        foreach($selectedRows as $rowId){
-            //delete image first
+    if (isset($_POST['editID'])) {
+        $newServiceID = (int) mysqli_real_escape_string($conn, $_POST['editID']);
+        $newServiceName = mysqli_real_escape_string($conn, $_POST['editServiceName']);
+        $newServiceCapacity = (int) mysqli_real_escape_string($conn, $_POST['editCapacity']);
+        $newServiceRate = (int) mysqli_real_escape_string($conn, $_POST['editServiceRate']);
+        $isImageChosen = mysqli_real_escape_string($conn, $_POST['isImageChosen']);
+        $newServiceImage = $_FILES["editImage"];
+    
+        if ($isImageChosen == 'yes') {
+            $newServiceImageName = $newServiceImage["name"];
+            $newServiceImageTmpName = $newServiceImage["tmp_name"];
+            $newServiceImageError = $newServiceImage["error"];
+    
+            if ($newServiceImageError === UPLOAD_ERR_OK) {
+                $newServiceImageExt = explode(".", $newServiceImageName);
+                $newServiceImageActualExt = strtolower(end($newServiceImageExt));
+                $newServiceImageNewName = $newServiceName . "." . $newServiceImageActualExt;
+                $newServiceImageLocation = "src/images/Services/" . $newServiceImageNewName;
+    
+                // Upload the new image
+                if (move_uploaded_file($newServiceImageTmpName, $newServiceImageLocation)) {
+                    // Delete the old image if exists
+                    $qryGetOldImage = "SELECT serviceImage FROM services WHERE serviceID = ?";
+                    $connGetOldImage = mysqli_prepare($conn, $qryGetOldImage);
+                    mysqli_stmt_bind_param($connGetOldImage, 'i', $newServiceID);
+                    mysqli_stmt_execute($connGetOldImage);
+                    $resultGetOldImage = mysqli_stmt_get_result($connGetOldImage);
+                    $oldImage = mysqli_fetch_assoc($resultGetOldImage)['serviceImage'];
+                    $oldImagePath = "src/images/Services/" . $oldImage;
+    
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+    
+                    // Update service with new image
+                    $qryUpdateService = "UPDATE `services` SET `serviceName` = ?, `serviceCapacity` = ?, `serviceRate` = ?, `serviceImage` = ?, `superAdminID` = ? WHERE `serviceID` = ?";
+                    $connUpdateService = mysqli_prepare($conn, $qryUpdateService);
+                    mysqli_stmt_bind_param($connUpdateService, 'siisii', $newServiceName, $newServiceCapacity, $newServiceRate, $newServiceImageNewName, $_SESSION["userSuperAdminID"], $newServiceID);
+                } else {
+                    echo "Error uploading the new image.";
+                    exit;
+                }
+            } else {
+                echo "Error with image upload: " . $newServiceImageError;
+                exit;
+            }
+        } else {
+            // Update service without changing the image
+            $qryUpdateService = "UPDATE `services` SET `serviceName` = ?, `serviceCapacity` = ?, `serviceRate` = ?, `superAdminID` = ? WHERE `serviceID` = ?";
+            $connUpdateService = mysqli_prepare($conn, $qryUpdateService);
+            mysqli_stmt_bind_param($connUpdateService, 'siiii', $newServiceName, $newServiceCapacity, $newServiceRate, $_SESSION["userSuperAdminID"], $newServiceID);
+        }
+    
+        // Execute the update query
+        if (mysqli_stmt_execute($connUpdateService)) {
+            echo "Service updated successfully.";
+        } else {
+            echo "Error updating service: " . mysqli_error($conn);
+        }
+    }
+    
+    if (isset($_POST['selectedRows'])) {
+        $selectedRows = $_POST['selectedRows'];
+        foreach ($selectedRows as $rowId) {
+            $rowId = (int) $rowId;
+
+            // Get and delete the service image
             $qryGetServiceImage = "SELECT serviceImage FROM services WHERE serviceID = ?";
             $connGetServiceImage = mysqli_prepare($conn, $qryGetServiceImage);
-            mysqli_stmt_bind_param($connGetServiceImage,'i',$rowId);
+            mysqli_stmt_bind_param($connGetServiceImage, 'i', $rowId);
             mysqli_stmt_execute($connGetServiceImage);
             $resultGetServiceImage = mysqli_stmt_get_result($connGetServiceImage);
-            $rowGetServiceImage = mysqli_fetch_assoc($resultGetServiceImage);
-            $serviceImage = $rowGetServiceImage['serviceImage']."";
-            
-            // Define the directory path where the image files are stored
-            $directory = 'src/images/Services/';
+            $serviceImage = mysqli_fetch_assoc($resultGetServiceImage)['serviceImage'];
+            $serviceImagePath = "src/images/Services/" . $serviceImage;
 
-            // Check if the file exists before attempting to delete it
-            if (file_exists($directory . $serviceImage)) {
-                unlink($directory . $serviceImage);
-            if (unlink($directory . $serviceImage)) {
-                echo "Image '$serviceImage' has been deleted successfully.";
+            if (file_exists($serviceImagePath)) {
+                if (!unlink($serviceImagePath)) {
+                    echo "Failed to delete image: $serviceImage";
+                }
             } else {
-                echo "Failed to delete the image.";
+                echo "Image $serviceImage does not exist.";
             }
-            } else {
-                echo "Image '$serviceImage' does not exist.";
-            }
-            //delete service
+
+            // Delete the service
             $qryDeleteService = "DELETE FROM `services` WHERE serviceID = ?";
             $connDeleteService = mysqli_prepare($conn, $qryDeleteService);
-            mysqli_stmt_bind_param($connDeleteService,'i',$rowId);
-            mysqli_stmt_execute($connDeleteService);
+            mysqli_stmt_bind_param($connDeleteService, 'i', $rowId);
+            if (mysqli_stmt_execute($connDeleteService)) {
+                echo "Service with ID $rowId deleted successfully.";
+            } else {
+                echo "Error deleting service: " . mysqli_error($conn);
+            }
         }
-      // Assuming you want to return a success message
-        echo "Rows deleted successfully";
-        unset($_POST['selectedRows']);
-}
 
+        unset($_POST['selectedRows']);
+    }
+}
+?>

@@ -1,8 +1,7 @@
 <?php
 //get all services with select query
-$getServicesQuery = "SELECT sv.*,th.* ,spa.*
+$getServicesQuery = "SELECT sv.*,spa.*
                     FROM services sv
-                    LEFT JOIN hour_price th ON sv.serviceRate = th.hoursID
                     LEFT JOIN super_admin spa ON sv.superAdminID = spa.superAdminID";
 
 $servicesConn = mysqli_query($conn,$getServicesQuery); //execute query

@@ -57,7 +57,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Add New Admin</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate action="add_new_admin.php" method="POST" enctype="multipart/form-data">
+        <form class="needs-validation dashboard-square-kebab" id="add-new-profile-form" novalidate>
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -172,18 +172,20 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 Passwords do not match.
               </div>
             </div>
-          </div>
+          </div>   
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin" type="submit" data-bs-target="#confirm-add-new-admin-modal" data-bs-toggle="modal">Create</button>
+             
+              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin">Create</button>
             </div>
             <div class="col-12 col-md-2">
               <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
               <a href="admin-profiles.php" class="btn btn-outline-primary w-100 cancel-button">Cancel</a>
             </div>
           </div>
-        </form>
+          </form>
+        
 
       </div>
     </section>
@@ -205,7 +207,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-target="#success-add-admin-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" id="confirm-add-new-admin-modal-button" class="btn btn-primary create-button" data-bs-target="#success-add-admin-modal" data-bs-toggle="modal">Confirm</button>
           </div>
         </div>
       </div>
@@ -333,6 +335,22 @@ if (isset($_SESSION["userSuperAdminID"])) {
             passwordMismatch.style.display = "block";
           }
         });
+
+        passwordInput.addEventListener("input", function() {
+          const password = passwordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+
+          if (password === confirmPassword) {
+            passwordMatchFeedback.innerHTML = "";
+            passwordMatch.style.display = "block";
+            passwordMismatch.style.display = "none";
+          } else {
+            passwordMatchFeedback.innerHTML = "";
+            passwordMatch.style.display = "none";
+            passwordMismatch.style.display = "block";
+          }
+        });
+
       });
     </script>
     <script>
@@ -340,7 +358,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
       $(document).ready(function() {
         $('#submitAdmin').click(function(e) {
           e.preventDefault();
-
+          $('#confirm-add-new-admin-modal').modal('show');
+        });
+        
+        $('#confirm-add-new-admin-modal-button').click(function(e) {
+          e.preventDefault();
           var formData = new FormData($('#add-new-profile-form')[0]);
 
           $.ajax({
@@ -352,7 +374,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
             success: function(response) {
               // Handle success response here
               //alert(response); // For demonstration purposes, you can display an alert with the response
-              location.reload();
+              //location.reload();
+              $('#success-add-admin-modal').modal('show');
             },
             error: function(xhr, status, error) {
               // Handle error
@@ -361,6 +384,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
           });
         });
       });
+
+
+
+      //reload page
+      function reloadPage() {
+        location.reload();
+      }
     </script>
 
 
