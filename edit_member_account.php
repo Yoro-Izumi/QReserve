@@ -1,53 +1,30 @@
 <?php
 include "connect_database.php";
 include "encodeDecode.php";
+include "src/get_data_from_database/get_member_account.php";
+
 $key = "TheGreatestNumberIs73";
 session_start();
+
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   $userSuperAdmin = $_SESSION["userSuperAdminID"];
 
-
-
-  if (isset($_POST['submitMember'])) {
-    $customerFirstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
-    $customerLastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
-    $customerMiddleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
-    $customerEmail = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
-    $customerPhone = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
-    $customerBirthdate = encryptData(mysqli_real_escape_string($conn, $_POST['birthDate']), $key);
-    $memberControlNumber = encryptData(mysqli_real_escape_string($conn, $_POST['controlNumber']), $key);
-    $memberPassword = mysqli_real_escape_string($conn, $_POST['password']);
-    $memberValidity = mysqli_real_escape_string($conn, $_POST['validity']);
-    $x = "None";
-    $y = 1;
-
-    // Hash the password using Argon2
-    $options = [
-      'memory_cost' => 1 << 17, // 128MB memory cost (default)
-      'time_cost' => 4,       // 4 iterations (default)
-      'threads' => 3,         // Use 3 threads for processing (default)
-    ];
-    $hashedPassword = password_hash($memberPassword, PASSWORD_ARGON2I, $options);
-
-    // Parse HTML date string into a DateTime object
-    $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
-    // Convert DateTime object to SQL date format (YYYY-MM-DD)
-    $sqlDate = $date->format('Y-m-d');
-    //current date
-    $currentDate = date('Y-m-d');
-
-    $qryInsertCustomerInfo = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`) VALUES (NULL,?,?,?,?,?,?)";
-    $conInsertCustomerInfo = mysqli_prepare($conn, $qryInsertCustomerInfo);
-    mysqli_stmt_bind_param($conInsertCustomerInfo, "ssssss", $customerFirstName, $customerLastName, $customerMiddleName, $customerBirthdate, $customerPhone, $customerEmail);
-    mysqli_stmt_execute($conInsertCustomerInfo);
-    $customerID = mysqli_insert_id($conn);
-
-    $qryInsertMemberDetails = "INSERT INTO `member_details`(`memberID`, `membershipID`, `perk_id`, `membershipPassword`, `customerID`, `creationDate`, `validityDate`, `superAdminID`) VALUES (NULL,?,?,?,?,?,?,?)";
-    $conInsertMemberDetails = mysqli_prepare($conn, $qryInsertMemberDetails);
-    mysqli_stmt_bind_param($conInsertMemberDetails, "sssssss", $memberControlNumber, $y, $hashedPassword, $customerID, $currentDate, $sqlDate, $userSuperAdmin);
-    mysqli_stmt_execute($conInsertMemberDetails);
+  $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
+  
+  foreach($arrayMemberAccount as $memberAccount){
+    $membershipID = decryptData($memberAccount['membershipID'],$key);
+    $validityDate = $memberAccount['validityDate'];
+    $customerFirstName = decryptData($memberAccount['customerFirstName'],$key);
+    $customerLastName = decryptData($memberAccount['customerLastName'],$key);
+    $customerMiddleName = decryptData($memberAccount['customerMiddleName'],$key);
+    $customerBirthdate = decryptData($memberAccount['customerBirthdate'],$key);
+    $customerPhone = decryptData($memberAccount['customerNumber'],$key);
+    $customerEmail = decryptData($memberAccount['customerEmail'],$key);
+    $oldPassword = " ";
   }
+
+
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -98,32 +75,33 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Edit Member Account</h4>
       <hr class="my-4">
       <div class="container-fluid dashboard-square-kebab" id="profmanage-add-new-profile">
-        <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data">
+        <form class="needs-validation" id="edit-member-form" novalidate action="add_new_member.php" method="POST"  enctype="multipart/form-data">
+          <input type="hidden" id="memberID" name="memberID" value="<?php echo $ID;?>">
           <div class="row">
             <div class="col-12 col-md-4 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
-              <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required maxlength="30" pattern="^(?!\s*$)[A-Za-z\- ]" title="Please enter a valid first name." oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
+              <input type="text" value="<?php echo $customerFirstName;?>" class="form-control" name="FirstName" id="FirstName" placeholder="Enter first name here" required maxlength="30" pattern="^(?!\s*$)[A-Za-z\- ]" title="Please enter a valid first name." oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid first name.
               </div>
             </div>
             <div class="col-12 col-md-4 mb-3">
               <label for="middleName" class="form-label">Middle Name</label>
-              <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" required maxlength="30" pattern="^(?!\s*$)[A-Za-z\- ]+$" title="Please enter a valid middle name." oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
+              <input type="text" value="<?php echo $customerMiddleName;?>" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" required maxlength="30" pattern="^(?!\s*$)[A-Za-z\- ]+$" title="Please enter a valid middle name." oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid middle name.
               </div>
             </div>
             <div class="col-12 col-md-4 mb-3">
               <label for="lastName" class="form-label">Last Name <span>*</span></label>
-              <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required maxlength="30" pattern="^(?!\s*$)[A-Za-z\- ]+$" title="Please enter a valid last name." oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
+              <input type="text" value="<?php echo $customerLastName;?>" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required maxlength="30" pattern="^(?!\s*$)[A-Za-z\- ]+$" title="Please enter a valid last name." oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid last name.
               </div>
             </div>
             <div class="col-12 col-md-4 mb-3">
               <label for="birthDate" class="form-label">Birthday<span>*</span></label>
-              <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
+              <input type="date" value="<?php echo $customerBirthdate;?>" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
               <!-- <div class="valid-feedback">
                     Looks good!
                 </div> -->
@@ -133,28 +111,28 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-4 mb-3">
               <label for="email" class="form-label">Email Address <span>*</span></label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
+              <input type="email" value="<?php echo $customerEmail;?>" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid Gmail address (e.g., yourname@gmail.com).
               </div>
             </div>
             <div class="col-12 col-md-4 mb-3">
               <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+              <input type="text" value="<?php echo $customerPhone;?>" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid contact number.
               </div>
             </div>
             <div class="col-12 col-md-6 mb-3">
               <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
-              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+              <input type="text" value="<?php echo $membershipID;?>" class="form-control" name="controlNumber" id="controlNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid contact number.
               </div>
             </div>
             <div class="col-12 col-md-6 mb-3">
               <label for="validity" class="form-label">Validity Date <span>*</span></label>
-              <input type="date" class="form-control" name="validity" id="validity" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
+              <input type="date" value="<?php echo $validityDate;?>" class="form-control" name="validity" id="validity" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
               <div class="invalid-feedback">
                 Please enter a valid birthdate.
               </div>
@@ -162,7 +140,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-6 mb-3">
               <label for="password" class="form-label">Password <span>*</span></label>
               <div class="input-group">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required />
+                <input type="password" value="<?php echo $oldPassword;?>" class="form-control" name="password" id="password" placeholder="Enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
                   <i class="fas fa-eye"></i>
                 </button>
@@ -174,7 +152,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-6 mb-5">
               <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
               <div class="input-group">
-                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
+                <input type="password" value="<?php echo $oldPassword;?>" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
                   <i class="fas fa-eye"></i>
                 </button>
@@ -193,7 +171,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
+              <button type="button" class="btn btn-primary w-100 create-button" id="submitMember" name="submitMember" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
             </div>
             <div class="col-12 col-md-2">
               <!-- <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
@@ -352,6 +330,22 @@ if (isset($_SESSION["userSuperAdminID"])) {
             passwordMismatch.style.display = "block";
           }
         });
+
+        passwordInput.addEventListener("input", function() {
+          const password = passwordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+
+          if (password === confirmPassword) {
+            passwordMatchFeedback.innerHTML = "";
+            passwordMatch.style.display = "block";
+            passwordMismatch.style.display = "none";
+          } else {
+            passwordMatchFeedback.innerHTML = "";
+            passwordMatch.style.display = "none";
+            passwordMismatch.style.display = "block";
+          }
+        });
+
       });
     </script>
 
@@ -405,6 +399,116 @@ if (isset($_SESSION["userSuperAdminID"])) {
         validityInput.setAttribute("max", maxDateString);
       });
     </script>
+
+<!--set default value for password field in case if super admin does not want to edit password-->
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const passwordField = document.getElementById("password");
+            const confirmPasswordField = document.getElementById("confirmPassword");
+            const defaultValue = ".";
+
+            
+            // Ensure the default value is set when the page loads
+            passwordField.value = defaultValue;
+            confirmPasswordField.value = defaultValue;
+
+            // Event listener to check if the input is empty
+            passwordField.addEventListener("change", () => {
+                if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() === ".") {
+                  passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() !== "" && confirmPasswordField.value.trim() === ".") {
+                  //passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() === "") {
+                  passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() !== "") {
+                  passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+            });
+
+            confirmPasswordField.addEventListener("change", () => {
+              if (passwordField.value.trim() === "." && confirmPasswordField.value.trim() === "") {
+                  confirmPasswordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() !== ".") {
+                  //passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() === "") {
+                  confirmPasswordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() !== "" && confirmPasswordField.value.trim() === "") {
+                  confirmPasswordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+            });
+        });
+</script>
+
+<script>
+    //edit member
+    $(document).ready(function(){
+        $('#submitMember').click(function(e){
+            e.preventDefault();
+
+            var formData = new FormData($('#edit-member-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: 'member_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    // Handle success response here
+                    //alert(response); // For demonstration purposes, you can display an alert with the response
+                    //location.reload();
+                  },
+                error: function(xhr, status, error){
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+
+// refresh function
+function reload(){
+  location.reload();
+}
+</script>
 
   </body>
 

@@ -8,67 +8,39 @@ include "src/get_data_from_database/get_admin_info.php";
 
 session_start();
 date_default_timezone_set('Asia/Manila');
+
+ // Initialize variables with default values
+ $ID = $adminID = $adminInfoID = $adminUsername = $adminName = $adminSex = $adminPhone = $adminEmail = $shiftTimeStart = $shiftTimeEnd = "";
+  
+
 if (isset($_SESSION["userSuperAdminID"])) {
   $superAdminID = $_SESSION["userSuperAdminID"];
-
-  // Initialize variables with default values
-  $ID = $adminID = $adminInfoID = $adminUsername = $adminName = $adminSex = $adminPhone = $adminEmail = $shiftTimeStart = $shiftTimeEnd = "";
+  $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
   
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {//if(isset($_POST['edit-admin-val'])){ 
+  foreach($arrayAdminAccount as $adminAccount){ 
+  //if(isset($_GET['edit-admin-val'])){//if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
     // Retrieve the value of 'passID'
-    $ID = $_POST['edit-admin-val'];
+    
       if($adminAccount['adminInfoID'] == $ID){
           // Populate variables with data from $adminAccount array
           $adminID = $adminAccount['adminID'];
           $adminInfoID = $adminAccount['adminInfoID'];
           $adminUsername = decryptData($adminAccount['adminUsername'], $key);
-          $adminName = decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key);
+          $adminFirstName = decryptData($adminAccount['adminFirstName'], $key);
+          $adminMiddleName = decryptData($adminAccount['adminMiddleName'], $key);
+          $adminLastName = decryptData($adminAccount['adminLastName'], $key);
           $adminSex = decryptData($adminAccount['adminSex'], $key);
           $adminPhone = decryptData($adminAccount['adminContactNumber'], $key);
           $adminEmail = decryptData($adminAccount['adminEmail'], $key);
           $shiftTimeStart = $adminAccount['shiftTimeStart'];
           $shiftTimeEnd = $adminAccount['shiftTimeEnd'];
-      } else {
+          $adminShift = $adminAccount['adminShiftID'];
+      }// else {
           // Handle the case where $_POST['passID'] does not match
           // For example, you could return an error response or set variables to default values
-      }
+      //}
   }
   
-
-  if (isset($_POST['submitAdmin'])) {
-    $firstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
-    $lastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
-    $middleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
-    $email = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
-    $username = encryptData(mysqli_real_escape_string($conn, $_POST['username']), $key);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $sex = encryptData(mysqli_real_escape_string($conn, $_POST['sex']), $key);
-    $contactNumber = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
-    $shift = intVal($_POST['adminShift']);
-
-    // Hash the password using Argon2
-    $options = [
-      'memory_cost' => 1 << 17, // 128MB memory cost (default)
-      'time_cost' => 4,       // 4 iterations (default)
-      'threads' => 3,         // Use 3 threads for processing (default)
-    ];
-    $hashedPassword = password_hash($password, PASSWORD_ARGON2I, $options);
-
-    // here is where information of admin is inserted
-    $qryInsertAdminInfo = "INSERT INTO `admin_info`(`adminInfoID`, `adminLastName`, `adminFirstName`, `adminMiddleName`, `adminSex`, `adminContactNumber`, `adminEmail`) VALUES (NULL,?,?,?,?,?,?)";
-    $conInsertAdminInfo = mysqli_prepare($conn, $qryInsertAdminInfo);
-    mysqli_stmt_bind_param($conInsertAdminInfo, 'ssssss', $lastName, $firstName, $middleName, $sex, $contactNumber, $email);
-    mysqli_stmt_execute($conInsertAdminInfo);
-
-    //get the id of admin info that was inserted
-    $adminInfoID = mysqli_insert_id($conn);
-
-    //here is where the admin account is inserted
-    $qryInsertAdminAccount = "INSERT INTO `admin_accounts`(`adminID`, `superAdminID`, `adminInfoID`,`adminShiftID`, `adminUsername`, `adminPassword`) VALUES (NULL,?,?,?,?,?)";
-    $conInsertAdminAccount = mysqli_prepare($conn, $qryInsertAdminAccount);
-    mysqli_stmt_bind_param($conInsertAdminAccount, 'iiiss', $superAdminID, $adminInfoID, $shift, $username, $hashedPassword);
-    mysqli_stmt_execute($conInsertAdminAccount);
-  }
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -122,16 +94,16 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <form class="needs-validation dashboard-square-kebab" id="edit-admin-form" novalidate>
           <div class="row">
             <div class="col-12 col-md-3 mb-3">
-              <!-- <input name="adminID" id="adminID" value=""> -->
+              <!--<input name="adminID" id="adminID" value="">-->
               <label for="firstName" class="form-label">First Name <span>*</span></label>
-              <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
+              <input type="text" value="<?php echo $adminFirstName;?>" class="form-control" name="FirstName" id="FirstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid first name.
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="middleName" class="form-label">Middle Name</label>
-              <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
+              <input type="text" value="<?php echo $adminMiddleName;?>" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -141,7 +113,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="lastName" class="form-label">Last Name <span>*</span></label>
-              <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
+              <input type="text" value="<?php echo $adminLastName;?>" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -151,7 +123,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Username <span>*</span></label>
-              <input type="text" class="form-control" name="username" id="username" placeholder="Enter last name here" required maxlength="15" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
+              <input type="text" value="<?php echo $adminUsername;?>" class="form-control" name="username" id="username" placeholder="Enter last name here" required maxlength="50" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
               <!-- <div class="valid-feedback">
                       Looks good!
                   </div> -->
@@ -163,9 +135,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <label for="adminSex" class="form-label">Sex <span>*</span></label>
               <select class="form-control" name="adminSex" id="adminSex" required onchange="this.setCustomValidity('')">
                 <option value="" selected disabled>Select Sex</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Others">Others</option>
+                <option value="Male" <?php if($adminSex == 'Male') echo 'selected';?>>Male</option>
+                <option value="Female" <?php if($adminSex == 'Female') echo 'selected';?>>Female</option>
+                <option value="Others" <?php if($adminSex == 'Others') echo 'selected';?>>Others</option>
               </select>
               <div class="invalid-feedback">
                 Please select a shift.
@@ -173,14 +145,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="email" class="form-label">Email Address <span>*</span></label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
+              <input type="email" value="<?php echo $adminEmail;?>" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid Gmail address (e.g., yourname@gmail.com).
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+              <input type="text" value="<?php echo $adminPhone;?>" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
               <div class="invalid-feedback">
                 Please enter a valid contact number.
               </div>
@@ -208,7 +180,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   } else {
                     $shiftEnd = $shiftEndHour . ":" . $tempShiftEnd[1] . " AM";
                   } ?>
-                  <option value="<?php echo $shift['adminShiftID']; ?>"><?php echo $shiftStart . " - " . $shiftEnd; ?></option>
+                  <option value="<?php echo $shift['adminShiftID']; ?>" <?php if($adminShift == $shift['adminShiftID']) echo 'selected'?>><?php echo $shiftStart . " - " . $shiftEnd; ?></option>
                 <?php } ?>
               </select>
               <div class="invalid-feedback">
@@ -218,7 +190,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-6 mb-3">
               <label for="password" class="form-label">Password <span>*</span></label>
               <div class="input-group">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required />
+                <input type="password"  class="form-control" name="password" id="password" placeholder="Enter password here" required />
                 <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
                   <i class="fas fa-eye"></i>
                 </button>
@@ -247,6 +219,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
+              <input type="hidden" id="updateAdmin" name="updateAdmin" value="<?php echo $ID;?>">
               <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin" type="submit">Create</button>
             </div>
             <div class="col-12 col-md-2">
@@ -366,8 +339,85 @@ if (isset($_SESSION["userSuperAdminID"])) {
       });
     </script>
 
+<!--set default value for password field in case if super admin does not want to edit password-->
 <script>
-    //add admin
+        document.addEventListener("DOMContentLoaded", () => {
+            const passwordField = document.getElementById("password");
+            const confirmPasswordField = document.getElementById("confirmPassword");
+            const defaultValue = ".";
+
+            
+            // Ensure the default value is set when the page loads
+            passwordField.value = defaultValue;
+            confirmPasswordField.value = defaultValue;
+
+            // Event listener to check if the input is empty
+            passwordField.addEventListener("change", () => {
+                if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() === ".") {
+                  passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() !== "" && confirmPasswordField.value.trim() === ".") {
+                  //passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() === "") {
+                  passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() !== "") {
+                  passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+            });
+
+            confirmPasswordField.addEventListener("change", () => {
+              if (passwordField.value.trim() === "." && confirmPasswordField.value.trim() === "") {
+                  confirmPasswordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() !== ".") {
+                  //passwordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+                else if (passwordField.value.trim() === "" && confirmPasswordField.value.trim() === "") {
+                  confirmPasswordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "block";
+                  passwordMismatch.style.display = "none";
+                  
+                }
+                else if (passwordField.value.trim() !== "" && confirmPasswordField.value.trim() === "") {
+                  confirmPasswordField.value = defaultValue;
+                  passwordMatchFeedback.innerHTML = "";
+                  passwordMatch.style.display = "none";
+                  passwordMismatch.style.display = "block";
+                  
+                }
+            });
+        });
+</script>
+
+<script>
+    //edit admin
     $(document).ready(function(){
         $('#submitAdmin').click(function(e){
             e.preventDefault();

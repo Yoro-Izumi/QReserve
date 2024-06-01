@@ -68,11 +68,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </section>
 
-
-
-
-
-
     <!-- Modals -->
 
     <!-- Add New Service Modal -->
@@ -83,7 +78,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h2 class="modal-title  fw-bold text-center" id="staticBackdropLabel"><img src="src/images/icons/add.gif" alt="Wait Icon" class="modal-icons">Add New Service</h2>
           </div>
           <div class="modal-body">
-            <form class="needs-validation" id="add-new-service-form" novalidate action="service_crud.php" method="POST" enctype="multipart/form-data">
+            <form class="needs-validation" id="add-new-service-form" novalidate enctype="multipart/form-data">
               <div class="row">
                 <div class="col-12 col-md-12 mb-3">
                   <label for="serviceName" class="form-label">Service Name <span>*</span></label>
@@ -147,7 +142,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" onclick="reload()" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="submit" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
             </form>
           </div>
         </div>
@@ -239,7 +234,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
                 <div class="col-12 col-md-6 mb-3">
                   <label for="text" class="form-label">Capacity <span>*</span></label>
-                  <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+                  <input type="text" class="form-control" name="editCapacity" id="editCapacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
 
                   <!-- <div class="valid-feedback">
                 Looks good!
@@ -257,6 +252,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
               </div>
               <div class="modal-footer">
+                <input type="hidden" name="isImageChosen" id="isImageChosen" value="no">
                 <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-edit-modal" data-bs-toggle="modal">Confirm</button>
               </div>
@@ -373,34 +369,35 @@ if (isset($_SESSION["userSuperAdminID"])) {
       }
     </script>
 
-    <!--script for crud service-->
-    <script>
-      //add service
-      $(document).ready(function() {
-        $('#add_service_button').click(function(e) {
-          e.preventDefault();
+<script>
+  //add service
+  $(document).ready(function() {
+    $('#confirm_add_service_button').click(function(e) {
+      e.preventDefault();
 
-          var formData = new FormData($('#add-new-service-form')[0]);
+      var formData = new FormData($('#add-new-service-form')[0]);
 
-          $.ajax({
-            type: 'POST',
-            url: 'service_crud.php', // Replace 'process_form.php' with the URL of your PHP script
-            data: formData,
-            processData: false,
-            contentType: false,
-            // success: function(response) {
-            //   // Handle success response here
-            //   alert(response); // For demonstration purposes, you can display an alert with the response
-            //   location.reload();
-            // },
-            error: function(xhr, status, error) {
-              // Handle error
-              console.error(xhr.responseText);
-            }
-          });
-        });
+      $.ajax({
+        type: 'POST',
+        url: 'service_crud.php', // Replace 'service_crud.php' with the URL of your PHP script
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          // Handle success response here
+          //alert(response); // For demonstration purposes, you can display an alert with the response
+          //location.reload(); // Reload the page after successful submission
+          $('#success-add-service-modal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          // Handle error
+          console.error(xhr.responseText);
+        }
       });
-    </script>
+    });
+  });
+</script>
+
 
 
 
@@ -437,10 +434,10 @@ if (isset($_SESSION["userSuperAdminID"])) {
             data: {
               selectedRows: selectedRows
             },
-            // success: function(response) {
+             success: function(response) {
             //   // Reload the page or update the table as needed
             //   location.reload(); // For example, reload the page after deletion
-            // },
+             },
             error: function(xhr, status, error) {
               //console.error("Error:", error);
             }
@@ -449,85 +446,91 @@ if (isset($_SESSION["userSuperAdminID"])) {
       });
     </script>
 
-    <script>
-      $(document).ready(function() {
-        var intervalID; // Define intervalID variable outside to make it accessible across functions
 
-        // Function to update table content
-        function updateTable() {
-          $.ajax({
-            url: 'service_table.php', // Change this to the PHP file that contains the table content
-            type: 'GET',
-            success: function(response) {
-              $('#example').html(response);
-              attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
+<script>
+        $(document).ready(function() {
+            var intervalID; // Define intervalID variable outside to make it accessible across functions
+
+            // Function to update table content
+            function updateTable() {
+                $.ajax({
+                    url: 'service_table.php', // Change this to the PHP file that contains the table content
+                    type: 'GET',
+                    success: function(response) {
+                        $('#example').html(response);
+                        attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
+                    }
+                });
             }
-          });
-        }
 
-        // Function to start interval
-        function startInterval() {
-          intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
-        }
+            // Function to start interval
+            function startInterval() {
+                intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
+            }
 
-        // Function to stop interval
-        function stopInterval() {
-          clearInterval(intervalID);
-        }
+            // Function to stop interval
+            function stopInterval() {
+                clearInterval(intervalID);
+            }
 
-        // Attach event listeners for checkboxes
-        function attachCheckboxListeners() {
-          const checkboxes = document.querySelectorAll('.service-checkbox');
-          const checkboxValue = document.getElementById('editID');
-          var editServiceButton = document.getElementById('edit-service');
-          var deleteServiceButton = document.getElementById('delete-service');
-          var checkedCount = 0;
+            // Attach event listeners for checkboxes
+            function attachCheckboxListeners() {
+                const checkboxes = document.querySelectorAll('.service-checkbox');
+                const checkboxValue = document.getElementById('editID');
+                var editServiceButton = document.getElementById('edit-service');
+                var deleteServiceButton = document.getElementById('delete-service');
+                var checkedCount = 0;
 
-          editServiceButton.disabled = true;
+                editServiceButton.disabled = true;
 
-          checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-              if (this.checked) {
-                checkedCount++;
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        var row = checkbox.parentNode.parentNode; // Get the row containing the checkbox
 
-                if (checkedCount === 1) {
-                  // If only one checkbox is checked, set its value
-                  checkboxValue.value = this.value;
+                        if (this.checked) {
+                            checkedCount++;
+                        } else {
+                            checkedCount--;
+                        }
 
+                        if (checkedCount === 1) {
+                            // Find the checked checkbox and update input fields
+                            const checkedCheckbox = [...checkboxes].find(chk => chk.checked);
+                            if (checkedCheckbox) {
+                                var checkedRow = checkedCheckbox.parentNode.parentNode;
+                                var cells = checkedRow.getElementsByTagName("td");
 
-                }
-              } else {
-                checkedCount--;
-                if (checkedCount === 1) {
-                  // If only one checkbox remains checked after unchecking this one, find and set its value
-                  const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
-                  if (remainingCheckbox) {
-                    checkboxValue.value = remainingCheckbox.value;
-                  }
-                } else {
-                  // If no or multiple checkboxes are checked, clear the value
-                  checkboxValue.value = " ";
-                }
-              }
-              editServiceButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
+                                // Set the value to the hidden input and other input fields
+                                checkboxValue.value = checkedCheckbox.value;
+                                document.getElementById("editServiceName").value = cells[1].innerText; // Service Name
+                                document.getElementById("editServiceRate").value = cells[2].innerText.substring(1); // Rates
+                                document.getElementById("editCapacity").value = cells[3].innerText; // Capacity
+                            }
+                        } else {
+                            // Clear the value if no checkbox or multiple checkboxes are checked
+                            checkboxValue.value = "";
+                            document.getElementById("editServiceName").value = "";
+                            document.getElementById("editServiceRate").value = "";
+                            document.getElementById("editCapacity").value = "";
+                        }
 
-              // Stop or start interval based on checkbox status
-              if (checkedCount > 0) {
-                stopInterval();
-              } else {
-                startInterval();
-              }
-            });
-          });
+                        editServiceButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
 
-        }
+                        // Stop or start interval based on checkbox status
+                        if (checkedCount > 0) {
+                            stopInterval();
+                        } else {
+                            startInterval();
+                        }
+                    });
+                });
+            }
 
-        // Initial table update and start interval
-        updateTable();
-        startInterval();
-      });
+            // Initial table update and start interval
+            updateTable();
+            startInterval();
+        });
     </script>
-
 
     <!-- For Service Rate -->
     <!-- <script>
@@ -628,7 +631,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       }
     </script>
 
-
+<!--
     <script>
       function getSelected(checkbox) {
         if (checkbox.checked) {
@@ -644,7 +647,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           // Assign values to input fields
           document.getElementById("editServiceName").value = name;
           document.getElementById("editServiceRate").value = rate;
-          document.getElementById("capacity").value = capacity; // Updated ID
+          document.getElementById("editCapacity").value = capacity; // Updated ID
           // Image input field doesn't have an ID in your HTML, so I'm assuming it's named "editImage"
           // Display image (assuming image is a URL)
           //var imgPreview = document.getElementById("editImagePreview");
@@ -652,7 +655,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }
       }
     </script>
-
+    -->
     <script>
       //edit service
       $(document).ready(function() {
@@ -667,11 +670,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
             data: formData,
             processData: false,
             contentType: false,
-            // success: function(response){
+             success: function(response){
             //     // Handle success response here
             //     //alert(response); // For demonstration purposes, you can display an alert with the response
             //     //location.reload();
-            //   },
+          },
             error: function(xhr, status, error) {
               // Handle error
               console.error(xhr.responseText);
@@ -685,7 +688,18 @@ if (isset($_SESSION["userSuperAdminID"])) {
       }
     </script>
 
-
+<script>
+        document.getElementById('editImage').addEventListener('change', function() {
+            const fileInput = document.getElementById('editImage');
+            const isImageChosen = document.getElementById('isImageChosen');
+            
+            if (fileInput.files.length > 0) {
+                isImageChosen.value = 'yes';
+            } else {
+              isImageChosen.value = 'no';
+            }
+        });
+    </script>
 
 
 

@@ -105,7 +105,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 </div>
                 <div class="col-12 col-md-3 mb-3">
   <label for="validity" class="form-label">Select Date <span>*</span></label>
-  <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
+  <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter date" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
   <div class="invalid-feedback">
     Please select a date.
   </div>
@@ -266,7 +266,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="row justify-content-end mt-5">
                 <div class="col-12 col-md-2 mb-3 mb-md-0">
-                  <button class="btn btn-primary w-100 create-button" name="submitReserve" id="submitReserve" type="submit">Create</button>
+                  <button class="btn btn-primary w-100 create-button" name="submitWalkin" id="submitWalkin" type="submit">Create</button>
                 </div>
                 <div class="col-12 col-md-2">
                   <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
@@ -411,16 +411,16 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
     </script>
 
     <script>
-      //add admin
+      //add walk in details
       $(document).ready(function() {
-        $('#submitReserve').click(function(e) {
+        $('#submitWalkin').click(function(e) {
           e.preventDefault();
 
           var formData = new FormData($('#booking-form')[0]);
 
           $.ajax({
             type: 'POST',
-            url: 'reservation_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+            url: 'walkin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
             data: formData,
             processData: false,
             contentType: false,

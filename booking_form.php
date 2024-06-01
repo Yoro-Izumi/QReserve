@@ -289,17 +289,8 @@ if (isset($_SESSION['userMemberID'])) {
 
                             <div class="col-12 col-md-3 mb-3">
                                 <label for="selectTable" class="form-label">Select Table <span>*</span></label>
-                                <select class="form-control" name="selectTable" id="selectTable" required onchange="this.setCustomValidity('')">
-                                    <option value="" selected disabled>Select table</option>
-                                    <option value="1">Table 1</option>
-                                    <option value="2">Table 2</option>
-                                    <option value="3">Table 3</option>
-                                    <option value="4">Table 4</option>
-                                    <option value="5">Table 5</option>
-                                    <option value="6">Table 6</option>
-                                    <option value="7">Table 7</option>
-                                    <option value="8">Table 8</option>
-                                    <option value="9">Table 9</option>
+                                <select class="form-control" name="selectTable" id="selectTable" required>
+                                    <!-- Options will be dynamically added based on selected start time onchange="this.setCustomValidity('')"-->
                                 </select>
                                 <div class="invalid-feedback">
                                     Please select a table.
@@ -431,7 +422,7 @@ if (isset($_SESSION['userMemberID'])) {
     });
 </script>
 <script>
-    //add admin
+    //add reservation
     $(document).ready(function(){
         $('#submitReserve').click(function(e){
             e.preventDefault();
@@ -440,7 +431,7 @@ if (isset($_SESSION['userMemberID'])) {
 
             $.ajax({
                 type: 'POST',
-                url: 'reservation_crud.php', // Replace 'process_form.php' with the URL of your PHP script
+                url: 'reservation_crud.php',
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -457,6 +448,35 @@ if (isset($_SESSION['userMemberID'])) {
         });
     });
 </script>
+
+<!--get available pool tables-->
+
+<script>
+        $(document).ready(function() {
+            $('#selectEndTime, #selectStartTime, #selectDate').change(function() {
+                var startTime = $('#selectStartTime').val();
+                var endTime = $('#selectEndTime').val();
+                var date = $('#selectDate').val();
+                
+                if (startTime && endTime) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'src/get_data_from_database/get_available_table.php',
+                        data: { startTime: startTime, endTime: endTime, date: date},
+                        success: function(response) {
+                            $('#selectTable').html(response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error: ' + status + error);
+                        }
+                    });
+                } else {
+                    $('#selectTable').html('<option value="">Select Table</option>');
+                }
+            });
+        });
+    </script>
+
 
 
     </body>

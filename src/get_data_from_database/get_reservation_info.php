@@ -1,11 +1,11 @@
 <?php
 //get customer information with select query
-$getReservationInfoQuery = "SELECT ri.*, pt.*, mb.*, ph.*, ac.*, sv.* 
+$getReservationInfoQuery = "SELECT ri.*, pt.*, mb.*, ph.*, sc.*, sv.* 
                             FROM pool_table_reservation ri
                             LEFT JOIN pool_tables pt ON ri.tableID = pt.poolTableID
                             LEFT JOIN member_details mb ON ri.memberID = mb.memberID
                             LEFT JOIN payment_history ph ON ri.paymentID = ph.paymentID
-                            LEFT JOIN admin_accounts ac ON ri.adminID = ac.adminID
+                            LEFT JOIN super_admin sc ON ri.superAdminID = sc.superAdminID
                             LEFT JOIN services sv ON ri.serviceID = sv.serviceID";
 
 $reservationInfoConn = mysqli_query($conn,$getReservationInfoQuery);
