@@ -69,62 +69,54 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </section>
 
     <!-- Modals -->
-
     <!-- Add New Service Modal -->
     <div class="modal fade" id="add-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered service-modal" id="add-new-service-modal">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="staticBackdropLabel"><img src="src/images/icons/add.gif" alt="Wait Icon" class="modal-icons">Add New Service</h2>
+            <h2 class="modal-title fw-bold text-center" id="staticBackdropLabel"><img src="src/images/icons/add.gif" alt="Wait Icon" class="modal-icons">Add New Service</h2>
           </div>
           <div class="modal-body">
-            <form class="needs-validation" id="add-new-service-form" novalidate enctype="multipart/form-data">
+            <form class="needs-validation" id="add-new-service-form" novalidate action="service_crud.php" method="POST" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-12 col-md-12 mb-3">
                   <label for="serviceName" class="form-label">Service Name <span>*</span></label>
-                  <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Enter service name here" required pattern="^\S(?:.*\S)?$" oninvalid="this.setCustomValidity('Please enter a valid service name.')" oninput="handleInput(event);" />
+                  <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Enter service name here" required pattern="^\S(?:.*\S)?$" oninvalid="this.setCustomValidity('Please enter a valid service name.')" oninput="handleInput(event); checkInputs();" />
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">
-                    Please enter a valid first name.
+                    Please enter a valid service name.
                   </div>
                 </div>
                 <div class="col-12 col-md-6 mb-3">
                   <label for="serviceRate" class="form-label">Rate</label>
                   <div class="input-group">
                     <span class="input-group-text">₱</span>
-                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="5" minlength="2" required pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" required />
-                    <!-- <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[₱]?[0-9,.-]*" oninput="this.value = this.value.replace(/[^₱0-9,.-]/g, '')" title="Please enter a valid rate." maxlength="10" required /> -->
-
+                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, ''); checkInputs();" title="" maxlength="5" minlength="2" required />
                   </div>
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">Please enter a valid rate.</div>
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                  <label for="text" class="form-label">Capacity <span>*</span></label>
-                  <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
-
-                  <!-- <div class="valid-feedback">
-                Looks good!
-            </div> -->
+                  <label for="capacity" class="form-label">Capacity <span>*</span></label>
+                  <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, ''); checkInputs();" />
                   <div class="invalid-feedback">
                     Please enter a valid capacity.
                   </div>
                 </div>
                 <div class="col-12 col-md-12 mb-3">
-                  <label for="image" class="form-label">Image <span>*</span></label>
-                  <input type="file" class="form-control" name="serviceImage" id="serviceImage" accept=".jpg, .jpeg, .png" required>
+                  <label for="serviceImage" class="form-label">Image <span>*</span></label>
+                  <input type="file" class="form-control" name="serviceImage" id="serviceImage" accept=".jpg, .jpeg, .png" required onchange="checkInputs();" />
                   <div class="invalid-feedback">
-                    Please enter a valid capacity.
+                    Please select an image.
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
+              <div class="modal-footer mb-0 pb-0 me-0 pe-0">
                 <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="resetForm()">Cancel</button>
-                <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal" id="add_service_button">Confirm</button>
+                <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal" id="confirmButton" disabled>Confirm</button>
               </div>
             </form>
           </div>
-
         </div>
       </div>
     </div>
@@ -134,21 +126,24 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
             <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
-          <div class="modal-body">
-            ...
+          <div class="modal-body" id="hello">
+            <ul><strong>Service Name:</strong> <span id="serviceNameLabel"></span></ul>
+            <ul><strong>Rate:</strong> <span id="serviceRateLabel"></span></ul>
+            <ul><strong>Capacity:</strong> <span id="capacityLabel"></span></ul>
+            <ul><strong>Image:</strong> <span id="serviceImageLabel"></span></ul>
+            </ul>
+
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="editService()">Edit</button>
             <button type="submit" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
-            </form>
           </div>
         </div>
       </div>
     </div>
-
 
     <!-- Success Add New Service Modal -->
     <div class="modal fade" id="success-add-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -158,15 +153,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
           </div>
           <div class="modal-body">
-            You have successfully deleted this service.
+            You have successfully added a new service.
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal" onclick="reload()">Proceed</button>
+            <button class="btn btn-primary create-button" id="proceed_add_new_service_button" data-bs-target="#" data-bs-toggle="modal" onclick="reload()">Proceed</button>
           </div>
         </div>
       </div>
     </div>
-
 
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -197,12 +191,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully deleted this service.
           </div>
           <div class="modal-footer">
-            <button onclick="reload()" class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
+            <button onclick="reload()" class="btn btn-primary create-button" id="proceed-delete-button" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
     </div>
-
 
     <!-- Edit Modal -->
     <div class="modal fade" id="edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -234,11 +227,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
                 <div class="col-12 col-md-6 mb-3">
                   <label for="text" class="form-label">Capacity <span>*</span></label>
-                  <input type="text" class="form-control" name="editCapacity" id="editCapacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
-
-                  <!-- <div class="valid-feedback">
-                Looks good!
-            </div> -->
+                  <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
                   <div class="invalid-feedback">
                     Please enter a valid capacity.
                   </div>
@@ -252,7 +241,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
               </div>
               <div class="modal-footer">
-                <input type="hidden" name="isImageChosen" id="isImageChosen" value="no">
                 <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-edit-modal" data-bs-toggle="modal">Confirm</button>
               </div>
@@ -281,7 +269,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-
     <!-- Success Confirm Edit Modal -->
     <div class="modal fade" id="success-edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -300,409 +287,15 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </div>
 
 
-
-
-
-
-    <!-- For trimming whitespacecs -->
-    <script>
-      function handleInput(event) {
-        const inputValue = event.target.value.trim(); // Remove leading and trailing whitespaces
-        const lastChar = inputValue.slice(-1); // Get the last character of the input
-
-        // Check if the input is only whitespaces and it's not the last character
-        if (inputValue === '' || (inputValue === ' ' && lastChar !== ' ')) {
-          event.target.value = ''; // Clear the input if it's only whitespaces
-        }
-      }
-    </script>
-
-
-    <script>
-      $(document).ready(function() {
-        $("#example").DataTable({
-          paging: true,
-          lengthChange: true,
-          searching: true,
-          ordering: true,
-          info: true,
-          autoWidth: false,
-          responsive: true,
-        });
-      });
-
-      // JavaScript functions for handling bulk actions
-      function deleteSelected() {
-        // Implement delete logic here
-        console.log("Delete selected rows");
-      }
-
-      function editSelected() {
-        // Implement edit logic here
-        console.log("Edit selected rows");
-      }
-    </script>
-
-    <script>
-      let sidebar = document.querySelector(".sidebar");
-      let closeBtn = document.querySelector("#btn");
-      let searchBtn = document.querySelector(".bx-search");
-
-      closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      searchBtn.addEventListener("click", () => {
-        // Sidebar open when you click on the search icon
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      // following are the code to change sidebar button(optional)
-      function menuBtnChange() {
-        if (sidebar.classList.contains("open")) {
-          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right"); //replacing the icons class
-        } else {
-          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu"); //replacing the icons class
-        }
-      }
-    </script>
-
-<script>
-  //add service
-  $(document).ready(function() {
-    $('#confirm_add_service_button').click(function(e) {
-      e.preventDefault();
-
-      var formData = new FormData($('#add-new-service-form')[0]);
-
-      $.ajax({
-        type: 'POST',
-        url: 'service_crud.php', // Replace 'service_crud.php' with the URL of your PHP script
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-          // Handle success response here
-          //alert(response); // For demonstration purposes, you can display an alert with the response
-          //location.reload(); // Reload the page after successful submission
-          $('#success-add-service-modal').modal('show');
-        },
-        error: function(xhr, status, error) {
-          // Handle error
-          console.error(xhr.responseText);
-        }
-      });
-    });
-  });
-</script>
-
-
-
-
-
-    <!--script that disables button if no check box is clicked-->
-    <script>
-      $(document).ready(function() {
-        $('input[type="checkbox"]').change(function() {
-          var anyChecked = $('input[type="checkbox"]:checked').length > 0;
-          $('edit-service').prop('disabled', !anyChecked);
-          $('delete-service').prop('disabled', !anyChecked);
-        });
-      });
-    </script>
-
-    <!--script for deleting service-->
-    <script>
-      $(document).ready(function() {
-        // AJAX code to handle deletion
-        $("#delete-service").click(function() {
-          // Array to store IDs of selected rows
-          var selectedRows = [];
-
-          // Iterate through each checked checkbox
-          $(".service-checkbox:checked").each(function() {
-            // Push the value (ID) of checked checkbox into the array
-            selectedRows.push($(this).val());
-          });
-
-          // AJAX call to send selected rows IDs to delete script
-          $.ajax({
-            url: "service_crud.php",
-            type: "POST",
-            data: {
-              selectedRows: selectedRows
-            },
-             success: function(response) {
-            //   // Reload the page or update the table as needed
-            //   location.reload(); // For example, reload the page after deletion
-             },
-            error: function(xhr, status, error) {
-              //console.error("Error:", error);
-            }
-          });
-        });
-      });
-    </script>
-
-
-<script>
-        $(document).ready(function() {
-            var intervalID; // Define intervalID variable outside to make it accessible across functions
-
-            // Function to update table content
-            function updateTable() {
-                $.ajax({
-                    url: 'service_table.php', // Change this to the PHP file that contains the table content
-                    type: 'GET',
-                    success: function(response) {
-                        $('#example').html(response);
-                        attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
-                    }
-                });
-            }
-
-            // Function to start interval
-            function startInterval() {
-                intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
-            }
-
-            // Function to stop interval
-            function stopInterval() {
-                clearInterval(intervalID);
-            }
-
-            // Attach event listeners for checkboxes
-            function attachCheckboxListeners() {
-                const checkboxes = document.querySelectorAll('.service-checkbox');
-                const checkboxValue = document.getElementById('editID');
-                var editServiceButton = document.getElementById('edit-service');
-                var deleteServiceButton = document.getElementById('delete-service');
-                var checkedCount = 0;
-
-                editServiceButton.disabled = true;
-
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', function() {
-                        var row = checkbox.parentNode.parentNode; // Get the row containing the checkbox
-
-                        if (this.checked) {
-                            checkedCount++;
-                        } else {
-                            checkedCount--;
-                        }
-
-                        if (checkedCount === 1) {
-                            // Find the checked checkbox and update input fields
-                            const checkedCheckbox = [...checkboxes].find(chk => chk.checked);
-                            if (checkedCheckbox) {
-                                var checkedRow = checkedCheckbox.parentNode.parentNode;
-                                var cells = checkedRow.getElementsByTagName("td");
-
-                                // Set the value to the hidden input and other input fields
-                                checkboxValue.value = checkedCheckbox.value;
-                                document.getElementById("editServiceName").value = cells[1].innerText; // Service Name
-                                document.getElementById("editServiceRate").value = cells[2].innerText.substring(1); // Rates
-                                document.getElementById("editCapacity").value = cells[3].innerText; // Capacity
-                            }
-                        } else {
-                            // Clear the value if no checkbox or multiple checkboxes are checked
-                            checkboxValue.value = "";
-                            document.getElementById("editServiceName").value = "";
-                            document.getElementById("editServiceRate").value = "";
-                            document.getElementById("editCapacity").value = "";
-                        }
-
-                        editServiceButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
-
-                        // Stop or start interval based on checkbox status
-                        if (checkedCount > 0) {
-                            stopInterval();
-                        } else {
-                            startInterval();
-                        }
-                    });
-                });
-            }
-
-            // Initial table update and start interval
-            updateTable();
-            startInterval();
-        });
-    </script>
-
-    <!-- For Service Rate -->
-    <!-- <script>
-      $(document).ready(function() {
-        // Update the displayed value when the input changes
-        $('#serviceRate').on('input', function() {
-          // Get the entered value without the currency symbol and commas
-          var inputValue = $(this).val().replace(/^₱|,/g, '');
-
-          // Remove non-numeric characters
-          var numericValue = inputValue.replace(/[^\d.]/g, '');
-
-          // Remove leading zeros
-          numericValue = numericValue.replace(/^0+(\d)/, '$1');
-
-          // Format with commas for thousands or hundred thousands
-          numericValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-          // Limit to two decimal places
-          var parts = numericValue.split('.');
-          if (parts.length > 1) {
-            numericValue = parts[0] + '.' + parts[1].slice(0, 2);
-          }
-
-          // Update the input value with the formatted value and add the currency symbol
-          $(this).val(numericValue === '0' ? '' : '₱' + numericValue);
-        });
-
-        // Submit the form with the formatted value when needed
-        $('#add-new-service').submit(function() {
-          // Remove currency symbol and commas before submitting the form
-          var inputValue = $('#serviceRate').val().replace(/^₱|,/g, '');
-          var numericValue = inputValue.replace(/[^\d.]/g, '');
-
-          // Remove leading zeros
-          numericValue = numericValue.replace(/^0+(\d)/, '$1');
-
-          // Store the numeric value separately for comparison
-          $('#serviceRate').data('numericValue', numericValue);
-
-          // Keep the formatted value with the currency symbol for display
-          $('#serviceRate').val(numericValue === '0' ? '' : '₱' + numericValue);
-        });
-      });
-    </script> -->
-
-    <!-- <script>
-      $(document).ready(function() {
-  // Update the displayed value when the input changes
-  $('#serviceRate').on('input', function() {
-    // Get the entered value without the currency symbol and commas
-    var inputValue = $(this).val().replace(/^₱|,/g, '');
-
-    // Remove non-numeric characters
-    var numericValue = inputValue.replace(/[^\d.]/g, '');
-
-    // Remove leading zeros
-    numericValue = numericValue.replace(/^0+(\d)/, '$1');
-
-    // Format with commas for thousands or hundred thousands
-    numericValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-    // Limit to two decimal places
-    var parts = numericValue.split('.');
-    if (parts.length > 1) {
-      numericValue = parts[0] + '.' + parts[1].slice(0, 2);
-    }
-
-    // Update the input value with the formatted value and add the currency symbol
-    $(this).val(numericValue === '0' ? '' : '₱' + numericValue);
-  });
-
-  // Submit the form with the formatted value when needed
-  $('#add-new-service').submit(function() {
-    // Remove currency symbol and commas before submitting the form
-    var inputValue = $('#serviceRate').val().replace(/^₱|,/g, '');
-    var numericValue = inputValue.replace(/[^\d.]/g, '');
-
-    // Remove leading zeros
-    numericValue = numericValue.replace(/^0+(\d)/, '$1');
-
-    // Store the numeric value separately for comparison
-    $('#serviceRate').data('numericValue', numericValue);
-
-    // Keep the formatted value with the currency symbol for display
-    $('#serviceRate').val(numericValue === '0' ? '' : '₱' + numericValue);
-  });
-});
-
-    </script> -->
-
-
+    <script src="src/js/service_management.js"></script>
+    <script src="src/js/sidebar.js"></script>
 
     <!-- Resets the Edit Modal when Cancel is selected -->
     <script>
-      function resetForm() {
-        document.getElementById('add-new-service-form').reset();
-      }
+      // function resetForm() {
+      //   document.getElementById('add-new-service-form').reset();
+      // }
     </script>
-
-<!--
-    <script>
-      function getSelected(checkbox) {
-        if (checkbox.checked) {
-          var row = checkbox.parentNode.parentNode; // Get the row containing the checkbox
-          var cells = row.getElementsByTagName("td");
-
-          // Retrieve data from cells
-          var name = cells[1].innerText; // Service Name
-          var rate = cells[2].innerText; // Rates
-          var capacity = cells[3].innerText; // Capacity
-          var image = cells[4].innerText; // Image URL
-
-          // Assign values to input fields
-          document.getElementById("editServiceName").value = name;
-          document.getElementById("editServiceRate").value = rate;
-          document.getElementById("editCapacity").value = capacity; // Updated ID
-          // Image input field doesn't have an ID in your HTML, so I'm assuming it's named "editImage"
-          // Display image (assuming image is a URL)
-          //var imgPreview = document.getElementById("editImagePreview");
-          //imgPreview.src = "src/images/Services"+image;
-        }
-      }
-    </script>
-    -->
-    <script>
-      //edit service
-      $(document).ready(function() {
-        $('#confirm-edit-service').click(function(e) {
-          e.preventDefault();
-
-          var formData = new FormData($('#edit-new-service-form')[0]);
-
-          $.ajax({
-            type: 'POST',
-            url: 'service_crud.php', // Replace 'admin_crud.php' with the URL of your PHP script
-            data: formData,
-            processData: false,
-            contentType: false,
-             success: function(response){
-            //     // Handle success response here
-            //     //alert(response); // For demonstration purposes, you can display an alert with the response
-            //     //location.reload();
-          },
-            error: function(xhr, status, error) {
-              // Handle error
-              console.error(xhr.responseText);
-            }
-          });
-        });
-      });
-
-      function reload() {
-        location.reload();
-      }
-    </script>
-
-<script>
-        document.getElementById('editImage').addEventListener('change', function() {
-            const fileInput = document.getElementById('editImage');
-            const isImageChosen = document.getElementById('isImageChosen');
-            
-            if (fileInput.files.length > 0) {
-                isImageChosen.value = 'yes';
-            } else {
-              isImageChosen.value = 'no';
-            }
-        });
-    </script>
-
-
-
   </body>
 
   </html>
