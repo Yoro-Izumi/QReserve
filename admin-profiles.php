@@ -70,8 +70,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>
           <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
 
-          <button type="button" id="edit-admin" class="btn btn-primary">Edit Selected</button>
-          <button type="button" class="btn btn-danger" id="delete-admin" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-service">Delete Selected</button>
+          <button type="button" id="edit-admin" class="btn btn-primary">Edit</button>
+          <button type="button" class="btn btn-danger" id="delete-admin" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-service">Delete</button>
           
         </div>
       </div>

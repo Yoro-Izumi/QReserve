@@ -65,8 +65,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button>
           <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>          -->
-          <button type="button" class="btn btn-primary" id="edit-member">Edit Selected</button>
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-member-account-modal" id="delete-member">Delete Selected</button>
+          <button type="button" class="btn btn-primary" id="edit-member">Edit</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-member-account-modal" id="delete-member">Delete</button>
           <input type="hidden" id="edit-member-val" value="">
         </div>
       </div>
