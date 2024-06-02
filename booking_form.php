@@ -450,7 +450,6 @@ if (isset($_SESSION['userMemberID'])) {
 </script>
 
 <!--get available pool tables-->
-
 <script>
         $(document).ready(function() {
             $('#selectEndTime, #selectStartTime, #selectDate').change(function() {
