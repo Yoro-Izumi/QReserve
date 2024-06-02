@@ -242,23 +242,15 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
 
 
                 <div class="col-12 col-md-3 mb-3">
-                  <label for="selectTable" class="form-label">Select Table <span>*</span></label>
-                  <select class="form-control" name="selectTable" id="selectTable" required onchange="this.setCustomValidity('')">
-                    <option value="" selected disabled>Select table</option>
-                    <option value="1">Table 1</option>
-                    <option value="2">Table 2</option>
-                    <option value="3">Table 3</option>
-                    <option value="4">Table 4</option>
-                    <option value="5">Table 5</option>
-                    <option value="6">Table 6</option>
-                    <option value="7">Table 7</option>
-                    <option value="8">Table 8</option>
-                    <option value="9">Table 9</option>
-                  </select>
-                  <div class="invalid-feedback">
-                    Please select a table.
-                  </div>
+                    <label for="selectTable" class="form-label">Select Table <span>*</span></label>
+                        <select class="form-control" name="selectTable" id="selectTable" required>
+                            <!-- Options will be dynamically added based on selected start time onchange="this.setCustomValidity('')"-->
+                        </select>
+                    <div class="invalid-feedback">
+                        Please select a table.
+                    </div>
                 </div>
+
                 <div class="col-12 col-md-12 mb-3 mb-4">
                   <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
                   <img src="src/images/map.png" alt="" style="width: 100%; height: 100%;">
@@ -449,6 +441,33 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
           event.target.value = ''; // Clear the input if it's only whitespaces
         }
       }
+    </script>
+
+<!--get available pool tables-->
+<script>
+        $(document).ready(function() {
+            $('#selectEndTime, #selectStartTime, #selectDate').change(function() {
+                var startTime = $('#selectStartTime').val();
+                var endTime = $('#selectEndTime').val();
+                var date = $('#selectDate').val();
+                
+                if (startTime && endTime) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'src/get_data_from_database/get_available_table.php',
+                        data: { startTime: startTime, endTime: endTime, date: date},
+                        success: function(response) {
+                            $('#selectTable').html(response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error: ' + status + error);
+                        }
+                    });
+                } else {
+                    $('#selectTable').html('<option value="">Select Table</option>');
+                }
+            });
+        });
     </script>
 
   </body>
