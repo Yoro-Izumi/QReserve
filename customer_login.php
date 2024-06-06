@@ -117,21 +117,26 @@ if(isset($_POST['login_member'])){
       <h6 class="bevitore">BEVITORE SANTA ROSA</h6>
       <div class="container-fluid login">
         <div class="row">
-        <form action="customer_login.php" method="POST">
+        <form action="customer_login.php" method="POST" onsubmit="return validateControlNumber()">
             <h5 class="text-center fw-bold">Welcome!</h5>
 
+            <div id="error-message" class="alert alert-danger d-none" role="alert">
+              <!-- Error message will be injected here -->
+            </div>
+            
             <?php if (!empty($error_message)) : ?>
-      <div class="alert alert-danger" role="alert">
-        <?php echo $error_message; ?>
-      </div>
-    <?php endif; ?>
+              <div class="alert alert-danger" role="alert">
+                <?php echo $error_message; ?>
+              </div>
+            <?php endif; ?>
+            
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInput" placeholder="" name="username" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="7" required />
-              <label for="floatingInput">Control Number</label>
+              <input type="text" class="form-control" id="controlNumber" placeholder="" name="username" maxlength="7" minlength="7" required />
+              <label for="controlNumber">Control Number <span>*</span></label>
             </div>
             <div class="form-floating mb-2 position-relative">
               <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" maxlength="30" required />
-              <label for="floatingPassword">Password</label>
+              <label for="floatingPassword">Password <span>*</span></label>
               <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
                 <i class="fas fa-eye-slash"></i>
               </button>
@@ -168,6 +173,22 @@ if(isset($_POST['login_member'])){
         eyeIcon.classList.toggle("fa-eye");
       });
     });
+
+    // Validation for Control Number
+    function validateControlNumber() {
+      const controlNumber = document.getElementById('controlNumber').value;
+      const errorMessageDiv = document.getElementById('error-message');
+      const pattern = /^[0-9]{1,4}-[0-9]{1,4}$/;
+
+      if (!pattern.test(controlNumber)) {
+        errorMessageDiv.textContent = 'Please input a valid control number.';
+        errorMessageDiv.classList.remove('d-none');
+        return false;
+      }
+
+      errorMessageDiv.classList.add('d-none');
+      return true;
+    }
   </script>
 </body>
 
