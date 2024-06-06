@@ -1,6 +1,6 @@
 body {
   font-family: "Montserrat", sans-serif;
-  background-color: #e4e9f7;
+  background-color: #e4e9f7 !important;
   min-height: 100vh;
   padding: 2%;
 }
@@ -345,6 +345,67 @@ label.customer-account{
 #account-form{
   background-color: #240046;
 }
+
+
+
+/* Customer Reservation Page */
+#customer-reservation-form{
+  background-color: white;
+}
+
+.customer-reservation{
+  font-weight: 500;
+}
+
+.reservation-detail{
+  color: black !important;
+}
+
+.date-reserved{
+  font-weight: 400;
+  font-size: small;
+}
+
+.cancel-reservation-button{
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
+
+.btn-outline-primary#cancel_reservation_button {
+  border-color:#240046 !important;
+  color: #240046 !important; /* To change the text color as well */
+}
+
+.btn-outline-primary#cancel_reservation_button:hover {
+  background-color: #240046 !important; /* To change the background color on hover */
+  border-color: #240046 !important; /* To change the border color on hover */
+  color: white !important; /* To change the text color on hover */
+}
+
+.name-status-container {
+  display: flex;
+  align-items: center; /* Vertically center the status box with the name */
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px; /* Adjust padding as needed */
+  background-color: #04471C; /* Set the background color for the status */
+  color: white; /* Set the text color */
+  margin-left: 10px; /* Space between the name and the status box */
+  border-radius: 5px; /* Round the corners */
+}
+
+.status-text {
+  font-size: 14px; /* Adjust font size as needed */
+  color: white !important;
+}
+
+
 
 /* 1st Graph CSS */
 .highcharts-figure,

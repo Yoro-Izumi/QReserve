@@ -54,24 +54,8 @@ if (isset($_SESSION['userMemberID'])) {
   </head>
 
   <body class="body">
-    <header>
-      <nav class="navbar p-0">
-        <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
-        <input type="checkbox" id="menu-toggler">
-        <label for="menu-toggler" id="hamburger-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z" />
-          </svg>
-        </label>
-        <ul class="all-links">
-          <li><a href="customer_dashboard.php">Home</a></li>
-          <li><a href="customer_account.php">Reservations</a></li>
-          <li><a href="customer_account.php">Account</a></li>
-          <li><a href="customer_logout.php">Log Out</a></li>
-        </ul>
-      </nav>
-    </header>
+    <?php include "customer_header.php";
+    ?>
 
 
     <h3 class="qreserve mt-5 pt-3 mb-0">Welcome <?php echo $customerName; ?>!</h3>
@@ -81,9 +65,9 @@ if (isset($_SESSION['userMemberID'])) {
     </div>
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid table-container dashboard-square-kebab" id="home-active-playing">
-    <table id="example" class="table table-striped" style="width: 100%">
-          <!--table data is dynamicaly updated and is from pool_table.php-->
-        </table>
+      <table id="example" class="table table-striped" style="width: 100%">
+        <!--table data is dynamicaly updated and is from pool_table.php-->
+      </table>
     </div>
 
     <div class="container-fluid mt-4">
@@ -189,7 +173,7 @@ if (isset($_SESSION['userMemberID'])) {
       }
     </script>
 
-<script>
+    <script>
       $(document).ready(function() {
         // Function to update table content
         function updateTable() {
@@ -208,7 +192,7 @@ if (isset($_SESSION['userMemberID'])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
-</script>
+    </script>
 
   </body>
 

@@ -37,21 +37,15 @@ if (isset($_SESSION["userMemberID"])) {
     </head>
 
     <body class="body">
-    <?php include "customer_header.php";
-    ?>
+        <?php include "customer_header.php";
+        ?>
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12 text-center">
-                    <h1 class="qreserve mt-5 pt-3 mb-0">QReserve</h1>
-                    <h6 id="booking-sub">BEVITORE SANTA ROSA</h6>
-                    <hr class="my-4">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="fw-bold ps-4">My Account</h3>
-                    <form class="needs-validation dashboard-square-kebab" id="account-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
+                <div class="col-md-12 mt-5 pt-3">
+                    <h4 class="qreserve">Reservations</h4>
+                    <hr class="my-4 mt-3">
+                    <div class="dashboard-square-kebab" id="customer-reservation-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
                         <div class="row">
                             <?php
                             foreach ($arrayMemberAccount as $memberAccount) {
@@ -65,27 +59,38 @@ if (isset($_SESSION["userMemberID"])) {
                                     $customerEmail = decryptData($memberAccount['customerEmail'], $key);
                                 }
                             }
-                            ?>
-                            <div class="col-12 col-md-12 mb-3 ">
-                                <label for="firstName" class="form-label customer-account" >First Name: <h1 class="customer-account-field" id="customer-name"><?php echo $customerFirstName; ?> <?php echo $customerMiddleName; ?> <?php echo $customerLastName; ?></h1></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Control Number: <h4 class="customer-account-field" id="customer-name"><?php echo $memberControlNumber; ?></h4></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Birthdate: <h4 class="customer-account-field" id="customer-name"><?php echo $customerBirthdate; ?></h4></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Contact Number: <h4 class="customer-account-field" id="customer-name"><?php echo $customerNumber; ?></h4></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Email Address: <h4 class="customer-account-field" id="customer-name"><?php echo $customerEmail; ?></h4></label>
-                            </div>
-                    </form>
 
+
+                            ?>
+<div class="name-status-container">
+    <h2 class="fw-bold">
+        <?php echo $customerFirstName; ?> <?php echo $customerMiddleName; ?> <?php echo $customerLastName; ?>
+    </h2>
+    <div class="status-box">
+        <span class="status-text">Done</span>
+    </div>
+</div>
+
+
+                            <div class="col-12">
+                                <h5 class="customer-reservation pt-2">Reservation Date: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
+                            </div>
+                            <div class="col-12">
+                                <h5 class="customer-reservation">Pool Table: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
+                            </div>
+                            <div class="col-12">
+                                <h5 class="customer-reservation">Time: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
+                            </div>
+                            <div class="col-12 col-md-6 pt-4">
+                                <h5 class="date-reserved">Date Reserved: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
+                            </div>
+                            <div class="col-12 col-md-6 cancel-reservation-button">
+                            <button class="btn btn-outline-primary" id="cancel_reservation_button">Cancel Reservation</button>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
     </body>
 
     </html>
