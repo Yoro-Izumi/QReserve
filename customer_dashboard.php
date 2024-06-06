@@ -135,6 +135,33 @@ if (isset($_SESSION['userMemberID'])) {
 
 
 
+    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'pool_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#updateTable').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+
+    </script> 
+
+
+
+
+
     <script>
       $(document).ready(function() {
         $("#example").DataTable({

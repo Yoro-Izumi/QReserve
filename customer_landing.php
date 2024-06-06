@@ -158,9 +158,36 @@ date_default_timezone_set('Asia/Manila');
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3866.3311061967775!2d121.1001308758709!3d14.29218458455158!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d96d5e79b44d%3A0xf3bc2aea1c1e6f4e!2sBevitore%20Sta.%20Rosa!5e0!3m2!1sen!2sph!4v1712407493936!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
+
+
+    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'pool_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#updateTable').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+
+    </script> 
+
+
+
+  
   </section>
-
-
+  
 
   <footer>
     <div>

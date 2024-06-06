@@ -34,29 +34,6 @@ $currentTime = date('H:i:s');
               $poolTableStatus = $poolTables['poolTableStatus']; $poolTableNumber = $poolTables['poolTableNumber']; 
               $timeStarted = explode(' ',$poolTables['timeStarted']); 
               $timeEnd = explode(' ',$poolTables['timeEnd']);
-
-
-              foreach($arrayReservationInfo as $reservation){
-                if($reservation['reservationDate'] == $currentDate && $reservation['reservationTimeStart'] <= $currentTime && $reservation['reservationTimeEnd'] >= $currentTime && $poolTables['poolTableID'] == $reservation['tableID']){
-                    $poolStatus = "Playing";
-                    $insertTimeEnd = $currentDate." ".$reservation['reservationTimeEnd'];
-                    $insertTimeStart = $currentDate." ".$reservation['reservationTimeStart']; 
-                    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-                    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-                    mysqli_stmt_bind_param($stmt, "siss", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
-                    mysqli_stmt_execute($stmt);
-
-                }
-                else{
-                    $poolStatus = "Available";
-                    $insertTimeEnd = $currentDate." 00:00:00";
-                    $insertTimeStart = $currentDate." 00:00:00"; 
-                    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-                    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-                    mysqli_stmt_bind_param($stmt, "siss", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
-                    mysqli_stmt_execute($stmt);
-                }
-            }
             
             echo "<tr>
               <td>".$poolTableNumber."</td>
