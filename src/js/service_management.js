@@ -19,7 +19,11 @@ function resetForm() {
     checkInputs();
 }
 
-
+//function trim the peso sign from edit service rate input field
+function trimRate(){ 
+    var serviceRate = document.getElementById('editServiceRate').value; 
+    document.getElementById('editServiceRate').value = serviceRate.slice(0);
+}
 
 
 
@@ -170,19 +174,17 @@ function getSelected(checkbox) {
         var cells = row.getElementsByTagName("td");
 
         // Retrieve data from cells
-        var name = cells[1].innerText; // Service Name
-        var rate = cells[2].innerText; // Rates
-        var capacity = cells[3].innerText; // Capacity
-        var image = cells[4].innerText; // Image URL
+        var name = cells[1].innerText.trim(); // Service Name
+        var rate = cells[2].innerText.trim(); // Rates
+        var capacity = cells[3].innerText.trim(); // Capacity
+        //var Rate = split("₱",rate);
 
         // Assign values to input fields
         document.getElementById("editServiceName").value = name;
-        document.getElementById("editServiceRate").value = rate;
-        document.getElementById("capacity").value = capacity; // Updated ID
+        document.getElementById("editServiceRate").value = rate.slice(1);
+        document.getElementById("editCapacity").value = capacity;
     }
 }
-
-
 
 
 
@@ -277,6 +279,7 @@ $(document).ready(function () {
                     if (checkedCount === 1) {
                         // If only one checkbox is checked, set its value
                         checkboxValue.value = this.value;
+                        
                     }
                 } else {
                     checkedCount--;
@@ -285,6 +288,7 @@ $(document).ready(function () {
                         const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
                         if (remainingCheckbox) {
                             checkboxValue.value = remainingCheckbox.value;
+                            getSelected(checkbox);
                         }
                     } else {
                         // If no or multiple checkboxes are checked, clear the value
@@ -335,7 +339,7 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 // Handle success response here
-                alert(response); // For demonstration purposes, you can display an alert with the response
+                //alert(response); // For demonstration purposes, you can display an alert with the response
                 $('#success-add-service-modal').modal('hide'); // Close the modal after successful insertion
                 location.reload(); // Reload the page or update the table as needed
             },

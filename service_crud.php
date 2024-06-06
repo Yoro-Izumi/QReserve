@@ -7,11 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['serviceName'])) {
         $serviceName = mysqli_real_escape_string($conn, $_POST['serviceName']);
         $serviceCapacity = (int) mysqli_real_escape_string($conn, $_POST['capacity']);
-        $serviceRateWithPeso = mysqli_real_escape_string($conn, $_POST['serviceRate']);
-        $serviceRate = (int) $serviceRateWithPeso;
+        //$serviceRateWithPeso = mysqli_real_escape_string($conn, $_POST['serviceRate']); //₱
+        $serviceRate = (int)mysqli_real_escape_string($conn, $_POST['serviceRate']); //$serviceRateWithPeso;
 
         // For uploading the service image
-        $serviceImage = $_FILES["serviceImage"];
+        $serviceImage = $_FILES["serviceImage"]; 
         $serviceImageName = $serviceImage["name"];
         $serviceImageTmpName = $serviceImage["tmp_name"];
         $serviceImageError = $serviceImage["error"];

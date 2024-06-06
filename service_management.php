@@ -61,8 +61,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </table>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service">Delete</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service">Edit</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service" >Delete</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service" onclick="trimRate()">Edit</button>
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
         </div>
       </div>
@@ -220,14 +220,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <label for="serviceRate" class="form-label">Rate</label>
                   <div class="input-group">
                     <!-- <span class="input-group-text">₱</span> -->
-                    <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="2" required pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" required />
+                    <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" onchange="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="2" required pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" required />
                   </div>
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">Please enter a valid rate.</div>
                 </div>
                 <div class="col-12 col-md-6 mb-3">
                   <label for="text" class="form-label">Capacity <span>*</span></label>
-                  <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+                  <input type="text" class="form-control" name="editCapacity" id="editCapacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
                   <div class="invalid-feedback">
                     Please enter a valid capacity.
                   </div>
