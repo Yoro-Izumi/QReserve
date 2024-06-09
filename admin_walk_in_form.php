@@ -59,7 +59,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
           <div class="col-md-12">
             <h3 class="fw-bold ps-4">Fill up the form</h3>
             <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <label for="firstName" class="form-label">First Name <span>*</span></label>
                 <input type="text" class="form-control trim-input validate-input" name="firstName" placeholder="Enter first name here" id="firstName" required>
                 <div class="valid-feedback">
@@ -69,7 +69,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please enter a valid first name.
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <label for="middleName" class="form-label">Middle Name</label>
                 <input type="text" class="form-control trim-input validate-input" name="middleName" placeholder="Enter middle name here" id="middleName">
                 <div class="valid-feedback">
@@ -79,7 +79,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please enter a valid middle name.
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
                 <input type="text" class="form-control trim-input validate-input" name="lastName" placeholder="Enter last name here" id="lastName" required>
                 <div class="valid-feedback">
@@ -89,7 +89,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please enter a valid last name.
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
                 <input type="date" class="form-control trim-input validate-input" name="birthDate" id="birthDate" required>
                 <div class="valid-feedback">
@@ -99,7 +99,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please enter a valid birthdate.
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
                 <input type="text" class="form-control trim-input validate-contact" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
                 <div class="valid-feedback">
@@ -109,7 +109,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please enter a valid contact number.
                 </div>
               </div>
-              <div class="col-12 col-md-4">
+              <div class="col-md-4  mb-3">
                 <label for="email" class="form-label">Email Address <span>*</span></label>
                 <input type="email" class="form-control trim-input" name="email" id="email" placeholder="Enter email address here" required />
                 <div class="valid-feedback">
@@ -120,7 +120,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 </div>
               </div>
 
-              <div class="col-12 col-md-3">
+              <div class="col-md-3 mb-3">
                 <label for="validity" class="form-label">Select Date <span>*</span></label>
                 <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
                 <div class="valid-feedback">
@@ -131,7 +131,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 </div>
               </div>
 
-              <div class="col-12 col-md-3">
+              <div class="col-md-3 mb-3">
                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
                 <select class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()">
                   <option value="" selected disabled>Select start time</option>
@@ -162,7 +162,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 </div>
               </div>
 
-              <div class="col-12 col-md-3 mb-3">
+              <div class="col-md-3 mb-3">
                 <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
                 <select class="form-control" name="selectEndTime" id="selectEndTime" required>
                   <option value="" selected disabled>Select end time</option>
@@ -180,6 +180,9 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <select class="form-control" name="selectTable" id="selectTable" placeholder="Select Table" required>
                   <!-- Options will be dynamically added based on selected start time onchange="this.setCustomValidity('')"-->
                 </select>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
                 <div class="invalid-feedback">
                   Please select a table.
                 </div>
