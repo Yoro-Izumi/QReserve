@@ -161,7 +161,6 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please select a start time.
                 </div>
               </div>
-
               <div class="col-md-3 mb-3">
                 <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
                 <select class="form-control" name="selectEndTime" id="selectEndTime" required>
