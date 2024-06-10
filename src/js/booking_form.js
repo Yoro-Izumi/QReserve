@@ -162,3 +162,55 @@ document.addEventListener("DOMContentLoaded", function () {
     createButton.disabled = true;
   });
   
+
+
+
+// For End Time
+  const endTimesMap = {
+    "10:00:00": ["12:00nn", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "11:00:00": ["1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "12:00:00": ["2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "13:00:00": ["3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "14:00:00": ["4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am"],
+    "15:00:00": ["5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am"],
+    "16:00:00": ["6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "17:00:00": ["7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "18:00:00": ["8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "19:00:00": ["9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "20:00:00": ["10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "21:00:00": ["11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "22:00:00": ["12:00 midnight", "1:00am", "2:00am", "3:00am"],
+    "23:00:00": ["1:00am", "2:00am", "3:00am"],
+    "00:00:00": ["2:00am", "3:00am", "4:00am", "5:00am"],
+    "1:00:00": ["3:00am", "4:00am", "5:00am"],
+    "2:00:00": ["4:00am", "5:00am"],
+};
+
+function updateEndTime() {
+    const startTimeSelect = document.getElementById("selectStartTime");
+    const endTimeSelect = document.getElementById("selectEndTime");
+    const selectedStartTime = startTimeSelect.value;
+
+    // Clear previous options
+    endTimeSelect.innerHTML = '<option value="" selected disabled>Select end time</option>';
+
+    // Define available end times based on selected start time
+    const endTimes = endTimesMap[selectedStartTime] || [];
+
+    // Add options to select end time
+    endTimes.forEach(function(time) {
+        const option = document.createElement("option");
+
+        var timeSplit = time.split(":"); // split hour from minutes
+        if (timeSplit[1] == "00am" || timeSplit[1] == "00nn") {
+            var actualTime = timeSplit[0] + ":00:00";
+        } else if (timeSplit[1] == "00pm") {
+            var actualTime = (12 + parseInt(timeSplit[0])) + ":00:00";
+        } else {
+            var actualTime = "00:00:00";
+        }
+        option.text = time;
+        option.value = actualTime;
+        endTimeSelect.add(option);
+    });
+}
