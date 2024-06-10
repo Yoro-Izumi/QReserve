@@ -61,8 +61,8 @@ if (isset($_SESSION['userMemberID'])) {
     </head>
 
     <body class="body">
-    <?php include "customer_header.php";
-    ?>
+        <?php include "customer_header.php";
+        ?>
 
         <div class="container-fluid">
             <div class="row">
@@ -134,12 +134,12 @@ if (isset($_SESSION['userMemberID'])) {
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-  <label for="validity" class="form-label">Select Date <span>*</span></label>
-  <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
-  <div class="invalid-feedback">
-    Please select a date.
-  </div>
-</div>
+                                <label for="validity" class="form-label">Select Date <span>*</span></label>
+                                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
+                                <div class="invalid-feedback">
+                                    Please select a date.
+                                </div>
+                            </div>
 
 
                             <!-- <div class="col-12 col-md-3 mb-3">
@@ -301,191 +301,11 @@ if (isset($_SESSION['userMemberID'])) {
 
 
         <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
-    <script>
-      $(document).ready(function() {
-        // Function to update table content
-        function updateTable() {
-          $.ajax({
-            url: 'pool_table.php',
-            type: 'GET',
-            success: function(response) {
-              $('#updateTable').html(response);
-            }
-          });
-        }
-
-        // Initial table update
-        updateTable();
-
-        // Refresh table every 5 seconds
-        setInterval(updateTable, 1000); // Adjust interval as needed
-      });
-
-    </script> 
+        <script src="src/js/booking_form.js"></script>
 
 
 
-        <script>
-            //For birthdate
-            document.addEventListener('DOMContentLoaded', function() {
-                var birthDateInput = document.getElementById('birthDate');
 
-                // Set min and max date for birthdate input
-                var currentDate = new Date();
-                var minDate = new Date('1900-01-01');
-                var maxDate = new Date(currentDate);
-                maxDate.setFullYear(currentDate.getFullYear() - 18); // 18 years ago from current year
-
-                birthDateInput.min = minDate.toISOString().split('T')[0]; // Minimum date is 1900-01-01
-                birthDateInput.max = maxDate.toISOString().split('T')[0]; // Maximum date is 18 years ago
-
-                birthDateInput.addEventListener('input', function() {
-                    var selectedDate = new Date(this.value);
-
-                    if (selectedDate < minDate || selectedDate > maxDate) {
-                        this.setCustomValidity('Please enter a valid birthdate (minimum 1900 and at least 18 years ago).');
-                    } else {
-                        this.setCustomValidity('');
-                    }
-                });
-            });
-        </script>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const validityInput = document.querySelector("#validity");
-
-                // Get today's date
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = today.getMonth() + 1; // Month is zero-indexed
-                const day = today.getDate();
-
-                // Set the minimum date to today's date
-                const minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                validityInput.setAttribute("min", minDate);
-
-                // Set the maximum date to 1 year from today's date
-                const maxDate = new Date(today.getTime() + (365 * 24 * 60 * 60 * 1000));
-                const maxYear = maxDate.getFullYear();
-                const maxMonth = maxDate.getMonth() + 1; // Month is zero-indexed
-                const maxDay = maxDate.getDate();
-                const maxDateString = `${maxYear}-${maxMonth.toString().padStart(2, '0')}-${maxDay.toString().padStart(2, '0')}`;
-                validityInput.setAttribute("max", maxDateString);
-            });
-        </script>
-
-
-        <script>
-            //For File Upload
-            function validateImageUpload(input) {
-                const file = input.files[0];
-                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
-                if (file && allowedTypes.includes(file.type)) {
-                    input.setCustomValidity('');
-                } else {
-                    input.setCustomValidity('Please select a valid image file (JPEG, PNG, or GIF).');
-                }
-            }
-        </script>
-
-        <script>
-            //For Form Validation
-            (function() {
-                'use strict'
-
-                var forms = document.querySelectorAll('.needs-validation')
-
-                Array.prototype.slice.call(forms)
-                    .forEach(function(form) {
-                        form.addEventListener('submit', function(event) {
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
-                                event.stopPropagation()
-                            }
-
-                            form.classList.add('was-validated')
-                        }, false)
-                    })
-            })()
-        </script>
-
-
-        <script>
-            // Reset the form
-            function resetForm() {
-                document.querySelector('form').reset();
-                location.reload();
-            }
-        </script>
-
-<!-- For the readonly fields -->
-<script>
-    // Populate hidden fields with readonly field values
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('hiddenFirstName').value = document.getElementById('firstName').value;
-        document.getElementById('hiddenMiddleName').value = document.getElementById('middleName').value;
-        document.getElementById('hiddenLastName').value = document.getElementById('lastName').value;
-        document.getElementById('hiddenBirthDate').value = document.getElementById('birthDate').value;
-        document.getElementById('hiddenContactNumber').value = document.getElementById('contactNumber').value;
-        document.getElementById('hiddenEmail').value = document.getElementById('email').value;
-    });
-</script>
-<script>
-    //add reservation
-    $(document).ready(function(){
-        $('#submitReserve').click(function(e){
-            e.preventDefault();
-
-            var formData = new FormData($('#booking-form')[0]);
-
-            $.ajax({
-                type: 'POST',
-                url: 'reservation_crud.php',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response){
-                    // Handle success response here
-                    //alert(response); // For demonstration purposes, you can display an alert with the response
-                    location.reload();
-                  },
-                error: function(xhr, status, error){
-                    // Handle error
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-</script>
-
-<!--get available pool tables-->
-<script>
-        $(document).ready(function() {
-            $('#selectEndTime, #selectStartTime, #selectDate').change(function() {
-                var startTime = $('#selectStartTime').val();
-                var endTime = $('#selectEndTime').val();
-                var date = $('#selectDate').val();
-                
-                if (startTime && endTime) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'src/get_data_from_database/get_available_table.php',
-                        data: { startTime: startTime, endTime: endTime, date: date},
-                        success: function(response) {
-                            $('#selectTable').html(response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('AJAX Error: ' + status + error);
-                        }
-                    });
-                } else {
-                    $('#selectTable').html('<option value="">Select Table</option>');
-                }
-            });
-        });
-    </script>
 
 
 
