@@ -67,7 +67,7 @@ if (isset($_SESSION["userMemberID"])) {
                             }
                             ?>
                             <div class="col-12 col-md-12 mb-3 ">
-                                <label for="firstName" class="form-label customer-account" >First Name: <h1 class="customer-account-field" id="customer-name"><?php echo $customerFirstName; ?> <?php echo $customerMiddleName; ?> <?php echo $customerLastName; ?></h1></label>
+                                <label for="firstName" class="form-label customer-account" >Member Name: <h1 class="customer-account-field" id="customer-name"><?php echo $customerFirstName; ?> <?php echo $customerMiddleName; ?> <?php echo $customerLastName; ?></h1></label>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
                                 <label for="firstName" class="form-label customer-account">Control Number: <h4 class="customer-account-field" id="customer-name"><?php echo $memberControlNumber; ?></h4></label>
