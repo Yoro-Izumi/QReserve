@@ -6,6 +6,8 @@ if (isset($_SESSION["userMemberID"])) {
     include "connect_database.php";
     include "src/get_data_from_database/get_member_account.php";
     include "src/get_data_from_database/get_customer_information.php";
+    include "src/get_data_from_database/get_reservation_info.php";
+    include "src/get_data_from_database/get_member_account.php";
     include "encodeDecode.php";
     $key = "TheGreatestNumberIs73";
 ?>
@@ -60,6 +62,27 @@ if (isset($_SESSION["userMemberID"])) {
                                 }
                             }
 
+                            foreach ($arrayReservationInfo as $reservations) {
+                                $reservationDate = $reservations['reservationDate'];
+                                $reservationStatus = $reservations['reservationStatus'];
+                                $reservationTimeStart = $reservations['reservationTimeStart'];
+                                $reservationTimeEnd = $reservations['reservationTimeEnd'];
+                                $tableNumber = $reservations['poolTableNumber'];
+                              
+                                // minove ko lang to ayaw kasi lumabas sa table
+                                foreach ($arrayMemberAccount as $members) {
+                                  if ($members['memberID'] == $reservations['memberID']) {
+                                    $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
+                                    $contactNumber = decryptData($members['customerNumber'], $key);
+                                    $email = decryptData($members['customerEmail'], $key);
+                                  } 
+                                  // else {
+                                  //   $customerName = "";
+                                  //   $contactNumber = "";
+                                  //   $email = "";
+                                  // }
+                                }
+                            }
 
                             ?>
 <div class="name-status-container">
@@ -73,7 +96,7 @@ if (isset($_SESSION["userMemberID"])) {
 
 
                             <div class="col-12">
-                                <h5 class="customer-reservation pt-2">Reservation Date: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
+                                <h5 class="customer-reservation pt-2">Reservation Date: <span class="reservation-detail"><?php echo $reservationDate; ?></span></h5>
                             </div>
                             <div class="col-12">
                                 <h5 class="customer-reservation">Pool Table: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
