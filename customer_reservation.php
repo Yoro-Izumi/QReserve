@@ -99,7 +99,7 @@ if (isset($_SESSION["userMemberID"])) {
                                 <h5 class="customer-reservation pt-2">Reservation Date: <span class="reservation-detail"><?php echo $reservationDate; ?></span></h5>
                             </div>
                             <div class="col-12">
-                                <h5 class="customer-reservation">Pool Table: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
+                                <h5 class="customer-reservation">Pool Table: <span class="reservation-detail"><?php echo $tableNumber; ?></span></h5>
                             </div>
                             <div class="col-12">
                                 <h5 class="customer-reservation">Time: <span class="reservation-detail"><?php echo $customerFirstName; ?></span></h5>
