@@ -141,26 +141,31 @@ $(document).ready(function () {
 
 
 // disabling of create button when fields are empty
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("booking-form");
-    const createButton = document.getElementById("submitReserve");
-  
-    form.addEventListener("input", function () {
-      const inputs = form.querySelectorAll(".validate-input");
-      let isValid = true;
-  
-      inputs.forEach((input) => {
-        if (!input.checkValidity()) {
-          isValid = false;
-        }
-      });
-  
-      createButton.disabled = !isValid;
-    });
-  
-    // Initial check on page load
-    createButton.disabled = true;
+$(document).ready(function() {
+  // Function to check if all required fields are filled
+  function checkInputs() {
+      var date = $('#selectDate').val();
+      var startTime = $('#selectStartTime').val();
+      var endTime = $('#selectEndTime').val();
+      var table = $('#selectTable').val();
+
+      // Enable/disable create button based on input values
+      if (date && startTime && endTime && table) {
+          $('#submitReserve').prop('disabled', false);
+      } else {
+          $('#submitReserve').prop('disabled', true);
+      }
+  }
+
+  // Call checkInputs on input change
+  $('#selectDate, #selectStartTime, #selectEndTime, #selectTable').on('change', function() {
+      checkInputs();
   });
+
+  // Initial check on page load
+  checkInputs();
+});
+
   
 
 
