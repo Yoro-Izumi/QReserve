@@ -1,6 +1,7 @@
 <?php
 include "connect_database.php";
 include "encodeDecode.php";
+include "src/get_data_from_database/get_member_account.php";
 $key = "TheGreatestNumberIs73";
 
 
@@ -39,6 +40,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
     //current date
     $currentDate = date('Y-m-d');
 
+    sendMembershipEmail($customerEmail, $memberControlNumber, $memberPassword, $key);  
+
     $qryInsertCustomerInfo = "INSERT INTO `customer_info`(`customerID`, `customerFirstName`, `customerLastName`, `customerMiddleName`, `customerBirthdate`, `customerNumber`, `customerEmail`) VALUES (NULL,?,?,?,?,?,?)";
     $conInsertCustomerInfo = mysqli_prepare($conn, $qryInsertCustomerInfo);
     mysqli_stmt_bind_param($conInsertCustomerInfo, "ssssss", $customerFirstName, $customerLastName, $customerMiddleName, $customerBirthdate, $customerPhone, $customerEmail);
@@ -50,7 +53,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     mysqli_stmt_bind_param($conInsertMemberDetails, "sssssss", $memberControlNumber, $y, $hashedPassword, $customerID, $currentDate, $sqlDate, $userSuperAdmin);
     mysqli_stmt_execute($conInsertMemberDetails);
 
-    sendMembershipEmail($customerEmail, $memberControlNumber, $memberPassword, $key);  
+
 
     unset($_POST['firstName']);
   }
@@ -58,6 +61,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
   if(isset($_POST['selectedRows'])){ 
     $selectedRows = $_POST['selectedRows'];
         foreach($selectedRows as $rowId){
+
             //delete member account
             $qryDeleteMemberAccount = "DELETE FROM `member_details` WHERE customerID = ?";
             $connDeleteMemberAccount = mysqli_prepare($conn, $qryDeleteMemberAccount);
@@ -69,6 +73,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
             $connDeleteMemberInfo = mysqli_prepare($conn, $qryDeleteMemberInfo);
             mysqli_stmt_bind_param($connDeleteMemberInfo,'i',$rowId);
             mysqli_stmt_execute($connDeleteMemberInfo);
+
+            foreach($arrayMemberAccount as $memberAccount){
+              if($memberAccount['customerID'] == $rowId){
+                $customerEmail = $memberAccount['customerEmail'];
+                $memberControlNumber = $memberAccount['membershipID'];
+                sendDeleteNotif($customerEmail,$memberControlNumber,$key);
+              }
+            }
         }
       // Assuming you want to return a success message
         echo "Rows deleted successfully";
@@ -136,4 +148,7 @@ if (isset($_POST['memberID'])) {
 function sendMembershipEmail($customerEmail, $memberControlNumber, $memberPassword, $key) {
   include "src/send_email/send_member_details.php";
 }
-?>
+function sendDeleteNotif($customerEmail,$memberControlNumber,$key){
+  include "src/send_email/delete_member_email.php";
+}
+

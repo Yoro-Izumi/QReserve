@@ -110,7 +110,9 @@ $(document).ready(function () {
         data: { selectedRows: selectedRows },
         success: function (response) {
           // Reload the page or update the table as needed
-          location.reload(); // For example, reload the page after deletion
+          //location.reload(); // For example, reload the page after deletion
+          $('#success-delete-member-account-modal').modal('show');
+          
         },
         error: function (xhr, status, error) {
           console.error("Error:", error);

@@ -14,7 +14,7 @@
 
     // Content
     $mail->isHTML(true); // Set email format to HTML
-    $mail->Subject = 'Membership Details';
+    $mail->Subject = 'Reservation Details';
     $mail->Body    = "
         <html>
         <head>
@@ -23,7 +23,7 @@
             .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
             button { padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border: none; border-radius: 5px; cursor: pointer; }
         </style>
-        </head>
+        </head>`
         <body>
         <div class='container'>
             <h3 style='text-align:center; color:green;'></h3>
