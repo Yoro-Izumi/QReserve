@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Forecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Number of Reservations per Day</h1>
+    <canvas id="reservationChart" width="400" height="200"></canvas>
+
+    <script>
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('reservationChart').getContext('2d');
+                const chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.days_since_start.concat(data.future_days),
+                        datasets: [{
+                            label: 'Actual Reservations',
+                            data: data.reservations,
+                            borderColor: 'blue',
+                            fill: false
+                        }, {
+                            label: 'Predicted Reservations',
+                            data: data.predicted_reservations,
+                            borderColor: 'green',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Days since Start'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Number of Reservations'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+</html>

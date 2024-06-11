@@ -1,11 +1,10 @@
 <?php
 session_start();
-include "connect_database.php";
-include "src/get_data_from_database/get_admin_accounts.php";
-include "src/get_data_from_database/get_admin_info.php";
-include "src/get_data_from_database/get_reservation_info.php";
-include "src/get_data_from_database/get_walk_in.php";
-include "encodeDecode.php";
+include "../connect_database.php";
+include "../src/get_data_from_database/get_admin_accounts.php";
+include "../src/get_data_from_database/get_admin_info.php";
+include "../src/get_data_from_database/get_reservation_info.php";
+include "../encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
@@ -17,13 +16,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
     $adminNames[] = $adminName; // Add customer name to the array
 
     $reservation = 0;
-<<<<<<< Updated upstream
     foreach ($arrayReservationInfo as $reservationInfo) {
-      if ($reservationInfo['superAdminID'] == $adminAccount['superAdminID']) {
-=======
-    foreach ($arrayWalkinDetails as $reservationInfo) {
       if ($reservationInfo['adminID'] == $adminAccount['adminID']) {
->>>>>>> Stashed changes
         $reservation = $reservation + 1;
       }
   
@@ -121,7 +115,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
   </head>
 
   <body class="body">
-    <?php include "superadmin_sidebar.php"; ?>
+    <?php include "../superadmin_sidebar.php"; ?>
 
     <section class="home-section">
       <h4 class="qreserve">Customer Demand Forecasting</h4>
@@ -184,12 +178,41 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div> -->
     </section>
 
+    <script>
+      //For sidebar
+      let sidebar = document.querySelector(".sidebar");
+      let closeBtn = document.querySelector("#btn");
+      let searchBtn = document.querySelector(".bx-search");
 
+      closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+      });
+
+      searchBtn.addEventListener("click", () => {
+        // Sidebar open when you click on the search icon
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+      });
+
+      // following are the code to change sidebar button(optional)
+      function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right"); //replacing the icons class
+        } else {
+          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu"); //replacing the icons class
+        }
+      }
+    </script>
 
 
 
     <!-- 1st Graph JS -->
     <script>
+      // Parse data from Python
+      var X_test = JSON.parse('{{ X_test_json | safe }}');
+      var y_pred = JSON.parse('{{ y_pred_json | safe }}');
+
       Highcharts.chart('container1', {
 
         title: {
@@ -231,14 +254,10 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
         series: [{
           name: 'Installation & Developers',
-          data: [43934, 48656, 65165, 81827, 112143, 142383,
-            171533, 165174, 155157, 161454, 154610
-          ]
+          data: X_test.map((val, index) => ({ x: val[0], y: y_pred[index] }))
         }, {
           name: 'Manufacturing',
-          data: [24916, 37941, 29742, 29851, 32490, 30282,
-            38121, 36885, 33726, 34243, 31050
-          ]
+          data: X_test.map((val, index) => ({ x: val[0], y: y_pred[index] }))
         }, {
           name: 'Sales & Distribution',
           data: [11744, 30000, 16005, 19771, 20185, 24377,
@@ -485,32 +504,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }]
       });
     </script>
-
-<div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
-    <script>
-      $(document).ready(function() {
-        // Function to update table content
-        function updateTable() {
-          $.ajax({
-            url: 'pool_table.php',
-            type: 'GET',
-            success: function(response) {
-              $('#updateTable').html(response);
-            }
-          });
-        }
-
-        // Initial table update
-        updateTable();
-
-        // Refresh table every 5 seconds
-        setInterval(updateTable, 1000); // Adjust interval as needed
-      });
-
-    </script> 
-
-<script src="src/js/sidebar.js"></script>
-
   </body>
 
   </html>
