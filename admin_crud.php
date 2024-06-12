@@ -1,6 +1,7 @@
 <?php 
 include "connect_database.php";
 include "encodeDecode.php";
+include "src/get_data_from_database/get_admin_accounts.php";
 $key = "TheGreatestNumberIs73";
 session_start();
 date_default_timezone_set('Asia/Manila');
@@ -40,6 +41,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
     $conInsertAdminAccount = mysqli_prepare($conn, $qryInsertAdminAccount);
     mysqli_stmt_bind_param($conInsertAdminAccount, 'iiiss', $superAdminID, $adminInfoID, $shift, $username, $hashedPassword);
     mysqli_stmt_execute($conInsertAdminAccount);
+
+    sendAdminEmail($email,$username,$password,$key);
+    
     unset($_POST['firstName']);
   }
 
@@ -57,6 +61,15 @@ if(isset($_POST['selectedRows'])){
             $connDeleteAdminInfo = mysqli_prepare($conn, $qryDeleteAdminInfo);
             mysqli_stmt_bind_param($connDeleteAdminInfo,'i',$rowId);
             mysqli_stmt_execute($connDeleteAdminInfo);
+
+          foreach($arrayAdminAccount as $adminAccount){
+             if($adminAccount['adminInfoID'] == $rowId){
+               $adminEmail = $adminAccount['adminEmail'];
+               $adminUsername = $adminAccount['adminUsername'];
+               sendDeleteNotif($adminEmail,$adminUsername,$key);
+             }
+          }
+          
         }
       // Assuming you want to return a success message
         echo "Rows deleted successfully";
@@ -105,10 +118,20 @@ if (isset($_POST['updateAdmin'])) {
     mysqli_stmt_execute($conUpdateAdminAccounts); 
   }
   
-
+  sendEditNotif($email,$username,$password,$key);   
   //get the id of admin info that was updated
   //$adminInfoID = mysqli_insert_id($conn);
 }
 
 
+}
+
+function sendAdminEmail($email,$adminUsername, $password, $key) {
+  include "src/send_email/send_admin_details.php";
+}
+function sendDeleteNotif($email,$adminUsername,$key){
+  include "src/send_email/delete_admin_email.php";
+}
+function sendEditNotif($email,$adminUsername,$password,$key){
+  include "src/send_email/edit_admin_email.php";
 }

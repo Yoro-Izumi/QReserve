@@ -137,7 +137,7 @@ if (isset($_POST['memberID'])) {
   }
 
  
-  sendMembershipEmail($customerEmail, $memberControlNumber, $memberPassword, $key);  
+    sendEditNotif($customerEmail, $memberControlNumber, $memberPassword, $key);  
 
   unset($_POST['FirstName']);
 }
@@ -150,5 +150,8 @@ function sendMembershipEmail($customerEmail, $memberControlNumber, $memberPasswo
 }
 function sendDeleteNotif($customerEmail,$memberControlNumber,$key){
   include "src/send_email/delete_member_email.php";
+}
+function sendEditNotif($customerEmail,$memberControlNumber,$memberPassword,$key){
+  include "src/send_email/edit_member_email.php";
 }
 
