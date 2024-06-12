@@ -43,22 +43,26 @@ foreach ($arrayReservationInfo as $reservations) {
     }
   }
 
+  
   echo "
-  <tr>
-    <td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>
+  <tr>";if ($reservationStatus == "Paid" || $reservationStatus == "Done") {
+    $status = "badge bg-success";
+    echo "<td> </td>";
+  } else if ($reservationStatus == "On Process" || $reservationStatus == "Pending") {
+    $status = "badge bg-warning";
+    echo "<td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>";
+  } else {
+    $status = "badge bg-danger";
+    echo "<td> </td>";
+  }
+  echo "
     <td>$customerName</td>
     <td>$reservationDate</td>
     <td>$reservationTimeStart - $reservationTimeEnd</td>
     <td>$tableNumber</td>
     <td>$contactNumber</td>
     <td>$email</td>";
-    if ($reservationStatus == "Paid" || $reservationStatus == "Done") {
-      $status = "badge bg-success";
-    } else if ($reservationStatus == "On Process" || $reservationStatus == "Pending") {
-      $status = "badge bg-warning";
-    } else {
-      $status = "badge bg-danger";
-    }
+    
   echo "<td><span class='$status'>$reservationStatus</span></td>
   </tr>";
 }

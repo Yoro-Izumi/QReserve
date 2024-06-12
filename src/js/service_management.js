@@ -326,7 +326,7 @@ $(document).ready(function () {
 
 // Inserting of data
 $(document).ready(function () {
-    $('#proceed_add_new_service_button').click(function (e) {
+    $('#confirm_add_service_button').click(function (e) {
         e.preventDefault();
 
         var formData = new FormData($('#add-new-service-form')[0]);
