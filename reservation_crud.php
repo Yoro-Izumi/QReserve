@@ -5,11 +5,15 @@ date_default_timezone_set('Asia/Manila');
     include "connect_database.php";
     include "src/get_data_from_database/get_member_account.php";
     include "src/get_data_from_database/get_customer_information.php";
+    include "src/get_data_from_database/get_reservation_info.php";
     include "encodeDecode.php";
     $key = "TheGreatestNumberIs73";
 
+    
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
 
-  if(isset($_POST['selectedRowsReject'])){ 
+ if(isset($_POST['selectedRowsReject'])){ 
     $selectedRowsReject = $_POST['selectedRowsReject'];
     $reservationStatus = "Rejected";
         foreach($selectedRowsReject as $rowIdReject){
@@ -18,6 +22,27 @@ date_default_timezone_set('Asia/Manila');
             $connRejectReservation = mysqli_prepare($conn, $qryRejectReservation);
             mysqli_stmt_bind_param($connRejectReservation,'si',$reservationStatus,$rowIdReject);
             mysqli_stmt_execute($connRejectReservation);
+
+            // Data to encode into the QR code
+            $data = encryptData($rowIdReject, $key);
+            // Output file name
+            $outputFile = 'src/phpqrcode/temp/'.$data.'.png';
+
+            //get reservation details 
+          foreach($arrayReservationInfo as $reservationInfo){
+            if($reservationInfo['reservationID'] == $rowIdReject){
+              $memberID = $reservationInfo['memberID'];
+                foreach($arrayMemberAccount as $memberAccount){
+                  if($memberAccount['memberID'] == $memberID){
+                    $memberEmail = $memberAccount['customerEmail'];
+                    RejectedEmail($memberEmail,$rowIdReject);
+                  }
+                  
+                }
+            }
+
+          }
+          
 
         }
       // Assuming you want to return a success message
@@ -34,6 +59,36 @@ if(isset($_POST['selectedRowsAccept'])){
           $connAcceptReservation = mysqli_prepare($conn, $qryAcceptReservation);
           mysqli_stmt_bind_param($connAcceptReservation,'si',$reservationStatus,$rowIdAccept);
           mysqli_stmt_execute($connAcceptReservation);
+
+
+          // Data to encode into the QR code
+          $data = "reservation_".$rowIdAccept;
+          // Output file name
+          $outputFile = 'src/phpqrcode/temp/'.$data.'.png';
+
+          $imageName = $data.".png";
+ 
+
+          //For qr code
+          $qrQuery = "INSERT INTO `qr_code`(`qrID`,`reservationID`,`qrImage`) VALUES (NULL,?,?)";
+          $qrPrepare = mysqli_prepare($conn,$qrQuery);
+          mysqli_stmt_bind_param($qrPrepare,"is",$rowIdAccept,$imageName);
+          mysqli_stmt_execute($qrPrepare);
+
+           //get reservation details 
+           foreach($arrayReservationInfo as $reservationInfo){
+            if($reservationInfo['reservationID'] == $rowIdAccept){
+              $memberID = $reservationInfo['memberID'];
+                foreach($arrayMemberAccount as $memberAccount){
+                  if($memberAccount['memberID'] == $memberID){
+                    $memberEmail = $memberAccount['customerEmail'];
+                    pendingEmail($memberEmail,$rowIdAccept,$data,$outputFile);
+                  }
+                  
+                }
+            }
+
+          }
 
       }
     // Assuming you want to return a success message
@@ -69,9 +124,16 @@ if (isset($_SESSION['userMemberID'])) {
           mysqli_stmt_bind_param($reservationPrepare,"iissss",$poolTable,$userID,$selectDate,$selectStartTime,$selectEndTime,$reservationStatus);
           mysqli_stmt_execute($reservationPrepare);
           
-          header("location:booking_form.php");
+          //onProcessEmail($selectDate,$selectStartTime,$selectEndTime,$reservationStatus,$email);
       }
 mysqli_close($conn);
 
-    }
-?>
+}
+
+function pendingEmail($memberEmail,$rowIdAccept,$data,$outputFile){
+include "src/send_email/pending_reservation_email.php";
+}
+
+function RejectedEmail($memberEmail,$rowIdReject){
+include "src/send_email/rejected_reservation_email.php";
+}
