@@ -59,6 +59,46 @@ echo"
       $status = "badge bg-danger";
     }
 echo "<td><span class='$status'>$reservationStatus</span></td>
+";
+}
+
+foreach ($arrayWalkinDetails as $walkin) {
+  $walkinDate = $walkin['walkinDate'];
+  $walkinStatus = $walkin['walkinStatus'];
+  $walkinTimeStart = $walkin['walkinTimeStart'];
+  $walkinTimeEnd = $walkin['walkinTimeEnd'];
+  $tableNumber = $walkin['poolTableNumber'];
+
+  // minove ko lang to ayaw kasi lumabas sa table
+  foreach ($arrayCustomerInformation as $customer) {
+    if ($customer['memberID'] == $walkin['customerID']) {
+      $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($customer['customerMiddleName'], $key) . " " . decryptData($customer['customerLastName'], $key);
+      $contactNumber = decryptData($customer['customerNumber'], $key);
+      $email = decryptData($members['customerEmail'], $key);
+    } 
+    // else {
+    //   $customerName = "";
+    //   $contactNumber = "";
+    //   $email = "";
+    // }
+  }
+echo"
+  <tr>
+    <td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>
+    <td>$customerName</td>
+    <td>$reservationDate</td>
+    <td>$reservationTimeStart - $reservationTimeEnd</td>
+    <td>$tableNumber</td>
+    <td>$contactNumber</td>
+    <td>$email</td>";
+    if ($reservationStatus == "Paid" || $reservationStatus == "Done") {
+      $status = "badge bg-success";
+    } else if ($reservationStatus == "On Process" || $reservationStatus == "Pending") {
+      $status = "badge bg-warning";
+    } else {
+      $status = "badge bg-danger";
+    }
+echo "<td><span class='$status'>$reservationStatus</span></td>
 
   </tr>";
 }

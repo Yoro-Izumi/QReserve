@@ -5,8 +5,8 @@
 
     // Recipients
     $mail->setFrom('emailhere@gmail.com', 'Bevitore');
-    $customerEmailDecrypted = decryptData($customerEmail, $key);
-    $mail->addAddress($customerEmailDecrypted, $customerEmailDecrypted); // Add a recipient
+    $emailDecrypted = decryptData($email, $key);
+    $mail->addAddress($emailDecrypted, $emailDecrypted); // Add a recipient
 
     // Attach the QR code image
     //$mail->addAttachment($outputFile); // This will attach the image to the email
@@ -14,7 +14,7 @@
 
     // Content
     $mail->isHTML(true); // Set email format to HTML
-    $mail->Subject = 'Membership Details';
+    $mail->Subject = 'Admin Account Details';
     $mail->Body    = "
         <html>
         <head>
@@ -28,17 +28,16 @@
         <div class='container'>
             <h3 style='text-align:center; color:green;'></h3>
             <div style='border:2px solid green; border-radius:10px; padding: 20px; margin:20px;'>
-                <h1 style='font:Inika; text-align:center; color:green;'>Membership Account Status</h1>
+                <h1 style='font:Inika; text-align:center; color:green;'>Admin Account Status</h1>
                 <hr style='color:green; opacity:80%;'></hr>
-                <span>Dear Customer,</span>
                 <br><br>
-                <span style='margin:20px;'>Your request for membership has been accepted.</span>
+                <span style='margin:20px;'>Your admin account has been successfuly created.</span>
                 <br><br>
-                <span style='margin:20px;'>Attached to this message is your official Bevitore Membership account.</span>
+                <span style='margin:20px;'>Attached to this message is your official Bevitore Admin account.</span>
                 <br><br>
-                <span>Account: ".decryptData($memberControlNumber, $key)." </span>
+                <span>Account: ".decryptData($adminInfoID, $key)." </span>
                 <br>
-                <span>Password: $memberPassword</span>
+                <span>Password:".$password."</span>
                 <br><br>
             </div>
 
