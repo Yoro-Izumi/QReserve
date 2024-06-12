@@ -141,76 +141,19 @@ if (isset($_SESSION['userMemberID'])) {
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 mb-3">
-    <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-    <input type="time" class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()" />
-    <div class="invalid-feedback">
-        Please select a start time.
-    </div>
-</div>
-<div class="col-12 col-md-3 mb-3">
-    <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-    <input type="time" class="form-control" name="selectEndTime" id="selectEndTime" required />
-    <div class="invalid-feedback">
-        Please select an end time at least 2 hours after the start time.
-    </div>
-</div>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const startTimeInput = document.getElementById("selectStartTime");
-    const endTimeInput = document.getElementById("selectEndTime");
-
-    startTimeInput.addEventListener("change", function () {
-        const startTime = new Date(`2024-06-14T${this.value}`);
-        const minEndTime = new Date(startTime.getTime() + 2 * 60 * 60 * 1000); // Add 2 hours
-
-        const minEndTimeFormatted = minEndTime.toTimeString().slice(0, 5);
-        endTimeInput.min = minEndTimeFormatted;
-        endTimeInput.value = minEndTimeFormatted; // Set the end time to the minimum allowed
-
-        calculatePrice();
-    });
-
-    endTimeInput.addEventListener("change", function () {
-        if (this.value < startTimeInput.value) {
-            this.setCustomValidity("End time must be at least 2 hours after the start time.");
-        } else {
-            this.setCustomValidity("");
-        }
-
-        calculatePrice();
-    });
-
-    function calculatePrice() {
-        const startTime = new Date(`2024-06-14T${startTimeInput.value}`);
-        const endTime = new Date(`2024-06-14T${endTimeInput.value}`);
-        const durationInMinutes = (endTime - startTime) / (1000 * 60);
-        const durationInHours = durationInMinutes / 60;
-
-        const basePrice = 300; // Base price in pesos
-        const extraCostPerHalfHour = 75; // Extra cost per 30 minutes in pesos
-
-        let totalPrice = basePrice;
-
-        if (durationInHours > 2) {
-            const extraHalfHours = Math.ceil((durationInMinutes - 2 * 60) / 30); // Calculate extra 30-minute intervals beyond 2 hours
-            totalPrice += extraHalfHours * extraCostPerHalfHour;
-        }
-
-        // Format the price as PHP currency
-        const formattedPrice = new Intl.NumberFormat('en-PH', {
-            style: 'currency',
-            currency: 'PHP'
-        }).format(totalPrice);
-
-        document.getElementById('total').textContent = formattedPrice; // Update total price in the modal
-    }
-});
-
-
-</script>
-
-
-
+                                <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
+                                <input type="time" class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()" />
+                                <div class="invalid-feedback">
+                                    Please select a start time.
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3 mb-3">
+                                <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
+                                <input type="time" class="form-control" name="selectEndTime" id="selectEndTime" required />
+                                <div class="invalid-feedback">
+                                    Please select an end time at least 2 hours after the start time.
+                                </div>
+                            </div>
                             <!-- <div class="col-12 col-md-3 mb-3">
                                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
                                 <select class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()">

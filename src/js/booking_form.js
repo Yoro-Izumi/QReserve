@@ -356,3 +356,59 @@ function getUserInputs() {
       </div>
   `;
 }
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const startTimeInput = document.getElementById("selectStartTime");
+  const endTimeInput = document.getElementById("selectEndTime");
+
+  startTimeInput.addEventListener("change", function() {
+      const startTime = new Date(`2024-06-14T${this.value}`);
+      const minEndTime = new Date(startTime.getTime() + 2 * 60 * 60 * 1000); // Add 2 hours
+
+      const minEndTimeFormatted = minEndTime.toTimeString().slice(0, 5);
+      endTimeInput.min = minEndTimeFormatted;
+      endTimeInput.value = minEndTimeFormatted; // Set the end time to the minimum allowed
+
+      calculatePrice();
+  });
+
+  endTimeInput.addEventListener("change", function() {
+      if (this.value < startTimeInput.value) {
+          this.setCustomValidity("End time must be at least 2 hours after the start time.");
+      } else {
+          this.setCustomValidity("");
+      }
+
+      calculatePrice();
+  });
+
+  function calculatePrice() {
+      const startTime = new Date(`2024-06-14T${startTimeInput.value}`);
+      const endTime = new Date(`2024-06-14T${endTimeInput.value}`);
+      const durationInMinutes = (endTime - startTime) / (1000 * 60);
+      const durationInHours = durationInMinutes / 60;
+
+      const basePrice = 300; // Base price in pesos
+      const extraCostPerHalfHour = 75; // Extra cost per 30 minutes in pesos
+
+      let totalPrice = basePrice;
+
+      if (durationInHours > 2) {
+          const extraHalfHours = Math.ceil((durationInMinutes - 2 * 60) / 30); // Calculate extra 30-minute intervals beyond 2 hours
+          totalPrice += extraHalfHours * extraCostPerHalfHour;
+      }
+
+      // Format the price as PHP currency
+      const formattedPrice = new Intl.NumberFormat('en-PH', {
+          style: 'currency',
+          currency: 'PHP'
+      }).format(totalPrice);
+
+      document.getElementById('total').textContent = formattedPrice; // Update total price in the modal
+  }
+});
