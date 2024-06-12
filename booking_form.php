@@ -140,36 +140,78 @@ if (isset($_SESSION['userMemberID'])) {
                                     Please select a date.
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3 mb-3">
+    <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
+    <input type="time" class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()" />
+    <div class="invalid-feedback">
+        Please select a start time.
+    </div>
+</div>
+<div class="col-12 col-md-3 mb-3">
+    <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
+    <input type="time" class="form-control" name="selectEndTime" id="selectEndTime" required />
+    <div class="invalid-feedback">
+        Please select an end time at least 2 hours after the start time.
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const startTimeInput = document.getElementById("selectStartTime");
+    const endTimeInput = document.getElementById("selectEndTime");
+
+    startTimeInput.addEventListener("change", function () {
+        const startTime = new Date(`2024-06-14T${this.value}`);
+        const minEndTime = new Date(startTime.getTime() + 2 * 60 * 60 * 1000); // Add 2 hours
+
+        const minEndTimeFormatted = minEndTime.toTimeString().slice(0, 5);
+        endTimeInput.min = minEndTimeFormatted;
+        endTimeInput.value = minEndTimeFormatted; // Set the end time to the minimum allowed
+
+        calculatePrice();
+    });
+
+    endTimeInput.addEventListener("change", function () {
+        if (this.value < startTimeInput.value) {
+            this.setCustomValidity("End time must be at least 2 hours after the start time.");
+        } else {
+            this.setCustomValidity("");
+        }
+
+        calculatePrice();
+    });
+
+    function calculatePrice() {
+        const startTime = new Date(`2024-06-14T${startTimeInput.value}`);
+        const endTime = new Date(`2024-06-14T${endTimeInput.value}`);
+        const durationInMinutes = (endTime - startTime) / (1000 * 60);
+        const durationInHours = durationInMinutes / 60;
+
+        const basePrice = 300; // Base price in pesos
+        const extraCostPerHalfHour = 75; // Extra cost per 30 minutes in pesos
+
+        let totalPrice = basePrice;
+
+        if (durationInHours > 2) {
+            const extraHalfHours = Math.ceil((durationInMinutes - 2 * 60) / 30); // Calculate extra 30-minute intervals beyond 2 hours
+            totalPrice += extraHalfHours * extraCostPerHalfHour;
+        }
+
+        // Format the price as PHP currency
+        const formattedPrice = new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(totalPrice);
+
+        document.getElementById('total').textContent = formattedPrice; // Update total price in the modal
+    }
+});
+
+
+</script>
+
 
 
                             <!-- <div class="col-12 col-md-3 mb-3">
-                            <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-                            <select class="form-control" name="selectStartTime" id="selectStartTime" required>
-                                <option value="" selected disabled>Select table</option>
-                                <option value="10:00am">10:00am</option>
-                                <option value="11:00am">11:00am</option>
-                                <option value="12:00 noon">12:00 noon</option>
-                                <option value="1:00pm">1:00pm</option>
-                                <option value="2:00pm">2:00pm</option>
-                                <option value="3:00pm">3:00pm</option>
-                                <option value="4:00pm">4:00pm</option>
-                                <option value="5:00pm">5:00pm</option>
-                                <option value="6:00pm">6:00pm</option>
-                                <option value="7:00pm">7:00pm</option>
-                                <option value="8:00pm">8:00pm</option>
-                                <option value="9:00pm">9:00pm</option>
-                                <option value="10:00pm">10:00pm</option>
-                                <option value="11:00pm">11:00pm</option>
-                                <option value="12:00 midnight">12:00 midnight</option>
-                                <option value="1:00am">1:00am</option>
-                                <option value="2:00am">2:00am</option>
-                                <option value="3:00am">3:00am</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please select a start time.
-                            </div>
-                        </div>   -->
-                            <div class="col-12 col-md-3 mb-3">
                                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
                                 <select class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()">
                                     <option value="" selected disabled>Select start time</option>
@@ -195,18 +237,17 @@ if (isset($_SESSION['userMemberID'])) {
                                 <div class="invalid-feedback">
                                     Please select a start time.
                                 </div>
-                            </div>
-
-                            <div class="col-12 col-md-3 mb-3">
+                            </div> -->
+                            <!-- <div class="col-12 col-md-3 mb-3">
                                 <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
                                 <select class="form-control" name="selectEndTime" id="selectEndTime" required>
                                     <option value="" selected disabled>Select end time</option>
-                                    <!-- Options will be dynamically added based on selected start time -->
+                                    <!-- Options will be dynamically added based on selected start time 
                                 </select>
                                 <div class="invalid-feedback">
                                     Please select an end time.
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-12 col-md-3 mb-3">
                                 <label for="selectTable" class="form-label">Select Table <span>*</span></label>
                                 <select class="form-control" name="selectTable" id="selectTable" required>
@@ -223,20 +264,70 @@ if (isset($_SESSION['userMemberID'])) {
                         </div>
                         <div class="row justify-content-end mt-5">
                             <div class="col-12 col-md-2 mb-3 mb-md-0">
-                                <button class="btn btn-primary w-100 create-button" name="submitReserve" id="submitReserve" type="submit">Create</button>
+                                <button type="button" class="btn btn-primary w-100 create-button" data-bs-toggle="modal" data-bs-target="#confirm-add-walkin-modal" id="create-reservation-button">Create</button>
                             </div>
                             <div class="col-12 col-md-2">
-                                <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
+                                <button class="btn btn-outline-primary w-100 cancel-button" id="member-cancel" type="reset" onclick="resetForm()">Cancel</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+
+
+            <!-- Confirmation Add Service Modal -->
+            <div class="modal fade" id="confirm-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+                            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
+                        </div>
+                        <div class="modal-body">
+                            <!-- The content will be dynamically generated here -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-primary cancel-button" id="member-cancel" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal" id="success-reservation-button">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Success Add New Service Modal -->
+            <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" id="wait">
+                        <div class="modal-header">
+                            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/file.gif" alt="Pending Icon" class="modal-icons">Pending...</h2>
+                        </div>
+                        <div class="modal-body text-center">
+                            <p class="fw-bold mb-0 pb-0">Your booking is now on process!</p>
+                            Please check your email for the details of your reservation.
+                            <div class="mt-3">
+                                <p class="he">Proceed to pay your reservation through the provided Payment Details<br></p>
+
+                                <p class="gcash mb-3">GCash: 09123456789</p>
+                                Send your proof of payment to <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore’s Facebook Page.</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+                            <button class="btn btn-primary  create-button" name="submitReserve" id="submitReserve" type="submit">Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+
+
 
         <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
         <script src="src/js/booking_form.js"></script>
-    
+
     </body>
 
     </html>

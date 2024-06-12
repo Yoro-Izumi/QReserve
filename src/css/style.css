@@ -258,7 +258,7 @@ img.modal-icons {
   background-color: #0d2818 !important;
   color: white;
   width: 150px;
-  border-color: #0d2818 !important; /* Set the desired color for the outline */
+  border-color: #0d2818 !important; 
 }
 
 .create-button:hover {
@@ -268,7 +268,7 @@ img.modal-icons {
 }
 
 .cancel-button {
-  border-color: #0d2818 !important; /* Set the desired color for the outline */
+  border-color: #0d2818 !important; 
   color: #0d2818 !important;
   width: 150px;
 }
@@ -718,7 +718,7 @@ img.modal-icons {
   background-color: #0d2818 !important;
   color: white;
   width: 150px;
-  border-color: #0d2818 !important; /* Set the desired color for the outline */
+  border-color: #0d2818 !important; 
 }
 
 .create-button:hover {
@@ -728,7 +728,7 @@ img.modal-icons {
 }
 
 .cancel-button {
-  border-color: #0d2818 !important; /* Set the desired color for the outline */
+  border-color: #0d2818 !important; 
   color: #0d2818 !important;
   width: 150px;
 }
@@ -1117,7 +1117,7 @@ img.modal-icons {
   background-color: #0d2818 !important;
   color: white;
   width: 150px;
-  border-color: #0d2818 !important; /* Set the desired color for the outline */
+  border-color: #0d2818 !important; 
 }
 
 .create-button:hover {
@@ -1127,7 +1127,7 @@ img.modal-icons {
 }
 
 .cancel-button {
-  border-color: #0d2818 !important; /* Set the desired color for the outline */
+  border-color: #0d2818 !important; 
   color: #0d2818 !important;
   width: 150px;
 }
@@ -1253,6 +1253,80 @@ label.customer-account{
     background: #f1f7ff;
 }
 
+
+/* Member Reservation */
+.modal-content-wrapper p {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin: 0%;
+}
+.modal-label, .modal-total {
+  font-weight: bold;
+  text-align: right;
+  width: 150px; /* Adjust the width as needed */
+  margin-right: 30px; /* Add space between label and input */
+}
+
+.modal-input {
+  text-align: left;
+  flex: 1; /* Ensure the inputs take up the remaining space */
+  color: black;
+}
+.modal-total {
+  font-weight: bold;
+  color: black;
+  font-size: 26px;
+}
+#total{
+  color: green;
+  font-size: 26px;
+  font-weight: bold;
+}
+.modal-label{
+  color: black;
+}
+
+.he{
+  font-weight: 600;
+  margin: 0%;
+}
+
+.gcash{
+  color: #FFB800;
+  font-weight: bold;
+}
+
+
+.create-button#submitReserve {
+  background-color: #240046 !important;
+  color: #FFB800;
+  width: 400px;
+  border-color: #240046 !important; 
+}
+
+.create-button#create-reservation-button, .create-button#success-reservation-button{
+  border-color: #240046 !important; 
+  background-color: #240046 !important;
+  color: #FFB800;
+}
+
+.create-button#create-reservation-button:hover {
+  background-color: #FFB800 !important;
+  color: #240046 !important;
+  border-color: #FFB800 !important; 
+}
+
+.cancel-button#member-cancel{
+  border-color: #240046 !important; 
+  color: #240046;
+}
+
+.cancel-button#member-cancel:hover{
+  border-color: #240046 !important; 
+  color: #FFB800;
+  background-color: #240046 !important;
+}
 
 
 @media (max-width: 768px) {
