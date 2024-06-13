@@ -120,7 +120,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 </div>
               </div>
 
-              <div class="col-md-3 mb-3">
+              <div class="col-12 col-md-3 mb-3">
                 <label for="validity" class="form-label">Select Date <span>*</span></label>
                 <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
                 <div class="valid-feedback">
@@ -130,30 +130,9 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please select a date.
                 </div>
               </div>
-
-              <div class="col-md-3 mb-3">
+              <div class="col-12 col-md-3 mb-3">
                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-                <select class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()">
-                  <option value="" selected disabled>Select start time</option>
-                  <option value="10:00:00">10:00am</option>
-                  <option value="11:00:00">11:00am</option>
-                  <option value="12:00:00">12:00 noon</option>
-                  <option value="13:00:00">1:00pm</option>
-                  <option value="14:00:00">2:00pm</option>
-                  <option value="15:00:00">3:00pm</option>
-                  <option value="16:00:00">4:00pm</option>
-                  <option value="17:00:00">5:00pm</option>
-                  <option value="18:00:00">6:00pm</option>
-                  <option value="19:00:00">7:00pm</option>
-                  <option value="20:00:00">8:00pm</option>
-                  <option value="21:00:00">9:00pm</option>
-                  <option value="22:00:00">10:00pm</option>
-                  <option value="23:00:00">11:00pm</option>
-                  <option value="00:00:00">12:00 midnight</option>
-                  <option value="1:00:00">1:00am</option>
-                  <option value="2:00:00">2:00am</option>
-                  <option value="3:00:00">3:00am</option>
-                </select>
+                <input type="time" class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()" />
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -161,22 +140,22 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please select a start time.
                 </div>
               </div>
-              <div class="col-md-3 mb-3">
+              <div class="col-12 col-md-3 mb-3">
                 <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-                <select class="form-control" name="selectEndTime" id="selectEndTime" required>
-                  <option value="" selected disabled>Select end time</option>
-                  <!-- Options will be dynamically added based on selected start time -->
-                </select>
+                <input type="time" class="form-control" name="selectEndTime" id="selectEndTime" required />
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please select an end time.
+                  Please select an end time at least 2 hours after the start time.
                 </div>
               </div>
+              <script>
+
+              </script>
               <div class="col-12 col-md-3 mb-3">
                 <label for="selectTable" class="form-label">Select Table <span>*</span></label>
-                <select class="form-control" name="selectTable" id="selectTable" placeholder="Select Table" required>
+                <select class="form-control" name="selectTable" id="selectTable" required>
                   <!-- Options will be dynamically added based on selected start time onchange="this.setCustomValidity('')"-->
                 </select>
                 <div class="valid-feedback">
@@ -192,7 +171,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="row justify-content-end mt-5">
                 <div class="col-12 col-md-2 mb-3 mb-md-0">
-                  <button class="btn btn-primary w-100 create-button" name="submitReserve" id="submitReserve" type="submit">Create</button>
+                  <button class="btn btn-primary w-100 create-button" name="submitWalkin" id="submitWalkin" type="submit">Create</button>
                 </div>
                 <div class="col-12 col-md-2">
                   <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
@@ -216,14 +195,3 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   header("location:login.php");
   die();
 } ?>
-
-
-
-
-
-
-
-
-
-
-

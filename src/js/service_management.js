@@ -326,7 +326,7 @@ $(document).ready(function () {
 
 // Inserting of data
 $(document).ready(function () {
-    $('#proceed_add_new_service_button').click(function (e) {
+    $('#confirm_add_service_button').click(function (e) {
         e.preventDefault();
 
         var formData = new FormData($('#add-new-service-form')[0]);
@@ -380,3 +380,56 @@ $(document).ready(function() {
     $('#confirm-add-new-service-modal').modal('show');
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function() {
+    $("#confirmButton").click(function() {
+      const content = getUserInputs();
+      console.log(content); // Debugging: check what content is generated
+      $("#confirm-add-new-service-modal .modal-body").html(content);
+    });
+  });
+  
+  function getUserInputs() {
+    const serviceName = $("#serviceName").val();
+    const serviceRate = $("#serviceRate").val();
+    const capacity = $("#capacity").val();
+    const serviceImage = $("#serviceImage").val();
+  
+    console.log(serviceName, serviceRate, capacity, serviceImage); // Debugging: check if values are fetched correctly
+  
+    return `
+      <div class="modal-content-wrapper">
+        <p><span class="modal-label">Name:</span> <span class="modal-input">${serviceName}</span></p>
+        <p><span class="modal-label">Rate:</span> <span class="modal-input">${serviceRate}</span></p>
+        <p><span class="modal-label">Capacity:</span> <span class="modal-input">${capacity}</span></p>
+        <p><span class="modal-label">Image:</span> <span class="modal-input">${serviceImage}</span></p>
+      </div>
+    `;
+  }

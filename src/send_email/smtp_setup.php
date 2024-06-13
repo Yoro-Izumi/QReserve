@@ -1,6 +1,6 @@
 <?php
 // Require Composer's autoloader
-include $_SERVER['DOCUMENT_ROOT'] . "/QReserve/src/PHPMailer/vendor/autoload.php";
+include "src/PHPMailer/vendor/autoload.php";
 
 // Import PHPMailer classes into the global namespace
 use PHPMailer\PHPMailer\PHPMailer;
