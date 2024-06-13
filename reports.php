@@ -4,26 +4,16 @@ include "connect_database.php";
 include "src/get_data_from_database/get_admin_accounts.php";
 include "src/get_data_from_database/get_admin_info.php";
 include "src/get_data_from_database/get_reservation_info.php";
+include "src/get_data_from_database/get_walk_in.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
-  // Your code here
-  $adminNames = []; // Initialize an empty array to store customer names
-  foreach ($arrayAdminAccount as $adminAccount) {
-    $adminInfoID = $adminAccount["adminInfoID"];
-    $adminName = decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key);    
-    $adminNames[] = $adminName; // Add customer name to the array
-
-    $reservation = 0;
-    foreach ($arrayReservationInfo as $reservationInfo) {
-      if ($reservationInfo['superAdminID'] == $adminAccount['superAdminID']) {
-        $reservation = $reservation + 1;
-      }
+  // Run the Python script
+  $output = shell_exec('python3 linear_regression.py');
+  // Include the generated PHP data file
+  include 'testPython/test2/data.php';
   
-  }
-
-  }
   
 ?>
 
@@ -184,88 +174,33 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
     <!-- 1st Graph JS -->
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Actual data from PHP
+      var actualData = <?php echo json_encode($actual_data); ?>;
+      // Predicted data from PHP
+      var predictedData = <?php echo json_encode($predicted_data); ?>;
+
       Highcharts.chart('container1', {
-
         title: {
-          text: '',
-          align: 'left'
+          text: 'Actual vs Predicted Data'
         },
-
-        subtitle: {
-          text: '',
-          align: 'left'
+        xAxis: {
+          categories: [1, 2, 3, 4, 5]  
         },
-
         yAxis: {
           title: {
-            text: 'Number of Employees'
+            text: 'Values'
           }
         },
-
-        xAxis: {
-          accessibility: {
-            rangeDescription: 'Range: 2010 to 2020'
-          }
-        },
-
-        legend: {
-          layout: 'vertical',
-          align: 'right',
-          verticalAlign: 'middle'
-        },
-
-        plotOptions: {
-          series: {
-            label: {
-              connectorAllowed: false
-            },
-            pointStart: 2010
-          }
-        },
-
         series: [{
-          name: 'Installation & Developers',
-          data: [43934, 48656, 65165, 81827, 112143, 142383,
-            171533, 165174, 155157, 161454, 154610
-          ]
+          name: 'Actual Data',
+          data: actualData
         }, {
-          name: 'Manufacturing',
-          data: [24916, 37941, 29742, 29851, 32490, 30282,
-            38121, 36885, 33726, 34243, 31050
-          ]
-        }, {
-          name: 'Sales & Distribution',
-          data: [11744, 30000, 16005, 19771, 20185, 24377,
-            32147, 30912, 29243, 29213, 25663
-          ]
-        }, {
-          name: 'Operations & Maintenance',
-          data: [null, null, null, null, null, null, null,
-            null, 11164, 11218, 10077
-          ]
-        }, {
-          name: 'Other',
-          data: [21908, 5548, 8105, 11248, 8989, 11816, 18274,
-            17300, 13053, 11906, 10073
-          ]
-        }],
-
-        responsive: {
-          rules: [{
-            condition: {
-              maxWidth: 500
-            },
-            chartOptions: {
-              legend: {
-                layout: 'horizontal',
-                align: 'center',
-                verticalAlign: 'bottom'
-              }
-            }
-          }]
-        }
-
+          name: 'Predicted Data',
+          data: predictedData
+        }]
       });
+    });
     </script>
 
     <!-- 2nd Graph -->
