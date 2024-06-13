@@ -61,7 +61,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </table>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service" >Delete</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service">Delete</button>
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service" onclick="trimRate()">Edit</button>
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
         </div>
@@ -88,7 +88,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   </div>
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                  <label for="serviceRate" class="form-label">Rate</label>
+                  <label for="serviceRate" class="form-label">Rate <span>*</span></label>
                   <div class="input-group">
                     <span class="input-group-text">₱</span>
                     <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, ''); checkInputs();" title="" maxlength="5" minlength="2" required />
@@ -129,24 +129,49 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
             <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
-          <div class="modal-body" id="hello">
-            <ul><strong>Service Name:</strong> <span id="serviceNameLabel"></span></ul>
-            <ul><strong>Rate:</strong> <span id="serviceRateLabel"></span></ul>
-            <ul><strong>Capacity:</strong> <span id="capacityLabel"></span></ul>
-            <ul><strong>Image:</strong> <span id="serviceImageLabel"></span></ul>
-            </ul>
-
+          <div class="modal-body">
+            <!-- The content will be dynamically generated here -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="editService()">Edit</button>
-            <button type="submit" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button>
+            <!-- <button type="submit" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button> -->
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-new-service" id="success-new-service">Confirm</button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Success Add New Service Modal -->
-    <div class="modal fade" id="success-add-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="success-add-new-service" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+          <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
+          </div>
+          <div class="modal-body text-center">
+            You have successfully added a new service.
+          </div>
+          <div class="modal-footer">
+            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+            <button class="btn btn-primary create-button" name="confirm_add_service_button" id="confirm_add_service_button" type="submit">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Success Add New Service Modal -->
+    <!-- <div class="modal fade" id="success-add-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="wait">
           <div class="modal-header">
@@ -160,7 +185,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -286,7 +311,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-    
+
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
     <script>
       $(document).ready(function() {
@@ -307,7 +332,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
-
     </script>
 
 

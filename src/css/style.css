@@ -279,7 +279,7 @@ img.modal-icons {
   color: #ffb800 !important;
 }
 
-.create-button#proceed {
+.create-button#proceed, .create-button#confirm_add_service_button {
     width: 400px;
   }
 
