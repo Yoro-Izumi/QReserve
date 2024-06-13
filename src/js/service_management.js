@@ -395,11 +395,16 @@ $(document).ready(function() {
 
 
 
+// For add rates
+function validateRateInput(input) {
+    input.value = input.value.replace(/[^0-9,.]/g, '');
+  
+    if (/^[,.]+$/.test(input.value)) {
+      input.value = '';
+    }
+  }
 
-
-
-
-
+  
 
 
 
@@ -426,10 +431,10 @@ $(document).ready(function() {
   
     return `
       <div class="modal-content-wrapper">
-        <p><span class="modal-label">Name:</span> <span class="modal-input">${serviceName}</span></p>
-        <p><span class="modal-label">Rate:</span> <span class="modal-input">${serviceRate}</span></p>
-        <p><span class="modal-label">Capacity:</span> <span class="modal-input">${capacity}</span></p>
-        <p><span class="modal-label">Image:</span> <span class="modal-input">${serviceImage}</span></p>
+        <p><span class="modal-label text-truncate">Name:</span> <span class="modal-input">${serviceName}</span></p>
+        <p><span class="modal-label text-truncate">Rate:</span> <span class="modal-input">${serviceRate}</span></p>
+        <p><span class="modal-label text-truncate">Capacity:</span> <span class="modal-input">${capacity}</span></p>
+        <p class="text-truncate"><span class="modal-label">Image:</span> <span class="modal-input">${serviceImage}</span></p>
       </div>
     `;
   }

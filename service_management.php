@@ -91,11 +91,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <label for="serviceRate" class="form-label">Rate <span>*</span></label>
                   <div class="input-group">
                     <span class="input-group-text">₱</span>
-                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, ''); checkInputs();" title="" maxlength="5" minlength="2" required />
+                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="^\d{1,3}(,\d{3})*(\.\d{1,2})?$" oninput="validateRateInput(this); checkInputs();" title="Please enter a valid rate (e.g., 1000, 1,000.00)." maxlength="7" minlength="2" required />
                   </div>
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">Please enter a valid rate.</div>
                 </div>
+
+
                 <div class="col-12 col-md-6 mb-3">
                   <label for="capacity" class="form-label">Capacity <span>*</span></label>
                   <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, ''); checkInputs();" />
@@ -112,7 +114,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
               </div>
               <div class="modal-footer mb-0 pb-0 me-0 pe-0">
-                <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="resetForm()">Cancel</button>
+                <button type="button" class="btn zbtn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="resetForm()">Cancel</button>
                 <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal" id="confirmButton" disabled>Confirm</button>
               </div>
             </form>
@@ -129,7 +131,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
             <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
-          <div class="modal-body">
+          <div class="modal-body text-truncate">
             <!-- The content will be dynamically generated here -->
           </div>
           <div class="modal-footer">
@@ -146,7 +148,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="wait">
           <div class="modal-header">
-          <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
+            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
           </div>
           <div class="modal-body text-center">
             You have successfully added a new service.
@@ -241,15 +243,18 @@ if (isset($_SESSION["userSuperAdminID"])) {
                     Please enter a valid first name.
                   </div>
                 </div>
+
                 <div class="col-12 col-md-6 mb-3">
-                  <label for="serviceRate" class="form-label">Rate</label>
+                  <label for="editServiceRate" class="form-label">Rate</label>
                   <div class="input-group">
                     <!-- <span class="input-group-text">₱</span> -->
-                    <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here per hour" pattern="[0-9-]*" onchange="this.value = this.value.replace(/[^0-9-]/g, '')" title="" maxlength="7" minlength="2" required pattern="[0-9-]*" oninput="this.value = this.value.replace(/[^0-9-]/g, '')" title="" required />
+                    <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here per hour" pattern="^\d{1,3}(,\d{3})*(\.\d{1,2})?$" oninput="validateRateInput(this); checkInputs();" title="Please enter a valid rate (e.g., 1000, 1,000.00)." maxlength="10" minlength="2" required />
                   </div>
                   <div class="valid-feedback">Looks good!</div>
                   <div class="invalid-feedback">Please enter a valid rate.</div>
                 </div>
+
+
                 <div class="col-12 col-md-6 mb-3">
                   <label for="text" class="form-label">Capacity <span>*</span></label>
                   <input type="text" class="form-control" name="editCapacity" id="editCapacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
@@ -338,13 +343,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
     <script src="src/js/service_management.js"></script>
     <script src="src/js/sidebar.js"></script>
-
-    <!-- Resets the Edit Modal when Cancel is selected -->
-    <script>
-      // function resetForm() {
-      //   document.getElementById('add-new-service-form').reset();
-      // }
-    </script>
   </body>
 
   </html>
