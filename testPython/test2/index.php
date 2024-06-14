@@ -1,36 +1,75 @@
-          <?php
-            // Run the Python script
-              //$output = shell_exec('python3 linear_regression.py');
-              // Include the generated PHP data file
-              //include 'data.php';
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports</title>
 
-        /*  session_start();
-          include "connect_database.php";
-          include "src/get_data_from_database/get_admin_accounts.php";
-          include "src/get_data_from_database/get_admin_info.php";
-          include "src/get_data_from_database/get_reservation_info.php";
-          include "src/get_data_from_database/get_walk_in.php";
-          include "encodeDecode.php";
-          $key = "TheGreatestNumberIs73";
-          date_default_timezone_set('Asia/Manila');
-          if (isset($_SESSION["userSuperAdminID"])) {
-              
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-              $adminNames = []; // Initialize an empty array to store customer names
-              foreach ($arrayAdminAccount as $adminAccount) {
-                  $adminInfoID = $adminAccount["adminInfoID"];
-                  $adminName = decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key);    
-                  $adminNames[] = $adminName; // Add customer name to the array
+    <!-- Online Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
-                  $reservation = 0;
-                  foreach ($arrayReservationInfo as $reservationInfo) {
-                      if ($reservationInfo['superAdminID'] == $adminAccount['superAdminID']) {
-                          $reservation = $reservation + 1;
-                      }
-                  }
-              }*/
-          ?>
+    <!-- Datatables -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Datatables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="src/css/sidebar.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
+
+    <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
+    <!-- Try ko lang to -->
+    <style>
+      .chartWithMarkerOverlay {
+        position: relative;
+        width: 700px;
+      }
+
+      .overlay-text {
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        top: 50px;
+        /* chartArea top */
+        left: 200px;
+        /* chartArea left */
+      }
+
+      .overlay-marker {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 53px;
+        /* chartArea top */
+        left: 528px;
+        /* chartArea left */
+      }
+    </style>
+
+    <!-- 1st Graph -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+</head>
+
+<body class="body">
+    <?php include "superadmin_sidebar.php"; ?>
 
     <section class="home-section">
       <h4 class="qreserve">Customer Demand Forecasting</h4>
@@ -105,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
       text: 'Actual vs Predicted Data'
     },
     xAxis: {
-      categories: [1, 2, 3, 4, 5]  
+      categories: [1, 2, 3, 4, 5]  // Adjust if necessary
     },
     yAxis: {
       title: {

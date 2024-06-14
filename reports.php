@@ -10,9 +10,9 @@ $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   // Run the Python script
-  $output = shell_exec('python3 linear_regression.py');
+  $output = shell_exec('python3 testPython/test2/linear_regression.py');
   // Include the generated PHP data file
-  include 'testPython/test2/data.php';
+  include 'data.php';
   
   
 ?>
@@ -174,34 +174,35 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
     <!-- 1st Graph JS -->
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Actual data from PHP
-      var actualData = <?php echo json_encode($actual_data); ?>;
-      // Predicted data from PHP
-      var predictedData = <?php echo json_encode($predicted_data); ?>;
-
-      Highcharts.chart('container1', {
-        title: {
-          text: 'Actual vs Predicted Data'
-        },
-        xAxis: {
-          categories: [1, 2, 3, 4, 5]  
-        },
-        yAxis: {
-          title: {
-            text: 'Values'
-          }
-        },
-        series: [{
-          name: 'Actual Data',
-          data: actualData
-        }, {
-          name: 'Predicted Data',
-          data: predictedData
-        }]
+      document.addEventListener('DOMContentLoaded', function () {
+        const actualData = <?php echo json_encode($actual_data); ?>;
+        const predictedData = <?php echo json_encode($predicted_data); ?>;
+        Highcharts.chart('container1', {
+            title: {
+                text: 'Reservations Over Time'
+            },
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Reservations'
+                }
+            },
+            series: [{
+                name: 'Actual Reservations',
+                data: actualData
+            }, {
+                name: 'Predicted Reservations',
+                data: predictedData
+            }]
+        });
       });
-    });
     </script>
+    
 
     <!-- 2nd Graph -->
     <script>

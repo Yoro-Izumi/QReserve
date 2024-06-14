@@ -25,7 +25,7 @@ data = data.sort_values('reservationDate')
 data['date_ordinal'] = data['reservationDate'].map(datetime.datetime.toordinal)
 
 # Prepare the data for linear regression
-X = np.array(data['date_ordinal'].values).reshape(-1, 1)
+X = data['date_ordinal'].values.reshape(-1, 1)
 y = data['reservation_count'].values
 
 # Create and train the model
@@ -41,10 +41,14 @@ X_future = np.array(future_dates_ordinal).reshape(-1, 1)
 # Predict using the model
 predictions = model.predict(X_future)
 
+# Format the data for Highcharts
+actual_data = [(int(date.timestamp() * 1000), count) for date, count in zip(data['reservationDate'], y)]
+predicted_data = [(int(date.timestamp() * 1000), count) for date, count in zip(future_dates, predictions)]
+
 # Generate PHP code with actual and predicted data in PHP lists
 php_code = "<?php\n"
-php_code += "$actual_data = [" + ", ".join(map(str, y)) + "];\n"
-php_code += "$predicted_data = [" + ", ".join(map(str, predictions)) + "];\n"
+php_code += "$actual_data = [\n" + ",\n".join([f"[{x[0]}, {x[1]}]" for x in actual_data]) + "\n];\n"
+php_code += "$predicted_data = [\n" + ",\n".join([f"[{x[0]}, {x[1]}]" for x in predicted_data]) + "\n];\n"
 php_code += "?>"
 
 # Write the generated PHP code to a file
