@@ -115,7 +115,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
               </div>
             </div>
 
-
             <div class="col-12 col-md-3 mb-3">
               <label for="adminShift" class="form-label">Shift <span>*</span></label>
               <select class="form-control" name="adminShift" id="adminShift" required onchange="this.setCustomValidity('')">
@@ -186,10 +185,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
         </form>
 
-
       </div>
     </section>
-
 
 
 
@@ -224,6 +221,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully added a new service.
           </div>
           <div class="modal-footer">
+            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+            <!-- <button class="btn btn-primary create-button" name="confirm_add_service_button" id="confirm_add_service_button" type="submit">Proceed</button> -->
             <button class="btn btn-primary create-button" name="submitAddAdmin" id="submitAddAdmin" type="submit">Proceed</button>
           </div>
         </div>
