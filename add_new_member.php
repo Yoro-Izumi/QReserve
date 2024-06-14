@@ -55,8 +55,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Add New Member</h4>
       <hr class="my-4">
       <div class="container-fluid dashboard-square-kebab" id="profmanage-add-new-profile">
-      <!-- <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data"> -->
-      <form class="needs-validation" id="add-new-profile-form" novalidate>
+        <!-- <form class="needs-validation" id="add-new-profile-form" novalidate action="add_new_member.php" method="POST" enctype="multipart/form-data"> -->
+        <form class="needs-validation" id="add-new-profile-form" novalidate>
           <div class="row">
             <div class="col-12 col-md-4 mb-3">
               <label for="firstName" class="form-label">First Name <span>*</span></label>
@@ -100,45 +100,36 @@ if (isset($_SESSION["userSuperAdminID"])) {
               </div>
             </div>
             <div class="col-12 col-md-4 mb-3">
-  <label for="email" class="form-label">Email Address <span>*</span></label>
-  <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required 
-    oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" 
-    oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" 
-    onkeyup="validateEmail(this.value)"
-  />
-  <div class="invalid-feedback">
-    Please enter a valid Gmail address (e.g., yourname@gmail.com).
-  </div>
-</div>
+              <label for="email" class="form-label">Email Address <span>*</span></label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" onkeyup="validateEmail(this.value)" />
+              <div class="invalid-feedback">
+                Please enter a valid Gmail address (e.g., yourname@gmail.com).
+              </div>
+            </div>
 
-<script>
-function validateEmail(email) {
-  var pattern = /^[\w-\.]+@gmail\.com$/i;
-  var inputField = document.getElementById('email');
-  if (!pattern.test(email)) {
-    inputField.setCustomValidity('Please enter a valid Gmail address (e.g., yourname@gmail.com).');
-  } else {
-    inputField.setCustomValidity('');
-    if (email.endsWith('@gmail.com')) {
-      var atIndex = email.indexOf('@');
-      inputField.value = email.substring(0, atIndex + 10); // +10 to include "@gmail.com"
-    }
-  }
-}
-</script>
-
+            <script>
+              function validateEmail(email) {
+                var pattern = /^[\w-\.]+@gmail\.com$/i;
+                var inputField = document.getElementById('email');
+                if (!pattern.test(email)) {
+                  inputField.setCustomValidity('Please enter a valid Gmail address (e.g., yourname@gmail.com).');
+                } else {
+                  inputField.setCustomValidity('');
+                  if (email.endsWith('@gmail.com')) {
+                    var atIndex = email.indexOf('@');
+                    inputField.value = email.substring(0, atIndex + 10); // +10 to include "@gmail.com"
+                  }
+                }
+              }
+            </script>
 
             <div class="col-12 col-md-4 mb-3">
-  <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-  <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" 
-    oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')"
-    oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')"
-    onkeypress="return /[0-9]/i.test(event.key) && (this.value.length < 2 || /^09/.test(this.value))"
-  />
-  <div class="invalid-feedback">
-    Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces.
-  </div>
-</div>
+              <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
+              <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" onkeypress="return /[0-9]/i.test(event.key) && (this.value.length < 2 || /^09/.test(this.value))" />
+              <div class="invalid-feedback">
+                Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces.
+              </div>
+            </div>
             <div class="col-12 col-md-6 mb-3">
               <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
               <input type="text" class="form-control" name="controlNumber" id="controlNumber" placeholder="Enter control number here." pattern="\d{2}-\d{4}" title="" maxlength="7" minlength="7" required oninvalid="this.setCustomValidity('Please enter the code in the format 01-0001')" oninput="handleInput(event); this.value = this.value.replace(/[^0-9\- ]/g, '')" />
@@ -183,316 +174,66 @@ function validateEmail(email) {
           </div>
 
         </form>
-          <!-- Buttons section -->
-          <div class="row justify-content-end">
-            <div class="col-12 col-md-2 mb-3 mb-md-0">
-              <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
-              <button class="btn btn-primary w-100 create-button" name="submitMember" id="submitMember" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button>
-            </div>
-            <div class="col-12 col-md-2">
-          <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
-        </div>
-        
+        <!-- Buttons section -->
+        <div class="row justify-content-end">
+          <div class="col-12 col-md-2 mb-3 mb-md-0">
+            <!-- <button type="button" class="btn btn-primary w-100 create-button" name="submitAdmin" type="submit" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
+            <!-- <button class="btn btn-primary w-100 create-button" name="submitMember" id="submitMember" data-bs-target="#confirm-add-new-member-modal" data-bs-toggle="modal">Create</button> -->
+            <button type="button" class="btn btn-primary w-100 create-button" data-bs-toggle="modal" data-bs-target="#confirm-add-new-admin-modal" id="create-new-admin-button">Create</button>
+          </div>
+          <div class="col-12 col-md-2">
+            <button type="button" class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
+          </div>
 
-      </div>
+        </div>
 
       </div>
     </section>
 
 
-
     <!-- Modals -->
-    <!-- Confirmation Add Service Modal -->
-    <div class="modal fade" id="confirm-add-new-member-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+       <!-- Confirmation Add New Admin Modal -->
+       <div class="modal fade" id="confirm-add-new-admin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
             <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
           <div class="modal-body">
-            ...
+            <!-- The content will be dynamically generated here -->
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" id="confirm-add-new-member-modal-button" class="btn btn-primary create-button" data-bs-target="#success-add-member-modal" data-bs-toggle="modal">Confirm</button>
+            <button type="button" class="btn btn-outline-primary cancel-button" id="member-cancel" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-new-admin" id="success-reservation-button">Confirm</button>
           </div>
         </div>
       </div>
     </div>
 
-
-    <!-- Success Add New Service Modal -->
-    <div class="modal fade" id="success-add-member-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Success Add New Admin Modal -->
+    <div class="modal fade" id="success-add-new-admin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="wait">
           <div class="modal-header">
             <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
           </div>
-          <div class="modal-body">
-            You have successfully registered a new account.
+          <div class="modal-body text-center">
+            You have successfully added a new service.
           </div>
           <div class="modal-footer">
-            <a href="member-profiles.php" class="btn btn-primary create-button" id="proceed">Proceed</a>
+            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+            <!-- <button class="btn btn-primary create-button" name="confirm_add_service_button" id="confirm_add_service_button" type="submit">Proceed</button> -->
+            <button class="btn btn-primary create-button" name="submitAddMember" id="submitAddMember" type="submit">Proceed</button>
           </div>
         </div>
       </div>
     </div>
-
-
+    </div>
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
-    <script>
-      $(document).ready(function() {
-        // Function to update table content
-        function updateTable() {
-          $.ajax({
-            url: 'pool_table.php',
-            type: 'GET',
-            success: function(response) {
-              $('#updateTable').html(response);
-            }
-          });
-        }
-
-        // Initial table update
-        updateTable();
-
-        // Refresh table every 5 seconds
-        setInterval(updateTable, 1000); // Adjust interval as needed
-      });
-
-    </script>
-
-
-
-
-
-
-        <!-- For trimming whitespacecs -->
-        <script>
-      function handleInput(event) {
-        const inputValue = event.target.value.trim(); // Remove leading and trailing whitespaces
-        const lastChar = inputValue.slice(-1); // Get the last character of the input
-
-        // Check if the input is only whitespaces and it's not the last character
-        if (inputValue === '' || (inputValue === ' ' && lastChar !== ' ')) {
-          event.target.value = ''; // Clear the input if it's only whitespaces
-        }
-      }
-    </script>
-
-
-    <script>
-      //For Sidebar
-      let sidebar = document.querySelector(".sidebar");
-      let closeBtn = document.querySelector("#btn");
-      let searchBtn = document.querySelector(".bx-search");
-
-      closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      searchBtn.addEventListener("click", () => {
-        // Sidebar open when you click on the search icon
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      // following are the code to change sidebar button(optional)
-      function menuBtnChange() {
-        if (sidebar.classList.contains("open")) {
-          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right"); //replacing the icons class
-        } else {
-          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu"); //replacing the icons class
-        }
-      }
-    </script>
-
-
-    <!-- Updated script for password toggle -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const togglePassword1 = document.querySelector("#password-toggle-1");
-        const passwordInput1 = document.querySelector("#password");
-        const eyeIcon1 = togglePassword1.querySelector("i");
-
-        togglePassword1.addEventListener("click", function() {
-          const type =
-            passwordInput1.getAttribute("type") === "password" ?
-            "text" :
-            "password";
-          passwordInput1.setAttribute("type", type);
-
-          // Toggle eye icon classes
-          eyeIcon1.classList.toggle("fa-eye-slash");
-          eyeIcon1.classList.toggle("fa-eye");
-        });
-
-        const togglePassword2 = document.querySelector("#password-toggle-2");
-        const passwordInput2 = document.querySelector("#confirmPassword");
-        const eyeIcon2 = togglePassword2.querySelector("i");
-
-        togglePassword2.addEventListener("click", function() {
-          const type =
-            passwordInput2.getAttribute("type") === "password" ?
-            "text" :
-            "password";
-          passwordInput2.setAttribute("type", type);
-
-          // Toggle eye icon classes
-          eyeIcon2.classList.toggle("fa-eye-slash");
-          eyeIcon2.classList.toggle("fa-eye");
-        });
-      });
-    </script>
-
-     <!-- For password checking -->
-     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const passwordInput = document.querySelector("#password");
-        const confirmPasswordInput = document.querySelector("#confirmPassword");
-        const passwordMatchFeedback = document.querySelector("#passwordMatchFeedback");
-        const passwordMatch = document.querySelector("#passwordMatch");
-        const passwordMismatch = document.querySelector("#passwordMismatch");
-
-        confirmPasswordInput.addEventListener("input", function() {
-          const password = passwordInput.value;
-          const confirmPassword = confirmPasswordInput.value;
-
-          if (password === confirmPassword) {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "block";
-            passwordMismatch.style.display = "none";
-          } else {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "none";
-            passwordMismatch.style.display = "block";
-          }
-        });
-
-        passwordInput.addEventListener("input", function() {
-          const password = passwordInput.value;
-          const confirmPassword = confirmPasswordInput.value;
-
-          if (password === confirmPassword) {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "block";
-            passwordMismatch.style.display = "none";
-          } else {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "none";
-            passwordMismatch.style.display = "block";
-          }
-        });
-
-      });
-    </script>
-
-    <!-- For Birthdate -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var birthDateInput = document.getElementById('birthDate');
-
-        // Set min and max date for birthdate input
-        var currentDate = new Date();
-        var minDate = new Date('1900-01-01');
-        var maxDate = new Date(currentDate);
-        maxDate.setFullYear(currentDate.getFullYear() - 18); // 18 years ago from current year
-
-        birthDateInput.min = minDate.toISOString().split('T')[0]; // Minimum date is 1900-01-01
-        birthDateInput.max = maxDate.toISOString().split('T')[0]; // Maximum date is 18 years ago
-
-        birthDateInput.addEventListener('input', function() {
-          var selectedDate = new Date(this.value);
-
-          if (selectedDate < minDate || selectedDate > maxDate) {
-            this.setCustomValidity('Please enter a valid birthdate (minimum 1900 and at least 18 years ago).');
-          } else {
-            this.setCustomValidity('');
-          }
-        });
-      });
-    </script>
-
-    <!-- For Validity Date -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const validityInput = document.querySelector("#validity");
-
-        // Get today's date
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth() + 1; // Month is zero-indexed
-        const day = today.getDate();
-
-        // Set the minimum date to today's date
-        const minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-        validityInput.setAttribute("min", minDate);
-
-        // Set the maximum date to 1 year from today's date
-        const maxDate = new Date(today.getTime() + (365 * 24 * 60 * 60 * 1000));
-        const maxYear = maxDate.getFullYear();
-        const maxMonth = maxDate.getMonth() + 1; // Month is zero-indexed
-        const maxDay = maxDate.getDate();
-        const maxDateString = `${maxYear}-${maxMonth.toString().padStart(2, '0')}-${maxDay.toString().padStart(2, '0')}`;
-        validityInput.setAttribute("max", maxDateString);
-      });
-    </script>
-
-<script>
-      //add admin
-      $(document).ready(function() {
-        $('#confirm-add-new-member-modal-button').click(function(e) {
-          e.preventDefault(); 
-
-          var formData = new FormData($('#add-new-profile-form')[0]);
-
-          $.ajax({
-            type: 'POST',
-            url: 'member_crud.php', // Replace 'process_form.php' with the URL of your PHP script
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-              // Handle success response here
-              //alert(response); // For demonstration purposes, you can display an alert with the response
-              //location.reload();
-              $('#success-add-member-modal').modal('show');
-            },
-            error: function(xhr, status, error) {
-              // Handle error
-              console.error(xhr.responseText);
-            }
-          });
-        });
-      });
-    </script>
-
-
-
-
-
-    <!-- SPassword Strength Indicator -->
-    <script>
-      function checkPasswordStrength(password) {
-        var strength = document.getElementById('password-strength-indicator');
-        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
-        var mediumRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
-
-        if (strongRegex.test(password)) {
-          strength.innerHTML = '<span style="color:green">Strong password</span>';
-        } else if (mediumRegex.test(password)) {
-          strength.innerHTML = '<span style="color:orange">Moderate password</span>';
-        } else {
-          strength.innerHTML = '<span style="color:red">Weak password</span>';
-        }
-      }
-    </script>
-
-
-
+    <script src="src/js/add_new_member.js"></script>
+    <script src="src/js/sidebar.js"></script>
 
   </body>
 

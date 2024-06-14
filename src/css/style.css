@@ -85,7 +85,6 @@ a.start-button {
   transition: transform 0.3s ease;
 }
 
-
 a.start-button:hover {
   transform: scale(1.1);
 }
@@ -174,7 +173,6 @@ img.modal-icons {
     align-self: flex-end !important; 
     background-color: #011509;
 }
-
 
 
 
@@ -279,10 +277,9 @@ img.modal-icons {
   color: #ffb800 !important;
 }
 
-.create-button#proceed, .create-button#confirm_add_service_button {
+.create-button#proceed, .create-button#confirm_add_service_button, .create-button#submitAddAdmin, .create-button#submitAddMember {
     width: 400px;
   }
-
 
 /* Add New Service Modal */
 .service-modal {
@@ -322,7 +319,6 @@ button.start-button {
   color: #0d2818 !important;
 }
 
-
 /* Eye Toggle */
 .eye-toggle{
 width: 50px;
@@ -345,7 +341,6 @@ label.customer-account{
 #account-form{
   background-color: #240046;
 }
-
 
 
 /* Customer Reservation Page */
@@ -371,7 +366,6 @@ label.customer-account{
   justify-content: end;
   align-items: end;
 }
-
 
 .btn-outline-primary#cancel_reservation_button {
   border-color:#240046 !important;
@@ -406,7 +400,6 @@ label.customer-account{
 }
 
 
-
 /* 1st Graph CSS */
 .highcharts-figure,
 .highcharts-data-table table {
@@ -450,7 +443,6 @@ label.customer-account{
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
-
 
 
 @media (max-width: 768px) {
@@ -545,7 +537,6 @@ a.start-button {
   transition: transform 0.3s ease;
 }
 
-
 a.start-button:hover {
   transform: scale(1.1);
 }
@@ -634,7 +625,6 @@ img.modal-icons {
     align-self: flex-end !important; 
     background-color: #011509;
 }
-
 
 
 
@@ -743,7 +733,6 @@ img.modal-icons {
     width: 400px;
   }
 
-
 /* Add New Service Modal */
 .service-modal {
   max-width: 1000px;
@@ -781,7 +770,6 @@ button.start-button {
   font-weight: bold;
   color: #0d2818 !important;
 }
-
 
 /* Eye Toggle */
 .eye-toggle{
@@ -851,7 +839,6 @@ label.customer-account{
 }
 
 
-
 @media (max-width: 768px) {
   .bevitore-logo {
     width: 25%;
@@ -944,7 +931,6 @@ a.start-button {
   transition: transform 0.3s ease;
 }
 
-
 a.start-button:hover {
   transform: scale(1.1);
 }
@@ -1033,7 +1019,6 @@ img.modal-icons {
     align-self: flex-end !important; 
     background-color: #011509;
 }
-
 
 
 
@@ -1142,7 +1127,6 @@ img.modal-icons {
     width: 400px;
   }
 
-
 /* Add New Service Modal */
 .service-modal {
   max-width: 1000px;
@@ -1180,7 +1164,6 @@ button.start-button {
   font-weight: bold;
   color: #0d2818 !important;
 }
-
 
 /* Eye Toggle */
 .eye-toggle{
@@ -1253,7 +1236,6 @@ label.customer-account{
     background: #f1f7ff;
 }
 
-
 /* Member Reservation */
 .modal-content-wrapper p {
   display: flex;
@@ -1297,7 +1279,6 @@ label.customer-account{
   font-weight: bold;
 }
 
-
 .create-button#submitReserve {
   background-color: #240046 !important;
   color: #FFB800;
@@ -1328,9 +1309,10 @@ label.customer-account{
   background-color: #240046 !important;
 }
 
-
 @media (max-width: 768px) {
   .bevitore-logo {
     width: 25%;
   }
 }
+
+
