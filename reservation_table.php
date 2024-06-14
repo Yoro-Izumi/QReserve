@@ -17,6 +17,7 @@ echo "
 <thead>
 <tr>
   <th>Actions</th>
+  <th>Reservation Code</th>
   <th>Name</th>
   <th>Date of Reservation</th>
   <th>Time of Reservation</th>
@@ -29,11 +30,22 @@ echo "
 <tbody>";
 
 foreach ($arrayReservationInfo as $reservations) {
+  $reservationID = $reservations['reservationID'];
   $reservationDate = $reservations['reservationDate'];
   $reservationStatus = $reservations['reservationStatus'];
   $reservationTimeStart = $reservations['reservationTimeStart'];
   $reservationTimeEnd = $reservations['reservationTimeEnd'];
   $tableNumber = $reservations['poolTableNumber'];
+  $reservationCode = '';
+
+  $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
+  $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
+  mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
+  mysqli_stmt_execute($getQRCodePrepare);
+  $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
+  $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
+  $reservationCode = $getQRCodeRow['codeQR'];
+  
 
   foreach ($arrayMemberAccount as $members) {
     if ($members['memberID'] == $reservations['memberID']) {
@@ -56,6 +68,7 @@ foreach ($arrayReservationInfo as $reservations) {
     echo "<td> </td>";
   }
   echo "
+    <td>$reservationCode</td>
     <td>$customerName</td>
     <td>$reservationDate</td>
     <td>$reservationTimeStart - $reservationTimeEnd</td>

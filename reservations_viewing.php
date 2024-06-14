@@ -42,8 +42,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <!-- Datatables JS -->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="src/js/jquery.dataTables.min.js"></script>
+    <script src="src/js/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- External CSS -->
     <link rel="stylesheet" href="src/css/sidebar.css" />

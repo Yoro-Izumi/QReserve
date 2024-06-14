@@ -44,7 +44,9 @@
            <br><br>
            <img src='cid:qrcode_image' alt='QR Code'> <!-- Referencing the embedded image -->
             <br><br>
-             <span>Link:  </span>
+            <span>Code: $data</span>
+            <br><br>
+             <span>Link of GCash:<link should be here></span>
            <br>
          </div>
 
