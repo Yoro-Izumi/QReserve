@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
 //   });
 
 $(document).ready(function () {
-    $("#submitReserve").click(function (e) {
+    $("#submitAddAdmin").click(function (e) {
       e.preventDefault();
   
       var formData = new FormData($("#add-new-profile-form")[0]);
