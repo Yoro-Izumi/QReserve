@@ -172,20 +172,20 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 Passwords do not match.
               </div>
             </div>
-          </div>   
+          </div>
           <!-- Buttons section -->
           <div class="row justify-content-end">
             <div class="col-12 col-md-2 mb-3 mb-md-0">
-             
-              <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin">Create</button>
+              <!-- <button class="btn btn-primary w-100 create-button" name="submitAdmin" id="submitAdmin">Create</button> -->
+              <button type="button" class="btn btn-primary w-100 create-button" data-bs-toggle="modal" data-bs-target="#confirm-add-new-admin-modal" id="create-new-admin-button">Create</button>
             </div>
             <div class="col-12 col-md-2">
               <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
               <a href="admin-profiles.php" class="btn btn-outline-primary w-100 cancel-button">Cancel</a>
             </div>
           </div>
-          </form>
-        
+        </form>
+
 
       </div>
     </section>
@@ -194,245 +194,50 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
 
     <!-- Modals -->
-    <!-- Confirmation Add Service Modal -->
-    <div class="modal fade" id="confirm-add-new-admin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
-          </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" id="confirm-add-new-admin-modal-button" class="btn btn-primary create-button" data-bs-target="#success-add-admin-modal" data-bs-toggle="modal">Confirm</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
+    <!-- Confirmation Add New Admin Modal -->
+            <div class="modal fade" id="confirm-add-new-admin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+                            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
+                        </div>
+                        <div class="modal-body">
+                            <!-- The content will be dynamically generated here -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-primary cancel-button" id="member-cancel" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-new-admin" id="success-reservation-button">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Success Add New Service Modal -->
-    <div class="modal fade" id="success-add-admin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Success Add New Admin Modal -->
+    <div class="modal fade" id="success-add-new-admin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="wait">
           <div class="modal-header">
             <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
           </div>
-          <div class="modal-body">
-            You have successfully registered a new account.
+          <div class="modal-body text-center">
+            You have successfully added a new service.
           </div>
           <div class="modal-footer">
             <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
-            <a href="admin-profiles.php" class="btn btn-primary create-button" id="proceed">Proceed</a>
+            <!-- <button class="btn btn-primary create-button" name="confirm_add_service_button" id="confirm_add_service_button" type="submit">Proceed</button> -->
+            <button class="btn btn-primary create-button" name="submitReserve" id="submitReserve" type="submit">Proceed</button>
           </div>
         </div>
       </div>
     </div>
+    </div>
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
-    <script>
-      $(document).ready(function() {
-        // Function to update table content
-        function updateTable() {
-          $.ajax({
-            url: 'pool_table.php',
-            type: 'GET',
-            success: function(response) {
-              $('#updateTable').html(response);
-            }
-          });
-        }
 
-        // Initial table update
-        updateTable();
-
-        // Refresh table every 5 seconds
-        setInterval(updateTable, 1000); // Adjust interval as needed
-      });
-
-    </script>
-
-    <!-- For trimming whitespacecs -->
-    <script>
-      function handleInput(event) {
-        const inputValue = event.target.value.trim(); // Remove leading and trailing whitespaces
-        const lastChar = inputValue.slice(-1); // Get the last character of the input
-
-        // Check if the input is only whitespaces and it's not the last character
-        if (inputValue === '' || (inputValue === ' ' && lastChar !== ' ')) {
-          event.target.value = ''; // Clear the input if it's only whitespaces
-        }
-      }
-    </script>
-
-
-    <script>
-      //For Sidebar
-      let sidebar = document.querySelector(".sidebar");
-      let closeBtn = document.querySelector("#btn");
-      let searchBtn = document.querySelector(".bx-search");
-
-      closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      searchBtn.addEventListener("click", () => {
-        // Sidebar open when you click on the search icon
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      // following are the code to change sidebar button(optional)
-      function menuBtnChange() {
-        if (sidebar.classList.contains("open")) {
-          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right"); //replacing the icons class
-        } else {
-          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu"); //replacing the icons class
-        }
-      }
-    </script>
-
-
-    <!-- Updated script for password toggle -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const togglePassword1 = document.querySelector("#password-toggle-1");
-        const passwordInput1 = document.querySelector("#password");
-        const eyeIcon1 = togglePassword1.querySelector("i");
-
-        togglePassword1.addEventListener("click", function() {
-          const type =
-            passwordInput1.getAttribute("type") === "password" ?
-            "text" :
-            "password";
-          passwordInput1.setAttribute("type", type);
-
-          // Toggle eye icon classes
-          eyeIcon1.classList.toggle("fa-eye-slash");
-          eyeIcon1.classList.toggle("fa-eye");
-        });
-
-        const togglePassword2 = document.querySelector("#password-toggle-2");
-        const passwordInput2 = document.querySelector("#confirmPassword");
-        const eyeIcon2 = togglePassword2.querySelector("i");
-
-        togglePassword2.addEventListener("click", function() {
-          const type =
-            passwordInput2.getAttribute("type") === "password" ?
-            "text" :
-            "password";
-          passwordInput2.setAttribute("type", type);
-
-          // Toggle eye icon classes
-          eyeIcon2.classList.toggle("fa-eye-slash");
-          eyeIcon2.classList.toggle("fa-eye");
-        });
-      });
-    </script>
-
-    <!-- For password checking -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const passwordInput = document.querySelector("#password");
-        const confirmPasswordInput = document.querySelector("#confirmPassword");
-        const passwordMatchFeedback = document.querySelector("#passwordMatchFeedback");
-        const passwordMatch = document.querySelector("#passwordMatch");
-        const passwordMismatch = document.querySelector("#passwordMismatch");
-
-        confirmPasswordInput.addEventListener("input", function() {
-          const password = passwordInput.value;
-          const confirmPassword = confirmPasswordInput.value;
-
-          if (password === confirmPassword) {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "block";
-            passwordMismatch.style.display = "none";
-          } else {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "none";
-            passwordMismatch.style.display = "block";
-          }
-        });
-
-        passwordInput.addEventListener("input", function() {
-          const password = passwordInput.value;
-          const confirmPassword = confirmPasswordInput.value;
-
-          if (password === confirmPassword) {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "block";
-            passwordMismatch.style.display = "none";
-          } else {
-            passwordMatchFeedback.innerHTML = "";
-            passwordMatch.style.display = "none";
-            passwordMismatch.style.display = "block";
-          }
-        });
-
-      });
-    </script>
-    <script>
-      //add admin
-      $(document).ready(function() {
-        $('#submitAdmin').click(function(e) {
-          e.preventDefault();
-          $('#confirm-add-new-admin-modal').modal('show');
-        });
-        
-        $('#confirm-add-new-admin-modal-button').click(function(e) {
-          e.preventDefault();
-          var formData = new FormData($('#add-new-profile-form')[0]);
-
-          $.ajax({
-            type: 'POST',
-            url: 'admin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-              // Handle success response here
-              //alert(response); // For demonstration purposes, you can display an alert with the response
-              //location.reload();
-              $('#success-add-admin-modal').modal('show');
-            },
-            error: function(xhr, status, error) {
-              // Handle error
-              console.error(xhr.responseText);
-            }
-          });
-        });
-      });
-
-
-
-      //reload page
-      function reloadPage() {
-        location.reload();
-      }
-    </script>
-
-
-
-    <!-- SPassword Strength Indicator -->
-    <script>
-      function checkPasswordStrength(password) {
-        var strength = document.getElementById('password-strength-indicator');
-        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
-        var mediumRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
-
-        if (strongRegex.test(password)) {
-          strength.innerHTML = '<span style="color:green">Strong password</span>';
-        } else if (mediumRegex.test(password)) {
-          strength.innerHTML = '<span style="color:orange">Moderate password</span>';
-        } else {
-          strength.innerHTML = '<span style="color:red">Weak password</span>';
-        }
-      }
-    </script>
+    <script src="src/js/add_new_admin.js"></script>
+    <script src="src/js/sidebar.js"></script>
 
   </body>
 
