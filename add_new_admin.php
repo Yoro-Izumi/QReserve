@@ -194,25 +194,24 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
 
     <!-- Modals -->
-
     <!-- Confirmation Add New Admin Modal -->
-            <div class="modal fade" id="confirm-add-new-admin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-                            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
-                        </div>
-                        <div class="modal-body">
-                            <!-- The content will be dynamically generated here -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-primary cancel-button" id="member-cancel" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-new-admin" id="success-new-service">Confirm</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="modal fade" id="confirm-add-new-admin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
+          </div>
+          <div class="modal-body">
+            <!-- The content will be dynamically generated here -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" id="member-cancel" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-new-admin" id="success-reservation-button">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Success Add New Admin Modal -->
     <div class="modal fade" id="success-add-new-admin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
