@@ -1,19 +1,10 @@
-<?php
+<!-- <?php
 date_default_timezone_set('Asia/Manila');
   include "connect_database.php";
   include "src/get_data_from_database/get_services.php";
 
 echo"  
-<thead>
-          <tr>
-          <tr>
-            <th>Actions</th>
-            <th>Service Name</th>
-            <th>Rates</th>
-            <th>Capacity</th>
-            <th>Image</th>
-          </tr>
-        </thead>
+
         <tbody>";
         foreach($arrayServices as $services){
         echo"
@@ -27,4 +18,4 @@ echo"
         }
         echo "</tbody>";
 
-?>
+?> -->

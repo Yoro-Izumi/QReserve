@@ -236,28 +236,16 @@ function reload() {
 
 // IDK what is this but andito yung disable and enabled state ng delete and edit button
 $(document).ready(function () {
-    var intervalID; // Define intervalID variable outside to make it accessible across functions
-
     // Function to update table content
     function updateTable() {
         $.ajax({
-            url: 'service_table.php', // Change this to the PHP file that contains the table content
+            url: 'service_management.php', // Change this to the PHP file that contains the table content
             type: 'GET',
             success: function (response) {
-                $('#example').html(response);
+                $('#example tbody').html($(response).find('#example tbody').html());
                 attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
             }
         });
-    }
-
-    // Function to start interval
-    function startInterval() {
-        intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
-    }
-
-    // Function to stop interval
-    function stopInterval() {
-        clearInterval(intervalID);
     }
 
     // Attach event listeners for checkboxes
@@ -268,9 +256,6 @@ $(document).ready(function () {
         var deleteServiceButton = document.getElementById('delete-service');
         var checkedCount = 0;
 
-        editServiceButton.disabled = true;
-        deleteServiceButton.disabled = true; // Disable delete button initially
-
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function () {
                 if (this.checked) {
@@ -279,7 +264,6 @@ $(document).ready(function () {
                     if (checkedCount === 1) {
                         // If only one checkbox is checked, set its value
                         checkboxValue.value = this.value;
-                        
                     }
                 } else {
                     checkedCount--;
@@ -297,22 +281,14 @@ $(document).ready(function () {
                 }
                 editServiceButton.disabled = checkedCount !== 1; // Disable edit button if no checkbox is checked or more than one checkbox is checked
                 deleteServiceButton.disabled = checkedCount === 0; // Disable delete button if no checkbox is checked
-
-                // Stop or start interval based on checkbox status
-                if (checkedCount > 0) {
-                    stopInterval();
-                } else {
-                    startInterval();
-                }
             });
         });
-
     }
 
-    // Initial table update and start interval
+    // Initial table update
     updateTable();
-    startInterval();
 });
+
 
 
 
