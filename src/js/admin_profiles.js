@@ -1,54 +1,46 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $("#example").DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: false,
-      responsive: true,
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true,
     });
-  });
+});
 
-  // JavaScript functions for handling bulk actions
-  function deleteSelected() {
+// JavaScript functions for handling bulk actions
+function deleteSelected() {
     // Implement delete logic here
     console.log("Delete selected rows");
-  }
+}
 
-  function editSelected() {
+function editSelected() {
     // Implement edit logic here
     console.log("Edit selected rows");
-  }
+}
 
 
 
 
 
 
-  $(document).ready(function() {
-    var intervalID; // Define intervalID variable outside to make it accessible across functions
 
+
+
+
+$(document).ready(function () {
     // Function to update table content
     function updateTable() {
         $.ajax({
             url: 'admin_table.php', // Change this to the PHP file that contains the table content
             type: 'GET',
-            success: function(response) {
-                $('#example').html(response);
+            success: function (response) {
+                $('#example tbody').html($(response).find('#example tbody').html());
                 attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
             }
         });
-    }
-
-    // Function to start interval
-    function startInterval() {
-        intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
-    }
-
-    // Function to stop interval
-    function stopInterval() {
-        clearInterval(intervalID);
     }
 
     // Attach event listeners for checkboxes
@@ -57,10 +49,6 @@ $(document).ready(function() {
         var editAdminButton = document.getElementById('edit-admin');
         var deleteAdminButton = document.getElementById('delete-admin');
         var checkedCount = 0;
-        var checkBoxValue;
-
-        editAdminButton.disabled = true;
-        deleteAdminButton.disabled = true; // Initially disable the delete button
 
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function () {
@@ -97,10 +85,10 @@ $(document).ready(function() {
         });
     }
 
-    // Initial table update and start interval
+    // Initial table update
     updateTable();
-    startInterval();
 });
+
 
 
 
