@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 include "connect_database.php";
 include "src/get_data_from_database/get_admin_accounts.php";
 include "src/get_data_from_database/get_admin_info.php";
@@ -41,4 +41,4 @@ echo "
   </tr>";
 }
 echo "</tbody>";
-?>
+?> -->

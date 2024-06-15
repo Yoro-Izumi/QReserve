@@ -49,40 +49,40 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <?php include "superadmin_sidebar.php"; ?>
 
     <section class="home-section">
-  <div class="d-flex justify-content-between align-items-center">
-    <h4 class="qreserve">Service Management</h4>
-    <button type="button" class="btn btn-primary fw-bold start-button" data-bs-toggle="modal" data-bs-target="#add-service-modal" id="add-new-profile">Add New Service</button>
-  </div>
-  <hr class="my-4 mb-3 mt-3">
-  <div class="container-fluid dashboard-square-kebab" id="profile-management">
-    <table id="example" class="table table-striped" style="width: 100%">
-      <thead>
-        <tr>
-          <th class="text-medium-brown">Action</th>
-          <th class="text-medium-brown">Name</th>
-          <th class="text-medium-brown">Capacity</th>
-          <th class="text-medium-brown">Rate</th>
-          <th class="text-medium-brown">Flavor</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($arrayServices as $services): ?>
-          <tr>
-            <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td>
-            <td><?php echo htmlspecialchars($services['serviceName']); ?></td>
-            <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
-            <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
-            <td><?php echo htmlspecialchars($services['serviceImage']); ?></td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-    <div class="mt-3">
-      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service" disabled>Delete</button>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service" onclick="trimRate()" disabled>Edit</button>
-    </div>
-  </div>
-</section>
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="qreserve">Service Management</h4>
+        <button type="button" class="btn btn-primary fw-bold start-button" data-bs-toggle="modal" data-bs-target="#add-service-modal" id="add-new-profile">Add New Service</button>
+      </div>
+      <hr class="my-4 mb-3 mt-3">
+      <div class="container-fluid dashboard-square-kebab" id="profile-management">
+        <table id="example" class="table table-striped" style="width: 100%">
+          <thead>
+            <tr>
+              <th class="text-medium-brown">Action</th>
+              <th class="text-medium-brown">Name</th>
+              <th class="text-medium-brown">Capacity</th>
+              <th class="text-medium-brown">Rate</th>
+              <th class="text-medium-brown">Image</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($arrayServices as $services) : ?>
+              <tr>
+                <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td>
+                <td><?php echo htmlspecialchars($services['serviceName']); ?></td>
+                <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
+                <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
+                <td><?php echo htmlspecialchars($services['serviceImage']); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <div class="mt-3">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service" disabled>Delete</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service" onclick="trimRate()" disabled>Edit</button>
+        </div>
+      </div>
+    </section>
 
 
 
@@ -264,7 +264,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
 
                 <div class="col-12 col-md-6 mb-3">
-                  <label for="editServiceRate" class="form-label">Rate</label>
+                  <label for="editServiceRate" class="form-label">Rate <span>*</span></label>
                   <div class="input-group">
                     <!-- <span class="input-group-text">₱</span> -->
                     <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here per hour" pattern="^\d{1,3}(,\d{3})*(\.\d{1,2})?$" oninput="validateRateInput(this); checkInputs();" title="Please enter a valid rate (e.g., 1000, 1,000.00)." maxlength="10" minlength="2" required />
