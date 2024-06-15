@@ -1292,6 +1292,12 @@ label.customer-account{
   color: #FFB800;
 }
 
+.create-button#create-walkin-button{
+  background-color: #0d2818 !important;
+  color: white;
+  border-color: #0d2818 !important; 
+}
+
 .create-button#create-reservation-button:hover {
   background-color: #FFB800 !important;
   color: #240046 !important;
