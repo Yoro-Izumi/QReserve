@@ -53,6 +53,8 @@ date_default_timezone_set('Asia/Manila');
 if(isset($_POST['selectedRowsAccept'])){ 
   $selectedRowsAccept = $_POST['selectedRowsAccept'];
   $reservationStatus = "Pending";
+  $randomNum = rand(10,100000000);
+  
       foreach($selectedRowsAccept as $rowIdAccept){
           //update reservation status
           $qryAcceptReservation = "UPDATE `pool_table_reservation` SET reservationStatus = ? where reservationID = ?";
@@ -62,17 +64,17 @@ if(isset($_POST['selectedRowsAccept'])){
 
 
           // Data to encode into the QR code
-          $data = "reservation_".$rowIdAccept;
+          $data = $randomNum."_".$rowIdAccept;
           // Output file name
-          $outputFile = 'src/phpqrcode/temp/'.$data.'.png';
+          $outputFile = 'src/phpqrcode/temp/qreservation_'.$data.'.png';
 
-          $imageName = $data.".png";
+          $imageName = 'qreservation_'.$data.".png";
  
 
           //For qr code
-          $qrQuery = "INSERT INTO `qr_code`(`qrID`,`reservationID`,`qrImage`) VALUES (NULL,?,?)";
+          $qrQuery = "INSERT INTO `qr_code`(`qrID`,`reservationID`,`qrImage`,`codeQR`) VALUES (NULL,?,?,?)";
           $qrPrepare = mysqli_prepare($conn,$qrQuery);
-          mysqli_stmt_bind_param($qrPrepare,"is",$rowIdAccept,$imageName);
+          mysqli_stmt_bind_param($qrPrepare,"iss",$rowIdAccept,$imageName,$data);
           mysqli_stmt_execute($qrPrepare);
 
            //get reservation details 
@@ -92,7 +94,7 @@ if(isset($_POST['selectedRowsAccept'])){
 
       }
     // Assuming you want to return a success message
-      echo "Rows deleted successfully";
+      echo "Rows Updated successfully";
       unset($_POST['selectedRowsAccept']);
 }
 
