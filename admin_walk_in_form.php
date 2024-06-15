@@ -61,108 +61,105 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
               <div class="col-md-4 mb-3">
                 <label for="firstName" class="form-label">First Name <span>*</span></label>
-                <input type="text" class="form-control trim-input validate-input" name="firstName" placeholder="Enter first name here" id="firstName" required>
+                <input type="text" class="form-control" id="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please enter a valid first name.
+                  Please provide a valid first name.
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="middleName" class="form-label">Middle Name</label>
-                <input type="text" class="form-control trim-input validate-input" name="middleName" placeholder="Enter middle name here" id="middleName">
+                <input type="text" class="form-control" id="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please enter a valid middle name.
+                  Please provide a valid middle name.
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                <input type="text" class="form-control trim-input validate-input" name="lastName" placeholder="Enter last name here" id="lastName" required>
+                <input type="text" class="form-control" id="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please enter a valid last name.
+                  Please provide a valid last name.
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
-                <input type="date" class="form-control trim-input validate-input" name="birthDate" id="birthDate" required>
+                <input type="date" class="form-control" id="birthDate" required>
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please enter a valid birthdate.
+                  Please provide a valid birthdate.
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                <input type="text" class="form-control trim-input validate-contact" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+                <input type="text" class="form-control" id="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please enter a valid contact number.
+                  Please provide a valid contact number.
                 </div>
               </div>
-              <div class="col-md-4  mb-3">
+              <div class="col-md-4 mb-3">
                 <label for="email" class="form-label">Email Address <span>*</span></label>
-                <input type="email" class="form-control trim-input" name="email" id="email" placeholder="Enter email address here" required />
+                <input type="email" class="form-control" id="email" required oninput="validateEmail(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
-                <div class="invalid-feedback" id="emailError">
-                  Please enter a valid email address.
+                <div id="emailError" class="invalid-feedback">
+                  Please provide a valid email address.
                 </div>
               </div>
-
-              <div class="col-12 col-md-3 mb-3">
-                <label for="validity" class="form-label">Select Date <span>*</span></label>
+              <div class="col-md-3 mb-3">
+                <label for="selectDate" class="form-label">Select Date <span>*</span></label>
                 <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please select a date.
+                  Please provide a valid date.
                 </div>
               </div>
-              <div class="col-12 col-md-3 mb-3">
+              <div class="col-md-3 mb-3">
                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-                <input type="time" class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()" />
+                <input type="time" class="form-control" id="selectStartTime" required oninput="adjustEndTime()">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please select a start time.
+                  Please provide a valid start time.
                 </div>
               </div>
-              <div class="col-12 col-md-3 mb-3">
+              <div class="col-md-3 mb-3">
                 <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-                <input type="time" class="form-control" name="selectEndTime" id="selectEndTime" required />
+                <input type="time" class="form-control" id="selectEndTime" required>
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please select an end time at least 2 hours after the start time.
+                  Please provide a valid end time.
                 </div>
               </div>
-              <script>
-
-              </script>
-              <div class="col-12 col-md-3 mb-3">
+              <div class="col-md-3 mb-3">
                 <label for="selectTable" class="form-label">Select Table <span>*</span></label>
                 <select class="form-control" name="selectTable" id="selectTable" required>
-                  <!-- Options will be dynamically added based on selected start time onchange="this.setCustomValidity('')"-->
+                  <option value="">Select table</option>
+                  <!-- Options will be dynamically added based on selected start time -->
                 </select>
                 <div class="valid-feedback">
                   Looks good!
                 </div>
                 <div class="invalid-feedback">
-                  Please select a table.
+                  Please provide a valid table.
                 </div>
               </div>
               <div class="col-12 col-md-12 mb-3 mb-4">
@@ -171,10 +168,10 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="row justify-content-end mt-5">
                 <div class="col-12 col-md-2 mb-3 mb-md-0">
-                  <button class="btn btn-primary w-100 create-button" name="submitWalkin" id="submitWalkin" type="submit">Create</button>
+                  <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
                 </div>
-                <div class="col-12 col-md-2">
-                  <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
+                <div class="col-12 col-md-2 mb-3 mb-md-0">
+                  <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
                 </div>
               </div>
             </form>
@@ -183,6 +180,45 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       </div>
     </section>
 
+
+    <!-- Add this div at the end of your HTML body to contain the modal -->
+    <div class="modal fade" id="confirmAddWalkin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
+          </div>
+          <div class="modal-body">
+            <!-- The content will be dynamically generated here -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal" id="success-reservation-button">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+                <!-- Success Add New Walkin Modal -->
+                <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" id="wait">
+                        <div class="modal-header">
+                        <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
+                        </div>
+                        <div class="modal-body text-center">
+                        Kindly wait for your turn to play!
+          </div>
+                        <div class="modal-footer">
+                            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+                            <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
     <script src="src/js/sidebar.js"></script>
