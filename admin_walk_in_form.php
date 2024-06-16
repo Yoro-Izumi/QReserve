@@ -61,7 +61,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
               <div class="col-md-4 mb-3">
                 <label for="firstName" class="form-label">First Name <span>*</span></label>
-                <input type="text" class="form-control" id="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -71,7 +71,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="middleName" class="form-label">Middle Name</label>
-                <input type="text" class="form-control" id="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
+                <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -81,7 +81,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                <input type="text" class="form-control" id="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -101,7 +101,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                <input type="text" class="form-control" id="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
+                <input type="text" class="form-control" id="contactNumber" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -111,7 +111,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="email" class="form-label">Email Address <span>*</span></label>
-                <input type="email" class="form-control" id="email" required oninput="validateEmail(event)">
+                <input type="email" class="form-control" id="email" name="email" required oninput="validateEmail(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -131,7 +131,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-3 mb-3">
                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-                <input type="time" class="form-control" id="selectStartTime" required oninput="adjustEndTime()">
+                <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required oninput="adjustEndTime()">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -141,7 +141,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-3 mb-3">
                 <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-                <input type="time" class="form-control" id="selectEndTime" required>
+                <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
                 <div class="valid-feedback">
                   Looks good!
                 </div>

@@ -1,7 +1,7 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . "/QReserve/connect_database.php";
-include __DIR__ . "/get_pool_table_info.php"; // Adjusted to use __DIR__
-include __DIR__ . "/get_walk_in.php"; // Adjusted to use __DIR__
+include "../../connect_database.php";
+include "get_pool_table_info.php"; // Adjusted to use __DIR__
+include "get_walk_in.php"; // Adjusted to use __DIR__
 date_default_timezone_set('Asia/Manila');
 
 // $options = [];
