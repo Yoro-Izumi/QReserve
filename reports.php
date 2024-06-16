@@ -10,7 +10,7 @@ $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   // Run the Python script
-  $output = shell_exec('python3 testPython/test2/linear_regression.py');
+  $output = shell_exec('python3.10 testPython/test2/linear_regression.py');
   // Include the generated PHP data file
   include 'data.php';
   

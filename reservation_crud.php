@@ -52,7 +52,7 @@ date_default_timezone_set('Asia/Manila');
 
 if(isset($_POST['selectedRowsAccept'])){ 
   $selectedRowsAccept = $_POST['selectedRowsAccept'];
-  $reservationStatus = "Pending";
+  $reservationStatus = "Reserved";
   $randomNum = rand(10,100000000);
   
       foreach($selectedRowsAccept as $rowIdAccept){
