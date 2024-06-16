@@ -9,6 +9,8 @@ date_default_timezone_set('Asia/Manila');
     include "encodeDecode.php";
     $key = "TheGreatestNumberIs73";
 
+    $currentDateTime = date('Y-m-d H:i:s');
+
     
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
@@ -121,9 +123,9 @@ if (isset($_SESSION['userMemberID'])) {
           $reservationStatus = "On Process";
 
           //For reservation information
-          $reservationQuery = "INSERT INTO `pool_table_reservation`(`reservationID`, `tableID`, `memberID`, `paymentID`,`superAdminID`, `serviceID`, `reservationDate`, `reservationTimeStart`, `reservationTimeEnd`, `reservationStatus`) VALUES (NULL,?,?,NULL,NULL,1,?,?,?,?)";
+          $reservationQuery = "INSERT INTO `pool_table_reservation`(`reservationID`, `tableID`, `memberID`, `paymentID`,`superAdminID`, `serviceID`, `reservationDate`, `reservationTimeStart`, `reservationTimeEnd`, `reservationStatus`, `reservationCreationDate`) VALUES (NULL,?,?,NULL,NULL,1,?,?,?,?,?)";
           $reservationPrepare = mysqli_prepare($conn,$reservationQuery);
-          mysqli_stmt_bind_param($reservationPrepare,"iissss",$poolTable,$userID,$selectDate,$selectStartTime,$selectEndTime,$reservationStatus);
+          mysqli_stmt_bind_param($reservationPrepare,"iissssss",$poolTable,$userID,$selectDate,$selectStartTime,$selectEndTime,$reservationStatus,$currentDateTime);
           mysqli_stmt_execute($reservationPrepare);
           
           //onProcessEmail($selectDate,$selectStartTime,$selectEndTime,$reservationStatus,$email);
