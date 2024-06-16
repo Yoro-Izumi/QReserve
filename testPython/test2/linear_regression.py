@@ -6,12 +6,17 @@ import datetime
 
 # Database connection
 db_connection = mysql.connector.connect(
-    host="sql12.freesqldatabase.com",
-    user="sql12713153",
-    password="LcbCQaWeEn",
-    database="sql12713153"
+    host="localhost",
+    user="root",
+    password="",
+    database="qreserve_data"
 )
-
+''' for replit testing
+host="sql12.freesqldatabase.com",
+user="sql12713153",
+password="LcbCQaWeEn",
+database="sql12713153"
+'''
 # SQL query to retrieve data
 query = "SELECT reservationDate, COUNT(*) as reservation_count FROM pool_table_reservation GROUP BY reservationDate"
 data = pd.read_sql(query, db_connection)

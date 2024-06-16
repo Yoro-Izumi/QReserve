@@ -42,7 +42,7 @@ date_default_timezone_set('Asia/Manila');
             $poolTable = mysqli_real_escape_string($conn,$_POST["selectTable"]);
             $paymentID = 1;
             $serviceID = 1; 
-            $walkinStatus = "Waiting";
+            $walkinStatus = "Reserved";
             $paymentAmount = 0; 
 
             //get service price and update payment amount
