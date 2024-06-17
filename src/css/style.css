@@ -5,6 +5,10 @@ body {
   padding: 2%;
 }
 
+::-ms-reveal {
+  display: none !important;
+}
+
 .index-landing {
   background: #f2f2f2;
   font-family: "Montserrat", sans-serif;
