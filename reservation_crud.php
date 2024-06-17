@@ -125,7 +125,7 @@ if (isset($_SESSION['userMemberID'])) {
           //For reservation information
           $reservationQuery = "INSERT INTO `pool_table_reservation`(`reservationID`, `tableID`, `memberID`, `paymentID`,`superAdminID`, `serviceID`, `reservationDate`, `reservationTimeStart`, `reservationTimeEnd`, `reservationStatus`, `reservationCreationDate`) VALUES (NULL,?,?,NULL,NULL,1,?,?,?,?,?)";
           $reservationPrepare = mysqli_prepare($conn,$reservationQuery);
-          mysqli_stmt_bind_param($reservationPrepare,"iissssss",$poolTable,$userID,$selectDate,$selectStartTime,$selectEndTime,$reservationStatus,$currentDateTime);
+          mysqli_stmt_bind_param($reservationPrepare,"iisssss",$poolTable,$userID,$selectDate,$selectStartTime,$selectEndTime,$reservationStatus,$currentDateTime);
           mysqli_stmt_execute($reservationPrepare);
           
           //onProcessEmail($selectDate,$selectStartTime,$selectEndTime,$reservationStatus,$email);

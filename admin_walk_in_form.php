@@ -201,24 +201,24 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
     </div>
 
 
-                <!-- Success Add New Walkin Modal -->
-                <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content" id="wait">
-                        <div class="modal-header">
-                        <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
-                        </div>
-                        <div class="modal-body text-center">
-                        Kindly wait for your turn to play!
+    <!-- Success Add New Walkin Modal -->
+    <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
           </div>
-                        <div class="modal-footer">
-                            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
-                            <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div class="modal-body text-center">
+            Kindly wait for your turn to play!
+          </div>
+          <div class="modal-footer">
+            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+            <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
+          </div>
         </div>
+      </div>
+    </div>
+    </div>
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
     <script src="src/js/sidebar.js"></script>
