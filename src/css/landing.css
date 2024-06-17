@@ -6,6 +6,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
+::-ms-reveal {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
