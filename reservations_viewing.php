@@ -59,9 +59,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve">Reservations</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab">
+      <form>
         <table id="example" class="table table-striped" style="width: 100%">
           <!--dynamically updates table when new data is entered-->
         </table>
+      </form>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
           <button type="button" id="accept-reservation" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accept-modal" id="accept-service">Accept</button>
@@ -144,11 +146,53 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
+    <input type="text" id="qrInput" autofocus>
+    <div id="result" type='hidden'></div>
+
+    <!-- Modal for showing the reservation details on qr scan-->
+    <div class="modal fade" id="reservation_details" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" id="wait">
+                <div class="modal-header">
+                    <h2 class="modal-title fw-bold text-center" id="success">
+                        <img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Reservation Details
+                    </h2>
+                </div>
+                <div class="modal-body text-center" id="modal-body-content">
+                    (Details Here)
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary create-button" id="submitReserve" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+        /* Hide div result */
+        #result {
+            position: absolute;
+            left: -9999px;
+        }
+    </style>
+    <style>
+        /* Hide the QR input field */
+        #qrInput {
+            position: absolute;
+            left: -9999px;
+        }
+    </style>
+
 
     
 
     <script src="src/js/sidebar.js"></script>
     <script src="src/js/reservations_viewing.js"></script>
+
+      
+    
 
   </body>
 

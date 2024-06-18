@@ -1,7 +1,11 @@
 <?php
 session_start();
 if (isset($_SESSION["userSuperAdminID"])) {
-  $visitors = 0;
+  include "connect_database.php";
+  include "src/get_data_from_database/get_visitor_num.php";
+
+  $visitors = $totalVisitor;
+
 ?>
   <!DOCTYPE html>
   <html lang="en" dir="ltr">

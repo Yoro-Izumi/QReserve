@@ -172,3 +172,97 @@ location.reload();
             toggleButtons();
         });
     });
+
+
+
+
+
+    // Function to fetch data based on the scanned QR code ID
+    function fetchInfo(id) {
+        fetch('zgetInfo.php?id=' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('result').innerText = data.error;
+                    document.getElementById('modal-body-content').innerText = data.error;
+                } else {
+                    const info = data.info;
+                    const infoText = `
+                        <p><strong>Reservation ID:</strong> ${info.reservationID}</p>
+                        <p><strong>Member ID:</strong> ${info.memberID}</p>
+                        <p><strong>Table Number:</strong> ${info.tableNumber}</p>
+                        <p><strong>Reservation Status:</strong> ${info.reservationStatus}</p>
+                        <p><strong>Reservation Date:</strong> ${info.reservationDate}</p>
+                        <p><strong>Reservation Time Start:</strong> ${info.reservationTimeStart}</p>
+                        <p><strong>Reservation Time End:</strong> ${info.reservationTimeEnd}</p>
+                    `;
+                    document.getElementById('result').innerText = infoText;
+
+                    // Show the modal with the fetched data
+                    document.getElementById('modal-body-content').innerHTML = infoText;
+                    $('#reservation_details').modal('show');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'An error occurred while fetching the data.';
+                document.getElementById('modal-body-content').innerText = 'An error occurred while fetching the data.';
+            });
+    }
+
+    // Function to hide the keyboard on mobile devices
+    function hideMobileKeyboard() {
+        // Temporarily create an input, focus it, then blur it
+        const field = document.createElement('input');
+        field.setAttribute('type', 'text');
+        field.setAttribute('style', 'position: absolute; top: -9999px;');
+        document.body.appendChild(field);
+        field.focus();
+        field.blur();
+        document.body.removeChild(field);
+    }
+
+    // Event listener for the input field
+    document.addEventListener('DOMContentLoaded', () => {
+        const qrInput = document.getElementById('qrInput');
+        const formInputs = document.querySelectorAll('form input');
+
+        // Ensure the QR input field is always focused
+        function focusQrInput() {
+            if (document.activeElement !== qrInput) {
+                qrInput.focus();
+            }
+        }
+
+        qrInput.addEventListener('input', () => {
+            const id = qrInput.value.trim();
+                if (id) {
+                    fetchInfo(id);
+                    qrInput.value = '';  // Clear the input field after scanning
+                    hideMobileKeyboard();  // Hide the mobile keyboard
+                }
+        });
+
+        // Add event listeners to all form inputs to manage focus
+        formInputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                // Temporarily disable QR input focus
+                document.removeEventListener('click', focusQrInput);
+            });
+
+            input.addEventListener('blur', () => {
+                // Re-enable QR input focus
+                document.addEventListener('click', focusQrInput);
+            });
+        });
+
+        // Initial focus on the QR input field
+        focusQrInput();
+        // Ensure the QR input field remains focused after interactions
+        document.addEventListener('click', focusQrInput);
+
+        // Close button in the modal
+        document.getElementById('submitReserve').addEventListener('click', () => {
+            $('#reservation_details').modal('hide');
+        });
+    });
