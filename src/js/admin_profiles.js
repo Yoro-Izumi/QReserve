@@ -42,6 +42,7 @@ $(document).ready(function () {
             }
         });
     }
+    
 
     // Attach event listeners for checkboxes
     function attachCheckboxListeners() {
@@ -57,6 +58,7 @@ $(document).ready(function () {
                     if (checkedCount === 1) {
                         // If only one checkbox is checked, set its value
                         checkBoxValue = this.value;
+                        document.getElementById("edit-admin-val").value = this.value;
                     }
                 } else {
                     checkedCount--;
