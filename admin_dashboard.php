@@ -1,7 +1,12 @@
 <?php
 session_start();
-if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { // Check for admin session too
-  $visitors = 0;
+if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { 
+  // Check for admin session too
+  include "connect_database.php";
+  include "src/get_data_from_database/get_visitor_num.php";
+
+  $visitors = $totalVisitor;
+
 ?>
 
   <!DOCTYPE html>
