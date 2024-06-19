@@ -91,7 +91,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
-                <input type="date" class="form-control" id="birthDate" required>
+                <input type="date" class="form-control" id="birthDate" name="contactNumber" required>
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -231,3 +231,5 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   header("location:login.php");
   die();
 } ?>
+
+
