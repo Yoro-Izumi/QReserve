@@ -266,3 +266,38 @@ location.reload();
             $('#reservation_details').modal('hide');
         });
     });
+
+
+
+
+    // for reject modal
+    document.addEventListener('DOMContentLoaded', function () {
+        const thirdOption = document.getElementById('thirdOption');
+        const thirdOptionText = document.getElementById('thirdOptionText');
+        const thirdOptionTextarea = document.getElementById('thirdOptionTextarea');
+        const wordCount = document.getElementById('wordCount');
+        
+        const radioButtons = document.querySelectorAll('input[name="rejectionReason"]');
+        
+        radioButtons.forEach(radio => {
+          radio.addEventListener('change', function () {
+            if (this.id === 'thirdOption') {
+              thirdOptionText.style.display = 'block';
+              thirdOptionTextarea.focus();  // Set focus to the textarea
+            } else {
+              thirdOptionText.style.display = 'none';
+              thirdOptionTextarea.value = '';  // Clear the textarea value
+              wordCount.textContent = '0 / 50 words';  // Reset the word count
+            }
+          });
+        });
+        
+        thirdOptionTextarea.addEventListener('input', function () {
+          const words = this.value.split(/\s+/).filter(word => word.length > 0);
+          wordCount.textContent = `${words.length} / 50 words`;
+          if (words.length > 50) {
+            this.value = words.slice(0, 50).join(' ');
+          }
+        });
+      });
+      
