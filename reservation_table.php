@@ -1,4 +1,4 @@
-<?php 
+<!-- <?php 
 session_start();
 include "connect_database.php";
 include "encodeDecode.php";
@@ -213,4 +213,4 @@ foreach ($arrayWalkinDetails as $walkin) {
 }
 echo "</tbody>";
 }
-?>
+?> -->

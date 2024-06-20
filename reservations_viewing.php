@@ -4,7 +4,10 @@ date_default_timezone_set('Asia/Manila');
 
 if (isset($_SESSION["userSuperAdminID"])) {
   include "connect_database.php";
+  include "src/get_data_from_database/get_pool_table_info.php";
   include "src/get_data_from_database/get_reservation_info.php";
+  include "src/get_data_from_database/get_walk_in.php";
+  include "src/get_data_from_database/get_customer_information.php";
   include "src/get_data_from_database/get_member_account.php";
   include "encodeDecode.php";
   $key = "TheGreatestNumberIs73";
@@ -42,8 +45,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <!-- Datatables JS -->
-    <script src="src/js/jquery.dataTables.min.js"></script>
-    <script src="src/js/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- External CSS -->
     <link rel="stylesheet" href="src/css/sidebar.css" />
@@ -59,11 +62,208 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve">Reservations</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab">
-        <form>
+        <!-- Nilabas ko lang sa form -->
+        <!-- <form>
           <table id="example" class="table table-striped" style="width: 100%">
-            <!--dynamically updates table when new data is entered-->
+          <thead>
+    <tr>
+      <th>Actions</th>
+      <th>Reservation Code</th>
+      <th>Name</th>
+      <th>Date of Reservation</th>
+      <th>Time of Reservation</th>
+      <th>Pool Table</th>
+      <th>Contact Number</th>
+      <th>Email Address</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+            <?php
+            foreach ($arrayReservationInfo as $reservations) {
+              $reservationID = $reservations['reservationID'] ?? null;
+              $reservationDate = $reservations['reservationDate'] ?? null;
+              $reservationStatus = $reservations['reservationStatus'] ?? null;
+              $reservationTimeStart = $reservations['reservationTimeStart'] ?? null;
+              $reservationTimeEnd = $reservations['reservationTimeEnd'] ?? null;
+              $tableNumber = $reservations['poolTableNumber'] ?? null;
+              $reservationCode = '';
+
+              if ($reservationID) {
+                $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
+                $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
+                mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
+                mysqli_stmt_execute($getQRCodePrepare);
+                $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
+                $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
+                $reservationCode = $getQRCodeRow['codeQR'] ?? '';
+              }
+
+              foreach ($arrayMemberAccount as $members) {
+                if (isset($members['memberID']) && $members['memberID'] == $reservations['memberID']) {
+                  $customerName = decryptData($members['customerFirstName'] ?? '', $key) . " " . decryptData($members['customerMiddleName'] ?? '', $key) . " " . decryptData($members['customerLastName'] ?? '', $key);
+                  $contactNumber = decryptData($members['customerNumber'] ?? '', $key);
+                  $email = decryptData($members['customerEmail'] ?? '', $key);
+                }
+              }
+
+              echo "<tr>";
+              if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
+                $status = "badge bg-success";
+                echo "<td> </td>";
+              } else if ($reservationStatus == "On Process") {
+                $status = "badge bg-warning";
+                echo "<td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>";
+              } else {
+                $status = "badge bg-danger";
+                echo "<td> </td>";
+              }
+              echo "
+                <td>$reservationCode</td>
+                <td>$customerName</td>
+                <td>$reservationDate</td>
+                <td>$reservationTimeStart - $reservationTimeEnd</td>
+                <td>$tableNumber</td>
+                <td>$contactNumber</td>
+                <td>$email</td>
+                <td><span class='$status'>$reservationStatus</span></td>
+              </tr>";
+            }
+
+            foreach ($arrayWalkinDetails as $walkin) {
+              $walkinDate = $walkin['walkinDate'] ?? null;
+              $walkinStatus = $walkin['walkinStatus'] ?? null;
+              $walkinTimeStart = $walkin['walkinTimeStart'] ?? null;
+              $walkinTimeEnd = $walkin['walkinTimeEnd'] ?? null;
+              $tableNumber = $walkin['poolTableNumber'] ?? null;
+
+              $customerName = decryptData($walkin['customerFirstName'] ?? '', $key) . " " . decryptData($walkin['customerMiddleName'] ?? '', $key) . " " . decryptData($walkin['customerLastName'] ?? '', $key);
+              $contactNumber = decryptData($walkin['customerNumber'] ?? '', $key);
+              $email = decryptData($walkin['customerEmail'] ?? '', $key);
+
+              echo "<tr>
+                <td></td>
+                <td>Walk-in</td>
+                <td>$customerName</td>
+                <td>$walkinDate</td>
+                <td>$walkinTimeStart - $walkinTimeEnd</td>
+                <td>$tableNumber</td>
+                <td>$contactNumber</td>
+                <td>$email</td>";
+              if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
+                $status = "badge bg-success";
+              } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
+                $status = "badge bg-warning";
+              } else {
+                $status = "badge bg-danger";
+              }
+              echo "<td><span class='$status'>$walkinStatus</span></td>
+              </tr>";
+            }
+            ?>
+          </tbody>
           </table>
-        </form>
+        </form> -->
+
+        <table id="example" class="table table-striped" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Actions</th>
+              <th>Reservation Code</th>
+              <th>Name</th>
+              <th>Date of Reservation</th>
+              <th>Time of Reservation</th>
+              <th>Pool Table</th>
+              <th>Contact Number</th>
+              <th>Email Address</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            foreach ($arrayReservationInfo as $reservations) {
+              $reservationID = $reservations['reservationID'] ?? null;
+              $reservationDate = $reservations['reservationDate'] ?? null;
+              $reservationStatus = $reservations['reservationStatus'] ?? null;
+              $reservationTimeStart = $reservations['reservationTimeStart'] ?? null;
+              $reservationTimeEnd = $reservations['reservationTimeEnd'] ?? null;
+              $tableNumber = $reservations['poolTableNumber'] ?? null;
+              $reservationCode = '';
+
+              if ($reservationID) {
+                $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
+                $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
+                mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
+                mysqli_stmt_execute($getQRCodePrepare);
+                $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
+                $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
+                $reservationCode = $getQRCodeRow['codeQR'] ?? '';
+              }
+
+              foreach ($arrayMemberAccount as $members) {
+                if (isset($members['memberID']) && $members['memberID'] == $reservations['memberID']) {
+                  $customerName = decryptData($members['customerFirstName'] ?? '', $key) . " " . decryptData($members['customerMiddleName'] ?? '', $key) . " " . decryptData($members['customerLastName'] ?? '', $key);
+                  $contactNumber = decryptData($members['customerNumber'] ?? '', $key);
+                  $email = decryptData($members['customerEmail'] ?? '', $key);
+                }
+              }
+
+              echo "<tr>";
+              if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
+                $status = "badge bg-success";
+                echo "<td> </td>";
+              } else if ($reservationStatus == "On Process") {
+                $status = "badge bg-warning";
+                echo "<td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>";
+              } else {
+                $status = "badge bg-danger";
+                echo "<td> </td>";
+              }
+              echo "
+                <td>$reservationCode</td>
+                <td>$customerName</td>
+                <td>$reservationDate</td>
+                <td>$reservationTimeStart - $reservationTimeEnd</td>
+                <td>$tableNumber</td>
+                <td>$contactNumber</td>
+                <td>$email</td>
+                <td><span class='$status'>$reservationStatus</span></td>
+              </tr>";
+            }
+
+            foreach ($arrayWalkinDetails as $walkin) {
+              $walkinDate = $walkin['walkinDate'] ?? null;
+              $walkinStatus = $walkin['walkinStatus'] ?? null;
+              $walkinTimeStart = $walkin['walkinTimeStart'] ?? null;
+              $walkinTimeEnd = $walkin['walkinTimeEnd'] ?? null;
+              $tableNumber = $walkin['poolTableNumber'] ?? null;
+
+              $customerName = decryptData($walkin['customerFirstName'] ?? '', $key) . " " . decryptData($walkin['customerMiddleName'] ?? '', $key) . " " . decryptData($walkin['customerLastName'] ?? '', $key);
+              $contactNumber = decryptData($walkin['customerNumber'] ?? '', $key);
+              $email = decryptData($walkin['customerEmail'] ?? '', $key);
+
+              echo "<tr>
+                <td></td>
+                <td>Walk-in</td>
+                <td>$customerName</td>
+                <td>$walkinDate</td>
+                <td>$walkinTimeStart - $walkinTimeEnd</td>
+                <td>$tableNumber</td>
+                <td>$contactNumber</td>
+                <td>$email</td>";
+              if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
+                $status = "badge bg-success";
+              } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
+                $status = "badge bg-warning";
+              } else {
+                $status = "badge bg-danger";
+              }
+              echo "<td><span class='$status'>$walkinStatus</span></td>
+              </tr>";
+            }
+            ?>
+          </tbody>
+        </table>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
           <button type="button" id="accept-reservation" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accept-modal" id="accept-service">Accept</button>
@@ -132,42 +332,42 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
     <!-- Reject Reservation Modals -->
     <div class="modal fade" id="reject-confirmation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" id="wait">
-      <div class="modal-header">
-        <h2 class="modal-title fw-bold text-center" id="deleted">Reason for Rejection</h2>
-      </div>
-      <div class="modal-body">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="rejectionReason" id="firstDefaultReason" value="firstDefaultReason">
-          <label class="form-check-label" for="firstDefaultReason">
-            Choose another date and time. A reservation was already made with the same date and time.
-          </label>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="deleted">Reason for Rejection</h2>
+          </div>
+          <div class="modal-body">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="rejectionReason" id="firstDefaultReason" value="firstDefaultReason">
+              <label class="form-check-label" for="firstDefaultReason">
+                Choose another date and time. A reservation was already made with the same date and time.
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="rejectionReason" id="secondDefaultReason" value="secondDefaultReason">
+              <label class="form-check-label" for="secondDefaultReason">
+                The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="rejectionReason" id="thirdOption" value="thirdOption">
+              <label class="form-check-label" for="thirdOption">
+                Others (Please specify)
+              </label>
+            </div>
+            <div id="thirdOptionText" class="form-group" style="display: none; margin-top: 10px;">
+              <textarea id="thirdOptionTextarea" class="form-control" maxlength="300" rows="3" placeholder="Specify your reason (max 50 words)"></textarea>
+              <small id="wordCount" class="form-text text-muted">0 / 50 words</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" id="confirm-reject-reservation" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
+          </div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="rejectionReason" id="secondDefaultReason" value="secondDefaultReason">
-          <label class="form-check-label" for="secondDefaultReason">
-            The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="rejectionReason" id="thirdOption" value="thirdOption">
-          <label class="form-check-label" for="thirdOption">
-            Others (Please specify)
-          </label>
-        </div>
-        <div id="thirdOptionText" class="form-group" style="display: none; margin-top: 10px;">
-          <textarea id="thirdOptionTextarea" class="form-control" maxlength="300" rows="3" placeholder="Specify your reason (max 50 words)"></textarea>
-          <small id="wordCount" class="form-text text-muted">0 / 50 words</small>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" id="confirm-reject-reservation" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
       </div>
     </div>
-  </div>
-</div>
 
 
 

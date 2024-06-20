@@ -1,92 +1,89 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $("#example").DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: false,
-      responsive: true,
+        paging: true,
+        lengthChange: true,
+        searching: true, // Ensure this option is set to true
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true,
     });
-  });
+});
 
 
+// JavaScript functions for handling bulk actions
+function deleteSelected() {
+    // Implement delete logic here
+    console.log("Delete selected rows");
+}
 
-  $(document).ready(function() {
-    var intervalID; // Define intervalID variable outside to make it accessible across functions
-
-    // Function to update table content
-    function updateTable() {
-      $.ajax({
-        url: 'reservation_table.php', // Change this to the PHP file that contains the table content
-        type: 'GET',
-        success: function(response) {
-          $('#example').html(response);
-          attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
-        }
-      });
-    }
-
-    // Function to start interval
-    function startInterval() {
-      intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
-    }
-
-    // Function to stop interval
-    function stopInterval() {
-      clearInterval(intervalID);
-    }
-
-    // Attach event listeners for checkboxes
-function attachCheckboxListeners() {
-    const checkboxes = document.querySelectorAll('.reservation-checkbox');
-    //var editReservationButton = document.getElementById('edit-reservation');
-    //var deleteReservationButton = document.getElementById('delete-reservation');
-    var checkedCount = 0; var checkBoxValue;
-
-    //editAdminButton.disabled = true;
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                checkedCount++;
-                if (checkedCount === 1) {
-                    // If only one checkbox is checked, set its value
-                    // Ensure that checkboxValue is defined and refers to the appropriate element
-                    checkboxValue = this.value; // You need to define checkboxValue
-                }
-            } else {
-                checkedCount--;
-                if (checkedCount === 1) {
-                    // If only one checkbox remains checked after unchecking this one, find and set its value
-                    const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
-                    if (remainingCheckbox) {
-                        checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
-                    }
-                } else {
-                    // If no or multiple checkboxes are checked, clear the value
-                    checkboxValue.value = " "; // You need to define checkboxValue
-                }
-            }
-            //editAdminButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
-
-            // Stop or start interval based on checkbox status
-            if (checkedCount > 0) {
-                stopInterval();
-            } else {
-                startInterval();
-            }
-        });
-    });
+function editSelected() {
+    // Implement edit logic here
+    console.log("Edit selected rows");
 }
 
 
-    // Initial table update and start interval
+
+$(document).ready(function () {
+    // Function to update table content
+    function updateTable() {
+        $.ajax({
+            url: 'reservation_table.php', // Change this to the PHP file that contains the table content
+            type: 'GET',
+            success: function (response) {
+                $('#example tbody').html($(response).find('#example tbody').html());
+                attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
+            }
+        });
+    }
+    
+
+    // Attach event listeners for checkboxes
+    function attachCheckboxListeners() {
+        const checkboxes = document.querySelectorAll('.reservation-checkbox');
+        // var editreservationButton = document.getElementById('edit-reservation');
+        // var deletereservationButton = document.getElementById('delete-reservation');
+        var checkedCount = 0;
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkedCount++;
+                    if (checkedCount === 1) {
+                        // If only one checkbox is checked, set its value
+                        // Ensure that checkboxValue is defined and refers to the appropriate element
+                        checkboxValue = this.value; // You need to define checkboxValue
+                    }
+                } else {
+                    checkedCount--;
+                    if (checkedCount === 1) {
+                        // If only one checkbox remains checked after unchecking this one, find and set its value
+                        const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
+                        if (remainingCheckbox) {
+                            checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
+                        }
+                    } else {
+                        // If no or multiple checkboxes are checked, clear the value
+                        checkboxValue.value = " "; // You need to define checkboxValue
+                    }
+                }
+                editreservationButton.disabled = checkedCount !== 1; // Disable edit button if no checkbox is checked or more than one checkbox is checked
+                deletereservationButton.disabled = checkedCount === 0; // Disable delete button if no checkbox is checked
+
+                // Stop or start interval based on checkbox status
+                if (checkedCount > 0) {
+                    stopInterval();
+                } else {
+                    startInterval();
+                }
+            });
+        });
+    }
+
+    // Initial table update
     updateTable();
     startInterval();
-  });
-
-
+});
 
 
 
@@ -117,6 +114,7 @@ function attachCheckboxListeners() {
         });
     });
 });
+
 
 $(document).ready(function(){
     // AJAX code to handle accept reservation
@@ -152,28 +150,26 @@ location.reload();
 
 
 
-    $(document).ready(function() {
-        // Initially disable the Accept and Reject buttons
-        $('#accept-reservation').prop('disabled', true);
-        $('#reject-reservation').prop('disabled', true);
+$(document).ready(function() {
+    // Initially disable the Accept and Reject buttons
+    $('#accept-reservation').prop('disabled', true);
+    $('#reject-reservation').prop('disabled', true);
 
-        // Function to enable/disable the buttons based on checkbox status
-        function toggleButtons() {
-            var anyChecked = $('.reservation-checkbox:checked').length > 0;
-            $('#accept-reservation').prop('disabled', !anyChecked);
-            $('#reject-reservation').prop('disabled', !anyChecked);
-        }
+    // Function to enable/disable the buttons based on checkbox status
+    function toggleButtons() {
+        var anyChecked = $('.reservation-checkbox:checked').length > 0;
+        $('#accept-reservation').prop('disabled', !anyChecked);
+        $('#reject-reservation').prop('disabled', !anyChecked);
+    }
 
-        // Call the function when the page is ready
+    // Call the function when the page is ready
+    toggleButtons();
+
+    // Attach event listeners to checkboxes to call the function on change
+    $(document).on('change', '.reservation-checkbox', function() {
         toggleButtons();
-
-        // Attach event listeners to checkboxes to call the function on change
-        $(document).on('change', '.reservation-checkbox', function() {
-            toggleButtons();
-        });
     });
-
-
+});
 
 
 
@@ -222,6 +218,9 @@ location.reload();
         document.body.removeChild(field);
     }
 
+
+
+    
     // Event listener for the input field
     document.addEventListener('DOMContentLoaded', () => {
         const qrInput = document.getElementById('qrInput');
