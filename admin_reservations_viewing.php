@@ -3,6 +3,14 @@ session_start();
 if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { // Check for admin session too
   $visitors = 0;
   date_default_timezone_set('Asia/Manila');
+  include "connect_database.php";
+  include "src/get_data_from_database/get_pool_table_info.php";
+  include "src/get_data_from_database/get_reservation_info.php";
+  include "src/get_data_from_database/get_walk_in.php";
+  include "src/get_data_from_database/get_customer_information.php";
+  include "src/get_data_from_database/get_member_account.php";
+  include "encodeDecode.php";
+  $key = "TheGreatestNumberIs73";
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -53,8 +61,104 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       <h4 class="qreserve">Reservations</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab">
-        <table id="example" class="table table-striped" style="width: 100%">
-          <!--dynamically updates table when new data is entered-->
+      <table id="example" class="table table-striped" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Actions</th>
+              <th>Reservation Code</th>
+              <th>Name</th>
+              <th>Date of Reservation</th>
+              <th>Time of Reservation</th>
+              <th>Pool Table</th>
+              <th>Contact Number</th>
+              <th>Email Address</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            foreach ($arrayReservationInfo as $reservations) {
+              $reservationID = $reservations['reservationID'] ?? null;
+              $reservationDate = $reservations['reservationDate'] ?? null;
+              $reservationStatus = $reservations['reservationStatus'] ?? null;
+              $reservationTimeStart = $reservations['reservationTimeStart'] ?? null;
+              $reservationTimeEnd = $reservations['reservationTimeEnd'] ?? null;
+              $tableNumber = $reservations['poolTableNumber'] ?? null;
+              $reservationCode = '';
+
+              if ($reservationID) {
+                $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
+                $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
+                mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
+                mysqli_stmt_execute($getQRCodePrepare);
+                $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
+                $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
+                $reservationCode = $getQRCodeRow['codeQR'] ?? '';
+              }
+
+              foreach ($arrayMemberAccount as $members) {
+                if (isset($members['memberID']) && $members['memberID'] == $reservations['memberID']) {
+                  $customerName = decryptData($members['customerFirstName'] ?? '', $key) . " " . decryptData($members['customerMiddleName'] ?? '', $key) . " " . decryptData($members['customerLastName'] ?? '', $key);
+                  $contactNumber = decryptData($members['customerNumber'] ?? '', $key);
+                  $email = decryptData($members['customerEmail'] ?? '', $key);
+                }
+              }
+
+              echo "<tr>";
+              if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
+                $status = "badge bg-success";
+                echo "<td> </td>";
+              } else if ($reservationStatus == "On Process") {
+                $status = "badge bg-warning";
+                echo "<td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>";
+              } else {
+                $status = "badge bg-danger";
+                echo "<td> </td>";
+              }
+              echo "
+                <td>$reservationCode</td>
+                <td>$customerName</td>
+                <td>$reservationDate</td>
+                <td>$reservationTimeStart - $reservationTimeEnd</td>
+                <td>$tableNumber</td>
+                <td>$contactNumber</td>
+                <td>$email</td>
+                <td><span class='$status'>$reservationStatus</span></td>
+              </tr>";
+            }
+
+            foreach ($arrayWalkinDetails as $walkin) {
+              $walkinDate = $walkin['walkinDate'] ?? null;
+              $walkinStatus = $walkin['walkinStatus'] ?? null;
+              $walkinTimeStart = $walkin['walkinTimeStart'] ?? null;
+              $walkinTimeEnd = $walkin['walkinTimeEnd'] ?? null;
+              $tableNumber = $walkin['poolTableNumber'] ?? null;
+
+              $customerName = decryptData($walkin['customerFirstName'] ?? '', $key) . " " . decryptData($walkin['customerMiddleName'] ?? '', $key) . " " . decryptData($walkin['customerLastName'] ?? '', $key);
+              $contactNumber = decryptData($walkin['customerNumber'] ?? '', $key);
+              $email = decryptData($walkin['customerEmail'] ?? '', $key);
+
+              echo "<tr>
+                <td></td>
+                <td>Walk-in</td>
+                <td>$customerName</td>
+                <td>$walkinDate</td>
+                <td>$walkinTimeStart - $walkinTimeEnd</td>
+                <td>$tableNumber</td>
+                <td>$contactNumber</td>
+                <td>$email</td>";
+              if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
+                $status = "badge bg-success";
+              } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
+                $status = "badge bg-warning";
+              } else {
+                $status = "badge bg-danger";
+              }
+              echo "<td><span class='$status'>$walkinStatus</span></td>
+              </tr>";
+            }
+            ?>
+          </tbody>
         </table>
       </div>
     </section>
@@ -172,290 +276,8 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
         }
     </style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <script>
-      $(document).ready(function() {
-        $("#example").DataTable({
-          paging: true,
-          lengthChange: true,
-          searching: true,
-          ordering: true,
-          info: true,
-          autoWidth: false,
-          responsive: true,
-        });
-      });
-
-      let sidebar = document.querySelector(".sidebar");
-      let closeBtn = document.querySelector("#btn");
-      let searchBtn = document.querySelector(".bx-search");
-
-      closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      searchBtn.addEventListener("click", () => {
-        // Sidebar open when you click on the search icon
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      // following are the code to change sidebar button(optional)
-      function menuBtnChange() {
-        if (sidebar.classList.contains("open")) {
-          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right"); //replacing the icons class
-        } else {
-          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu"); //replacing the icons class
-        }
-      }
-    </script>
-
-<script>
-  $(document).ready(function() {
-    var intervalID; // Define intervalID variable outside to make it accessible across functions
-
-    // Function to update table content
-    function updateTable() {
-      $.ajax({
-        url: 'reservation_table.php', // Change this to the PHP file that contains the table content
-        type: 'GET',
-        success: function(response) {
-          $('#example').html(response);
-          attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
-        }
-      });
-    }
-
-    // Function to start interval
-    function startInterval() {
-      intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
-    }
-
-    // Function to stop interval
-    function stopInterval() {
-      clearInterval(intervalID);
-    }
-
-    // Attach event listeners for checkboxes
-function attachCheckboxListeners() {
-    const checkboxes = document.querySelectorAll('.reservation-checkbox');
-    //var editReservationButton = document.getElementById('edit-reservation');
-    //var deleteReservationButton = document.getElementById('delete-reservation');
-    var checkedCount = 0; var checkBoxValue;
-
-    //editAdminButton.disabled = true;
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                checkedCount++;
-                if (checkedCount === 1) {
-                    // If only one checkbox is checked, set its value
-                    // Ensure that checkboxValue is defined and refers to the appropriate element
-                    checkboxValue = this.value; // You need to define checkboxValue
-                }
-            } else {
-                checkedCount--;
-                if (checkedCount === 1) {
-                    // If only one checkbox remains checked after unchecking this one, find and set its value
-                    const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
-                    if (remainingCheckbox) {
-                        checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
-                    }
-                } else {
-                    // If no or multiple checkboxes are checked, clear the value
-                    checkboxValue.value = " "; // You need to define checkboxValue
-                }
-            }
-            //editAdminButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
-
-            // Stop or start interval based on checkbox status
-            if (checkedCount > 0) {
-                stopInterval();
-            } else {
-                startInterval();
-            }
-        });
-    });
-}
-
-
-    // Initial table update and start interval
-    updateTable();
-    startInterval();
-  });
-</script>
-
-<!--script updating reservation status-->
-<script>
-  $(document).ready(function(){
-        // AJAX code to handle reject reservation
-        $("#confirm-reject-reservation").click(function(){
-            // Array to store IDs of selected rows
-            var selectedRowsReject = [];
-
-            // Iterate through each checked checkbox
-            $(".reservation-checkbox:checked").each(function(){
-                // Push the value (ID) of checked checkbox into the array
-                selectedRowsReject.push($(this).val());
-            });
-
-            // AJAX call to send selected rows IDs to delete script
-            $.ajax({
-                url: "reservation_crud.php",
-                type: "POST",
-                data: {selectedRowsReject: selectedRowsReject},
-                success: function(response){
-                    // Reload the page or update the table as needed
-                   // location.reload(); // For example, reload the page after deletion
-                },
-                error: function(xhr, status, error){
-                    //console.error("Error:", error);
-                }
-            });
-        });
-    });
-
-    $(document).ready(function(){
-        // AJAX code to handle accept reservation
-        $("#confirm-accept-reservation").click(function(){
-            // Array to store IDs of selected rows
-            var selectedRowsAccept = [];
-
-            // Iterate through each checked checkbox
-            $(".reservation-checkbox:checked").each(function(){
-                // Push the value (ID) of checked checkbox into the array
-                selectedRowsAccept.push($(this).val());
-            });
-
-            // AJAX call to send selected rows IDs to delete script
-            $.ajax({
-                url: "reservation_crud.php",
-                type: "POST",
-                data: {selectedRowsAccept: selectedRowsAccept},
-                success: function(response){
-                    // Reload the page or update the table as needed
-                   // location.reload(); // For example, reload the page after deletion
-                },
-                error: function(xhr, status, error){
-                    //console.error("Error:", error);
-                }
-            });
-        });
-    });
-
-function reload(){
-  location.reload();
-}
-
-
-
-  // Function to fetch data based on the scanned QR code ID
-  function fetchInfo(id) {
-      fetch('zgetInfo.php?id=' + id)
-          .then(response => response.json())
-          .then(data => {
-              if (data.error) {
-                  document.getElementById('result').innerText = data.error;
-                  document.getElementById('modal-body-content').innerText = data.error;
-              } else {
-                  const info = data.info;
-                  const infoText = `
-                      <p><strong>Reservation ID:</strong> ${info.reservationID}</p>
-                      <p><strong>Member ID:</strong> ${info.memberID}</p>
-                      <p><strong>Table Number:</strong> ${info.tableNumber}</p>
-                      <p><strong>Reservation Status:</strong> ${info.reservationStatus}</p>
-                      <p><strong>Reservation Date:</strong> ${info.reservationDate}</p>
-                      <p><strong>Reservation Time Start:</strong> ${info.reservationTimeStart}</p>
-                      <p><strong>Reservation Time End:</strong> ${info.reservationTimeEnd}</p>
-                  `;
-                  document.getElementById('result').innerText = infoText;
-
-                  // Show the modal with the fetched data
-                  document.getElementById('modal-body-content').innerHTML = infoText;
-                  $('#reservation_details').modal('show');
-              }
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              document.getElementById('result').innerText = 'An error occurred while fetching the data.';
-              document.getElementById('modal-body-content').innerText = 'An error occurred while fetching the data.';
-          });
-  }
-
-  // Function to hide the keyboard on mobile devices
-  function hideMobileKeyboard() {
-      // Temporarily create an input, focus it, then blur it
-      const field = document.createElement('input');
-      field.setAttribute('type', 'text');
-      field.setAttribute('style', 'position: absolute; top: -9999px;');
-      document.body.appendChild(field);
-      field.focus();
-      field.blur();
-      document.body.removeChild(field);
-  }
-
-  // Event listener for the input field
-  document.addEventListener('DOMContentLoaded', () => {
-      const qrInput = document.getElementById('qrInput');
-      const formInputs = document.querySelectorAll('form input');
-
-      // Ensure the QR input field is always focused
-      function focusQrInput() {
-          if (document.activeElement !== qrInput) {
-              qrInput.focus();
-          }
-      }
-
-      qrInput.addEventListener('input', () => {
-          const id = qrInput.value.trim();
-              if (id) {
-                  fetchInfo(id);
-                  qrInput.value = '';  // Clear the input field after scanning
-                  hideMobileKeyboard();  // Hide the mobile keyboard
-              }
-      });
-
-      // Add event listeners to all form inputs to manage focus
-      formInputs.forEach(input => {
-          input.addEventListener('focus', () => {
-              // Temporarily disable QR input focus
-              document.removeEventListener('click', focusQrInput);
-          });
-
-          input.addEventListener('blur', () => {
-              // Re-enable QR input focus
-              document.addEventListener('click', focusQrInput);
-          });
-      });
-
-      // Initial focus on the QR input field
-      focusQrInput();
-      // Ensure the QR input field remains focused after interactions
-      document.addEventListener('click', focusQrInput);
-
-      // Close button in the modal
-      document.getElementById('submitReserve').addEventListener('click', () => {
-          $('#reservation_details').modal('hide');
-      });
-  });
-
-  
-</script>
-    
-
+<script src="src/js/sidebar.js"></script>
+<script src="src/js/reservations_viewing.js"></script>
 
   </body>
 
