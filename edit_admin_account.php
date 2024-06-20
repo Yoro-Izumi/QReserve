@@ -12,7 +12,6 @@ date_default_timezone_set('Asia/Manila');
 // Initialize variables with default values
 $ID = $adminID = $adminInfoID = $adminUsername = $adminName = $adminSex = $adminPhone = $adminEmail = $shiftTimeStart = $shiftTimeEnd = "";
 
-
 if (isset($_SESSION["userSuperAdminID"])) {
   $superAdminID = $_SESSION["userSuperAdminID"];
   $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
@@ -97,6 +96,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <!--<input name="adminID" id="adminID" value="">-->
               <label for="firstName" class="form-label">First Name <span>*</span></label>
               <input type="text" value="<?php echo $adminFirstName; ?>" class="form-control" name="FirstName" id="FirstName" placeholder="Enter first name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid first name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
+              <div class="valid-feedback">
+                      Looks good!
+                  </div>
               <div class="invalid-feedback">
                 Please enter a valid first name.
               </div>
@@ -104,9 +106,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-3 mb-3">
               <label for="middleName" class="form-label">Middle Name</label>
               <input type="text" value="<?php echo $adminMiddleName; ?>" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
-              <!-- <div class="valid-feedback">
+              <div class="valid-feedback">
                       Looks good!
-                  </div> -->
+                  </div>
               <div class="invalid-feedback">
                 Please enter a valid middle name.
               </div>
@@ -114,9 +116,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-3 mb-3">
               <label for="lastName" class="form-label">Last Name <span>*</span></label>
               <input type="text" value="<?php echo $adminLastName; ?>" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
-              <!-- <div class="valid-feedback">
+              <div class="valid-feedback">
                       Looks good!
-                  </div> -->
+                  </div>
               <div class="invalid-feedback">
                 Please enter a valid last name.
               </div>
@@ -124,9 +126,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Username <span>*</span></label>
               <input type="text" value="<?php echo $adminUsername; ?>" class="form-control" name="username" id="username" placeholder="Enter last name here" required maxlength="50" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
-              <!-- <div class="valid-feedback">
+              <div class="valid-feedback">
                       Looks good!
-                  </div> -->
+                  </div>
               <div class="invalid-feedback">
                 Please enter a valid username.
               </div>
@@ -139,6 +141,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <option value="Female" <?php if ($adminSex == 'Female') echo 'selected'; ?>>Female</option>
                 <option value="Others" <?php if ($adminSex == 'Others') echo 'selected'; ?>>Others</option>
               </select>
+              <div class="valid-feedback">
+                      Looks good!
+                  </div>
               <div class="invalid-feedback">
                 Please select a shift.
               </div>
@@ -146,6 +151,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-3 mb-3">
               <label for="email" class="form-label">Email Address <span>*</span></label>
               <input type="email" value="<?php echo $adminEmail; ?>" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
+              <div class="valid-feedback">
+                      Looks good!
+                  </div>
               <div class="invalid-feedback">
                 Please enter a valid Gmail address (e.g., yourname@gmail.com).
               </div>
@@ -153,6 +161,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="col-12 col-md-3 mb-3">
               <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
               <input type="text" value="<?php echo $adminPhone; ?>" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
+              <div class="valid-feedback">
+                      Looks good!
+                  </div>
               <div class="invalid-feedback">
                 Please enter a valid contact number.
               </div>
@@ -183,6 +194,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <option value="<?php echo $shift['adminShiftID']; ?>" <?php if ($adminShift == $shift['adminShiftID']) echo 'selected' ?>><?php echo $shiftStart . " - " . $shiftEnd; ?></option>
                 <?php } ?>
               </select>
+              <div class="valid-feedback">
+                      Looks good!
+                  </div>
               <div class="invalid-feedback">
                 Please select a shift.
               </div>
@@ -195,6 +209,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <i class="fas fa-eye"></i>
                 </button>
               </div>
+              <div class="valid-feedback">
+                      Looks good!
+                  </div>
               <div class="invalid-feedback" id="passwordError">
                 Please enter a valid password.
               </div>
@@ -207,7 +224,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   <i class="fas fa-eye"></i>
                 </button>
               </div>
-              <div class="feedback" id="passwordMatchFeedback"></div>
+              
+              <div class="valid-feedback">
+                      Looks good!
+                  </div>
+                  <div class="feedback" id="passwordMatchFeedback"></div>
               <div class="valid-feedback" id="passwordMatch">
                 Passwords match!
               </div>
@@ -232,7 +253,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </section>
 
     <!-- Add this div at the end of your HTML body to contain the modal -->
-    <div class="modal fade" id="confirmAddWalkin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmEditAdmin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
         <div class="modal-content text-center">
           <div class="modal-header">
@@ -249,7 +270,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-
     <!-- Success Add New Walkin Modal -->
     <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -262,12 +282,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
-            <button class="btn btn-primary create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
+            <button class="btn btn-primary create-button" name="submitEditAdminAccount" id="submitEditAdminAccount" type="submit">Proceed</button>
           </div>
         </div>
       </div>
     </div>
-
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
 
