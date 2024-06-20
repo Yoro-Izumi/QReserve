@@ -174,16 +174,16 @@ function checkPasswordStrength(password) {
 // For calling the modal
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("edit-admin-form");
-  const submitButton = document.getElementById("submitWalkin");
-  const confirmAddWalkin = new bootstrap.Modal(
-    document.getElementById("confirmAddWalkin")
+  const submitButton = document.getElementById("submitEditAdminAccount");
+  const confirmEditAdmin = new bootstrap.Modal(
+    document.getElementById("confirmEditAdmin")
   );
 
   form.addEventListener("submit", function (event) {
     event.preventDefault(); // Prevent form submission
     if (form.checkValidity()) {
       // Form is valid, show success modal
-      confirmAddWalkin.show();
+      confirmEditAdmin.show();
       // You can also submit the form via AJAX here if needed
     } else {
       form.classList.add("was-validated"); // Show validation messages
@@ -191,14 +191,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Optional: Reset form validation on modal close
-  confirmAddWalkin.addEventListener("hidden.bs.modal", function () {
+  confirmEditAdmin.addEventListener("hidden.bs.modal", function () {
     form.classList.remove("was-validated");
   });
 });
 
 //add reservation
 $(document).ready(function () {
-  $("#submitWalkin").click(function (e) {
+  $("#submitEditAdminAccount").click(function (e) {
     e.preventDefault();
 
     var formData = new FormData($("#edit-admin-form")[0]);
