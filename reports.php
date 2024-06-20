@@ -114,13 +114,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <figure class="highcharts-figure1">
           <div id="container1"></div>
         </figure>
-
-        <!-- Buttons section -->
-        <div class="row justify-content-end">
-          <div class="col-12 col-md-2 mb-3 mb-md-0">
-            <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Generate Report</button>
-          </div>
-        </div>
       </div>
 
       <h4 class="qreserve">Peak Hours</h4>
@@ -129,13 +122,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <figure class="highcharts-figure1">
           <div id="container2"></div>
         </figure>
-
-        <!-- Buttons section -->
-        <div class="row justify-content-end">
-          <div class="col-12 col-md-2 mb-3 mb-md-0">
-            <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Generate Report</button>
-          </div>
-        </div>
       </div>
 
       <!-- <h4 class="qreserve">Admin Shift Reports</h4> -->
@@ -146,11 +132,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div id="container3"></div>
 
         </figure>
-        <div class="row justify-content-end">
-          <div class="col-12 col-md-2 mb-3 mb-md-0">
-            <button class="btn btn-primary w-100 create-button" name="submitReserve" type="submit">Generate Report</button>
-          </div>
-        </div>
       </div>
 
       <!-- <h4 class="qreserve">Number of Reservations </h4>

@@ -281,7 +281,7 @@ img.modal-icons {
   color: #ffb800 !important;
 }
 
-.create-button#proceed, .create-button#confirm_add_service_button, .create-button#submitAddAdmin, .create-button#submitAddMember, .create-button#submitWalkin, .create-button#submitEditAdminAccount {
+.create-button#proceed, .create-button#confirm_add_service_button, .create-button#submitAddAdmin, .create-button#submitAddMember, .create-button#submitWalkin, .create-button#submitEditAdminAccount, .create-button#submitEditAdmin {
   width: 400px;
 }
 
