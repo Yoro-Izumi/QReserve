@@ -85,12 +85,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <div>
+            <form type="hidden" id="pass-member" name="pass-member">
+                <input type="hidden" id="edit-member-val" name="edit-member-val" value="">
+            </form>
+        </div>
         <div class="mt-3">
-          <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button>
-          <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>          -->
-          <button type="button" class="btn btn-primary" id="edit-member">Edit</button>
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-member-account-modal" id="delete-member">Delete</button>
-          <input type="hidden" id="edit-member-val" value="">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-member-account-modal" id="delete-member" disabled>Delete</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-member" onclick="trimRate()" disabled>Edit</button>
         </div>
       </div>
     </section>
