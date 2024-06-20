@@ -281,9 +281,9 @@ img.modal-icons {
   color: #ffb800 !important;
 }
 
-.create-button#proceed, .create-button#confirm_add_service_button, .create-button#submitAddAdmin, .create-button#submitAddMember, .create-button#submitWalkin {
-    width: 400px;
-  }
+.create-button#proceed, .create-button#confirm_add_service_button, .create-button#submitAddAdmin, .create-button#submitAddMember, .create-button#submitWalkin, .create-button#submitEditAdminAccount, .create-button#submitEditAdmin {
+  width: 400px;
+}
 
 /* Add New Service Modal */
 .service-modal {
@@ -1322,6 +1322,16 @@ label.customer-account{
   color: #FFB800;
   background-color: #240046 !important;
 }
+
+
+#imagePreview{
+  display: none;
+  max-width:  100%;
+  /* margin-top: 10px; */
+  border: #011509 solid 2px;
+  border-radius: 10px;
+}
+
 
 @media (max-width: 768px) {
   .bevitore-logo {

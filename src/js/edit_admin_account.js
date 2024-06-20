@@ -172,33 +172,41 @@ function checkPasswordStrength(password) {
 }
 
 // For calling the modal
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("edit-admin-form");
-  const submitButton = document.getElementById("submitWalkin");
-  const confirmAddWalkin = new bootstrap.Modal(
-    document.getElementById("confirmAddWalkin")
-  );
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('edit-admin-form');
+  const submitButton = document.getElementById('submitEditAdmin');
+  const confirmEditAdmin = new bootstrap.Modal(document.getElementById('confirmEditAdmin'));
 
-  form.addEventListener("submit", function (event) {
+  form.addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form submission
     if (form.checkValidity()) {
       // Form is valid, show success modal
-      confirmAddWalkin.show();
+      confirmEditAdmin.show();
       // You can also submit the form via AJAX here if needed
     } else {
-      form.classList.add("was-validated"); // Show validation messages
+      form.classList.add('was-validated'); // Show validation messages
     }
   });
 
   // Optional: Reset form validation on modal close
-  confirmAddWalkin.addEventListener("hidden.bs.modal", function () {
-    form.classList.remove("was-validated");
+  confirmEditAdmin.addEventListener('hidden.bs.modal', function () {
+    form.classList.remove('was-validated');
   });
 });
 
-//add reservation
+
+//For Modal Body
+$(document).ready(function() {
+  $("#create-admin-button").click(function() {
+      $("#confirmEditAdmin .modal-body").html(getUserInputs());
+  });
+});
+
+
+
+    //add reservation
 $(document).ready(function () {
-  $("#submitWalkin").click(function (e) {
+  $("#submitEditAdmin").click(function (e) {
     e.preventDefault();
 
     var formData = new FormData($("#edit-admin-form")[0]);
@@ -221,6 +229,7 @@ $(document).ready(function () {
     });
   });
 });
+
 
 //   set default value for password field in case if super admin does not want to edit password
 document.addEventListener("DOMContentLoaded", () => {
