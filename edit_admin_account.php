@@ -224,7 +224,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div class="col-12 col-md-2">
               <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button> -->
-              <a href="admin-profiles.php" class="btn btn-outline-primary w-100 cancel-button">Cancel</a>
+              <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.href='admin-profiles.php'">Cancel</button>
             </div>
           </div>
         </form>

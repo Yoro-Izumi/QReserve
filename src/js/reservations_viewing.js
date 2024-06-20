@@ -88,11 +88,19 @@ function attachCheckboxListeners() {
 
 
 
+$(document).ready(function(){
+    // Show textarea if 'Others' is selected
+    $("input[name='rejectionReason']").change(function() {
+        if ($("#thirdOption").is(":checked")) {
+            $("#thirdOptionText").show();
+        } else {
+            $("#thirdOptionText").hide();
+        }
+    });
 
-
-  $(document).ready(function(){
     // AJAX code to handle reject reservation
-    $("#confirm-reject-reservation").click(function(){
+    $("#confirm-reject-reservation-reason").click(function(){
+        var formData = new FormData($("#reject-reason-form")[0]);
         // Array to store IDs of selected rows
         var selectedRowsReject = [];
 
@@ -102,25 +110,43 @@ function attachCheckboxListeners() {
             selectedRowsReject.push($(this).val());
         });
 
-        // AJAX call to send selected rows IDs to delete script
+        // Append the array to the FormData object
+        formData.append('selectedRowsReject', JSON.stringify(selectedRowsReject));
+
+        // Get the value of the selected rejection reason radio button
+        var rejectionReason = $("input[name='rejectionReason']:checked").val();
+        formData.append('rejectionReason', rejectionReason);
+
+        // Append the third option text area value if necessary
+        if (rejectionReason === "thirdOption") {
+            var thirdOptionTextarea = $("#thirdOptionTextarea").val();
+            formData.append('thirdOptionTextarea', thirdOptionTextarea);
+        }
+
+        // AJAX call to send formData (including the selected rows IDs)
         $.ajax({
             url: "reservation_crud.php",
             type: "POST",
-            data: {selectedRowsReject: selectedRowsReject},
+            data: formData,
+            processData: false,  // Important!
+            contentType: false,  // Important!
             success: function(response){
                 // Reload the page or update the table as needed
-               // location.reload(); // For example, reload the page after deletion
+                // location.reload(); // For example, reload the page after deletion
             },
             error: function(xhr, status, error){
-                //console.error("Error:", error);
+                console.error("Error:", error);
             }
         });
     });
 });
 
+
+
+
 $(document).ready(function(){
     // AJAX code to handle accept reservation
-    $("#confirm-accept-reservation").click(function(){
+    $("#confirm-accept-reservation-reason").click(function(){
         // Array to store IDs of selected rows
         var selectedRowsAccept = [];
 
