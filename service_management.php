@@ -70,7 +70,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <?php foreach ($arrayServices as $services) : ?>
               <tr>
                 <!-- <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td> -->
-                <td><input type='checkbox' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td>
+                <td><input type='checkbox' class='admin-checkbox' name='admin[]' value='<?php echo $services['serviceID']; ?>'></td>
                 <td><?php echo htmlspecialchars($services['serviceName']); ?></td>
                 <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
                 <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
@@ -80,140 +80,18 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </tbody>
         </table>
         <div>
-            <form type="hidden" id="pass-service" name="pass-service">
-                <input type="hidden" id="edit-service-val" name="edit-service-val" value="">
+            <form type="hidden" id="pass-admin" name="pass-admin">
+                <input type="hidden" id="edit-admin-val" name="edit-admin-val" value="">
             </form>
         </div>
         <div class="mt-3">
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-account-modal" id="delete-service" disabled>Delete</button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service" onclick="trimRate()" disabled>Edit</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-admin" disabled>Delete</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
         </div>
       </div>
     </section>
 
 
-
-
-    <!-- Modals -->
-    <!-- Add New Service Modal -->
-    <div class="modal fade" id="add-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered service-modal" id="add-new-service-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title fw-bold text-center" id="staticBackdropLabel"><img src="src/images/icons/add.gif" alt="Wait Icon" class="modal-icons">Add New Service</h2>
-          </div>
-          <div class="modal-body">
-            <form class="needs-validation" id="add-new-service-form" novalidate action="service_crud.php" method="POST" enctype="multipart/form-data">
-              <div class="row">
-                <div class="col-12 col-md-12 mb-3">
-                  <label for="serviceName" class="form-label">Service Name <span>*</span></label>
-                  <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Enter service name here" required pattern="^\S(?:.*\S)?$" oninvalid="this.setCustomValidity('Please enter a valid service name.')" oninput="handleInput(event); checkInputs();" />
-                  <div class="valid-feedback">Looks good!</div>
-                  <div class="invalid-feedback">
-                    Please enter a valid service name.
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                  <label for="serviceRate" class="form-label">Rate <span>*</span></label>
-                  <div class="input-group">
-                    <span class="input-group-text">₱</span>
-                    <input type="text" class="form-control" name="serviceRate" id="serviceRate" placeholder="Enter rate here per hour" pattern="^\d{1,3}(,\d{3})*(\.\d{1,2})?$" oninput="validateRateInput(this); checkInputs();" title="Please enter a valid rate (e.g., 1000, 1,000.00)." maxlength="7" minlength="2" required />
-                  </div>
-                  <div class="valid-feedback">Looks good!</div>
-                  <div class="invalid-feedback">Please enter a valid rate.</div>
-                </div>
-
-
-                <div class="col-12 col-md-6 mb-3">
-                  <label for="capacity" class="form-label">Capacity <span>*</span></label>
-                  <input type="text" class="form-control" name="capacity" id="capacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, ''); checkInputs();" />
-                  <div class="invalid-feedback">
-                    Please enter a valid capacity.
-                  </div>
-                </div>
-                <div class="col-12 col-md-12 mb-3">
-                  <label for="serviceImage" class="form-label">Image <span>*</span></label>
-                  <input type="file" class="form-control" name="serviceImage" id="serviceImage" accept=".jpg, .jpeg, .png" required onchange="checkInputs();" />
-                  <div class="invalid-feedback">
-                    Please select an image.
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer mb-0 pb-0 me-0 pe-0">
-                <button type="button" class="btn zbtn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="resetForm()">Cancel</button>
-                <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-add-new-service-modal" data-bs-toggle="modal" id="confirmButton" disabled>Confirm</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Confirmation Add Service Modal -->
-    <div class="modal fade" id="confirm-add-new-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
-          </div>
-          <div class="modal-body text-truncate">
-            <!-- The content will be dynamically generated here -->
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal" onclick="editService()">Edit</button>
-            <!-- <button type="submit" name="confirm_add_service_button" id="confirm_add_service_button" class="btn btn-primary create-button" data-bs-target="#success-add-service-modal" data-bs-toggle="modal">Confirm</button> -->
-            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-new-service" id="success-new-service">Confirm</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Success Add New Service Modal -->
-    <div class="modal fade" id="success-add-new-service" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="wait">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
-          </div>
-          <div class="modal-body text-center">
-            You have successfully added a new service.
-          </div>
-          <div class="modal-footer">
-            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
-            <button class="btn btn-primary create-button" name="confirm_add_service_button" id="confirm_add_service_button" type="submit">Proceed</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Success Add New Service Modal -->
-    <!-- <div class="modal fade" id="success-add-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="wait">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
-          </div>
-          <div class="modal-body">
-            You have successfully added a new service.
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary create-button" id="proceed_add_new_service_button" data-bs-target="#" data-bs-toggle="modal" onclick="reload()">Proceed</button>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
