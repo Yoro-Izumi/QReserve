@@ -206,7 +206,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <div class="modal-content text-center">
           <div class="modal-header">
             <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
           </div>
           <div class="modal-body">
           Are you sure you want to edit this account?
@@ -228,7 +227,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
           </div>
           <div class="modal-body text-center">
-            You have successfully registered a new account.
+            You have successfully edited this account.
           </div>
           <div class="modal-footer">
             <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
