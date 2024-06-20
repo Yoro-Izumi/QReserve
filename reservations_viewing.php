@@ -79,7 +79,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </tr>
   </thead>
   <tbody>
-            <?php
+            <?php /*
             foreach ($arrayReservationInfo as $reservations) {
               $reservationID = $reservations['reservationID'] ?? null;
               $reservationDate = $reservations['reservationDate'] ?? null;
@@ -160,7 +160,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               echo "<td><span class='$status'>$walkinStatus</span></td>
               </tr>";
             }
-            ?>
+            */?>
           </tbody>
           </table>
         </form> -->
@@ -329,7 +329,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-
     <!-- Reject Reservation Modals -->
     <div class="modal fade" id="reject-confirmation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -337,41 +336,40 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div class="modal-header">
             <h2 class="modal-title fw-bold text-center" id="deleted">Reason for Rejection</h2>
           </div>
-          <div class="modal-body">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="rejectionReason" id="firstDefaultReason" value="firstDefaultReason">
-              <label class="form-check-label" for="firstDefaultReason">
-                Choose another date and time. A reservation was already made with the same date and time.
-              </label>
+          <form id='reject-reason-form' name='reject-reason-form' method="POST">
+            <div class="modal-body">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="rejectionReason" id="firstDefaultReason" value="Choose another date and time. A reservation was already made with the same date and time.">
+                <label class="form-check-label" for="firstDefaultReason">
+                  Choose another date and time. A reservation was already made with the same date and time.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="rejectionReason" id="secondDefaultReason" value="The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.">
+                <label class="form-check-label" for="secondDefaultReason">
+                  The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="rejectionReason" id="thirdOption" value="thirdOption">
+                <label class="form-check-label" for="thirdOption">
+                  Others (Please specify)
+                </label>
+              </div>
+              <div id="thirdOptionText" class="form-group" style="display: none; margin-top: 10px;">
+                <textarea id="thirdOptionTextarea" name="thirdOptionTextarea" class="form-control" maxlength="300" rows="3" placeholder="Specify your reason (max 50 words)"></textarea>
+                <small id="wordCount" class="form-text text-muted">0 / 50 words</small>
+              </div>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="rejectionReason" id="secondDefaultReason" value="secondDefaultReason">
-              <label class="form-check-label" for="secondDefaultReason">
-                The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.
-              </label>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="confirm-reject-reservation-reason" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="rejectionReason" id="thirdOption" value="thirdOption">
-              <label class="form-check-label" for="thirdOption">
-                Others (Please specify)
-              </label>
-            </div>
-            <div id="thirdOptionText" class="form-group" style="display: none; margin-top: 10px;">
-              <textarea id="thirdOptionTextarea" class="form-control" maxlength="300" rows="3" placeholder="Specify your reason (max 50 words)"></textarea>
-              <small id="wordCount" class="form-text text-muted">0 / 50 words</small>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" id="confirm-reject-reservation" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
-          </div>
+          </form>
         </div>
       </div>
-    </div>
-
-
-
-
+</div>
+    
     <!-- Success Reject Reservation Modals -->
     <div class="modal fade" id="success-reject-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -427,7 +425,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         left: -9999px;
       }
     </style>
-
 
 
 

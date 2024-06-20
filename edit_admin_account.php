@@ -91,9 +91,10 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
         <form class="row dashboard-square-kebab needs-validation" id="edit-admin-form" novalidate>
+          <input type='hidden' value='<?php echo $adminInfoID;?>' name='updateAdmin'>
           <div class="col-md-3 mb-2">
             <label for="firstName" class="form-label">First Name <span>*</span></label>
-            <input type="text" value="<?php echo $adminFirstName; ?>" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
+            <input type="text" value="<?php echo $adminFirstName; ?>" class="form-control" id="firstName" name="FirstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -208,6 +209,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <i class="fas fa-eye-slash"></i>
               </button>
             </div>
+            
             <div id="password-strength-indicator"></div>
           </div>
           <div class="col-12 col-md-6 ">
@@ -276,6 +278,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
     </div>
+    
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
 

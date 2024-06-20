@@ -15,9 +15,18 @@ date_default_timezone_set('Asia/Manila');
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
- if(isset($_POST['selectedRowsReject'])){ 
+ /*if(isset($_POST['selectedRowsReject'])){ 
     $selectedRowsReject = $_POST['selectedRowsReject'];
     $reservationStatus = "Rejected";
+    /* $reason = $_POST['rejectionReason']; // get rejection reason
+     $txtReason = $_POST['thirdOptionTextarea']; // third option text area
+
+     if ($reason == 'thirdOption') {
+         $reason = $txtReason;
+     }
+     RejectedEmail($memberEmail, $rowIdReject, $reason, $date, $time);
+
+     
         foreach($selectedRowsReject as $rowIdReject){
             //update reservation status
             $qryRejectReservation = "UPDATE `pool_table_reservation` SET reservationStatus = ? where reservationID = ?";
@@ -50,7 +59,49 @@ date_default_timezone_set('Asia/Manila');
       // Assuming you want to return a success message
         echo "Rows deleted successfully";
         unset($_POST['selectedRowsReject']);
+}*/
+if (isset($_POST['selectedRowsReject'])) { 
+    $selectedRowsReject = json_decode($_POST['selectedRowsReject'], true);
+    $reservationStatus = "Rejected";
+    $reason = $_POST['rejectionReason']; // get rejection reason
+    $txtReason = $_POST['thirdOptionTextarea']; // third option text area
+
+    if ($reason == 'thirdOption') {
+        $reason = $txtReason;
+    }
+
+    foreach ($selectedRowsReject as $rowIdReject) {
+        // Update reservation status
+        $qryRejectReservation = "UPDATE `pool_table_reservation` SET reservationStatus = ? WHERE reservationID = ?";
+        $connRejectReservation = mysqli_prepare($conn, $qryRejectReservation);
+        mysqli_stmt_bind_param($connRejectReservation, 'si', $reservationStatus, $rowIdReject);
+        mysqli_stmt_execute($connRejectReservation);
+
+        // Data to encode into the QR code
+        $data = encryptData($rowIdReject, $key);
+        // Output file name
+        $outputFile = 'src/phpqrcode/temp/' . $data . '.png';
+
+        // Get reservation details 
+        foreach ($arrayReservationInfo as $reservationInfo) {
+            if ($reservationInfo['reservationID'] == $rowIdReject) {
+                $memberID = $reservationInfo['memberID'];
+                foreach ($arrayMemberAccount as $memberAccount) {
+                    if ($memberAccount['memberID'] == $memberID) {
+                        $memberEmail = $memberAccount['customerEmail'];
+                        RejectedEmail($memberEmail, $rowIdReject, $reason, $date, $time);
+                    }
+                }
+            }
+        }
+    }
+
+    // Assuming you want to return a success message
+    echo "Rows updated successfully";
+    unset($_POST['selectedRowsReject']);
 }
+
+
 
 if(isset($_POST['selectedRowsAccept'])){ 
   $selectedRowsAccept = $_POST['selectedRowsAccept'];
@@ -138,6 +189,6 @@ function pendingEmail($memberEmail,$rowIdAccept,$data,$outputFile){
 include "src/send_email/pending_reservation_email.php";
 }
 
-function RejectedEmail($memberEmail,$rowIdReject){
+function RejectedEmail($memberEmail, $rowIdReject, $reason, $date, $time){
 include "src/send_email/rejected_reservation_email.php";
 }
