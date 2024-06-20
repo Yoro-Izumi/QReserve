@@ -1323,6 +1323,16 @@ label.customer-account{
   background-color: #240046 !important;
 }
 
+
+#imagePreview{
+  display: none;
+  max-width:  100%;
+  /* margin-top: 10px; */
+  border: #011509 solid 2px;
+  border-radius: 10px;
+}
+
+
 @media (max-width: 768px) {
   .bevitore-logo {
     width: 25%;

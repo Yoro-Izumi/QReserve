@@ -51,7 +51,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <section class="home-section">
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="qreserve">Service Management</h4>
-        <button type="button" class="btn btn-primary fw-bold start-button" data-bs-toggle="modal" data-bs-target="#add-service-modal" id="add-new-profile">Add New Service</button>
+        <!-- <button type="button" class="btn btn-primary fw-bold start-button" data-bs-toggle="modal" data-bs-target="#add-service-modal" id="add-new-profile">Add New Service</button> -->
+        <a href="add_new_service.php" type="button" class="btn btn-primary fw-bold start-button" id="add-new-profile">Add New Service</a>
       </div>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="profile-management">
@@ -68,7 +69,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <tbody>
             <?php foreach ($arrayServices as $services) : ?>
               <tr>
-                <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td>
+                <!-- <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td> -->
+                <td><input type='checkbox' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td>
                 <td><?php echo htmlspecialchars($services['serviceName']); ?></td>
                 <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
                 <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
@@ -77,9 +79,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <?php endforeach; ?>
           </tbody>
         </table>
+        <div>
+            <form type="hidden" id="pass-service" name="pass-service">
+                <input type="hidden" id="edit-service-val" name="edit-service-val" value="">
+            </form>
+        </div>
         <div class="mt-3">
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-service" disabled>Delete</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service" onclick="trimRate()" disabled>Edit</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-account-modal" id="delete-service" disabled>Delete</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-service" onclick="trimRate()" disabled>Edit</button>
         </div>
       </div>
     </section>
