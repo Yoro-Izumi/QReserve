@@ -60,7 +60,30 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="profile-management">
         <table id="example" class="table table-striped" style="width: 100%">
-          <!--member will dynamically update when new data is inserted-->
+        <thead>
+            <tr>
+              <th>Actions</th>
+              <th>Name</th>
+              <th>Control Number</th>
+              <th>Birthday</th>
+              <th>Contact Number</th>
+              <th>Email Address</th>
+              <th>Validity</th>
+            </tr>
+          </thead>
+          <tbody>
+                <?php foreach ($arrayMemberAccount as $memberAccount) : ?>
+                    <tr>
+                        <td><input type='checkbox' class='member-checkbox' name='member[]' value='<?php echo $memberAccount['customerID']; ?>'></td>
+                        <td><?php echo htmlspecialchars(decryptData($memberAccount['customerFirstName'], $key) . " " . decryptData($memberAccount['customerMiddleName'], $key) . " " . decryptData($memberAccount['customerLastName'], $key)); ?></td>
+                        <td><?php echo htmlspecialchars(decryptData($memberAccount['membershipID'], $key)); ?></td>
+                        <td><?php echo htmlspecialchars(decryptData($memberAccount['customerBirthdate'], $key)); ?></td>
+                        <td><?php echo htmlspecialchars(decryptData($memberAccount['customerNumber'], $key)); ?></td>
+                        <td><?php echo htmlspecialchars(decryptData($memberAccount['customerEmail'], $key)); ?></td>
+                        <td><?php echo htmlspecialchars($memberAccount['validityDate']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
         </table>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button>

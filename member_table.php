@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 date_default_timezone_set('Asia/Manila');
 include "connect_database.php";
@@ -24,7 +24,7 @@ echo"
 
 foreach ($arrayMemberAccount as $memberAccount) { //get membership details as well as information of member
   $customerID = $memberAccount["customerID"];
-  $memberUsername = decryptData($memberAccount["membershipID"], $key);
+  $memberUsername = decryptData($memberAccount["memberUsername"], $key);
   $membershipValidity = $memberAccount["validityDate"];
   $customerName = decryptData($memberAccount['customerFirstName'], $key) . " " . decryptData($memberAccount['customerMiddleName'], $key) . " " . decryptData($memberAccount['customerLastName'], $key);
   $customerBirthdate = decryptData($memberAccount['customerBirthdate'], $key);
@@ -43,4 +43,4 @@ echo"
  }
 echo "</tbody>";
 
-?>
+?> -->
