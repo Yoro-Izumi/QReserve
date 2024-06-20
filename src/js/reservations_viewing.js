@@ -216,7 +216,7 @@ $(document).ready(function() {
 
     
     // Event listener for the input field
-    document.addEventListener('DOMContentLoaded', () => {
+    /*document.addEventListener('DOMContentLoaded', () => {
         const qrInput = document.getElementById('qrInput');
         const formInputs = document.querySelectorAll('form input');
 
@@ -227,12 +227,12 @@ $(document).ready(function() {
             }
         }
 
-        qrInput.addEventListener('input', () => {
+        qrInput.addEventListener('keydown', () => {
             const id = qrInput.value.trim();
-                if (id) {
+                if (id && event.key == 'Enter') {
                     fetchInfo(id);
-                    qrInput.value = '';  // Clear the input field after scanning
                     hideMobileKeyboard();  // Hide the mobile keyboard
+                    qrInput.value = '';  // Clear the input field after scanning
                 }
         });
 
@@ -258,7 +258,54 @@ $(document).ready(function() {
         document.getElementById('submitReserve').addEventListener('click', () => {
             $('#reservation_details').modal('hide');
         });
+    });*/
+document.addEventListener('DOMContentLoaded', () => {
+    const qrInput = document.getElementById('qrInput');
+    const formInputs = document.querySelectorAll('form input:not(#qrInput)'); // Exclude qrInput from the list
+
+    // Ensure the QR input field is always focused when necessary
+    function focusQrInput() {
+        if (document.activeElement !== qrInput && !document.querySelector('form input:focus')) {
+            qrInput.focus();
+        }
+    }
+
+    qrInput.addEventListener('keydown', (event) => {
+        const id = qrInput.value.trim();
+        if (id && event.key === 'Enter') {
+            fetchInfo(id);
+            hideMobileKeyboard();  // Hide the mobile keyboard
+            qrInput.value = '';  // Clear the input field after scanning
+        }
     });
+
+    // Add event listeners to all form inputs to manage focus
+    formInputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            // Temporarily disable QR input focus
+            document.removeEventListener('click', focusQrInput);
+        });
+
+        input.addEventListener('blur', () => {
+            // Re-enable QR input focus after a delay
+            setTimeout(() => {
+                document.addEventListener('click', focusQrInput);
+            }, 100);
+        });
+    });
+
+    // Initial focus on the QR input field
+    focusQrInput();
+    // Ensure the QR input field remains focused after interactions
+    document.addEventListener('click', focusQrInput);
+
+    // Close button in the modal
+    document.getElementById('submitReserve').addEventListener('click', () => {
+        $('#reservation_details').modal('hide');
+    });
+});
+
+
 
 
 
