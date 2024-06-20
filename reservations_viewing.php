@@ -164,7 +164,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </tbody>
           </table>
         </form> -->
-
+        <form>
         <table id="example" class="table table-striped" style="width: 100%">
           <thead>
             <tr>
@@ -263,7 +263,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             }
             ?>
           </tbody>
-        </table>
+        </table></form>
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
           <button type="button" id="accept-reservation" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accept-modal" id="accept-service">Accept</button>
@@ -416,6 +416,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       #result {
         position: absolute;
         left: -9999px;
+        display:none;
       }
     </style>
     <style>

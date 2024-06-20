@@ -61,6 +61,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       <h4 class="qreserve">Reservations</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab">
+      <form>
       <table id="example" class="table table-striped" style="width: 100%">
           <thead>
             <tr>
@@ -159,7 +160,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             }
             ?>
           </tbody>
-        </table>
+        </table></form>
       </div>
     </section>
 
@@ -262,18 +263,19 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
 
 
     <style>
-        /* Hide div result */
-        #result {
-            position: absolute;
-            left: -9999px;
-        }
+      /* Hide div result */
+      #result {
+        position: absolute;
+        left: -9999px;
+        display:none;
+      }
     </style>
     <style>
-        /* Hide the QR input field */
-        #qrInput {
-            position: absolute;
-            left: -9999px;
-        }
+      /* Hide the QR input field */
+      #qrInput {
+        position: absolute;
+        left: -9999px;
+      }
     </style>
 
 <script src="src/js/sidebar.js"></script>
