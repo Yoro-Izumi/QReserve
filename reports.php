@@ -8,18 +8,62 @@ include "src/get_data_from_database/get_walk_in.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
+
 if (isset($_SESSION["userSuperAdminID"])) {
+  //for linear regression
+  include "testPython/test2/get_reservations.php";
   // Run the Python script
   $output = shell_exec('python3.10 testPython/test2/linear_regression.py');
   // Include the generated PHP data file
   include 'data.php';
-  
+
+  //for getting the peak hour
+  include "testPython/test1/get_reservation_hour.php";
+  // Fetch reservation data
+  $reservations = getReservations();
+
+  if (empty($reservations)) {
+      echo "No reservations found.";
+      exit();
+  }
+
+  // Pass data to Python script
+  $reservation_times_json = json_encode($reservations);
+  $command = 'echo ' . escapeshellarg($reservation_times_json) . ' | python3.10 testPython/test1/find_peak_hour.py';
+  $output = shell_exec($command);
+
+  // Log the output for debugging
+  file_put_contents('testPython/test1/python_output.log', $output);
+
+  $peak_times_data = json_decode($output, true);
+
+  if (json_last_error() !== JSON_ERROR_NONE) {
+      echo "Error decoding JSON: " . json_last_error_msg();
+      echo "Python output: " . htmlspecialchars($output);
+      exit();
+  }
+
+  // Prepare data for Highcharts
+  $formatted_data = [];
+  for ($i = 10; $i <= 27; $i++) {
+      $hour = $i % 24; // Wrap around after 23 to represent next day's hours
+      $found = false;
+      foreach ($peak_times_data as $item) {
+          if ($item['hour'] == $hour) {
+              $formatted_data[] = $item['count'];
+              $found = true;
+              break;
+          }
+      }
+      if (!$found) {
+          $formatted_data[] = 0;
+      }
+  }
   
 ?>
 
   <!DOCTYPE html>
   <html lang="en" dir="ltr">
-
   <head>
     <meta charset="UTF-8" />
     <!-- Boxicons CDN Link -->
@@ -183,16 +227,73 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
-    
 
     <!-- 2nd Graph -->
     <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        Highcharts.chart('container2', {
+          chart: {
+            type: 'area'
+          },
+          accessibility: {
+            description: 'Image description: An area chart compares the number of reservations in Bevitore between 10:00 AM today and 3:00 AM the following day Philippine time. The number of reservations is plotted on the Y-axis and the time on the X-axis. The chart is interactive, and the reservation levels can be traced for each pool table.'
+          },
+          title: {
+            text: ''
+          },
+          subtitle: {
+            text: ''
+          },
+          xAxis: {
+            allowDecimals: false,
+            type: 'datetime',
+            accessibility: {
+              rangeDescription: 'Range: 10:00 AM today to 3:00 AM the following day Philippine time.'
+            },
+            min: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10), // Start at 10:00 AM Philippine time today (GMT+8)
+            max: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 3), // End at 3:00 AM Philippine time the following day (GMT+8)
+            labels: {
+              format: '{value:%I:%M %p}', // Format for displaying labels
+            }
+          },
+          yAxis: {
+            title: {
+              text: 'Reservations'
+            }
+          },
+          tooltip: {
+            pointFormat: '{series.name} had reserved <b>{point.y:,.0f}</b><br/>pool table at {point.x:%I:%M %p} Philippine time'
+          },
+          plotOptions: {
+            area: {
+              pointStart: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10), // Start at 10:00 AM Philippine time today (GMT+8)
+              pointInterval: 3600 * 1000, // One hour intervals
+              marker: {
+                enabled: false,
+                symbol: 'circle',
+                radius: 2,
+                states: {
+                  hover: {
+                    enabled: true
+                  }
+                }
+              }
+            }
+          },
+          series: [{
+            name: 'Operational Hours',
+            data: <?php echo json_encode($formatted_data); ?>
+          }]
+        });
+      });
+    </script>
+   <!-- <script>
       Highcharts.chart('container2', {
         chart: {
           type: 'area'
         },
         accessibility: {
-          description: 'Image description: An area chart compares the nuclear stockpiles of the USA and the USSR/Russia between 10:00 AM today and 3:00 AM the following day Philippine time. The number of nuclear weapons is plotted on the Y-axis and the time on the X-axis. The chart is interactive, and the stockpile levels can be traced for each country. The US has a stockpile of 6 nuclear weapons at 10:00 AM. This number has gradually increased to 369 by 11:00 AM when the USSR enters the arms race with 6 weapons. At this point, the US starts to rapidly build its stockpile culminating in 32,040 warheads by 4:00 PM compared to the USSR’s 7,089. From this peak at 4:00 PM, the US stockpile gradually decreases as the USSR’s stockpile expands. By 7:00 PM, the USSR has closed the nuclear gap at 25,393. The USSR stockpile continues to grow until it reaches a peak of 45,000 at 12:00 AM the following day compared to the US arsenal of 24,401. From 12:00 AM the following day, the nuclear stockpiles of both countries start to fall. By 2:00 AM the following day, the numbers have fallen to 10,577 and 21,000 for the US and Russia, respectively. The decreases continue until 3:00 AM the following day at which point the US holds 4,018 weapons compared to Russia’s 4,500.'
+          description: 'Image description: An area chart compares the number of reservation in Bevitore between 10:00 AM today and 3:00 AM the following day Philippine time. The number of Reservation is plotted on the Y-axis and the time on the X-axis. The chart is interactive, and the resrvation levels can be traced for each pool table.'
         },
         title: {
           text: ''
@@ -214,11 +315,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
         },
         yAxis: {
           title: {
-            text: 'Nuclear weapon states'
+            text: 'Reservation'
           }
         },
         tooltip: {
-          pointFormat: '{series.name} had stockpiled <b>{point.y:,.0f}</b><br/>warheads at {point.x:%I:%M %p} Philippine time'
+          pointFormat: '{series.name} had reserved <b>{point.y:,.0f}</b><br/>pool table at {point.x:%I:%M %p} Philippine time'
         },
         plotOptions: {
           area: {
@@ -239,7 +340,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         series: [{
           name: 'Operational Hours',
           data: [
-            null, null, null, null, null, 2, 9, 13, 50, 170, 299, 438, 841,
+            2,3, 5,1,7, 2, 9, 13, 50, 170, 299, 438, 841,
             1169, 1703, 2422, 3692, 5543, 7345, 12298, 18638, 22229, 25540,
             28133, 29463, 31139, 31175, 31255, 29561, 27552, 26008, 25830,
             26516, 27835, 28537, 27519, 25914, 25542, 24418, 24138, 24104,
@@ -250,7 +351,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           ]
         }]
       });
-    </script>
+    </script> -->
 
 
     <!-- 3rd Graph -->

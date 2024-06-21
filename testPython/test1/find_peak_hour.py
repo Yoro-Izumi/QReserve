@@ -1,55 +1,32 @@
-import numpy as np
-import pandas as pd
-from sklearn.linear_model import LinearRegression
-import mysql.connector
-import datetime
+# find_peak_hour.py
+import sys
+import json
+from datetime import datetime
+from collections import Counter
 
-# Database connection
-db_connection = mysql.connector.connect(
-    host="sql12.freesqldatabase.com",
-    user="sql12713153",
-    password="LcbCQaWeEn",
-    database="sql12713153"
-)
-''' for replit testing
-host="sql12.freesqldatabase.com",
-user="sql12713153",
-password="LcbCQaWeEn",
-database="sql12713153"
-'''
-# SQL query to retrieve data
-query = """
-    SELECT reservationDate, HOUR(reservationTimeStart) as hour, COUNT(*) as reservation_count
-    FROM pool_table_reservation
-    GROUP BY reservationDate, hour
-"""
-data = pd.read_sql(query, db_connection)
+try:
+    # Read reservation times from input (passed from PHP)
+    reservation_times = json.loads(sys.stdin.read())
 
-# Close the database connection
-db_connection.close()
+    # Check if reservation_times is empty
+    if not reservation_times:
+        print(json.dumps([]))
+        sys.exit(0)
 
-# Preprocess the data
-data['reservationDate'] = pd.to_datetime(data['reservationDate'])
-data = data.sort_values(['reservationDate', 'hour'])
+    # Convert to datetime objects
+    reservation_datetimes = [datetime.strptime(time, '%H:%M:%S') for time in reservation_times]
 
-# Group by hour to find the peak hour
-hourly_data = data.groupby('hour')['reservation_count'].sum().reset_index()
+    # Extract the hours from the reservation times
+    reservation_hours = [dt.hour for dt in reservation_datetimes]
 
-# Find the peak hour
-peak_hour = hourly_data.loc[hourly_data['reservation_count'].idxmax()]
+    # Count the frequency of each hour
+    hour_counts = Counter(reservation_hours)
 
-# Prepare data for plotting in Highcharts
-hourly_data['timestamp'] = hourly_data['hour'].apply(lambda x: datetime.datetime.combine(datetime.date.today(), datetime.time(x)).timestamp() * 1000)
-actual_data = [(int(row['timestamp']), row['reservation_count']) for index, row in hourly_data.iterrows()]
+    # Prepare data for the graph
+    peak_times_data = [{"hour": hour, "count": count} for hour, count in hour_counts.items()]
 
-# Generate PHP code with actual data in PHP list
-php_code = "<?php\n"
-php_code += "$actual_data = [\n" + ",\n".join([f"[{x[0]}, {x[1]}]" for x in actual_data]) + "\n];\n"
-php_code += f"$peak_hour = {peak_hour['hour']};\n"
-php_code += "?>"
-
-# Write the generated PHP code to a file
-with open('data.php', 'w') as file:
-    file.write(php_code)
-
-print("PHP code generated and saved to data.php")
+    # Output the result to be used in PHP
+    print(json.dumps(peak_times_data))
+except Exception as e:
+    print(json.dumps({"error": str(e)}))
+    sys.exit(1)
