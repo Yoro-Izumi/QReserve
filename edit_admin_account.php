@@ -205,7 +205,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <i class="fas fa-eye-slash"></i>
               </button>
             </div>
-            
             <div id="password-strength-indicator"></div>
           </div>
           <div class="col-12 col-md-6 ">
