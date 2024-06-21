@@ -151,7 +151,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 } else {
                   $shiftStart = $shiftStartHour . ":" . $tempShiftStart[1] . " AM";
                 }
-
                 if ($shiftEndHour >= 13) {
                   $shiftEnd = ($shiftEndHour - 12) . ":" . $tempShiftEnd[1] . " PM";
                 } else {
