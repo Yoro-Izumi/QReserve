@@ -65,7 +65,6 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       <table id="example" class="table table-striped" style="width: 100%">
           <thead>
             <tr>
-              <th>Actions</th>
               <th>Reservation Code</th>
               <th>Name</th>
               <th>Date of Reservation</th>
@@ -108,13 +107,10 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               echo "<tr>";
               if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
                 $status = "badge bg-success";
-                echo "<td> </td>";
               } else if ($reservationStatus == "On Process") {
                 $status = "badge bg-warning";
-                echo "<td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>";
               } else {
                 $status = "badge bg-danger";
-                echo "<td> </td>";
               }
               echo "
                 <td>$reservationCode</td>
@@ -140,7 +136,6 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               $email = decryptData($walkin['customerEmail'] ?? '', $key);
 
               echo "<tr>
-                <td></td>
                 <td>Walk-in</td>
                 <td>$customerName</td>
                 <td>$walkinDate</td>
