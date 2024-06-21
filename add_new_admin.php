@@ -245,7 +245,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <div id="updateTable" style="display:none;"></div>
 
     <script src="src/js/add_new_admin.js"></script>
     <script src="src/js/sidebar.js"></script>
