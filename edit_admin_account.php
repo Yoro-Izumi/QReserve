@@ -34,10 +34,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       $shiftTimeStart = $adminAccount['shiftTimeStart'];
       $shiftTimeEnd = $adminAccount['shiftTimeEnd'];
       $adminShift = $adminAccount['adminShiftID'];
-    } // else {
-    // Handle the case where $_POST['passID'] does not match
-    // For example, you could return an error response or set variables to default values
-    //}
+    } 
   }
 
 ?>
