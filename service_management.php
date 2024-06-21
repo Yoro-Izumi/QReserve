@@ -244,7 +244,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </script>
 
 
-
     <script src="src/js/service_management.js"></script>
     <script src="src/js/sidebar.js"></script>
   </body>
