@@ -117,6 +117,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
           </div>
           <div class="col-md-6 mb-2">
+    <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
+    <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="checkControlNumberAvailability()">
+    <div id="controlNumberFeedback"></div>
+</div>
+
+          <!-- <div class="col-md-6 mb-2">
             <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
             <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" oninput="validateControlNumber(event)">
             <div class="valid-feedback">
@@ -125,7 +131,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="invalid-feedback">
               Please provide a valid contact number.
             </div>
-          </div>
+          </div> -->
           <div class="col-md-6 mb-2">
             <label for="validity" class="form-label">Validity Date <span>*</span></label>
             <input type="date" class="form-control" id="validity" placeholder="Enter birthDate here" name="validity" required onblur="handleInput(event)" oninput="validateUsername(event)">
