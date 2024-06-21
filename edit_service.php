@@ -8,22 +8,19 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 
 // Initialize variables with default values
-$ID = $adminID = $serviceID = $serviceName = $serviceCapacity = $serviceRate = $serviceImage = "";
+// $ID = $adminID = $serviceID = $serviceName = $serviceCapacity = $serviceRate = $serviceImage = "";
 
-if (isset($_SESSION["userSuperAdminID"])) {
-  $superAdminID = $_SESSION["userSuperAdminID"];
-  $ID = isset($_GET['value']) ? $_GET['value'] : '';
-
-  foreach ($arrayServices as $service) {
-    if ($service['serviceID'] == $ID) {
-      // Populate variables with data from $service array
-      $serviceID = $service['serviceID'];
-      $serviceName = $service['serviceName'];
-      $serviceCapacity = $service['serviceCapacity'];
-      $serviceRate = $service['serviceRate'];
-      break; // Break the loop once the matching service is found
-    }
-  }
+    if (isset($_SESSION["userSuperAdminID"])) {
+        $superAdminID = $_SESSION["userSuperAdminID"];
+      
+        $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
+        
+        foreach($arrayServices as $service){
+            $serviceID = $service['serviceID'];
+            $serviceName = $service['serviceName'];
+            $serviceCapacity = $service['serviceCapacity'];
+            $serviceRate = $service['serviceRate'];
+        }
 ?>
     <!DOCTYPE html>
     <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -74,27 +71,28 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <hr class="my-4">
             <div class="container-fluid" id="profmanage-add-new-profile">
                 <form class="row dashboard-square-kebab needs-validation" id="edit-service-form" novalidate>
+                    <input type="hidden" name="editID" id="editID" value="<?php echo $ID; ?>">
                     <div class="col-md-12 mb-2">
-                        <label for="serviceName" class="form-label">Service Name <span>*</span></label>
-                        <input type="text" value="<?php echo $serviceName; ?>" class="form-control" id="serviceName" name="serviceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
+                        <label for="editServiceName" class="form-label">Service Name <span>*</span></label>
+                        <input type="text" value="<?php echo $serviceName; ?>" class="form-control" id="editServiceName" name="editServiceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">Please provide a valid service name.</div>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <label for="serviceRate" class="form-label">Rate <span>*</span></label>
-                        <input type="text" value="<?php echo $serviceRate; ?>" class="form-control" id="serviceRate" name="serviceRate" placeholder="Enter rate here" required onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
+                        <label for="editServiceRate" class="form-label">Rate <span>*</span></label>
+                        <input type="text" value="<?php echo $serviceRate; ?>" class="form-control" id="editServiceRate" name="editServiceRate" placeholder="Enter rate here" required onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">Please provide a valid rate.</div>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <label for="capacity" class="form-label">Capacity <span>*</span></label>
-                        <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="3" required onblur="handleInput(event)" oninput="validateCapacity(event)">
+                        <label for="editCapacity" class="form-label">Capacity <span>*</span></label>
+                        <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="editCapacity" placeholder="Enter capacity here" name="editCapacity" maxlength="3" required onblur="handleInput(event)" oninput="validateCapacity(event)">
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">Please provide a valid capacity.</div>
                     </div>
                     <div class="col-md-10 mb-2">
-                        <label for="serviceImage" class="form-label">Image <span>*</span></label>
-                        <input type="file" value="<?php echo $serviceName; ?>" class="form-control" id="serviceImage" name="serviceImage" accept=".jpeg, .jpg, .png" required onchange="validateImage(event)">
+                        <label for="editImage" class="form-label">Image <span>*</span></label>
+                        <input type="file" value="<?php echo $serviceName; ?>" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" required onchange="validateImage(event)">
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">Please provide a valid file.</div>
                     </div>
@@ -103,14 +101,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
                     </div>
                     <div class="row justify-content-end mt-5">
                         <div class="col-12 col-md-2 mb-2 mb-md-0">
-                            <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
+                            <button class="btn btn-primary w-100 create-button" type="submit" id="create-member-button">Create</button>
                         </div>
                         <div class="col-12 col-md-2 mb-2 mb-md-0">
-                            <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
+                            <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.href='member-profiles.php'">Cancel</button>
                         </div>
                     </div>
                 </form>
-
             </div>
         </section>
 
@@ -118,15 +115,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <!-- Add this div at the end of your HTML body to contain the modal -->
         <div class="modal fade" id="confirmAddWalkin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-                <div class="modal-content">
+                <div class="modal-content text-center">
                     <div class="modal-header">
                         <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-                        <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
                     </div>
                     <div class="modal-body">
-                        <!-- The content will be dynamically generated here -->
+                        Are you sure you want to edit this account?
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer d-flex justify-content-center">
                         <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
                         <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal">Confirm</button>
                     </div>
@@ -138,12 +134,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <!-- Success Add New Walkin Modal -->
         <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" id="wait">
+                <div class="modal-content text-center" id="wait">
                     <div class="modal-header">
                         <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
                     </div>
                     <div class="modal-body text-center">
-                        You have successfully registered a new account.
+                        You have successfully edited this account.
                     </div>
                     <div class="modal-footer">
                         <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
@@ -152,6 +148,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 </div>
             </div>
         </div>
+
 
 
         <script src="src/js/edit_services.js"></script>
