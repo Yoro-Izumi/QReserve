@@ -76,9 +76,15 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
             foreach($arrayMemberAccount as $memberAccount){
               if($memberAccount['customerID'] == $rowId){
+                $memberID  = $memberAccount['memberID'];
                 $customerEmail = $memberAccount['customerEmail'];
                 $memberControlNumber = $memberAccount['membershipID'];
                 sendDeleteNotif($customerEmail,$memberControlNumber,$key);
+                
+                $qryModifyReserve  = "UPDATE pool_table_reservation SET memberID = NULL where memberID = ?";
+                $prepareModifyReserve = mysqli_prepare($conn, $qryModifyReserve);
+                mysqli_stmt_bind_param($prepareModifyReserve, "i", $memberID);
+                mysqli_stmt_execute($prepareModifyReserve);
               }
             }
         }
@@ -101,6 +107,7 @@ if (isset($_POST['memberID'])) {
   $memberValidity = mysqli_real_escape_string($conn, $_POST['validity']);
   $x = "None";
   $y = 1;
+  
 
   // Hash the password using Argon2
   $options = [
@@ -122,7 +129,7 @@ if (isset($_POST['memberID'])) {
   mysqli_stmt_bind_param($conUpdateCustomerInfo, "ssssssi", $customerFirstName, $customerLastName, $customerMiddleName, $customerBirthdate, $customerPhone, $customerEmail,$memberID);
   mysqli_stmt_execute($conUpdateCustomerInfo);
 
-  if($memberID = "."){
+  if($memberPassword = "."){
     $qryUpdateMemberDetails = "UPDATE `member_details` SET `membershipID`=?,`creationDate`=?,`validityDate`=?,`superAdminID`=? WHERE `customerID`=?";
     $conUpdateMemberDetails = mysqli_prepare($conn, $qryUpdateMemberDetails);
     mysqli_stmt_bind_param($conUpdateMemberDetails, "sssii", $memberControlNumber, $currentDate, $sqlDate, $userSuperAdmin, $customerID);
