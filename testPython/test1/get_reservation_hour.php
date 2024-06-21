@@ -14,18 +14,6 @@ function getReservations() {
     array_push($reservations,$walkin['walkinTimeStart']);
   }
 
-  /*  $query = "SELECT reservationTimeStart FROM pool_table_reservation";
-    $result = $conn->query($query);
-
-    $reservations = [];
-    while ($row = $result->fetch_assoc()) {
-        $reservations[] = $row['reservation_time'];
-
-        $a=array("a"=>"red","b"=>"green");
-        array_push($a,"blue","yellow");
-        print_r($a);
-    */
-
     return $reservations;
 }
 

@@ -17,6 +17,4 @@ foreach ($arrayWalkinDetails as $walkin) {
 $conn->close();
 
 file_put_contents('data.json', json_encode($data));
-
-echo "Data has been saved to data.json";
 ?>
