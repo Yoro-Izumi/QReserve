@@ -21,7 +21,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
     // Retrieve the value of 'passID'
 
     if ($adminAccount['adminInfoID'] == $ID) {
-
       $adminID = $adminAccount['adminID'];
       $adminInfoID = $adminAccount['adminInfoID'];
       $adminUsername = decryptData($adminAccount['adminUsername'], $key);
