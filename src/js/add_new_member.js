@@ -323,3 +323,22 @@ $(document).ready(function () {
     });
   });
 });
+
+
+
+//For control number checking
+function checkControlNumberAvailability() {
+  let controlNumber = document.getElementById('controlNumber').value;
+  if (controlNumber.trim() !== '') {
+      $.ajax({
+          type: 'POST',
+          url: 'check_controlNumber.php',
+          data: { membershipID: controlNumber }, // Corrected to send 'membershipID'
+          success: function (response) {
+              $('#controlNumberFeedback').html(response);
+          }
+      });
+  } else {
+      $('#controlNumberFeedback').html('');
+  }
+}
