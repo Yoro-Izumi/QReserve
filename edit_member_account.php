@@ -75,10 +75,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Edit Member Account</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-      <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
+      <form class="row dashboard-square-kebab needs-validation" id="edit-admin-form" novalidate>
+      <input type="hidden" id="memberID" name="memberID" value="<?php echo $ID;?>">
           <div class="col-md-4 mb-2">
             <label for="firstName" class="form-label">First Name <span>*</span></label>
-            <input type="text" value="<?php echo $customerFirstName;?>" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
+            <input type="text" value="<?php echo $customerFirstName; ?>" class="form-control" id="firstName" name="FirstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -88,7 +89,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-4 mb-2">
             <label for="middleName" class="form-label">Middle Name</label>
-            <input type="text" value="<?php echo $customerMiddleName;?>" class="form-control" id="middleName" name="middleName" placeholder="" onblur="handleInput(event)" oninput="validateName(event)">
+            <input type="text" value="<?php echo $customerMiddleName; ?>" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -98,7 +99,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-4 mb-2">
             <label for="lastName" class="form-label">Last Name <span>*</span></label>
-            <input type="text" value="<?php echo $customerLastName;?>" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
+            <input type="text" value="<?php echo $customerLastName; ?>" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -118,7 +119,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-4 mb-2">
             <label for="email" class="form-label">Email Address <span>*</span></label>
-            <input type="email" value="<?php echo $customerEmail;?>" class="form-control" id="email" name="email" placeholder="Enter email here" required oninput="validateEmail(event)" onblur="handleInput(event)">
+            <input type="email" value="<?php echo $customerEmail; ?>" class="form-control" id="email" name="email" placeholder="Enter email here" required oninput="validateEmail(event)" onblur="handleInput(event)">
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -128,7 +129,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-4 mb-2">
             <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-            <input type="text" value="<?php echo $customerPhone;?>" class="form-control" id="contactNumber" placeholder="Enter contact number here" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
+            <input type="text" value="<?php echo $customerPhone; ?>" class="form-control" id="contactNumber" placeholder="Enter contact number here" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -156,7 +157,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
               Please provide a valid validity date.
             </div>
           </div>
-
           <div class="col-12 col-md-6 ">
             <label for="password" class="form-label">Password <span>*</span></label>
             <div class="input-group">
@@ -165,6 +165,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <i class="fas fa-eye-slash"></i>
               </button>
             </div>
+            
             <div id="password-strength-indicator"></div>
           </div>
           <div class="col-12 col-md-6 ">
@@ -182,11 +183,10 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div class="invalid-feedback" id="passwordMismatch">
               Passwords do not match.
             </div>
-
           </div>
           <div class="row justify-content-end mt-5">
             <div class="col-12 col-md-2 mb-2 mb-md-0">
-              <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
+              <button class="btn btn-primary w-100 create-button" type="submit" id="create-admin-button">Create</button>
             </div>
             <div class="col-12 col-md-2 mb-2 mb-md-0">
               <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.href='member-profiles.php'">Cancel</button>
@@ -201,9 +201,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
 
     <!-- Add this div at the end of your HTML body to contain the modal -->
-    <div class="modal fade" id="confirmAddWalkin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmEditAdmin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-        <div class="modal-content text-center">
+      <div class="modal-content text-center">
           <div class="modal-header">
             <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
           </div>
@@ -222,7 +222,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <!-- Success Add New Walkin Modal -->
     <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="wait">
+        <div class="modal-content text-center" id="wait">
           <div class="modal-header">
             <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
           </div>
@@ -231,7 +231,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
-            <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
+            <button class="btn btn-primary  create-button" name="submitEditAdmin" id="submitEditAdmin" type="submit">Proceed</button>
           </div>
         </div>
       </div>
