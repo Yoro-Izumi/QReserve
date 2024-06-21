@@ -142,6 +142,33 @@ function reload(){
 location.reload();
 }
 
+$(document).ready(function(){
+    // AJAX code to handle reject reservation
+    $("#confirm-accept-reservation").click(function(){
+        // Array to store IDs of selected rows
+        var selectedRowsAccept = [];
+
+        // Iterate through each checked checkbox
+        $(".reservation-checkbox:checked").each(function(){
+            // Push the value (ID) of checked checkbox into the array
+            selectedRowsAccept.push($(this).val());
+        });
+
+        // AJAX call to send selected rows IDs to accept reservation script
+        $.ajax({
+            url: "reservation_crud.php",
+            type: "POST",
+            data: {selectedRowsAccept: selectedRowsAccept},
+            success: function(response){
+                // Reload the page or update the table as needed
+               // location.reload(); // For example, reload the page after deletion
+            },
+            error: function(xhr, status, error){
+                //console.error("Error:", error);
+            }
+        });
+    });
+});
 
 
 $(document).ready(function() {

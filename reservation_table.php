@@ -115,7 +115,7 @@ foreach ($arrayWalkinDetails as $walkin) {
 echo "</tbody>";
 }
 
-if(isset($_SESSION['userAdminID'])){
+else if(isset($_SESSION['userAdminID'])){
 
 echo "
 <thead>
