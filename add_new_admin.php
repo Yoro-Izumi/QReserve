@@ -238,7 +238,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully registered a new account.
           </div>
           <div class="modal-footer">
-            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
             <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
           </div>
         </div>
