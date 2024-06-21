@@ -45,35 +45,240 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <!-- External CSS -->
     <link rel="stylesheet" href="src/css/sidebar.css" />
     <link rel="stylesheet" href="src/css/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   </head>
 
   <body class="body">
-  <?php
-      if(isset($_SESSION['userSuperAdminID'])) {
-          include "superadmin_sidebar.php";
-      } else {
-          include "admin_sidebar.php";
-      }
-  ?>
+    <?php
+    if (isset($_SESSION['userSuperAdminID'])) {
+      include "superadmin_sidebar.php";
+    } else {
+      include "admin_sidebar.php";
+    }
+    ?>
     <section class="home-section">
-      <h4 class="qreserve">Active Playing</h4>
+      <div class="container-fluid dashboard-square-kebab" id="full-screen">
+      <i id="toggleFullScreen" class="bi bi-fullscreen"></i>
+
+
+        <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
+        <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
+        <div class="row col-md-12 full-screen-tables mb-2">
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+                1
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               5
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+                9
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               13
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-md-12 full-screen-tables mb-2">
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+                2
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               6
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               10
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               14
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-md-12 full-screen-tables mb-2">
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+                3
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               7
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+                11
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+              15
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-md-12 full-screen-tables mb-2">
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+                4
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               8
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+                12
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="table-box">
+              <div class="table-number">
+               16
+              </div>
+              <div class="table-time">
+                <p>Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        document.getElementById('toggleFullScreen').addEventListener('click', function() {
+  var elem = document.getElementById('full-screen');
+
+  if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+});
+
+      </script>
+
+      <h4 class="qreserve mt-5">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
-      
+
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
-          <!--table data is dynamicaly updated and is from pool_table.php-->
-
         </table>
       </div>
 
       <div class="container-fluid mt-4">
         <div class="row justify-content-center text-center">
           <div class="col-md-4 mb-3">
-            <div class="dashboard-square-kebab">
-              Number of Visitors
-              <h1><?php echo $visitors; ?></h1>
+            <div class="dashboard-square-kebab pota">
+              <h1 class="number-of-visitors"><?php echo $visitors; ?></h1>
+              <h6 class="Visitors-today">Visitors today</h6>
             </div>
           </div>
+
           <div class="col-md-4 mb-3">
             <div class="dashboard-square-kebab">
               <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
@@ -164,7 +369,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
-
     </script>
 
   </body>
