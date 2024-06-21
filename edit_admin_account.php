@@ -163,7 +163,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
               Please provide a valid contact number.
             </div>
           </div>
-
           <div class="col-12 col-md-3 mb-2">
             <label for="adminShift" class="form-label">Shift <span>*</span></label>
             <select class="form-control" name="adminShift" id="adminShift" required onchange="this.setCustomValidity('')">
