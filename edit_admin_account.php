@@ -236,7 +236,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </section>
 
-
     <!-- Add this div at the end of your HTML body to contain the modal -->
     <div class="modal fade" id="confirmEditAdmin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
