@@ -131,7 +131,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
         </div>
 
-
         <script src="src/js/add_new_service.js"></script>
         <script src="src/js/sidebar.js"></script>
 
