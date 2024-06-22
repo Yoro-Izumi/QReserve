@@ -100,7 +100,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
 </section>
 
 
-
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-admin-account-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
