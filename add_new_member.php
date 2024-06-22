@@ -125,15 +125,15 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <div id="controlNumberFeedback"></div>
           </div> -->
           <div class="col-md-6 mb-2">
-  <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
-  <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber(event)">
-  <div class="valid-feedback">
-    Looks good!
-  </div>
-  <div id="controlNumberFeedback" class="invalid-feedback">
-    Please provide a valid control number.
-  </div>
-</div>
+            <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
+            <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber(event)">
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div id="controlNumberFeedback" class="invalid-feedback">
+              Please provide a valid control number.
+            </div>
+          </div>
 
           <div class="col-md-6 mb-2">
             <label for="validity" class="form-label">Validity Date <span>*</span></label>
@@ -213,7 +213,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             You have successfully registered a new account.
           </div>
           <div class="modal-footer">
-            
+
             <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
           </div>
         </div>
