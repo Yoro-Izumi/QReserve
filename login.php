@@ -160,10 +160,11 @@ if (isset($_POST['login'])) {
     }
   </style>
 
-
+<link rel="stylesheet" href="src/loader/loader.css">
 </head>
 
 <body class="index-landing">
+<?php include "src/loader/loader.html"; ?>
   <div class="container-fluid homepage">
     <div class="home">
       <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
@@ -185,7 +186,7 @@ if (isset($_POST['login'])) {
               <label for="floatingInput">Email address <span>*</span></label>
             </div>
             <div class="form-floating mb-2 position-relative">
-              <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
+              <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required oninput="validatePassword(event)"/>
               <label for="floatingPassword">Password <span>*</span></label>
               <button class="btn btn-secondary toggle-password position-absolute end-0 top-50 translate-middle-y " type="button">
                 <i class="fas fa-eye-slash"></i>
@@ -227,9 +228,18 @@ if (isset($_POST['login'])) {
 
     </script> 
 
+<script>
+  function validatePassword(event) {
+  // Allow only alphabetic characters, numbers, and specified special characters
+  const regex = /^[a-zA-Z0-9._%+\-!@#$^&*]*$/;
+  if (!regex.test(event.target.value)) {
+    event.target.value = event.target.value.replace(/[^a-zA-Z0-9._%+\-!@#$^&*]/g, '');
+  }
+}
 
+</script>
 
-
+<script src="src/loader/loader.js"></script>
   <script>
     // For password toggle
     document.addEventListener("DOMContentLoaded", function() {

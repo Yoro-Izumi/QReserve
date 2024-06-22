@@ -1,0 +1,30 @@
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling while preloader is active */
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff; /* Change to your desired background color */
+    z-index: 9999;
+}
+
+#preloader img {
+    width: 100px; /* Adjust the size of the GIF as needed */
+    height: 100px; /* Adjust the size of the GIF as needed */
+}
+
+#content {
+    display: none;
+}
+
+

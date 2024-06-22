@@ -315,9 +315,11 @@ function checkControlNumberAvailability() {
       if (response.includes("Taken")) {
         $("#controlNumber").addClass("is-invalid");
         $("#controlNumberFeedback").html("Control Number is already taken.");
+        $("#controlNumber").siblings(".valid-feedback").hide(); // Hide valid feedback
       } else {
         $("#controlNumber").removeClass("is-invalid");
         $("#controlNumberFeedback").html("");
+        $("#controlNumber").siblings(".valid-feedback").show(); // Show valid feedback
         // Show the modal if control number is available
         $("#confirmAddWalkin").modal('show');
       }
@@ -328,6 +330,7 @@ function checkControlNumberAvailability() {
     }
   });
 }
+
 
 
 
