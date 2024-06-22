@@ -124,7 +124,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div id="controlNumberFeedback"></div>
           </div>
-
           <!-- <div class="col-md-6 mb-2">
             <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
             <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" oninput="validateControlNumber(event)">
