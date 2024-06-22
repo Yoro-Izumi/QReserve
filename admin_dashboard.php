@@ -59,7 +59,6 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
           <!--table data is dynamicaly updated and is from pool_table.php-->
         </table>
       </div>
-
       <div class="container-fluid mt-4">
         <div class="row justify-content-center text-center">
           <div class="col-md-4 mb-3">

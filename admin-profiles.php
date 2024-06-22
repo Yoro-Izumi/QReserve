@@ -55,51 +55,49 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <?php include "superadmin_sidebar.php"; ?>
 
     <section class="home-section">
-    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex justify-content-between align-items-center">
         <h4 class="qreserve">Admin Accounts</h4>
         <a href="add_new_admin.php" type="button" class="btn btn-primary fw-bold start-button" id="add-new-profile">Add New Admin</a>
-    </div>
-    <hr class="my-4 mb-3 mt-3">
-    <div class="container-fluid dashboard-square-kebab" id="profile-management">
+      </div>
+      <hr class="my-4 mb-3 mt-3">
+      <div class="container-fluid dashboard-square-kebab" id="profile-management">
         <table id="example" class="table table-striped" style="width: 100%">
-            <thead>
-                <tr>
-                    <th>Actions</th>
-                    <th>Name</th>
-                    <th>Sex</th>
-                    <th>Username</th>
-                    <th>Contact Number</th>
-                    <th>Email Address</th>
-                    <th>Shift</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($arrayAdminAccount as $adminAccount) : ?>
-                    <tr>
-                        <td><input type='checkbox' class='admin-checkbox' name='admin[]' value='<?php echo $adminAccount['adminInfoID']; ?>'></td>
-                        <td><?php echo htmlspecialchars(decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key)); ?></td>
-                        <td><?php echo htmlspecialchars(decryptData($adminAccount['adminSex'], $key)); ?></td>
-                        <td><?php echo htmlspecialchars(decryptData($adminAccount['adminUsername'], $key)); ?></td>
-                        <td><?php echo htmlspecialchars(decryptData($adminAccount['adminContactNumber'], $key)); ?></td>
-                        <td><?php echo htmlspecialchars(decryptData($adminAccount['adminEmail'], $key)); ?></td>
-                        <td><?php echo htmlspecialchars($adminAccount['shiftTimeStart'] . " - " . $adminAccount['shiftTimeEnd']); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
+          <thead>
+            <tr>
+              <th>Actions</th>
+              <th>Name</th>
+              <th>Sex</th>
+              <th>Username</th>
+              <th>Contact Number</th>
+              <th>Email Address</th>
+              <th>Shift</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($arrayAdminAccount as $adminAccount) : ?>
+              <tr>
+                <td><input type='checkbox' class='admin-checkbox' name='admin[]' value='<?php echo $adminAccount['adminInfoID']; ?>'></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key)); ?></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminSex'], $key)); ?></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminUsername'], $key)); ?></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminContactNumber'], $key)); ?></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminEmail'], $key)); ?></td>
+                <td><?php echo htmlspecialchars($adminAccount['shiftTimeStart'] . " - " . $adminAccount['shiftTimeEnd']); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
         </table>
         <div>
-            <form type="hidden" id="pass-admin" name="pass-admin">
-                <input type="hidden" id="edit-admin-val" name="edit-admin-val" value="">
-            </form>
+          <form type="hidden" id="pass-admin" name="pass-admin">
+            <input type="hidden" id="edit-admin-val" name="edit-admin-val" value="">
+          </form>
         </div>
         <div class="mt-3">
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-admin" disabled>Delete</button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-admin" disabled>Delete</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
         </div>
-    </div>
-</section>
-
-
+      </div>
+    </section>
 
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-admin-account-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -136,17 +134,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-
-
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
 
     <script src="src/js/admin_profiles.js"></script>
     <script src="src/js/sidebar.js"></script>
 
-
   </body>
 
   </html>
-  <?php } else {
+<?php } else {
   header("location:login.php");
 } ?>
