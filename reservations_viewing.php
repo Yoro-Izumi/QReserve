@@ -79,7 +79,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </tr>
   </thead>
   <tbody>
-            <?php /*
+            <?php
             foreach ($arrayReservationInfo as $reservations) {
               $reservationID = $reservations['reservationID'] ?? null;
               $reservationDate = $reservations['reservationDate'] ?? null;
@@ -160,7 +160,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               echo "<td><span class='$status'>$walkinStatus</span></td>
               </tr>";
             }
-            */?>
+            ?>
           </tbody>
           </table>
         </form> -->
