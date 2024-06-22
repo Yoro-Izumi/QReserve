@@ -139,7 +139,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <script src="src/js/admin_profiles.js"></script>
     <script src="src/js/sidebar.js"></script>
 
-
   </body>
 
   </html>
