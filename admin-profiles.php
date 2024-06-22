@@ -99,8 +99,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </div>
 </section>
 
-
-
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-admin-account-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -135,7 +133,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
     </div>
-
 
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
