@@ -245,6 +245,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // For calling the modal
+// For calling the modal
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('booking-form');
   const submitButton = document.getElementById('submitWalkin');
@@ -253,9 +254,8 @@ document.addEventListener('DOMContentLoaded', function () {
   form.addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form submission
     if (form.checkValidity()) {
-      // Form is valid, show success modal
-      confirmAddWalkin.show();
-      // You can also submit the form via AJAX here if needed
+      // Check if control number is available
+      checkControlNumberAvailability();
     } else {
       form.classList.add('was-validated'); // Show validation messages
     }
@@ -268,10 +268,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-//For Modal Body
-$(document).ready(function() {
-  $("#create-walkin-button").click(function() {
-      $("#confirmAddWalkin .modal-body").html(getUserInputs());
+// For Modal Body
+$(document).ready(function () {
+  $("#create-walkin-button").click(function () {
+    $("#confirmAddWalkin .modal-body").html(getUserInputs());
   });
 });
 
@@ -285,18 +285,52 @@ function getUserInputs() {
   const contactNumber = $("#contactNumber").val();
   const validity = $("#validity").val();
 
-
   return `
     <div class="modal-content-wrapper">
-            <p><span class="modal-label">Name:</span> <span class="modal-input">${firstName} ${middleName} ${lastName}</span></p>
-            <p><span class="modal-label">Birthdate:</span> <span class="modal-input">${birthDate}</span></p>
-            <p><span class="modal-label">Control Number:</span> <span class="modal-input">${controlNumber}</span></p>
-            <p><span class="modal-label">Email Address:</span> <span class="modal-input">${email}</span></p>
-            <p><span class="modal-label">Contact Number:</span> <span class="modal-input">${contactNumber}</span></p>
-            <p><span class="modal-label">Validity Date:</span> <span class="modal-input">${validity}</span></p>
+      <p><span class="modal-label">Name:</span> <span class="modal-input">${firstName} ${middleName} ${lastName}</span></p>
+      <p><span class="modal-label">Birthdate:</span> <span class="modal-input">${birthDate}</span></p>
+      <p><span class="modal-label">Control Number:</span> <span class="modal-input">${controlNumber}</span></p>
+      <p><span class="modal-label">Email Address:</span> <span class="modal-input">${email}</span></p>
+      <p><span class="modal-label">Contact Number:</span> <span class="modal-input">${contactNumber}</span></p>
+      <p><span class="modal-label">Validity Date:</span> <span class="modal-input">${validity}</span></p>
     </div>
   `;
 }
+
+function checkControlNumberAvailability() {
+  const controlNumber = $("#controlNumber").val();
+
+  // Send the control number to a PHP file for checking
+  $.ajax({
+    url: 'check_controlNumber.php',
+    method: 'POST',
+    data: {
+      controlNumber: controlNumber
+    },
+    success: function (response) {
+      // Log the response to the console for debugging
+      console.log(response);
+
+      // Update the invalid feedback for controlNumber based on the response
+      if (response.includes("Taken")) {
+        $("#controlNumber").addClass("is-invalid");
+        $("#controlNumberFeedback").html("Control Number is already taken.");
+      } else {
+        $("#controlNumber").removeClass("is-invalid");
+        $("#controlNumberFeedback").html("");
+        // Show the modal if control number is available
+        $("#confirmAddWalkin").modal('show');
+      }
+    },
+    error: function (xhr, status, error) {
+      // Handle errors
+      console.error(xhr.responseText);
+    }
+  });
+}
+
+
+
 
 
 $(document).ready(function () {
@@ -327,18 +361,3 @@ $(document).ready(function () {
 
 
 //For control number checking
-function checkControlNumberAvailability() {
-  let controlNumber = document.getElementById('controlNumber').value;
-  if (controlNumber.trim() !== '') {
-      $.ajax({
-          type: 'POST',
-          url: 'check_controlNumber.php',
-          data: { membershipID: controlNumber }, // Corrected to send 'membershipID'
-          success: function (response) {
-              $('#controlNumberFeedback').html(response);
-          }
-      });
-  } else {
-      $('#controlNumberFeedback').html('');
-  }
-}
