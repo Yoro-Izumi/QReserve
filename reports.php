@@ -354,13 +354,34 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </script> -->
 
 
-    <!-- 3rd Graph -->
+    <!-- 3rd Graph 
      <script>
       // Create an array to hold customer names and populations
-      var customerData = [
-        <?php foreach ($adminNames as $name) : ?>['<?php echo $name; ?>',<?php echo $reservation; ?>],
-        <?php endforeach; ?>
-      ];
+       <?php
+         /* $arrayAdmin = array();
+          $arrayAdminNumber = array(); 
+          $x = $y = $z = 0;
+            foreach ($arrayWalkinDetails as $walkin){
+              if(empty($arrayAdmin)){
+                array_push($arrayAdmin,$walkin['adminID']);
+                array_push($arrayAdminNumber,$y);
+              }
+              else{
+                if($arrayAdmin[x] == $walkin['adminID']){
+                  $arrayAdminNumber[$x] = $y+1;
+                }
+                else{
+                  $y = 0;
+                  array_push($arrayAdmin,$walkin['adminID']);
+                  array_push($arrayAdminNumber,$y);
+                }
+              }
+            } 
+       ?>
+       var adminData = [
+         <?php foreach ($arrayAdmin as $name) : ?>['<?php echo $name; ?>', <?php $arrayAdminNumber[$z]; $z++?>],
+         <?php endforeach; */ ?>
+       ];
 
       Highcharts.chart('container3', {
         chart: {
@@ -404,7 +425,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           ],
           colorByPoint: true,
           groupPadding: 0,
-          data: customerData,
+          data: adminData,
           dataLabels: {
             enabled: true,
             rotation: -90,
@@ -420,7 +441,93 @@ if (isset($_SESSION["userSuperAdminID"])) {
           }
         }]
       });
+    </script>-->
+
+    <script>
+    // Create an array to hold customer names and populations
+    <?php
+    $arrayAdmin = array();
+    $arrayAdminNumber = array(); 
+
+    foreach ($arrayWalkinDetails as $walkin) {
+        $adminID = $walkin['adminID'];
+        if (in_array($adminID, $arrayAdmin)) {
+            $index = array_search($adminID, $arrayAdmin);
+            $arrayAdminNumber[$index]++;
+        } else {
+            array_push($arrayAdmin, $adminID);
+            array_push($arrayAdminNumber, 1); // Initial count as 1
+        }
+    }
+    ?>
+    var adminData = [
+        <?php 
+        foreach ($arrayAdmin as $index => $name) : 
+            echo "['$name', {$arrayAdminNumber[$index]}],";
+        endforeach; 
+        ?>
+    ];
+
+    Highcharts.chart('container3', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                autoRotation: [-45, -90],
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Population (millions)'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Population in 2021: <b>{point.y:.1f} millions</b>'
+        },
+        series: [{
+            name: 'Population',
+            colors: [
+                '#9b20d9', '#9215ac', '#861ec9', '#7a17e6', '#7010f9', '#691af3',
+                '#6225ed', '#5b30e7', '#533be1', '#4c46db', '#4551d5', '#3e5ccf',
+                '#3667c9', '#2f72c3', '#277dbd', '#1f88b7', '#1693b1', '#0a9eaa',
+                '#03c69b', '#00f194'
+            ],
+            colorByPoint: true,
+            groupPadding: 0,
+            data: adminData,
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                inside: true,
+                verticalAlign: 'top',
+                format: '{point.y:.1f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    });
     </script>
+
 
 <!-- 4th Graph -->
 <script>
