@@ -191,7 +191,7 @@ date_default_timezone_set('Asia/Manila');
 
   <footer>
     <div>
-      <span>Copyright © 2023 All Rights Reserved</span>
+      <span>Copyright © 2024 All Rights Reserved</span>
       <span class="link">
         <a href="#">Home</a>
         <a href="#contact">Contact</a>
