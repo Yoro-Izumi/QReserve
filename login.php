@@ -182,7 +182,7 @@ if (isset($_POST['login'])) {
             <?php endif; ?>
 
             <div class="form-floating mb-3">
-              <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required />
+              <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required oninput="validateEmail(event)" onblur="handleInput(event)"/>
               <label for="floatingInput">Email address <span>*</span></label>
             </div>
             <div class="form-floating mb-2 position-relative">
@@ -259,6 +259,28 @@ if (isset($_POST['login'])) {
         eyeIcon.classList.toggle("fa-eye");
       });
     });
+  </script>
+
+  <script>
+      //For Email 
+function validateEmail(event) {
+  var emailInput = event.target.value;
+
+  event.target.value = emailInput.replace(/\s+/g, '');
+
+  emailInput = event.target.value.trim();
+
+  var isValid = /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailInput);
+
+  if (!isValid) {
+    document.getElementById("emailError").style.display = "block";
+    event.target.setCustomValidity("Please enter a valid email address.");
+  } else {
+    document.getElementById("emailError").style.display = "none";
+    event.target.setCustomValidity("");
+  }
+}
+document.getElementById("email").addEventListener("input", validateEmail);
   </script>
 </body>
 
