@@ -240,7 +240,6 @@ if (isset($_SESSION['userMemberID'])) {
     </div>
     </div>
 
-
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
     <script src="src/js/booking_form.js"></script>
 
