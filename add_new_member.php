@@ -144,7 +144,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
               Please provide a valid validity date.
             </div>
           </div>
-
           <div class="col-12 col-md-6 ">
             <label for="password" class="form-label">Password <span>*</span></label>
             <div class="input-group">
