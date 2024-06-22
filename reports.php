@@ -22,26 +22,26 @@ if (isset($_SESSION["userSuperAdminID"])) {
   // Fetch reservation data
   $reservations = getReservations();
 
-  if (empty($reservations)) {
-      echo "No reservations found.";
-      exit();
-  }
+  //if (empty($reservations)) {
+   //   echo "No reservations found.";
+   //   exit();
+  //}
 
   // Pass data to Python script
   $reservation_times_json = json_encode($reservations);
   $command = 'echo ' . escapeshellarg($reservation_times_json) . ' | python testPython/test1/find_peak_hour.py';
-  $output = shell_exec($command);
+  $outputPeak = shell_exec($command);
 
   // Log the output for debugging
-  file_put_contents('testPython/test1/python_output.log', $output);
+  //file_put_contents('testPython/test1/python_output.log', $output);
 
-  $peak_times_data = json_decode($output, true);
+  $peak_times_data = json_decode($outputPeak, true);
 
-  if (json_last_error() !== JSON_ERROR_NONE) {
-      echo "Error decoding JSON: " . json_last_error_msg();
-      echo "Python output: " . htmlspecialchars($output);
-      exit();
-  }
+  //if (json_last_error() !== JSON_ERROR_NONE) {
+   //   echo "Error decoding JSON: " . json_last_error_msg();
+   //   echo "Python output: " . htmlspecialchars($output);
+   //   exit();
+//  }
 
   // Prepare data for Highcharts
   $formatted_data = [];
