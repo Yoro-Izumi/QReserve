@@ -113,7 +113,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
         </div>
 
-
         <!-- Success Add New Walkin Modal -->
         <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
