@@ -21,9 +21,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
   <link rel="icon" href="src/images/Bevitore-logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="src/loader/loader.css">
 </head>
 
 <body class="index-landing">
+<?php include "src/loader/loader.html"; ?>
   <div class="container-fluid homepage">
     <div class="home">
       <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
@@ -55,7 +57,7 @@
       });
 
     </script> 
-
+<script src="src/loader/loader.js"></script>
 
 
 </body>
