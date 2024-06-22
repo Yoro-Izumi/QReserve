@@ -3,6 +3,7 @@ session_start();
 if (isset($_SESSION["userSuperAdminID"])) {
   include "connect_database.php";
   include "src/get_data_from_database/get_visitor_num.php";
+  include "src/get_data_from_database/get_pool_table_info.php";
 
   $visitors = $totalVisitor;
 
@@ -63,175 +64,50 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
         <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
         <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
-        <div class="row col-md-12 full-screen-tables mb-2">
-          <div class="col-md-3 mb-4">
+        <div class="row col-md-12 full-screen-tables mb-2" >
+        <?php 
+        foreach($arrayPoolTables as $poolTables){
+        ?>
+          
+          <?php
+          $lastNumber = sizeof($arrayPoolTables);
+          $poolTableNumber = $poolTables['poolTableNumber'];
+            for($x = $poolTableNumber; $x <= $lastNumber;$x++){
+              foreach($arrayPoolTables as $pool){
+                if($pool['poolTableNumber'] == $x){
+                  $status = $pool['poolTableStatus'];
+                }
+                 
+              }
+              ?>
+              
+              <div class="col-md-3 mb-4">
             <div class="table-box">
               <div class="table-number">
-                1
+                <?php echo $x; $x = $x+3;?>
               </div>
               <div class="table-time">
-                <p>Available</p>
+                <p><?php echo $status;?></p>
               </div>
             </div>
           </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               5
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-                9
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               13
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row col-md-12 full-screen-tables mb-2">
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-                2
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               6
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               10
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               14
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row col-md-12 full-screen-tables mb-2">
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-                3
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               7
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-                11
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-              15
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row col-md-12 full-screen-tables mb-2">
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-                4
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               8
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-                12
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-               16
-              </div>
-              <div class="table-time">
-                <p>Available</p>
-              </div>
-            </div>
-          </div>
+              
+              <?php
+            }
+            if($poolTableNumber < 4){
+              continue;
+            }
+            else{
+              break;
+            }
+               
+        ?> 
+        
+        
+        <?php }?>
         </div>
       </div>
+    
 
       <script>
         document.getElementById('toggleFullScreen').addEventListener('click', function() {
