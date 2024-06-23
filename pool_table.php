@@ -30,7 +30,6 @@ foreach($arrayReservationInfo as $reservation) {
         foreach($arrayCustomerInformation as $customer){
             if($customer['customerID'] == $reservation['customerID']){
                 $customerName = decryptData($reservation['customerFirstName'],$key)." " .decryptData($reservation['customerMiddleName'],$key). " " .decryptData($reservation['customerLastName'],$key);
-                echo "Reservation Customer Name: " . $customerName . "<br>"; // Debugging line
             }
         }
 
@@ -58,7 +57,6 @@ foreach($arrayWalkinDetails as $walkin) {
         $insertTimeEnd = $currentDate . " " . $walkin['walkinTimeEnd'];
         $insertTimeStart = $currentDate . " " . $walkin['walkinTimeStart'];
         $customerName = decryptData($walkin['customerFirstName'],$key)." " .decryptData($walkin['customerMiddleName'],$key). " " .decryptData($walkin['customerLastName'],$key);
-        echo "Walk-in Customer Name: " . $customerName . "<br>"; // Debugging line
 
         // Update the database with the new status and times
         $qryUpdatePoolTable = "UPDATE `pool_tables` SET customerName = ?, poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
