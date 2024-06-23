@@ -194,7 +194,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal" id="success-reservation-button">Confirm</button>
+            <button type="button" class="btn btn-primary putanginamo" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal" id="success-reservation-button">Confirm</button>
           </div>
         </div>
       </div>
