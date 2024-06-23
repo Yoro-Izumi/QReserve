@@ -940,7 +940,7 @@ span {
 
 .table-time{
   font-weight: 600;
-  color: #0d2818 !important;
+  color: #011509;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1425,5 +1425,4 @@ label.customer-account{
     width: 25%;
   }
 }
-
 
