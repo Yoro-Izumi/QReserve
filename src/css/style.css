@@ -59,7 +59,7 @@ span {
 
 #index-body {
   background-image: linear-gradient(to bottom right, #0d2818, #020202);
-  /* color: #fff; */
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -939,11 +939,11 @@ span {
 }
 
 .table-time{
-  font-weight: 600;
+  /* font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 5%;
+  padding-bottom: 5%; */
 }
 
 .table-oras{
