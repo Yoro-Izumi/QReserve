@@ -164,7 +164,7 @@ if (isset($_POST['login'])) {
 </head>
 
 <body class="index-landing">
-<?php include "src/loader/loader.html"; ?>
+<!-- <?php include "src/loader/loader.html"; ?> -->
   <div class="container-fluid homepage">
     <div class="home">
       <img src="src/images/Bevitore Billiards Hall Logo.png" alt="Bevitore Logo" class="bevitore-logo">
