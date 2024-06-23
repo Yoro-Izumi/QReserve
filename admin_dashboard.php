@@ -62,7 +62,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
         </div>
       </div>
 
-      <h4 class="qreserve mt-5">Active Playing</h4>
+      <h4 class="qreserve mt-0">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
