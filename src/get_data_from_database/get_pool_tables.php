@@ -55,7 +55,7 @@ foreach ($rearrangedTables as $ptable) {
     $status = $ptable['poolTableStatus'];
     $tStart = explode(" ",$ptable['poolTableTimeStart']);
     $tEnd = explode(" ",$ptable['poolTableTimeEnd']);
-    $time = $tStart[1]."-".$tEnd[1];
+    $time = convertToNormalTime($tStart[1])."-".convertToNormalTime($tEnd[1]);
         if($status != "Available"){
             $status = $time; 
         }
@@ -72,4 +72,12 @@ foreach ($rearrangedTables as $ptable) {
     </div>
     <?php
 }
+
+function convertToNormalTime($militaryTime) {
+    $dateTime = DateTime::createFromFormat('H:i:s', $militaryTime);
+    return $dateTime->format('h:i A');
+}
+
+
+
 ?>
