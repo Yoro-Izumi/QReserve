@@ -9,6 +9,71 @@ include "src/get_data_from_database/get_customer_information.php";
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
 
+
+$currentDate = date('Y-m-d');
+$currentTime = date('H:i:s');
+
+// Default status and times
+$defaultStatus = "Available";
+$defaultTimeEnd = $currentDate . " 00:00:00";
+$defaultTimeStart = $currentDate . " 00:00:00";
+
+
+// Check if the pool table is reserved and update status accordingly
+foreach($arrayReservationInfo as $reservation) {
+    if($reservation['reservationDate'] === $currentDate && 
+       $reservation['reservationTimeStart'] <= $currentTime && 
+       $reservation['reservationTimeEnd'] >= $currentTime
+      ) {
+        $poolTableStatus = "Playing";
+        $insertTimeEnd = $currentDate . " " . $reservation['reservationTimeEnd'];
+        $insertTimeStart = $currentDate . " " . $reservation['reservationTimeStart'];
+        break; // No need to check further reservations
+
+    // Update the database with the new status and times
+    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+    mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $reservation['tableID']);
+    mysqli_stmt_execute($stmt);
+    }
+else{
+    // Update the database with the new status and times
+    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+    mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
+    mysqli_stmt_execute($stmt);
+
+}
+}
+
+
+foreach($arrayWalkinDetails as $walkin){
+    if($walkin['walkinDate'] === $currentDate && 
+       $walkin['walkinTimeStart'] <= $currentTime && 
+       $walkin['walkinTimeEnd'] >= $currentTime
+      ) {
+        $poolTableStatus = "Playing";
+        $insertTimeEnd = $currentDate . " " . $walkin['walkinTimeEnd'];
+        $insertTimeStart = $currentDate . " " . $walkin['walkinTimeStart'];
+        break; // No need to check further reservations
+
+    // Update the database with the new status and times
+    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+    mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $walkin['tableID']);
+    mysqli_stmt_execute($stmt);
+
+ }
+else{
+    // Update the database with the new status and times
+    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+    mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
+    mysqli_stmt_execute($stmt);
+
+}
+}
+
 echo "<thead>
         <tr>
           <th>Name</th>
@@ -20,8 +85,6 @@ echo "<thead>
       </thead>
       <tbody>";
 
-$currentDate = date('Y-m-d');
-$currentTime = date('H:i:s');
 
 foreach($arrayPoolTables as $poolTables) {
     if($poolTables['customerName'] == NULL) {
@@ -35,58 +98,21 @@ foreach($arrayPoolTables as $poolTables) {
     $timeStarted = explode(' ', $poolTables['timeStarted']);
     $timeEnd = explode(' ', $poolTables['timeEnd']);
 
-    // Default status and times
-    $poolStatus = "Available";
-    $insertTimeEnd = $currentDate . " 00:00:00";
-    $insertTimeStart = $currentDate . " 00:00:00";
 
-    // Check if the pool table is reserved and update status accordingly
-    foreach($arrayReservationInfo as $reservation) {
-        if($reservation['reservationDate'] === $currentDate && 
-           $reservation['reservationTimeStart'] <= $currentTime && 
-           $reservation['reservationTimeEnd'] >= $currentTime && 
-           $poolTables['poolTableID'] == $reservation['tableID']
-          ) {
-            $poolStatus = "Playing";
-            $insertTimeEnd = $currentDate . " " . $reservation['reservationTimeEnd'];
-            $insertTimeStart = $currentDate . " " . $reservation['reservationTimeStart'];
-            break; // No need to check further reservations
-        }
-        // Update the database with the new status and times
-        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-        $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-        mysqli_stmt_bind_param($stmt, "sssi", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
-        mysqli_stmt_execute($stmt);
-        
-    }
-    foreach($arrayWalkinDetails as $walkin){
-        if($walkin['walkinDate'] === $currentDate && 
-           $walkin['walkinTimeStart'] <= $currentTime && 
-           $walkin['walkinTimeEnd'] >= $currentTime && 
-           $poolTables['poolTableID'] == $walkin['tableID']
-          ) {
-            $poolStatus = "Playing";
-            $insertTimeEnd = $currentDate . " " . $walkin['walkinTimeEnd'];
-            $insertTimeStart = $currentDate . " " . $walkin['walkinTimeStart'];
-            break; // No need to check further reservations
-        }
-        // Update the database with the new status and times
-        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-        $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-        mysqli_stmt_bind_param($stmt, "sssi", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
-        mysqli_stmt_execute($stmt);
-
-     }
-
-    
 
     // Determine status badge
     if($poolTableStatus == "Done" || $poolTableStatus == "Available") {
         $status = "badge bg-success";
+        $defaultStatus = $poolTableStatus; 
     } else if($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting") {
         $status = "badge bg-warning";
+        $defaultStatus = $poolTableStatus;
+    } else if($poolTableStatus == "Playing"){
+        $status = "badge bg-danger";
+        $defaultStatus = $poolTableStatus;
     } else {
         $status = "badge bg-danger";
+        $defaultStatus = "Playing";
     }
 
     // Output table row
@@ -95,7 +121,7 @@ foreach($arrayPoolTables as $poolTables) {
             <td>".$poolTableNumber."</td>
             <td>".$timeStarted[1]."</td>
             <td>".$timeEnd[1]."</td>
-            <td><span class='".$status."'>".$poolStatus."</span></td>
+            <td><span class='".$status."'>".$defaultStatus."</span></td>
           </tr>";
 }
 
@@ -118,8 +144,8 @@ foreach($arrayMemberAccount as $memberAccount){
             $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
             mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "i", $memberID);
             mysqli_stmt_execute($prepareDeleteMembershipAccount);
-        
-        
+
+
     }
 }
 
