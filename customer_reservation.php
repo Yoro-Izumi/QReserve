@@ -191,10 +191,10 @@ if (isset($_SESSION['userMemberID'])) {
             </div>
             <div class="row justify-content-end mt-5">
               <div class="col-12 col-md-2 mb-3 mb-md-0">
-                <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
+                <button class="btn btn-primary w-100 create-button-member" type="submit" id="create-walkin-button">Create</button>
               </div>
               <div class="col-12 col-md-2 mb-3 mb-md-0">
-                <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
+                <button class="btn btn-outline-primary w-100 cancel-button-member" type="button" onclick="window.location.reload()">Cancel</button>
               </div>
             </div>
           </form>
@@ -214,8 +214,8 @@ if (isset($_SESSION['userMemberID'])) {
             <!-- The content will be dynamically generated here -->
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal" id="success-reservation-button">Confirm</button>
+            <button type="button" class="btn btn-outline-primary cancel-button-member" data-bs-dismiss="modal">Edit</button>
+            <button type="button" class="btn btn-primary create-button-member" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal" id="success-reservation-button">Confirm</button>
           </div>
         </div>
       </div>
@@ -233,7 +233,7 @@ if (isset($_SESSION['userMemberID'])) {
             Kindly wait for your turn to play!
           </div>
           <div class="modal-footer">
-            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+            <!-- <button class="btn btn-primary create-button-member" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
             <button class="btn btn-primary  create-button" name="submitReserve" id="submitReserve" type="submit">Proceed</button>
           </div>
         </div>

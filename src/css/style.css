@@ -294,8 +294,36 @@ img.modal-icons {
   color: #ffb800 !important;
 }
 
-.create-button#proceed, .create-button#confirm_add_service_button, .create-button#submitAddAdmin, .create-button#submitAddMember, .create-button#submitWalkin, .create-button#submitEditAdminAccount, .create-button#submitEditAdmin {
+.create-button#proceed, .create-button#confirm_add_service_button, .create-button#submitAddAdmin, .create-button#submitAddMember, .create-button#submitWalkin, .create-button#submitEditAdminAccount, .create-button#submitEditAdmin, .create-button#proceed-delete-button {
   width: 400px;
+}
+
+.cancel-button-member{
+  background-color: transparent !important;
+  color: #240046 !important;
+  width: 150px;
+  border-color: #240046 !important;
+}
+
+.cancel-button-member:hover {
+  background-color: #ffb800 !important;
+  font-weight: bold;
+  color: #240046 !important;
+  border-color: #ffb800 !important;
+}
+
+.create-button-member{
+  background-color: #240046 !important;
+  color: white;
+  width: 150px;
+  border-color: #0d2818 !important;
+}
+
+.create-button-member:hover {
+  background-color: #ffb800 !important;
+  font-weight: bold;
+  color: #240046 !important;
+  border-color: #ffb800 !important;
 }
 
 /* Add New Service Modal */
@@ -1370,17 +1398,22 @@ label.customer-account{
   width: 8%
 }
 
-.number-of-visitors {
+.number-of-visitors,.member-validity-date {
   font-size: 100px;
   font-weight: 600;
   color: #011509 ;
 }
 
+.member-validity-date{
+  font-size: 44px;
+}
+
+
 .Visitors-today {
   font-size: 20px;
 }
 
-.pota{
+.visitors-box{
   height: 315px; 
   display: flex;
   flex-direction: column;
