@@ -949,6 +949,10 @@ span {
 
 .table-oras{
   font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5%;
 }
 
 .bi-fullscreen {
