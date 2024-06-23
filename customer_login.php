@@ -135,7 +135,7 @@ if (isset($_POST['login_member'])) {
                 <label for="controlNumber">Control Number <span>*</span></label>
               </div> -->
               <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber(event)">
+              <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber2(event)">
                 <label for="controlNumber">Control Number <span>*</span></label>
               </div>
               <div class="form-floating mb-2 position-relative">
@@ -230,37 +230,38 @@ if (isset($_POST['login_member'])) {
       }
     }
   </script>
-  <script>
-    function validateControlNumber2(event) {
-      const input = event.target;
-      let value = input.value;
+<script>
+  function validateControlNumber2(event) {
+    const input = event.target;
+    let value = input.value;
 
-      // Allow only numeric characters and a single hyphen
-      value = value.replace(/[^0-9-]/g, '');
+    // Allow only numeric characters and a single hyphen
+    value = value.replace(/[^0-9-]/g, '');
 
-      // Ensure there's only one hyphen and it's in the correct position (after two digits)
-      const parts = value.split('-');
-      if (parts.length > 2 || (parts[1] && parts[1].length > 4) || (parts[0] && parts[0].length > 2)) {
-        input.setCustomValidity('Please provide a valid contact number (format: 00-0000).');
+    // Ensure there's only one hyphen and it's in the correct position (after two digits)
+    const parts = value.split('-');
+    if (parts.length > 2 || (parts[1] && parts[1].length > 4) || (parts[0] && parts[0].length > 2)) {
+      input.setCustomValidity('Please provide a valid contact number (format: 00-0000).');
+    } else {
+      // Reconstruct the value ensuring the correct format
+      value = parts[0].slice(0, 2);
+      if (parts.length > 1) {
+        value += '-' + parts[1].slice(0, 4);
+      }
+
+      input.value = value;
+
+      // Check if the pattern is valid: two digits, one hyphen, four digits
+      const pattern = /^\d{2}-\d{4}$/;
+      if (pattern.test(input.value) && input.value !== '-') {
+        input.setCustomValidity(''); // Valid input
       } else {
-        // Reconstruct the value ensuring the correct format
-        value = parts[0].slice(0, 2);
-        if (parts.length > 1) {
-          value += '-' + parts[1].slice(0, 4);
-        }
-
-        input.value = value;
-
-        // Check if the pattern is valid: two digits, one hyphen, four digits
-        const pattern = /^\d{2}-\d{4}$/;
-        if (pattern.test(input.value)) {
-          input.setCustomValidity(''); // Valid input
-        } else {
-          input.setCustomValidity('Please provide a valid contact number (format: 00-0000).');
-        }
+        input.setCustomValidity('Please provide a valid contact number (format: 00-0000).');
       }
     }
-  </script>
+  }
+</script>
+
 </body>
 
 </html>
