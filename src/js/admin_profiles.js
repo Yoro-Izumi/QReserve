@@ -2,11 +2,12 @@ $(document).ready(function () {
     $("#example").DataTable({
         paging: true,
         lengthChange: true,
-        searching: true,
+        searching: true, // Ensure this option is set to true
         ordering: true,
         info: true,
         autoWidth: false,
         responsive: true,
+        scrollX: true // Enable horizontal scrolling
     });
 });
 

@@ -7,8 +7,10 @@ $(document).ready(function () {
         info: true,
         autoWidth: false,
         responsive: true,
+        scrollX: true // Enable horizontal scrolling
     });
 });
+
 
 
 // JavaScript functions for handling bulk actions
