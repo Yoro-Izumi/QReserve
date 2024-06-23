@@ -1,41 +1,152 @@
-<?php
-// this php file is merely for testing codes before implementing them in the system
-?>
-<DOCTYPE! html>
-  
-   <html>
-   <head>
-   <style>
-     body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-     .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-     button { padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border: none; border-radius: 5px; cursor: pointer; }
-   </style>
-   </head>
-   <body>
-   <div class='container'>
-     <h3 style='text-align:center; color:green;'></h3>
-     <div style='border:2px solid green; border-radius:10px; padding: 20px; margin:20px;'>
-     <h1 style='font:Inika; text-align:center; color:#F1C40F;'>Resevation Status</h1>
-     <hr style='color:green; opacity:80%;'>
-     <span><b>Dear Member,</b></span>
-     <br><br>
-     <span style='margin:20px;'>We regret to inform you that your reservation request on $date $time has been <b style='color:#E74C3C;'>REJECTED</b> by the management. $reason.</span>
-     <br><br>
-     <span>For more information regarding your reservation, kindly message <a href='https://web.facebook.com/Bevitore.Sta.Rosa/?_rdc=1&_rdr' style='text-decoration: none; color:#6495ED;'>Bevitore's Facebook Page</a></span>
-     <br><br>
-     <span>Thank you for your attention to this matter. </span>
-     <br><br>
-     <span>Best regards, </span>
-     <br></br>
-     <span>Bevitore Santa Rosa</span>
-     <br>
-   </div>
+  <?php 
+  include "connect_database.php";
+  include "encodeDecode.php";
+  include "src/get_data_from_database/get_pool_table_info.php";
+  include "src/get_data_from_database/get_reservation_info.php";
+  include "src/get_data_from_database/get_walk_in.php";
+  include "src/get_data_from_database/get_customer_information.php";
 
-   <hr>
-   <h4>Bevitore Sta.Rosa</h4><br>
-   <span><i>This communication is intended solely for the use of the addressee. It may contain confidential or legally privileged information. If you are not the intended recipient, any disclosure, copying, distribution or taking action in reliance on this communication is strictly prohibited and unlawful. If you received this communication in error, please notify the sender immediately and delete this communication from your system. Bevitore Sta.Rosa is neither liable for the proper and complete transmission of this communication nor for any delay in its receipt.</i></span>
-   </div>
-   </body>
-   </html>
+  $key = "TheGreatestNumberIs73";
+  date_default_timezone_set('Asia/Manila');
 
-  
+
+  $currentDate = date('Y-m-d');
+  $currentTime = date('H:i:s');
+
+  // Default status and times
+  $defaultStatus = "Available";
+  $defaultTimeEnd = $currentDate . " 00:00:00";
+  $defaultTimeStart = $currentDate . " 00:00:00";
+
+
+  // Check if the pool table is reserved and update status accordingly
+  foreach($arrayReservationInfo as $reservation) {
+      if($reservation['reservationDate'] === $currentDate && 
+         $reservation['reservationTimeStart'] <= $currentTime && 
+         $reservation['reservationTimeEnd'] >= $currentTime
+        ) {
+          $poolTableStatus = "Playing";
+          $insertTimeEnd = $currentDate . " " . $reservation['reservationTimeEnd'];
+          $insertTimeStart = $currentDate . " " . $reservation['reservationTimeStart'];
+          break; // No need to check further reservations
+
+      // Update the database with the new status and times
+      $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+      $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+      mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $reservation['tableID']);
+      mysqli_stmt_execute($stmt);
+      }
+  else{
+      // Update the database with the new status and times
+      $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+      $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+      mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
+      mysqli_stmt_execute($stmt);
+
+  }
+  }
+
+
+  foreach($arrayWalkinDetails as $walkin){
+      if($walkin['walkinDate'] === $currentDate && 
+         $walkin['walkinTimeStart'] <= $currentTime && 
+         $walkin['walkinTimeEnd'] >= $currentTime
+        ) {
+          $poolTableStatus = "Playing";
+          $insertTimeEnd = $currentDate . " " . $walkin['walkinTimeEnd'];
+          $insertTimeStart = $currentDate . " " . $walkin['walkinTimeStart'];
+          break; // No need to check further reservations
+
+      // Update the database with the new status and times
+      $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+      $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+      mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $walkin['tableID']);
+      mysqli_stmt_execute($stmt);
+
+   }
+  else{
+      // Update the database with the new status and times
+      $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+      $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+      mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
+      mysqli_stmt_execute($stmt);
+
+  }
+  }
+
+  echo "<thead>
+          <tr>
+            <th>Name</th>
+            <th>Pool Table</th>
+            <th>Time Started</th>
+            <th>Expected End Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>";
+
+
+  foreach($arrayPoolTables as $poolTables) {
+      if($poolTables['customerName'] == NULL) {
+          $customerName = "None";
+      } else {
+          $customerName = $poolTables['customerName'];
+      }
+
+      $poolTableStatus = $poolTables['poolTableStatus'];
+      $poolTableNumber = $poolTables['poolTableNumber'];
+      $timeStarted = explode(' ', $poolTables['timeStarted']);
+      $timeEnd = explode(' ', $poolTables['timeEnd']);
+
+
+
+      // Determine status badge
+      if($poolTableStatus == "Done" || $poolTableStatus == "Available") {
+          $status = "badge bg-success";
+          $defaultStatus = $poolTableStatus; 
+      } else if($poolTableStatus == "Reserved" || $poolTableStatus == "Waiting") {
+          $status = "badge bg-warning";
+          $defaultStatus = $poolTableStatus;
+      } else if($poolTableStatus == "Playing"){
+          $status = "badge bg-danger";
+          $defaultStatus = $poolTableStatus;
+      } else {
+          $status = "badge bg-danger";
+          $defaultStatus = "Playing";
+      }
+
+      // Output table row
+      echo "<tr>
+              <td>".$customerName."</td>
+              <td>".$poolTableNumber."</td>
+              <td>".$timeStarted[1]."</td>
+              <td>".$timeEnd[1]."</td>
+              <td><span class='".$status."'>".$defaultStatus."</span></td>
+            </tr>";
+  }
+
+  echo "</tbody>";
+
+  foreach($arrayMemberAccount as $memberAccount){
+      $memberValidity  = $memberAccount['validityDate'];
+      // Parse HTML date string into a DateTime object
+        $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
+        // Convert DateTime object to SQL date format (YYYY-MM-DD)
+        $sqlDate = $date->format('Y-m-d');
+      if($sqlDate < $currentDate){
+          $memberID = $memberAccount['memberID'];
+              $qryModifyReserve  = "UPDATE pool_table_reservation SET memberID = NULL where memberID = ?";
+              $prepareModifyReserve = mysqli_prepare($conn, $qryModifyReserve);
+              mysqli_stmt_bind_param($prepareModifyReserve, "i", $memberID);
+              mysqli_stmt_execute($prepareModifyReserve);
+
+              $qryDeleteMembershipAccount = "DELETE FROM member_details WHERE memberID = ?";
+              $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
+              mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "i", $memberID);
+              mysqli_stmt_execute($prepareDeleteMembershipAccount);
+
+
+      }
+  }
+
+  ?>
