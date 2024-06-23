@@ -25,9 +25,9 @@ if (isset($_POST['login_member'])) {
       if (decryptData($membershipAccount['membershipID'], $key) == $controlNumber) {
         $controlNumberExists = true;
         if (password_verify($password, $membershipAccount['membershipPassword'])) {
-          // echo '<script language="javascript">';
-          // echo 'alert("You are now logged in!")';
-          // echo '</script>';
+          echo '<script language="javascript">';
+          echo 'alert("You are now logged in!")';
+          echo '</script>';
           $_SESSION['userMemberID'] = $membershipAccount['memberID'];
           header("location:customer_dashboard.php");
           exit();
@@ -135,7 +135,7 @@ if (isset($_POST['login_member'])) {
                 <label for="controlNumber">Control Number <span>*</span></label>
               </div> -->
               <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber(event)"/>
+              <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber(event)">
                 <label for="controlNumber">Control Number <span>*</span></label>
               </div>
               <div class="form-floating mb-2 position-relative">
@@ -181,13 +181,7 @@ if (isset($_POST['login_member'])) {
     });
   </script>
 
-<script>
-  //   For trimming whitespaces
-function handleInput(event) {
-  const inputValue = event.target.value;
-  event.target.value = inputValue.trim(); // Remove leading and trailing whitespaces
-}
-</script>
+
 
 
   <script>
@@ -210,22 +204,21 @@ function handleInput(event) {
       });
     });
 
-// Validation for Control Number
-function validateControlNumber() {
-  const controlNumber = document.getElementById('controlNumber').value;
-  const errorMessageDiv = document.getElementById('error-message');
-  const pattern = /^[0-9]{1,4}-[0-9]{1,4}$/;
+    // Validation for Control Number
+    function validateControlNumber() {
+      const controlNumber = document.getElementById('controlNumber').value;
+      const errorMessageDiv = document.getElementById('error-message');
+      const pattern = /^[0-9]{1,4}-[0-9]{1,4}$/;
 
-  if (!pattern.test(controlNumber)) {
-    errorMessageDiv.textContent = 'Please input a valid control number.';
-    errorMessageDiv.classList.remove('d-none');
-    return false;
-  }
+      if (!pattern.test(controlNumber)) {
+        errorMessageDiv.textContent = 'Please input a valid control number.';
+        errorMessageDiv.classList.remove('d-none');
+        return false;
+      }
 
-  errorMessageDiv.classList.add('d-none');
-  return true;
-}
-
+      errorMessageDiv.classList.add('d-none');
+      return true;
+    }
   </script>
 
   <script>
