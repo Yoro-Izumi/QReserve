@@ -9,7 +9,6 @@ include "src/get_data_from_database/get_customer_information.php";
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
 
-
 $currentDate = date('Y-m-d');
 $currentTime = date('H:i:s');
 
@@ -18,60 +17,50 @@ $defaultStatus = "Available";
 $defaultTimeEnd = $currentDate . " 00:00:00";
 $defaultTimeStart = $currentDate . " 00:00:00";
 
-
 // Check if the pool table is reserved and update status accordingly
 foreach($arrayReservationInfo as $reservation) {
     if($reservation['reservationDate'] === $currentDate && 
        $reservation['reservationTimeStart'] <= $currentTime && 
-       $reservation['reservationTimeEnd'] >= $currentTime
-      ) {
+       $reservation['reservationTimeEnd'] >= $currentTime) {
         $poolTableStatus = "Playing";
         $insertTimeEnd = $currentDate . " " . $reservation['reservationTimeEnd'];
         $insertTimeStart = $currentDate . " " . $reservation['reservationTimeStart'];
-        break; // No need to check further reservations
 
-    // Update the database with the new status and times
-    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-    mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $reservation['tableID']);
-    mysqli_stmt_execute($stmt);
+        // Update the database with the new status and times
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+        mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $reservation['tableID']);
+        mysqli_stmt_execute($stmt);
+    } else {
+        // Update the database with the default status and times
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+        mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
+        mysqli_stmt_execute($stmt);
     }
-else{
-    // Update the database with the new status and times
-    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-    mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
-    mysqli_stmt_execute($stmt);
-
-}
 }
 
-
-foreach($arrayWalkinDetails as $walkin){
+// Check if the pool table is used by walk-in and update status accordingly
+foreach($arrayWalkinDetails as $walkin) {
     if($walkin['walkinDate'] === $currentDate && 
        $walkin['walkinTimeStart'] <= $currentTime && 
-       $walkin['walkinTimeEnd'] >= $currentTime
-      ) {
+       $walkin['walkinTimeEnd'] >= $currentTime) {
         $poolTableStatus = "Playing";
         $insertTimeEnd = $currentDate . " " . $walkin['walkinTimeEnd'];
         $insertTimeStart = $currentDate . " " . $walkin['walkinTimeStart'];
-        break; // No need to check further reservations
 
-    // Update the database with the new status and times
-    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-    mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $walkin['tableID']);
-    mysqli_stmt_execute($stmt);
-
- }
-else{
-    // Update the database with the new status and times
-    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-    mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
-    mysqli_stmt_execute($stmt);
-
-}
+        // Update the database with the new status and times
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+        mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $walkin['tableID']);
+        mysqli_stmt_execute($stmt);
+    } else {
+        // Update the database with the default status and times
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
+        mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $walkin['tableID']);
+        mysqli_stmt_execute($stmt);
+    }
 }
 
 echo "<thead>
@@ -85,7 +74,6 @@ echo "<thead>
       </thead>
       <tbody>";
 
-
 foreach($arrayPoolTables as $poolTables) {
     if($poolTables['customerName'] == NULL) {
         $customerName = "None";
@@ -97,8 +85,6 @@ foreach($arrayPoolTables as $poolTables) {
     $poolTableNumber = $poolTables['poolTableNumber'];
     $timeStarted = explode(' ', $poolTables['timeStarted']);
     $timeEnd = explode(' ', $poolTables['timeEnd']);
-
-
 
     // Determine status badge
     if($poolTableStatus == "Done" || $poolTableStatus == "Available") {
@@ -127,26 +113,22 @@ foreach($arrayPoolTables as $poolTables) {
 
 echo "</tbody>";
 
+// Remove expired memberships
 foreach($arrayMemberAccount as $memberAccount){
     $memberValidity  = $memberAccount['validityDate'];
-    // Parse HTML date string into a DateTime object
-      $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
-      // Convert DateTime object to SQL date format (YYYY-MM-DD)
-      $sqlDate = $date->format('Y-m-d');
+    $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
+    $sqlDate = $date->format('Y-m-d');
     if($sqlDate < $currentDate){
         $memberID = $memberAccount['memberID'];
-            $qryModifyReserve  = "UPDATE pool_table_reservation SET memberID = NULL where memberID = ?";
-            $prepareModifyReserve = mysqli_prepare($conn, $qryModifyReserve);
-            mysqli_stmt_bind_param($prepareModifyReserve, "i", $memberID);
-            mysqli_stmt_execute($prepareModifyReserve);
+        $qryModifyReserve  = "UPDATE pool_table_reservation SET memberID = NULL where memberID = ?";
+        $prepareModifyReserve = mysqli_prepare($conn, $qryModifyReserve);
+        mysqli_stmt_bind_param($prepareModifyReserve, "i", $memberID);
+        mysqli_stmt_execute($prepareModifyReserve);
 
-            $qryDeleteMembershipAccount = "DELETE FROM member_details WHERE memberID = ?";
-            $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
-            mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "i", $memberID);
-            mysqli_stmt_execute($prepareDeleteMembershipAccount);
-
-
+        $qryDeleteMembershipAccount = "DELETE FROM member_details WHERE memberID = ?";
+        $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
+        mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "i", $memberID);
+        mysqli_stmt_execute($prepareDeleteMembershipAccount);
     }
 }
-
 ?>
