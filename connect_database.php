@@ -5,12 +5,3 @@ $password = "u155023598_QReserve_sad";
 $dbname = "u155023598_qreserve_data";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 ?>
-
-
-<!-- <?php //connect to database localhost
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "qreserve_data";
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-?> -->
