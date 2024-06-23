@@ -216,8 +216,8 @@ function getUserInputs() {
   const durationInMinutes = (endTime - startTime) / (1000 * 60);
   const durationInHours = durationInMinutes / 60;
 
-  const basePrice = 150; // Base price in pesos
-  const additionalHourPrice = 150; // Additional cost per hour in pesos
+  const basePrice = 100; // Base price in pesos
+  const additionalHourPrice = 100; // Additional cost per hour in pesos
 
   let totalPrice = basePrice;
 
