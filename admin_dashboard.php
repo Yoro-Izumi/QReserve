@@ -62,9 +62,9 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
       <div class="container-fluid mt-4">
         <div class="row justify-content-center text-center">
           <div class="col-md-4 mb-3">
-            <div class="dashboard-square-kebab">
-              Number of Visitors
-              <h1><?php echo $visitors; ?></h1>
+          <div class="dashboard-square-kebab visitors-box">
+              <h1 class="number-of-visitors"><?php echo $visitors; ?></h1>
+              <h6 class="Visitors-today">Visitors today</h6>
             </div>
           </div>
           <div class="col-md-4 mb-3">
