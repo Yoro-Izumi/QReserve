@@ -59,53 +59,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
     ?>
     <section class="home-section">
       <div class="container-fluid dashboard-square-kebab" id="full-screen">
-      <i id="toggleFullScreen" class="bi bi-fullscreen"></i>
-
-
-        <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
-        <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
-        <div class="row col-md-12 full-screen-tables mb-2" >
-        <?php 
-        foreach($arrayPoolTables as $poolTables){
-        ?>
-          
-          <?php
-          $lastNumber = sizeof($arrayPoolTables);
-          $poolTableNumber = $poolTables['poolTableNumber'];
-            for($x = $poolTableNumber; $x <= $lastNumber;$x++){
-              foreach($arrayPoolTables as $pool){
-                if($pool['poolTableNumber'] == $x){
-                  $status = $pool['poolTableStatus'];
-                }
-                 
-              }
-              ?>
-              
-              <div class="col-md-3 mb-4">
-            <div class="table-box">
-              <div class="table-number">
-                <?php echo $x; $x = $x+3;?>
-              </div>
-              <div class="table-time">
-                <p><?php echo $status;?></p>
-              </div>
-            </div>
+          <i id="toggleFullScreen" class="bi bi-fullscreen"></i>
+          <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
+          <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
+          <div class="row col-md-12 full-screen-tables mb-2">
+              <!-- Pool tables will be loaded here -->
           </div>
-              
-              <?php
-            }
-            if($poolTableNumber < 4){
-              continue;
-            }
-            else{
-              break;
-            }
-               
-        ?> 
-        
-        
-        <?php }?>
-        </div>
       </div>
     
 
@@ -245,6 +204,26 @@ if (isset($_SESSION["userSuperAdminID"])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
+    </script>
+    <!--script refresh pool table full screen section-->
+    <script>
+        $(document).ready(function() {
+            function refreshPoolTables() {
+                $.ajax({
+                    url: 'src/get_data_from_database/get_pool_tables.php',
+                    method: 'GET',
+                    success: function(data) {
+                        $('.full-screen-tables').html(data);
+                    }
+                });
+            }
+
+            // Initial load
+            refreshPoolTables();
+
+            // Refresh every 2 seconds
+            setInterval(refreshPoolTables, 1000);
+        });
     </script>
 
   </body>
