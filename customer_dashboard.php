@@ -73,9 +73,9 @@ if (isset($_SESSION['userMemberID'])) {
     <div class="container-fluid mt-4">
       <div class="row justify-content-center text-center">
         <div class="col-md-4 mb-3">
-          <div class="dashboard-square-kebab">
-            Membership valid until
-            <h1><?php echo $validityDate; ?></h1>
+          <div class="dashboard-square-kebab visitors-box">
+          <h1 class="member-validity-date"><?php echo $validityDate; ?></h1>
+          <h6 class="Visitors-today"> Membership valid until</h6>
           </div>
         </div>
         <div class="col-md-4 mb-3">

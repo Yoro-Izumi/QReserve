@@ -104,7 +104,7 @@ date_default_timezone_set('Asia/Manila');
                             <button class="btn btn-primary w-100 create-button" type="submit" id="create-member-button">Create</button>
                         </div>
                         <div class="col-12 col-md-2 mb-2 mb-md-0">
-                            <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.href='member-profiles.php'">Cancel</button>
+                            <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.href='service_management.php'">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -120,7 +120,7 @@ date_default_timezone_set('Asia/Manila');
                         <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to edit this account?
+                        Are you sure you want to edit this service?
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
@@ -139,7 +139,7 @@ date_default_timezone_set('Asia/Manila');
                         <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
                     </div>
                     <div class="modal-body text-center">
-                        You have successfully edited this account.
+                        You have successfully edited this service.
                     </div>
                     <div class="modal-footer">
                         <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
