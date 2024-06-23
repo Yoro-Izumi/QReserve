@@ -33,7 +33,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
   $outputPeak = shell_exec($command);
 
   // Log the output for debugging
-  //file_put_contents('testPython/test1/python_output.log', $output);
+  file_put_contents('testPython/test1/python_output.log', $output);
 
   $peak_times_data = json_decode($outputPeak, true);
 
