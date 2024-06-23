@@ -182,6 +182,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           info: true,
           autoWidth: false,
           responsive: true,
+          scrollX: true // Enable horizontal scrolling
         });
       });
     </script>
