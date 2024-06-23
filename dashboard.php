@@ -59,43 +59,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
     ?>
     <section class="home-section">
       <div class="container-fluid dashboard-square-kebab" id="full-screen">
-          <i id="toggleFullScreen" class="bi bi-fullscreen"></i>
-          <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
-          <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
-          <div class="row col-md-12 full-screen-tables mb-2">
-              <!-- Pool tables will be loaded here -->
-          </div>
+        <i id="toggleFullScreen" class="bi bi-fullscreen"></i>
+        <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
+        <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
+        <div class="row col-md-12 full-screen-tables mb-2">
+          <!-- Pool tables will be loaded here -->
+        </div>
       </div>
-    
-
-      <script>
-        document.getElementById('toggleFullScreen').addEventListener('click', function() {
-  var elem = document.getElementById('full-screen');
-
-  if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-  }
-});
-
-      </script>
 
       <h4 class="qreserve mt-5">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
@@ -208,25 +178,52 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </script>
     <!--script refresh pool table full screen section-->
     <script>
-        $(document).ready(function() {
-            function refreshPoolTables() {
-                $.ajax({
-                    url: 'src/get_data_from_database/get_pool_tables.php',
-                    method: 'GET',
-                    success: function(data) {
-                        $('.full-screen-tables').html(data);
-                    }
-                });
+      $(document).ready(function() {
+        function refreshPoolTables() {
+          $.ajax({
+            url: 'src/get_data_from_database/get_pool_tables.php',
+            method: 'GET',
+            success: function(data) {
+              $('.full-screen-tables').html(data);
             }
+          });
+        }
 
-            // Initial load
-            refreshPoolTables();
+        // Initial load
+        refreshPoolTables();
 
-            // Refresh every 2 seconds
-            setInterval(refreshPoolTables, 1000);
-        });
+        // Refresh every 2 seconds
+        setInterval(refreshPoolTables, 1000);
+      });
     </script>
 
+    <script>
+      document.getElementById('toggleFullScreen').addEventListener('click', function() {
+        var elem = document.getElementById('full-screen');
+
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+          } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+          } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+        }
+      });
+    </script>
   </body>
 
   </html>

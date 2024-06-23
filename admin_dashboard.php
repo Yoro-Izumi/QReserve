@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { 
+if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
   // Check for admin session too
   include "connect_database.php";
   include "src/get_data_from_database/get_visitor_num.php";
@@ -50,8 +50,18 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
   </head>
 
   <body class="body">
-  <?php include "admin_sidebar.php"; ?>
+    <?php include "admin_sidebar.php"; ?>
     <section class="home-section">
+
+      <div class="container-fluid dashboard-square-kebab" id="full-screen">
+        <i id="toggleFullScreen" class="bi bi-fullscreen"></i>
+        <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
+        <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
+        <div class="row col-md-12 full-screen-tables mb-2">
+          <!-- Pool tables will be loaded here -->
+        </div>
+      </div>
+
       <h4 class="qreserve">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
@@ -62,7 +72,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
       <div class="container-fluid mt-4">
         <div class="row justify-content-center text-center">
           <div class="col-md-4 mb-3">
-          <div class="dashboard-square-kebab visitors-box">
+            <div class="dashboard-square-kebab visitors-box">
               <h1 class="number-of-visitors"><?php echo $visitors; ?></h1>
               <h6 class="Visitors-today">Visitors today</h6>
             </div>
@@ -121,6 +131,34 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
         </div>
       </div>
     </section>
+
+    <script>
+      document.getElementById('toggleFullScreen').addEventListener('click', function() {
+        var elem = document.getElementById('full-screen');
+
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+          } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+          } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+        }
+      });
+    </script>
 
     <script>
       $(document).ready(function() {
