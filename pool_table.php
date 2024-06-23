@@ -29,7 +29,6 @@ foreach($arrayReservationInfo as $reservation) {
             foreach($arrayCustomerInformation as $customer){
                  if($customer['customerID'] == $reservation['customerID']){
                      $customerName = decryptData($reservation['customerFirstName'],$key)." " .decryptData($reservation['customerMiddleName'],$key). " " .decryptData($reservation['customerLastName'],$key);
-                     echo $customerName;
                  }
             }
 
