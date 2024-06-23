@@ -197,6 +197,28 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
         }
       }
     </script>
+
+    <!--script refresh pool table full screen section-->
+    <script>
+      $(document).ready(function() {
+        function refreshPoolTables() {
+          $.ajax({
+            url: 'src/get_data_from_database/get_pool_tables.php',
+            method: 'GET',
+            success: function(data) {
+              $('.full-screen-tables').html(data);
+            }
+          });
+        }
+
+        // Initial load
+        refreshPoolTables();
+
+        // Refresh every 2 seconds
+        setInterval(refreshPoolTables, 1000);
+      });
+    </script>
+
     <script>
       $(document).ready(function() {
         // Function to update table content
