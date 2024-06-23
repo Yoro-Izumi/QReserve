@@ -59,7 +59,7 @@ span {
 
 #index-body {
   background-image: linear-gradient(to bottom right, #0d2818, #020202);
-  color: #fff;
+  /* color: #fff; */
   display: flex;
   justify-content: center;
   align-items: center;
