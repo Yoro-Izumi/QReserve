@@ -66,7 +66,7 @@ foreach ($rearrangedTables as $ptable) {
                 <?php echo $poolTableNumber; ?>
             </div>
             <div class="table-time">
-                <p><?php echo $status; ?></p>
+                <p id="tangina"><?php echo $status; ?></p>
             </div>
         </div>
     </div>

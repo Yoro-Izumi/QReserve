@@ -955,6 +955,10 @@ span {
   padding-bottom: 5%;
 }
 
+#tangina{
+  color: #073109;
+}
+
 .bi-fullscreen {
   width: 100%;
   display: flex;
