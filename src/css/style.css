@@ -939,11 +939,11 @@ span {
 }
 
 .table-time{
-  /* font-weight: 600;
+  font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 5%; */
+  padding-bottom: 5%;
 }
 
 .table-oras{
@@ -1364,7 +1364,7 @@ label.customer-account{
   border-color: #240046 !important; 
 }
 
-.create-button#create-reservation-button, .create-button#success-reservation-button{
+.create-button#create-reservation-button, .create-button#success-reservation-button, .create-button#success-reservation-button{
   border-color: #240046 !important; 
   background-color: #240046 !important;
   color: #FFB800;
