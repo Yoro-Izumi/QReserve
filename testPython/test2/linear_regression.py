@@ -28,7 +28,7 @@ model = LinearRegression()
 model.fit(X, y)
 
 # Generate future dates for prediction
-last_date = data['date'].min()
+last_date = data['date'].max()
 future_dates = [last_date + datetime.timedelta(days=i) for i in range(1, 11)]
 future_dates_ordinal = [date.toordinal() for date in future_dates]
 X_future = np.array(future_dates_ordinal).reshape(-1, 1)

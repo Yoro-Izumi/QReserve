@@ -1,5 +1,7 @@
 <?php
 include "connect_database.php";
+include "src/get_data_from_database/get_reservation_info.php";
+include "src/get_data_from_database/get_walk_in.php";
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
