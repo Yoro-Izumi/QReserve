@@ -8,9 +8,13 @@ $tables = array();
 foreach ($arrayPoolTables as $poolTables) {
     $poolTableNumber = $poolTables['poolTableNumber'];
     $poolTableStatus = $poolTables['poolTableStatus'];
+    $poolTableTimeStart = $poolTables['timeStarted'];
+    $poolTablesTimeEnd = $poolTables['timeEnd'];
     $tables[] = array(
         "poolTableNumber" => $poolTableNumber,
         "poolTableStatus" => $poolTableStatus,
+        "poolTableTimeStart" => $poolTableTimeStart,
+        "poolTableTimeEnd" => $poolTablesTimeEnd
     );
 }
 
@@ -49,6 +53,12 @@ $rearrangedTables = rearrangeTables($tables, $lastNumber);
 foreach ($rearrangedTables as $ptable) {
     $poolTableNumber = $ptable['poolTableNumber'];
     $status = $ptable['poolTableStatus'];
+    $tStart = explode(" ",$ptable['poolTableTimeStart']);
+    $tEnd = explode(" ",$ptable['poolTableTimeEnd']);
+    $time = $tStart[1]."-".$tEnd[1];
+        if($status != "Available"){
+            $status = $time; 
+        }
     ?>
     <div class="col-md-3 mb-4">
         <div class="table-box">
