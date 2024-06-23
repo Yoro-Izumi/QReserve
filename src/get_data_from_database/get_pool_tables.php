@@ -77,7 +77,4 @@ function convertToNormalTime($militaryTime) {
     $dateTime = DateTime::createFromFormat('H:i:s', $militaryTime);
     return $dateTime->format('h:i A');
 }
-
-
-
 ?>

@@ -940,7 +940,7 @@ span {
 
 .table-time{
   font-weight: 600;
-  color: #011509;
+  color: #011509 !important;
   display: flex;
   justify-content: center;
   align-items: center;
