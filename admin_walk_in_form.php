@@ -111,7 +111,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="email" class="form-label">Email Address <span>*</span></label>
-                <input type="email" class="form-control" id="email" name="email" required oninput="validateEmail(event)">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" required oninput="validateEmail(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
