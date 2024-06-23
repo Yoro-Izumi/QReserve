@@ -101,7 +101,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                <input type="text" class="form-control" id="contactNumber" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
+                <input type="text" class="form-control" id="contactNumber" placeholder="Enter contact number here" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
