@@ -32,18 +32,6 @@ function validateName(event) {
   }
 }
 
-
-
-//For Capacity
-function validateCapacity(event) {
-  const input = event.target;
-  const value = input.value;
-
-  // Allow only numeric characters
-  input.value = value.replace(/[^0-9]/g, '');
-}
-
-
 //For Image upload
 function validateImage(event) {
   const input = event.target;
@@ -141,13 +129,55 @@ if (parseInt(numericValue, 10) < 100) {
 }
 }
 
+function handleInput3(event) {
+  const input = event.target;
+  let value = input.value.replace(/,/g, ''); // Remove existing commas
+  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+  
+  if (parseInt(numericValue, 10) < 100) {
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
+      input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
+  } else {
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
+      input.setCustomValidity(''); // Clear custom validity message
+  }
+  }
+
+  function handleInput3(event) {
+    const input = event.target;
+    let value = input.value.replace(/,/g, ''); // Remove existing commas
+    const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+  
+    if (parseInt(numericValue, 10) < 100) {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
+    } else {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+        input.setCustomValidity(''); // Clear custom validity message
+    }
+}
 
 function validateCapacity(event) {
-  const input = event.target;
-  const value = input.value;
-  // Allow only numeric characters
-  input.value = value.replace(/[^0-9]/g, '');
+    const input = event.target;
+    let value = input.value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+  
+    // Check for minimum value
+    if (parseInt(value, 10) < 2) {
+        input.value = ''; // Clear the input if the value is less than 2
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        input.setCustomValidity('Capacity must be at least 2'); // Add custom validity message
+    } else {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+        input.setCustomValidity(''); // Clear custom validity message
+    }
 }
+
 
 // For calling the modal
 document.addEventListener('DOMContentLoaded', function () {
