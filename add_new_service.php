@@ -66,12 +66,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <div class="valid-feedback">Looks good!</div>
     <div class="invalid-feedback">Please provide a valid rate (minimum ₱100).</div>
 </div>
-                    <div class="col-md-6 mb-2">
-                        <label for="capacity" class="form-label">Capacity <span>*</span></label>
-                        <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="3" required onblur="handleInput(event)" oninput="validateCapacity(event)">
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please provide a valid capacity.</div>
-                    </div>
+<div class="col-md-6 mb-2">
+    <label for="capacity" class="form-label">Capacity <span>*</span></label>
+    <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="3" required onblur="validateCapacity(event)" oninput="validateCapacity(event)">
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please provide a valid capacity (minimum 2).</div>
+</div>
+
                     <div class="col-md-10 mb-2">
                         <label for="serviceImage" class="form-label">Image <span>*</span></label>
                         <input type="file" class="form-control" id="serviceImage" name="serviceImage" accept=".jpeg, .jpg, .png" required onchange="validateImage(event)">
