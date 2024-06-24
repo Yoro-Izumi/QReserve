@@ -68,7 +68,7 @@ function validateRate(event) {
   }
 }
 
-function handleInput(event) {
+function handleInput2(event) {
   const input = event.target;
   let value = input.value.replace(/,/g, ''); // Remove existing commas
   const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
