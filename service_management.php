@@ -72,8 +72,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <!-- <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td> -->
                 <td><input type='checkbox' class='admin-checkbox' name='admin[]' value='<?php echo $services['serviceID']; ?>'></td>
                 <td><?php echo htmlspecialchars($services['serviceName']); ?></td>
-                <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
                 <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
+                <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
                 <td><?php echo htmlspecialchars($services['serviceImage']); ?></td>
               </tr>
             <?php endforeach; ?>
