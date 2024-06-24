@@ -34,6 +34,16 @@ function handleInput(event) {
 
 
 
+  //For Capacity
+function validateCapacity(event) {
+    const input = event.target;
+    const value = input.value;
+  
+    // Allow only numeric characters
+    input.value = value.replace(/[^0-9]/g, '');
+  }
+
+
   //For Image upload
   function validateImage(event) {
     const input = event.target;
@@ -83,16 +93,15 @@ function validateRate(event) {
   const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
 
   if (numericValue.length <= 4) { // Limit the length to 4 digits
+      const formattedValue = new Intl.NumberFormat().format(numericValue);
+      input.value = formattedValue;
+
       // Check for minimum value
       if (parseInt(numericValue, 10) < 100) {
-          input.value = ''; // Clear the input if the value is less than 100
           input.classList.remove('is-valid');
           input.classList.add('is-invalid');
           input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
       } else {
-          // Format the number with commas
-          const formattedValue = new Intl.NumberFormat().format(numericValue);
-          input.value = formattedValue;
           input.classList.remove('is-invalid');
           input.classList.add('is-valid');
           input.setCustomValidity(''); // Clear custom validity message
@@ -105,7 +114,6 @@ function validateRate(event) {
 
       // Check for minimum value
       if (parseInt(truncatedValue, 10) < 100) {
-          input.value = ''; // Clear the input if the value is less than 100
           input.classList.remove('is-valid');
           input.classList.add('is-invalid');
           input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
@@ -116,7 +124,6 @@ function validateRate(event) {
       }
   }
 }
-
 
 function handleInput2(event) {
   const input = event.target;
@@ -136,10 +143,10 @@ function handleInput2(event) {
 
 
 function validateCapacity(event) {
-  const input = event.target;
-  const value = input.value;
-  // Allow only numeric characters
-  input.value = value.replace(/[^0-9]/g, '');
+    const input = event.target;
+    const value = input.value;
+    // Allow only numeric characters
+    input.value = value.replace(/[^0-9]/g, '');
 }
 
 // For calling the modal
