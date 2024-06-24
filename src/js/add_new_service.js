@@ -125,23 +125,29 @@ function validateRate(event) {
   }
 }
 
-function handleInput2(event) {
-  const input = event.target;
-  let value = input.value.replace(/,/g, ''); // Remove existing commas
-  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+// function handleInput2(event) {
+//   const input = event.target;
+//   let value = input.value.replace(/,/g, ''); // Remove existing commas
+//   const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
 
-  if (parseInt(numericValue, 10) < 100) {
-      input.classList.remove('is-valid');
-      input.classList.add('is-invalid');
-      input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
-  } else {
-      input.classList.remove('is-invalid');
-      input.classList.add('is-valid');
-      input.setCustomValidity(''); // Clear custom validity message
-  }
+//   if (parseInt(numericValue, 10) < 100) {
+//       input.classList.remove('is-valid');
+//       input.classList.add('is-invalid');
+//       input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
+//   } else {
+//       input.classList.remove('is-invalid');
+//       input.classList.add('is-valid');
+//       input.setCustomValidity(''); // Clear custom validity message
+//   }
+// }
+
+
+function validateCapacity(event) {
+    const input = event.target;
+    const value = input.value;
+    // Allow only numeric characters
+    input.value = value.replace(/[^0-9]/g, '');
 }
-
-
 
 // For calling the modal
 document.addEventListener('DOMContentLoaded', function () {
