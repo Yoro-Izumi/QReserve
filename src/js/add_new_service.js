@@ -33,61 +33,6 @@ function validateName(event) {
 }
 
 
-// For Rate
-function validateRate(event) {
-  const input = event.target;
-  let value = input.value.replace(/,/g, ''); // Remove existing commas
-  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
-
-  if (numericValue.length <= 4) { // Limit the length to 4 digits
-      // Check for minimum value
-      if (parseInt(numericValue, 10) < 100) {
-          input.value = ''; // Clear the input if the value is less than 100
-          input.classList.remove('is-valid');
-          input.classList.add('is-invalid');
-          input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
-      } else {
-          // Format the number with commas
-          const formattedValue = new Intl.NumberFormat().format(numericValue);
-          input.value = formattedValue;
-          input.classList.remove('is-invalid');
-          input.classList.add('is-valid');
-          input.setCustomValidity(''); // Clear custom validity message
-      }
-  } else {
-      // If the input exceeds 4 digits, truncate the value
-      const truncatedValue = numericValue.slice(0, 4);
-      const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
-      input.value = formattedTruncatedValue;
-
-      // Check for minimum value
-      if (parseInt(truncatedValue, 10) < 100) {
-          input.value = ''; // Clear the input if the value is less than 100
-          input.classList.remove('is-valid');
-          input.classList.add('is-invalid');
-          input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
-      } else {
-          input.classList.remove('is-invalid');
-          input.classList.add('is-valid');
-          input.setCustomValidity(''); // Clear custom validity message
-      }
-  }
-}
-
-
-function handleInput2(event) {
-  const input = event.target;
-  let value = input.value.replace(/,/g, ''); // Remove existing commas
-  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
-
-  if (parseInt(numericValue, 10) < 100) {
-      input.classList.remove('is-valid');
-      input.classList.add('is-invalid');
-  } else {
-      input.classList.remove('is-invalid');
-      input.classList.add('is-valid');
-  }
-}
 
 //For Capacity
 function validateCapacity(event) {
@@ -140,6 +85,60 @@ function validateName(event) {
   if (!regex.test(event.target.value)) {
       event.target.value = event.target.value.replace(/[^A-Za-z\s]/g, '');
   }
+}
+
+function validateRate(event) {
+const input = event.target;
+let value = input.value.replace(/,/g, ''); // Remove existing commas
+const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+
+if (numericValue.length <= 4) { // Limit the length to 4 digits
+    const formattedValue = new Intl.NumberFormat().format(numericValue);
+    input.value = formattedValue;
+
+    // Check for minimum value
+    if (parseInt(numericValue, 10) < 100) {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
+    } else {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+        input.setCustomValidity(''); // Clear custom validity message
+    }
+} else {
+    // If the input exceeds 4 digits, truncate the value
+    const truncatedValue = numericValue.slice(0, 4);
+    const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
+    input.value = formattedTruncatedValue;
+
+    // Check for minimum value
+    if (parseInt(truncatedValue, 10) < 100) {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
+    } else {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+        input.setCustomValidity(''); // Clear custom validity message
+    }
+}
+}
+
+function handleInput2(event) {
+const input = event.target;
+let value = input.value.replace(/,/g, ''); // Remove existing commas
+const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+
+if (parseInt(numericValue, 10) < 100) {
+    input.classList.remove('is-valid');
+    input.classList.add('is-invalid');
+    input.setCustomValidity('Rate must be at least 100'); // Add custom validity message
+} else {
+    input.classList.remove('is-invalid');
+    input.classList.add('is-valid');
+    input.setCustomValidity(''); // Clear custom validity message
+}
 }
 
 
