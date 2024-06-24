@@ -33,17 +33,6 @@ function handleInput(event) {
   }
 
 
-
-  //For Capacity
-function validateCapacity(event) {
-    const input = event.target;
-    const value = input.value;
-  
-    // Allow only numeric characters
-    input.value = value.replace(/[^0-9]/g, '');
-  }
-
-
   //For Image upload
   function validateImage(event) {
     const input = event.target;
@@ -140,6 +129,8 @@ function handleInput2(event) {
       input.setCustomValidity(''); // Clear custom validity message
   }
 }
+
+
 
 
 function validateCapacity(event) {
