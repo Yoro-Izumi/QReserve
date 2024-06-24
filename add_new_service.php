@@ -62,7 +62,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="serviceRate" class="form-label">Rate <span>*</span></label>
-                        <input type="text" class="form-control" id="serviceRate" name="serviceRate" placeholder="Enter rate here" required onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
+                        <input type="text" class="form-control" id="serviceRate" name="serviceRate" placeholder="Enter rate here" required onblur="handleInput2(event)" onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">Please provide a valid rate.</div>
                     </div>
