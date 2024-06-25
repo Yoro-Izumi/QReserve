@@ -27,23 +27,15 @@ foreach($arrayReservationInfo as $reservation) {
         $insertTimeEnd = $currentDate . " " . $reservation['reservationTimeEnd'];
         $insertTimeStart = $currentDate . " " . $reservation['reservationTimeStart'];
 
-        foreach($arrayCustomerInformation as $customer){
-            if($customer['customerID'] == $reservation['customerID']){
-                $customerName = decryptData($reservation['customerFirstName'],$key)." " .decryptData($reservation['customerMiddleName'],$key). " " .decryptData($reservation['customerLastName'],$key);
-            }
-        }
-
-        // Update the database with the new status and times
-        $qryUpdatePoolTable = "UPDATE `pool_tables` SET customerName = ?, poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
         $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-        mysqli_stmt_bind_param($stmt, "ssssi", $customerName, $poolTableStatus, $insertTimeStart, $insertTimeEnd, $reservation['tableID']);
+        mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $reservation['tableID']);
         mysqli_stmt_execute($stmt);
     } else {
-        $customerName = "None";
         // Update the database with the default status and times
-        $qryUpdatePoolTable = "UPDATE `pool_tables` SET customerName = ?, poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
         $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-        mysqli_stmt_bind_param($stmt, "ssssi", $customerName, $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
+        mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $reservation['tableID']);
         mysqli_stmt_execute($stmt);
     }
 }
@@ -56,26 +48,23 @@ foreach($arrayWalkinDetails as $walkin) {
         $poolTableStatus = "Playing";
         $insertTimeEnd = $currentDate . " " . $walkin['walkinTimeEnd'];
         $insertTimeStart = $currentDate . " " . $walkin['walkinTimeStart'];
-        $customerName = decryptData($walkin['customerFirstName'],$key)." " .decryptData($walkin['customerMiddleName'],$key). " " .decryptData($walkin['customerLastName'],$key);
 
         // Update the database with the new status and times
-        $qryUpdatePoolTable = "UPDATE `pool_tables` SET customerName = ?, poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
         $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-        mysqli_stmt_bind_param($stmt, "ssssi", $customerName, $poolTableStatus, $insertTimeStart, $insertTimeEnd, $walkin['tableID']);
+        mysqli_stmt_bind_param($stmt, "sssi", $poolTableStatus, $insertTimeStart, $insertTimeEnd, $walkin['tableID']);
         mysqli_stmt_execute($stmt);
     } else {
-        $customerName = "None";
         // Update the database with the default status and times
-        $qryUpdatePoolTable = "UPDATE `pool_tables` SET customerName = ?, poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
+        $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
         $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-        mysqli_stmt_bind_param($stmt, "ssssi", $customerName, $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $walkin['tableID']);
+        mysqli_stmt_bind_param($stmt, "sssi", $defaultStatus, $defaultTimeStart, $defaultTimeEnd, $walkin['tableID']);
         mysqli_stmt_execute($stmt);
     }
 }
 
 echo "<thead>
         <tr>
-          <th>Name</th>
           <th>Pool Table</th>
           <th>Time Started</th>
           <th>Expected End Time</th>
@@ -85,16 +74,16 @@ echo "<thead>
       <tbody>";
 
 foreach($arrayPoolTables as $poolTables) {
-    if($poolTables['customerName'] == NULL) {
-        $customerName = "None";
-    } else {
-        $customerName = $poolTables['customerName'];
-    }
-
     $poolTableStatus = $poolTables['poolTableStatus'];
     $poolTableNumber = $poolTables['poolTableNumber'];
-    $timeStarted = explode(' ', $poolTables['timeStarted']);
-    $timeEnd = explode(' ', $poolTables['timeEnd']);
+    
+    if ($poolTableStatus == "Available") {
+        $timeStarted = "--:--";
+        $timeEnd = "--:--";
+    } else {
+        $timeStarted = date("g:i A", strtotime($poolTables['timeStarted']));
+        $timeEnd = date("g:i A", strtotime($poolTables['timeEnd']));
+    }
 
     // Determine status badge
     if($poolTableStatus == "Done" || $poolTableStatus == "Available") {
@@ -113,10 +102,9 @@ foreach($arrayPoolTables as $poolTables) {
 
     // Output table row
     echo "<tr>
-            <td>".$customerName."</td>
             <td>".$poolTableNumber."</td>
-            <td>".$timeStarted[1]."</td>
-            <td>".$timeEnd[1]."</td>
+            <td>".$timeStarted."</td>
+            <td>".$timeEnd."</td>
             <td><span class='".$status."'>".$defaultStatus."</span></td>
           </tr>";
 }
