@@ -57,26 +57,25 @@ if (isset($_SESSION["userSuperAdminID"])) {
                     <div class="col-md-12 mb-2">
                         <label for="serviceName" class="form-label">Service Name <span>*</span></label>
                         <input type="text" class="form-control" id="serviceName" name="serviceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
-                        <div class="valid-feedback">Looks good!</div>
+                        <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid service name.</div>
                     </div>
                     <div class="col-md-6 mb-2">
-    <label for="serviceRate" class="form-label">Rate <span>*</span></label>
-    <input type="text" class="form-control" id="serviceRate" name="serviceRate" placeholder="Enter rate here" required onblur="handleInput2(event)" onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
-    <div class="valid-feedback">Looks good!</div>
-    <div class="invalid-feedback">Please provide a valid rate (minimum ₱100).</div>
-</div>
-<div class="col-md-6 mb-2">
-    <label for="capacity" class="form-label">Capacity <span>*</span></label>
-    <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="3" required onblur="validateCapacity(event)" oninput="validateCapacity(event)">
-    <div class="valid-feedback">Looks good!</div>
-    <div class="invalid-feedback">Please provide a valid capacity (minimum 2).</div>
-</div>
-
+                        <label for="serviceRate" class="form-label">Rate <span>*</span></label>
+                        <input type="text" class="form-control" id="serviceRate" name="serviceRate" placeholder="Enter rate here" required onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
+                        <div class="valid-feedback"><!-- Looks good! --></div>
+                        <div class="invalid-feedback">Please provide a valid rate.</div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label for="capacity" class="form-label">Capacity <span>*</span></label>
+                        <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="3" required onblur="handleInput(event)" oninput="validateCapacity(event)">
+                        <div class="valid-feedback"><!-- Looks good! --></div>
+                        <div class="invalid-feedback">Please provide a valid capacity.</div>
+                    </div>
                     <div class="col-md-10 mb-2">
                         <label for="serviceImage" class="form-label">Image <span>*</span></label>
                         <input type="file" class="form-control" id="serviceImage" name="serviceImage" accept=".jpeg, .jpg, .png" required onchange="validateImage(event)">
-                        <div class="valid-feedback">Looks good!</div>
+                        <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid file.</div>
                     </div>
                     <div class="col-md-2 mb-2">

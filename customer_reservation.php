@@ -81,7 +81,7 @@ if (isset($_SESSION['userMemberID'])) {
               <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" required onblur="handleInput(event)" oninput="validateName(event)" readonly value="<?php echo $customerFirstName; ?>" />
               <input type="hidden" name="hiddenFirstName" id="hiddenFirstName" value="<?php echo $customerFirstName; ?>" />
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid first name.
@@ -92,7 +92,7 @@ if (isset($_SESSION['userMemberID'])) {
               <input type="text" class="form-control" id="middleName" name="middleName" placeholder="" onblur="handleInput(event)" oninput="validateName(event)" readonly value="<?php echo $customerMiddleName; ?>" readonly value="<?php echo $customerMiddleName; ?>" />
               <input type="hidden" name="hiddenMiddleName" id="hiddenMiddleName" value="<?php echo $customerMiddleName; ?>" />
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid middle name.
@@ -103,7 +103,7 @@ if (isset($_SESSION['userMemberID'])) {
               <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" required onblur="handleInput(event)" oninput="validateName(event)" readonly value="<?php echo $customerLastName; ?>" />
               <input type="hidden" name="hiddenLastName" id="hiddenLastName" value="<?php echo $customerLastName; ?>" />
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid last name.
@@ -114,7 +114,7 @@ if (isset($_SESSION['userMemberID'])) {
               <input type="date" class="form-control" id="birthDate" required readonly value="<?php echo $customerBirthdate; ?>" />
               <input type="hidden" name="hiddenBirthDate" id="hiddenBirthDate" value="<?php echo $customerBirthdate; ?>" />
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid birthdate.
@@ -125,7 +125,7 @@ if (isset($_SESSION['userMemberID'])) {
               <input type="text" class="form-control" id="contactNumber" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)" readonly value="<?php echo $customerNumber; ?>" />
               <input type="hidden" name="hiddenContactNumber" id="hiddenContactNumber" value="<?php echo $customerNumber; ?>" />
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid contact number.
@@ -136,7 +136,7 @@ if (isset($_SESSION['userMemberID'])) {
               <input type="email" class="form-control" id="email" name="email" required oninput="validateEmail(event)" readonly value="<?php echo $customerEmail; ?>" />
               <input type="hidden" name="hiddenContactNumber" id="hiddenContactNumber" value="<?php echo $customerNumber; ?>" />
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div id="emailError" class="invalid-feedback">
                 Please provide a valid email address.
@@ -146,7 +146,7 @@ if (isset($_SESSION['userMemberID'])) {
               <label for="selectDate" class="form-label">Select Date <span>*</span></label>
               <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid date.
@@ -156,7 +156,7 @@ if (isset($_SESSION['userMemberID'])) {
               <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
               <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required oninput="adjustEndTime()">
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid start time.
@@ -166,7 +166,7 @@ if (isset($_SESSION['userMemberID'])) {
               <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
               <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid end time.
@@ -179,7 +179,7 @@ if (isset($_SESSION['userMemberID'])) {
                 <!-- Options will be dynamically added based on selected start time -->
               </select>
               <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
               </div>
               <div class="invalid-feedback">
                 Please provide a valid table.

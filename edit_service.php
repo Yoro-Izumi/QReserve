@@ -75,25 +75,25 @@ date_default_timezone_set('Asia/Manila');
                     <div class="col-md-12 mb-2">
                         <label for="editServiceName" class="form-label">Service Name <span>*</span></label>
                         <input type="text" value="<?php echo $serviceName; ?>" class="form-control" id="editServiceName" name="editServiceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
-                        <div class="valid-feedback">Looks good!</div>
+                        <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid service name.</div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="editServiceRate" class="form-label">Rate <span>*</span></label>
                         <input type="text" value="<?php echo $serviceRate; ?>" class="form-control" id="editServiceRate" name="editServiceRate" placeholder="Enter rate here" required onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
-                        <div class="valid-feedback">Looks good!</div>
+                        <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid rate.</div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="editCapacity" class="form-label">Capacity <span>*</span></label>
                         <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="editCapacity" placeholder="Enter capacity here" name="editCapacity" maxlength="3" required onblur="handleInput(event)" oninput="validateCapacity(event)">
-                        <div class="valid-feedback">Looks good!</div>
+                        <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid capacity.</div>
                     </div>
                     <div class="col-md-10 mb-2">
                         <label for="editImage" class="form-label">Image <span>*</span></label>
                         <input type="file" value="<?php echo $serviceName; ?>" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" required onchange="validateImage(event)">
-                        <div class="valid-feedback">Looks good!</div>
+                        <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid file.</div>
                     </div>
                     <div class="col-md-2 mb-2">
