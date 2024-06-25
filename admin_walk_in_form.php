@@ -63,7 +63,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="firstName" class="form-label">First Name <span>*</span></label>
                 <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid first name.
@@ -73,7 +73,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="middleName" class="form-label">Middle Name</label>
                 <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid middle name.
@@ -83,7 +83,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
                 <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid last name.
@@ -93,7 +93,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
                 <input type="date" class="form-control" id="birthDate" name="contactNumber" required>
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid birthdate.
@@ -103,7 +103,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
                 <input type="text" class="form-control" id="contactNumber" placeholder="Enter contact number here" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid contact number.
@@ -113,7 +113,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="email" class="form-label">Email Address <span>*</span></label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" required oninput="validateEmail(event)">
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div id="emailError" class="invalid-feedback">
                   Please provide a valid email address.
@@ -123,7 +123,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="selectDate" class="form-label">Select Date <span>*</span></label>
                 <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid date.
@@ -133,7 +133,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
                 <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required oninput="adjustEndTime()">
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid start time.
@@ -143,7 +143,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
                 <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid end time.
@@ -156,7 +156,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   <!-- Options will be dynamically added based on selected start time -->
                 </select>
                 <div class="valid-feedback">
-                  Looks good!
+                  <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
                   Please provide a valid table.

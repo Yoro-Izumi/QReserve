@@ -142,7 +142,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <div class="col-12 col-md-12 mb-3">
                   <label for="serviceName" class="form-label">Service Name <span>*</span></label>
                   <input type="text" class="form-control" name="editServiceName" id="editServiceName" placeholder="Enter service name here" required pattern="^\S(?:.*\S)?$" oninvalid="this.setCustomValidity('Please enter a valid service name.')" oninput="handleInput(event);" />
-                  <div class="valid-feedback">Looks good!</div>
+                  <div class="valid-feedback"><!-- Looks good! --></div>
                   <div class="invalid-feedback">
                     Please enter a valid first name.
                   </div>
@@ -154,7 +154,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                     <!-- <span class="input-group-text">₱</span> -->
                     <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here per hour" pattern="^\d{1,3}(,\d{3})*(\.\d{1,2})?$" oninput="validateRateInput(this); checkInputs();" title="Please enter a valid rate (e.g., 1000, 1,000.00)." maxlength="10" minlength="2" required />
                   </div>
-                  <div class="valid-feedback">Looks good!</div>
+                  <div class="valid-feedback"><!-- Looks good! --></div>
                   <div class="invalid-feedback">Please enter a valid rate.</div>
                 </div>
 

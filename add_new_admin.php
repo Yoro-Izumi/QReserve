@@ -62,7 +62,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <label for="firstName" class="form-label">First Name <span>*</span></label>
             <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div class="invalid-feedback">
               Please provide a valid first name.
@@ -72,7 +72,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <label for="middleName" class="form-label">Middle Name</label>
             <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div class="invalid-feedback">
               Please provide a valid middle name.
@@ -82,7 +82,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <label for="lastName" class="form-label">Last Name <span>*</span></label>
             <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div class="invalid-feedback">
               Please provide a valid last name.
@@ -92,7 +92,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <label for="username" class="form-label">Username <span>*</span></label>
             <input type="text" class="form-control" id="username" placeholder="Enter username here" name="username" required onblur="handleInput(event)" oninput="validateUsername(event)">
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div class="invalid-feedback">
               Please provide a valid username.
@@ -107,7 +107,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <option value="Others">Others</option>
             </select>
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div class="invalid-feedback">
               Please select a sex.
@@ -117,7 +117,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <label for="email" class="form-label">Email Address <span>*</span></label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email here" required oninput="validateEmail(event)" onblur="handleInput(event)">
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div id="emailError" class="invalid-feedback">
               Please provide a valid email address.
@@ -127,7 +127,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
             <input type="text" class="form-control" id="contactNumber" placeholder="Enter contact number here" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div class="invalid-feedback">
               Please provide a valid contact number.
@@ -159,7 +159,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <?php } ?>
             </select>
             <div class="valid-feedback">
-              Looks good!
+              <!-- Looks good! -->
             </div>
             <div class="invalid-feedback">
               Please select a shift.
