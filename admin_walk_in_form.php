@@ -91,7 +91,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
-                <input type="date" class="form-control" id="birthDate" name="contactNumber" required>
+                <input type="date" class="form-control" id="birthDate" name="birthDate" required max="2100-12-31">
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
@@ -99,6 +99,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please provide a valid birthdate.
                 </div>
               </div>
+
               <div class="col-md-4 mb-3">
                 <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
                 <input type="text" class="form-control" id="contactNumber" placeholder="Enter contact number here" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
@@ -121,7 +122,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-3 mb-3">
                 <label for="selectDate" class="form-label">Select Date <span>*</span></label>
-                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
+                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" max="2100-12-31" />
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
@@ -129,14 +130,15 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please provide a valid date.
                 </div>
               </div>
+
               <div class="col-md-3 mb-3">
                 <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-                <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required oninput="adjustEndTime()">
+                <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required min="10:00" oninput="adjustEndTime()">
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
                 <div class="invalid-feedback">
-                  Please provide a valid start time.
+                  Start time must be after 10:00 AM.
                 </div>
               </div>
               <div class="col-md-3 mb-3">
@@ -149,6 +151,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please provide a valid end time.
                 </div>
               </div>
+
               <div class="col-md-3 mb-3">
                 <label for="selectTable" class="form-label">Select Table <span>*</span></label>
                 <select class="form-control" name="selectTable" id="selectTable" required>
@@ -231,5 +234,3 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   header("location:login.php");
   die();
 } ?>
-
-

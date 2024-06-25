@@ -140,18 +140,28 @@ function adjustEndTime() {
 
   if (startTimeInput.value) {
     const [startHour, startMinute] = startTimeInput.value.split(':');
-    let endHour = parseInt(startHour) + 1;
-    const endMinute = startMinute;
+    if (parseInt(startHour) < 10) {
+      // If start time is before 10:00 AM, clear the end time input
+      endTimeInput.value = '';
+      startTimeInput.setCustomValidity('Start time must be after 10:00 AM.');
+    } else {
+      startTimeInput.setCustomValidity('');
+      let endHour = parseInt(startHour) + 1;
+      const endMinute = startMinute;
 
-    // Handle hour overflow
-    if (endHour >= 24) {
-      endHour = endHour - 24;
+      // Handle hour overflow
+      if (endHour >= 24) {
+        endHour = endHour - 24;
+      }
+
+      // Format end hour and minute
+      const formattedEndHour = endHour.toString().padStart(2, '0');
+      const formattedEndMinute = endMinute.padStart(2, '0');
+      endTimeInput.value = `${formattedEndHour}:${formattedEndMinute}`;
     }
-
-    // Format end hour and minute
-    const formattedEndHour = endHour.toString().padStart(2, '0');
-    const formattedEndMinute = endMinute.padStart(2, '0');
-    endTimeInput.value = `${formattedEndHour}:${formattedEndMinute}`;
+  } else {
+    // Clear the end time input if the start time is empty
+    endTimeInput.value = '';
   }
 }
 
@@ -159,7 +169,22 @@ function adjustEndTime() {
 document.getElementById('selectStartTime').addEventListener('input', adjustEndTime);
 
 
+// Prevent typing in the date input fields
+document.getElementById('selectDate').addEventListener('keydown', function(event) {
+  event.preventDefault();
+});
 
+document.getElementById('birthDate').addEventListener('keydown', function(event) {
+  event.preventDefault();
+});
+
+document.getElementById('selectStartTime').addEventListener('keydown', function(event) {
+  event.preventDefault();
+});
+
+document.getElementById('selectEndTime').addEventListener('keydown', function(event) {
+  event.preventDefault();
+});
 
 
 
