@@ -180,10 +180,29 @@ img.modal-icons {
 
 
 
+#accept-reservation, #edit-admin, #edit-member {
+  background-color: #04471C;
+  color: #FFB800;
+  border: none;
+  font-weight: 600;
+  width: 5rem;
+}
 
+#accept-reservation:hover,  #edit-admin:hover, #edit-member:hover {
+  background-color: #0d2818;
+}
 
+#reject-reservation, #delete-admin, #delete-member{
+  background-color: #FFB800;
+  color: #0d2818;
+  border: none;
+  font-weight: 600;
+  width: 5rem;
+}
 
-
+#reject-reservation:hover, #delete-admin:hover,#delete-member:hover {
+  background-color: #eeab00;
+}
 
 
 #customer-page-login {

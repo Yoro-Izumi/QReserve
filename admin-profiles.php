@@ -93,8 +93,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </form>
         </div>
         <div class="mt-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-admin" disabled>Delete</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
         </div>
       </div>
     </section>
