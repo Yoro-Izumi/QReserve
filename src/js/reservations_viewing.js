@@ -363,10 +363,57 @@ document.addEventListener('DOMContentLoaded', () => {
         
         thirdOptionTextarea.addEventListener('input', function () {
           const words = this.value.split(/\s+/).filter(word => word.length > 0);
-          wordCount.textContent = `${words.length} / 50 words`;
           if (words.length > 50) {
             this.value = words.slice(0, 50).join(' ');
+            wordCount.textContent = '50 / 50 words';  // Correct the word count display
+          } else {
+            wordCount.textContent = `${words.length} / 50 words`;
           }
         });
       });
+      
+
+    //   document.addEventListener('DOMContentLoaded', function () {
+    //     const thirdOption = document.getElementById('thirdOption');
+    //     const thirdOptionText = document.getElementById('thirdOptionText');
+    //     const thirdOptionTextarea = document.getElementById('thirdOptionTextarea');
+    //     const wordCount = document.getElementById('wordCount');
+    //     const radioError = document.getElementById('radioError');
+    //     const confirmButton = document.getElementById('confirm-reject-reservation-reason');
+    
+    //     const radioButtons = document.querySelectorAll('input[name="rejectionReason"]');
+        
+    //     radioButtons.forEach(radio => {
+    //       radio.addEventListener('change', function () {
+    //         if (this.id === 'thirdOption') {
+    //           thirdOptionText.style.display = 'block';
+    //           thirdOptionTextarea.focus();  // Set focus to the textarea
+    //         } else {
+    //           thirdOptionText.style.display = 'none';
+    //           thirdOptionTextarea.value = '';  // Clear the textarea value
+    //           wordCount.textContent = '0 / 50 words';  // Reset the word count
+    //         }
+    //         radioError.style.display = 'none'; // Hide the error message when a radio button is selected
+    //       });
+    //     });
+        
+    //     thirdOptionTextarea.addEventListener('input', function () {
+    //       const words = this.value.split(/\s+/).filter(word => word.length > 0);
+    //       if (words.length > 50) {
+    //         this.value = words.slice(0, 50).join(' ');
+    //         wordCount.textContent = '50 / 50 words';  // Correct the word count display
+    //       } else {
+    //         wordCount.textContent = `${words.length} / 50 words`;
+    //       }
+    //     });
+    
+    //     confirmButton.addEventListener('click', function () {
+    //       const selectedRadio = document.querySelector('input[name="rejectionReason"]:checked');
+    //       if (!selectedRadio) {
+    //         radioError.style.display = 'block';
+    //       } else {
+    //         document.getElementById('reject-reason-form').submit();
+    //       }
+    //     });
+    //   });
       
