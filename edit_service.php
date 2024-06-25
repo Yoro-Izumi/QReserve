@@ -80,13 +80,13 @@ date_default_timezone_set('Asia/Manila');
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="editServiceRate" class="form-label">Rate <span>*</span></label>
-                        <input type="text" value="<?php echo $serviceRate; ?>" class="form-control" id="editServiceRate" name="editServiceRate" placeholder="Enter rate here" required onblur="handleInput(event)" oninput="validateRate(event)" maxlength="5">
+                        <input type="text" value="<?php echo $serviceRate; ?>" class="form-control" id="editServiceRate" name="editServiceRate" placeholder="Enter rate here" required onblur="handleRateInput(event)" oninput="validateRate(event)" maxlength="5">
                         <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid rate.</div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="editCapacity" class="form-label">Capacity <span>*</span></label>
-                        <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="editCapacity" placeholder="Enter capacity here" name="editCapacity" maxlength="3" required onblur="handleInput(event)" oninput="validateCapacity(event)">
+                        <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="editCapacity" placeholder="Enter capacity here" name="editCapacity" maxlength="3" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
                         <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid capacity.</div>
                     </div>

@@ -40,14 +40,45 @@ function validateRate(event) {
   const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
 
   if (numericValue.length <= 4) { // Limit the length to 4 digits
-    // Format the number with commas
-    const formattedValue = new Intl.NumberFormat().format(numericValue);
-    input.value = formattedValue;
+      const formattedValue = new Intl.NumberFormat().format(numericValue);
+      input.value = formattedValue;
+
+      // Check for minimum value
+      if (numericValue === '' || parseInt(numericValue, 10) < 100) {
+          input.classList.remove('is-valid');
+          input.classList.add('is-invalid');
+      } else {
+          input.classList.remove('is-invalid');
+          input.classList.add('is-valid');
+      }
   } else {
-    // If the input exceeds 4 digits, truncate the value
-    const truncatedValue = numericValue.slice(0, 4);
-    const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
-    input.value = formattedTruncatedValue;
+      // If the input exceeds 4 digits, truncate the value
+      const truncatedValue = numericValue.slice(0, 4);
+      const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
+      input.value = formattedTruncatedValue;
+
+      // Check for minimum value
+      if (parseInt(truncatedValue, 10) < 100) {
+          input.classList.remove('is-valid');
+          input.classList.add('is-invalid');
+      } else {
+          input.classList.remove('is-invalid');
+          input.classList.add('is-valid');
+      }
+  }
+}
+
+function handleRateInput(event) {
+  const input = event.target;
+  let value = input.value.replace(/,/g, ''); // Remove existing commas
+  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+
+  if (numericValue === '' || parseInt(numericValue, 10) < 100) {
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
+  } else {
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
   }
 }
 
@@ -55,10 +86,50 @@ function validateRate(event) {
 //For Capacity
 function validateCapacity(event) {
   const input = event.target;
-  const value = input.value;
+  let value = input.value.replace(/,/g, ''); // Remove existing commas
+  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
 
-  // Allow only numeric characters
-  input.value = value.replace(/[^0-9]/g, '');
+  if (numericValue.length <= 3) { // Limit the length to 3 digits
+      const formattedValue = new Intl.NumberFormat().format(numericValue);
+      input.value = formattedValue;
+
+      // Check for minimum value
+      if (numericValue === '' || parseInt(numericValue, 10) < 2) {
+          input.classList.remove('is-valid');
+          input.classList.add('is-invalid');
+      } else {
+          input.classList.remove('is-invalid');
+          input.classList.add('is-valid');
+      }
+  } else {
+      // If the input exceeds 3 digits, truncate the value
+      const truncatedValue = numericValue.slice(0, 3);
+      const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
+      input.value = formattedTruncatedValue;
+
+      // Check for minimum value
+      if (parseInt(truncatedValue, 10) < 2) {
+          input.classList.remove('is-valid');
+          input.classList.add('is-invalid');
+      } else {
+          input.classList.remove('is-invalid');
+          input.classList.add('is-valid');
+      }
+  }
+}
+
+function handleCapacityInput(event) {
+  const input = event.target;
+  let value = input.value.replace(/,/g, ''); // Remove existing commas
+  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+
+  if (numericValue === '' || parseInt(numericValue, 10) < 2) {
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
+  } else {
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
+  }
 }
 
 
@@ -92,42 +163,6 @@ function validateImage(event) {
   }
 }
 
-// Other functions for form validation
-function handleInput(event) {
-  const inputValue = event.target.value;
-  event.target.value = inputValue.trim(); // Remove leading and trailing whitespaces
-}
-
-function validateName(event) {
-  const regex = /^[A-Za-z\s]*$/; // Allow only alphabetic characters and spaces
-  if (!regex.test(event.target.value)) {
-      event.target.value = event.target.value.replace(/[^A-Za-z\s]/g, '');
-  }
-}
-
-function validateRate(event) {
-  const input = event.target;
-  let value = input.value.replace(/,/g, ''); // Remove existing commas
-  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
-
-  if (numericValue.length <= 4) { // Limit the length to 4 digits
-      // Format the number with commas
-      const formattedValue = new Intl.NumberFormat().format(numericValue);
-      input.value = formattedValue;
-  } else {
-      // If the input exceeds 4 digits, truncate the value
-      const truncatedValue = numericValue.slice(0, 4);
-      const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
-      input.value = formattedTruncatedValue;
-  }
-}
-
-function validateCapacity(event) {
-  const input = event.target;
-  const value = input.value;
-  // Allow only numeric characters
-  input.value = value.replace(/[^0-9]/g, '');
-}
 
 // For calling the modal
 document.addEventListener('DOMContentLoaded', function () {
