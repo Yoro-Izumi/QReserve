@@ -284,22 +284,25 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
     <!-- Modals -->
     <!-- Accept Reservation Modals -->
-    <div class="modal fade" id="accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="wait">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="warning"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to accept this reservation?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" id="confirm-accept-reservation" class="btn btn-primary create-button" data-bs-target="#success-accept-modal" data-bs-toggle="modal">Confirm</button>
-          </div>
-        </div>
+<!-- Accept Reservation Modals -->
+<div class="modal fade" id="accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="wait">
+      <div class="modal-header">
+        <h2 class="modal-title fw-bold text-center" id="warning">
+          <img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Wait!
+        </h2>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to accept this reservation?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="confirm-accept-reservation" class="btn btn-primary create-button" data-bs-target="#success-accept-modal" data-bs-toggle="modal">Confirm</button>
       </div>
     </div>
+  </div>
+</div>
 
     <!-- Success Accept Reservation Modals -->
     <div class="modal fade" id="success-accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -337,6 +340,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
+    <!-- Reject Reservation Modals -->
 <!-- Reject Reservation Modals -->
 <div class="modal fade" id="reject-confirmation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -368,11 +372,10 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <textarea id="thirdOptionTextarea" name="thirdOptionTextarea" class="form-control" maxlength="300" rows="3" placeholder="Specify your reason (max 50 words)"></textarea>
             <small id="wordCount" class="form-text text-muted">0 / 50 words</small>
           </div>
-          <small id="radioError" class="form-text text-danger" style="display: none;">Please select a rejection reason.</small>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" id="confirm-reject-reservation-reason" class="btn btn-primary create-button">Confirm</button>
+          <button type="button" id="confirm-reject-reservation-reason" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
         </div>
       </form>
     </div>

@@ -373,47 +373,25 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
 
-    //   document.addEventListener('DOMContentLoaded', function () {
-    //     const thirdOption = document.getElementById('thirdOption');
-    //     const thirdOptionText = document.getElementById('thirdOptionText');
-    //     const thirdOptionTextarea = document.getElementById('thirdOptionTextarea');
-    //     const wordCount = document.getElementById('wordCount');
-    //     const radioError = document.getElementById('radioError');
-    //     const confirmButton = document.getElementById('confirm-reject-reservation-reason');
-    
-    //     const radioButtons = document.querySelectorAll('input[name="rejectionReason"]');
+
+    //   shotgun for accept
+    document.getElementById('confirm-accept-reservation').addEventListener('click', function() {
+        this.disabled = true;
+        // Perform your AJAX request or form submission here
         
-    //     radioButtons.forEach(radio => {
-    //       radio.addEventListener('change', function () {
-    //         if (this.id === 'thirdOption') {
-    //           thirdOptionText.style.display = 'block';
-    //           thirdOptionTextarea.focus();  // Set focus to the textarea
-    //         } else {
-    //           thirdOptionText.style.display = 'none';
-    //           thirdOptionTextarea.value = '';  // Clear the textarea value
-    //           wordCount.textContent = '0 / 50 words';  // Reset the word count
-    //         }
-    //         radioError.style.display = 'none'; // Hide the error message when a radio button is selected
-    //       });
-    //     });
+        // Re-enable the button after the request is complete or on modal close
+        document.getElementById('accept-modal').addEventListener('hidden.bs.modal', function () {
+          document.getElementById('confirm-accept-reservation').disabled = false;
+        });
+      });
+
+    //   shotgun for reject
+    document.getElementById('confirm-reject-reservation-reason').addEventListener('click', function() {
+        this.disabled = true;
+        // Perform your AJAX request or form submission here
         
-    //     thirdOptionTextarea.addEventListener('input', function () {
-    //       const words = this.value.split(/\s+/).filter(word => word.length > 0);
-    //       if (words.length > 50) {
-    //         this.value = words.slice(0, 50).join(' ');
-    //         wordCount.textContent = '50 / 50 words';  // Correct the word count display
-    //       } else {
-    //         wordCount.textContent = `${words.length} / 50 words`;
-    //       }
-    //     });
-    
-    //     confirmButton.addEventListener('click', function () {
-    //       const selectedRadio = document.querySelector('input[name="rejectionReason"]:checked');
-    //       if (!selectedRadio) {
-    //         radioError.style.display = 'block';
-    //       } else {
-    //         document.getElementById('reject-reason-form').submit();
-    //       }
-    //     });
-    //   });
-      
+        // Re-enable the button after the request is complete or on modal close
+        document.getElementById('reject-confirmation-modal').addEventListener('hidden.bs.modal', function () {
+          document.getElementById('confirm-reject-reservation-reason').disabled = false;
+        });
+      });

@@ -10,6 +10,8 @@ date_default_timezone_set('Asia/Manila');
     $key = "TheGreatestNumberIs73";
 
     $currentDateTime = date('Y-m-d H:i:s');
+    $date = date('Y-m-d');
+    $time = date('H:i:s');
 
     
     use PHPMailer\PHPMailer\PHPMailer;
