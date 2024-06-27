@@ -226,10 +226,13 @@ if (isset($_SESSION['userMemberID'])) {
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="wait">
           <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
+            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/file.gif" alt="Wait Icon" class="modal-icons">On Process...</h2>
           </div>
           <div class="modal-body text-center">
-            Kindly wait for your turn to play!
+          <p>Your booking is now on process!<br>Please check your email for the details of your reservation.</p>
+          <p class="proceed">Proceed to pay your reservation through the provided Payment Details</p>
+          <p class="gcash">GCash: 09123456789</p>
+          <p>Send your proof of payment to <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore’s Facebook Page.</a></p>
           </div>
           <div class="modal-footer">
             <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
