@@ -10,8 +10,8 @@ date_default_timezone_set('Asia/Manila');
     $key = "TheGreatestNumberIs73";
 
     $currentDateTime = date('Y-m-d H:i:s');
-    $date = date('Y-m-d');
-    $time = date('H:i:s');
+    //$date = date('Y-m-d');
+    //$time = date('H:i:s');
 
     
     use PHPMailer\PHPMailer\PHPMailer;
@@ -85,6 +85,8 @@ if (isset($_POST['selectedRowsReject'])) {
         // Get reservation details 
         foreach ($arrayReservationInfo as $reservationInfo) {
             if ($reservationInfo['reservationID'] == $rowIdReject) {
+                $date = $reservationInfo['reservationDate'];
+                $time = $reservationInfo['reservationTimeStart'];
                 $memberID = $reservationInfo['memberID'];
                 foreach ($arrayMemberAccount as $memberAccount) {
                     if ($memberAccount['memberID'] == $memberID) {
@@ -133,11 +135,13 @@ if(isset($_POST['selectedRowsAccept'])){
            //get reservation details 
            foreach($arrayReservationInfo as $reservationInfo){
             if($reservationInfo['reservationID'] == $rowIdAccept){
+            $date  = $reservationInfo['reservationDate'];
+            $time  = $reservationInfo['reservationTimeStart'];
               $memberID = $reservationInfo['memberID'];
                 foreach($arrayMemberAccount as $memberAccount){
                   if($memberAccount['memberID'] == $memberID){
                     $memberEmail = $memberAccount['customerEmail'];
-                    pendingEmail($memberEmail,$rowIdAccept,$data,$outputFile);
+                    pendingEmail($memberEmail,$rowIdAccept,$data,$outputFile,$date,$time);
                   }
                   
                 }
@@ -185,7 +189,7 @@ mysqli_close($conn);
 
 }
 
-function pendingEmail($memberEmail,$rowIdAccept,$data,$outputFile){
+function pendingEmail($memberEmail,$rowIdAccept,$data,$outputFile,$date,$time){
 include "src/send_email/pending_reservation_email.php";
 }
 
