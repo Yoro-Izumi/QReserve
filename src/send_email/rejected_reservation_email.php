@@ -12,7 +12,7 @@
 
    // Content
    $mail->isHTML(true); // Set email format to HTML
-   $mail->Subject = 'RESERVATION REQUEST';
+   $mail->Subject = 'BEVITORE RESERVATION STATUS';
    $mail->Body    = "
    <html>
    <head>
@@ -30,7 +30,7 @@
      <hr style='color:green; opacity:80%;'>
      <span><b>Dear Member,</b></span>
      <br><br>
-     <span style='margin:20px;'>We regret to inform you that your reservation request on $date $time has been <b style='color:#E74C3C;'>REJECTED</b> by the management. $reason.</span>
+     <span style='margin:20px;'>We regret to inform you that your reservation request on $date $time has been <b style='color:#E74C3C;'>REJECTED</b> by the management. $reason</span>
      <br><br>
      <span>For more information regarding your reservation, kindly message <a href='https://web.facebook.com/Bevitore.Sta.Rosa/?_rdc=1&_rdr' style='text-decoration: none; color:#6495ED;'>Bevitore's Facebook Page</a></span>
      <br><br>
