@@ -26,7 +26,6 @@ date_default_timezone_set('Asia/Manila');
      if ($reason == 'thirdOption') {
          $reason = $txtReason;
      }
-     RejectedEmail($memberEmail, $rowIdReject, $reason, $date, $time);
 
      
         foreach($selectedRowsReject as $rowIdReject){
@@ -48,8 +47,7 @@ date_default_timezone_set('Asia/Manila');
                 foreach($arrayMemberAccount as $memberAccount){
                   if($memberAccount['memberID'] == $memberID){
                     $memberEmail = $memberAccount['customerEmail'];
-                    RejectedEmail($memberEmail,$rowIdReject);
-                  }
+                    RejectedEmail($memberEmail, $rowIdReject, $reason, $date, $time);                  }
                   
                 }
             }

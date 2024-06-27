@@ -13,7 +13,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
   //for linear regression
   include "testPython/test2/get_reservations.php";
   // Run the Python script
-  $output = shell_exec('python testPython/test2/linear_regression.py');
+  $output = shell_exec('python3 testPython/test2/linear_regression.py');
   // Include the generated PHP data file
   include 'data.php';
 
@@ -29,7 +29,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
   // Pass data to Python script
   $reservation_times_json = json_encode($reservations);
-  $command = 'echo ' . escapeshellarg($reservation_times_json) . ' | python testPython/test1/find_peak_hour.py';
+  $command = 'echo ' . escapeshellarg($reservation_times_json) . ' | python3 testPython/test1/find_peak_hour.py';
   $outputPeak = shell_exec($command);
 
   // Log the output for debugging
@@ -406,14 +406,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
         yAxis: {
           min: 0,
           title: {
-            text: 'Population (millions)'
+            text: 'Population'
           }
         },
         legend: {
           enabled: false
         },
         tooltip: {
-          pointFormat: 'Population in 2021: <b>{point.y:.1f} millions</b>'
+          pointFormat: 'Reservations in 2024: <b>{point.y:.1f}</b>'
         },
         series: [{
           name: 'Population',

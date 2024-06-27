@@ -1,7 +1,7 @@
 <?php //connect to database
-$servername = "127.0.0.1:3306";
-$username = "u155023598_QReservitore";
-$password = "u155023598_QReserve_sad";
-$dbname = "u155023598_qreserve_data";
+$servername = "sql12.freesqldatabase.com";
+$username = "sql12713153";
+$password = "LcbCQaWeEn";
+$dbname = "sql12713153";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 ?>

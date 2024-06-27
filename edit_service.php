@@ -16,13 +16,13 @@ date_default_timezone_set('Asia/Manila');
         $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
         
         foreach($arrayServices as $service){
-            $serviceID = $service['serviceID'];
+            $serviceID = $ID;
+	if($service['serviceID'] == $serviceID){
             $serviceName = $service['serviceName'];
             $serviceCapacity = $service['serviceCapacity'];
             $serviceRate = $service['serviceRate'];
-        }
-?>
-    <!DOCTYPE html>
+        }}
+?>    <!DOCTYPE html>
     <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
     <html lang="en" dir="ltr">
 
