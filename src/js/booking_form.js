@@ -146,7 +146,7 @@ function adjustEndTime() {
       startTimeInput.setCustomValidity('Start time must be after 10:00 AM.');
     } else {
       startTimeInput.setCustomValidity('');
-      let endHour = parseInt(startHour) + 1;
+      let endHour = parseInt(startHour) + 2; // Adding 2 hours for minimum duration
       const endMinute = startMinute;
 
       // Handle hour overflow

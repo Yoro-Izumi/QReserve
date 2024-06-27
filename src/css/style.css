@@ -1449,6 +1449,15 @@ label.customer-account{
   align-items: center;
 }
 
+.gcash{
+  color: #240046;
+  font-weight: 600 ;
+}
+
+.proceed{
+  font-weight: 500  ;
+}
+
 @media (max-width: 768px) {
   .bevitore-logo {
     width: 25%;
