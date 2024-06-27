@@ -74,8 +74,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <td><?php echo htmlspecialchars($services['serviceName']); ?></td>
                 <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
                 <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
-                <td><?php echo htmlspecialchars($services['serviceImage']); ?></td>
-              </tr>
+                <td><a href="#" class="image-link" data-bs-toggle="modal" data-bs-target="#image-modal" data-image="src/images/Services/<?php echo htmlspecialchars($services['serviceImage']); ?>"><?php echo htmlspecialchars($services['serviceImage']); ?></a></td>              </tr>
             <?php endforeach; ?>
           </tbody>
         </table>
@@ -126,10 +125,24 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <!-- Image Modal -->
+    <div class="modal fade" id="image-modal" tabindex="-1" aria-labelledby="image-modal-label" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="image-modal-label">Service Image</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img id="image-modal-img" src="" alt="Service Image" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="updateTable" style="display:none;"></div>
     <script>
       $(document).ready(function() {
-        // Function to update table content
         function updateTable() {
           $.ajax({
             url: 'pool_table.php',
@@ -140,14 +153,15 @@ if (isset($_SESSION["userSuperAdminID"])) {
           });
         }
 
-        // Initial table update
         updateTable();
+        setInterval(updateTable, 1000); 
 
-        // Refresh table every 5 seconds
-        setInterval(updateTable, 1000); // Adjust interval as needed
+        $('.image-link').on('click', function() {
+          var imageUrl = $(this).data('image');
+          $('#image-modal-img').attr('src', imageUrl);
+        });
       });
     </script>
-
 
     <script src="src/js/service_management.js"></script>
     <script src="src/js/sidebar.js"></script>
