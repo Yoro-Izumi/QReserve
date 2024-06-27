@@ -257,6 +257,8 @@ function getUserInputs() {
     currency: 'PHP'
   }).format(totalPrice);
 
+  document.getElementById('getTotalPriceHour').value = totalPrice;
+
   return `
     <div class="modal-content-wrapper">
         <p><span class="modal-label">Name:</span> <span class="modal-input">${firstName} ${middleName} ${lastName}</span></p>
@@ -271,6 +273,8 @@ function getUserInputs() {
     </div>
   `;
 }
+
+
 
 
 

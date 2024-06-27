@@ -169,6 +169,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
                 <img src="src/images/map.png" alt="" style="width: 100%; height: 100%;">
               </div>
+              <input type="hidden" id="getTotalPriceHour" name="getTotalPriceHour">
               <div class="row justify-content-end mt-5">
                 <div class="col-12 col-md-2 mb-3 mb-md-0">
                   <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>

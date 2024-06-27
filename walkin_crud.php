@@ -45,7 +45,7 @@ date_default_timezone_set('Asia/Manila');
             $paymentID = 1;
             $serviceID = 1; 
             $walkinStatus = "Reserved";
-            $paymentAmount = 0; 
+            $paymentAmount = 0.00; 
 
             //get service price and update payment amount
             $qryGetServicePrice = "SELECT serviceRate from services where serviceID = ? ";
@@ -73,7 +73,7 @@ date_default_timezone_set('Asia/Manila');
           //insert payment information
           $qryInsertPaymentInfo = "INSERT INTO `payment_history`(`paymentID`, `customerID`, `paymentAmount`) VALUES (NULL,?,?)";
           $conInsertPaymentInfo = mysqli_prepare($conn, $qryInsertPaymentInfo);
-          mysqli_stmt_bind_param($conInsertPaymentInfo, "ii", $customerID, $paymentAmount);
+          mysqli_stmt_bind_param($conInsertPaymentInfo, "id", $customerID, $paymentAmount);
           mysqli_stmt_execute($conInsertPaymentInfo);
 
           $paymentID = mysqli_insert_id($conn);
@@ -81,7 +81,7 @@ date_default_timezone_set('Asia/Manila');
           //For walkin information
           $walkinQuery = "INSERT INTO `pool_table_walk_in`(`walkinID`, `tableID`, `customerID`, `paymentID`, `adminID`, `serviceID`, `walkinDate`, `walkinTimeStart`, `walkinTimeEnd`, `walkinStatus`, `walkinCreationDate`) VALUES (NULL,?,?,?,?,?,?,?,?,?,?)";
           $walkinPrepare = mysqli_prepare($conn,$walkinQuery);
-          mysqli_stmt_bind_param($walkinPrepare,'iiiiisssss',$poolTable,$customerID,$paymentID,$adminID,$serviceID,$currentDate,$selectStartTime,$selectEndTime,$walkinStatus,$currentDateTime);
+          mysqli_stmt_bind_param($walkinPrepare,'iiiiisssss',$poolTable,$customerID,$paymentID,$adminID,$serviceID,$selectDate,$selectStartTime,$selectEndTime,$walkinStatus,$currentDateTime);
           mysqli_stmt_execute($walkinPrepare);
 
           //For updating pool table info
