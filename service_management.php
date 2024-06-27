@@ -91,8 +91,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </section>
 
-
-
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-service-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -127,99 +125,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
     </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered service-modal" id="add-new-service-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title  fw-bold text-center" id="staticBackdropLabel"><img src="src/images/icons/pencil.gif" alt="Wait Icon" class="modal-icons">Edit Service</h1>
-          </div>
-          <div class="modal-body">
-            <form class="needs-validation" id="edit-new-service-form" novalidate>
-              <input type="hidden" name="editID" id="editID" value="">
-              <div class="row">
-                <div class="col-12 col-md-12 mb-3">
-                  <label for="serviceName" class="form-label">Service Name <span>*</span></label>
-                  <input type="text" class="form-control" name="editServiceName" id="editServiceName" placeholder="Enter service name here" required pattern="^\S(?:.*\S)?$" oninvalid="this.setCustomValidity('Please enter a valid service name.')" oninput="handleInput(event);" />
-                  <div class="valid-feedback"><!-- Looks good! --></div>
-                  <div class="invalid-feedback">
-                    Please enter a valid first name.
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mb-3">
-                  <label for="editServiceRate" class="form-label">Rate <span>*</span></label>
-                  <div class="input-group">
-                    <!-- <span class="input-group-text">₱</span> -->
-                    <input type="text" class="form-control" name="editServiceRate" id="editServiceRate" placeholder="Enter rate here per hour" pattern="^\d{1,3}(,\d{3})*(\.\d{1,2})?$" oninput="validateRateInput(this); checkInputs();" title="Please enter a valid rate (e.g., 1000, 1,000.00)." maxlength="10" minlength="2" required />
-                  </div>
-                  <div class="valid-feedback"><!-- Looks good! --></div>
-                  <div class="invalid-feedback">Please enter a valid rate.</div>
-                </div>
-
-
-                <div class="col-12 col-md-6 mb-3">
-                  <label for="text" class="form-label">Capacity <span>*</span></label>
-                  <input type="text" class="form-control" name="editCapacity" id="editCapacity" placeholder="Enter service capacity here" maxlength="3" required oninvalid="this.setCustomValidity('Please enter a valid service capacity')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
-                  <div class="invalid-feedback">
-                    Please enter a valid capacity.
-                  </div>
-                </div>
-                <div class="col-12 col-md-12 mb-3">
-                  <label for="image" class="form-label">Image <span>*</span></label>
-                  <input type="file" class="form-control" name="editImage" id="editImage" accept=".jpg, .jpeg, .png" required>
-                  <div class="invalid-feedback">
-                    Please enter a valid capacity.
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary create-button" data-bs-target="#confirm-edit-modal" data-bs-toggle="modal">Confirm</button>
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- Confirm Edit Modal -->
-    <div class="modal fade" id="confirm-edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="wait">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to edit this service?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-target="#edit-modal" data-bs-toggle="modal">Cancel</button>
-            <button type="button" id="confirm-edit-service" class="btn btn-primary create-button" data-bs-target="#success-edit-modal" data-bs-toggle="modal">Confirm</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Success Confirm Edit Modal -->
-    <div class="modal fade" id="success-edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="wait">
-          <div class="modal-header">
-            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/hourglass.gif" alt="Success Icon" class="modal-icons">Success!</h2>
-          </div>
-          <div class="modal-body">
-            You have successfully edited this service.
-          </div>
-          <div class="modal-footer">
-            <button onclick="reload()" class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
     <script>
