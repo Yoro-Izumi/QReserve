@@ -1,6 +1,7 @@
 <?php
 include "../../connect_database.php";
 include "get_pool_table_info.php";
+include "convert_to_normal_time.php";
 
 $lastNumber = sizeof($arrayPoolTables);
 $tables = array();
@@ -56,12 +57,17 @@ foreach ($rearrangedTables as $ptable) {
     $tStart = explode(" ",$ptable['poolTableTimeStart']);
     $tEnd = explode(" ",$ptable['poolTableTimeEnd']);
     $time = convertToNormalTime($tStart[1])."-".convertToNormalTime($tEnd[1]);
+    $tableBoxColor = "table-box";
         if($status != "Available"){
-            $status = $time; 
+            $status = $time;
+            $tableBoxColor = "table-box-not-available"; 
+        }
+        else{
+            $tableBox = "table-box";
         }
     ?>
-    <div class="col-md-3 mb-4">
-        <div class="table-box">
+    <div class="col-md-3 mb-3">
+        <div class="<?php echo $tableBoxColor;?>">
             <div class="table-number">
                 <?php echo $poolTableNumber; ?>
             </div>
@@ -73,8 +79,5 @@ foreach ($rearrangedTables as $ptable) {
     <?php
 }
 
-function convertToNormalTime($militaryTime) {
-    $dateTime = DateTime::createFromFormat('H:i:s', $militaryTime);
-    return $dateTime->format('h:i A');
-}
+
 ?>

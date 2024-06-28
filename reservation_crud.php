@@ -6,6 +6,7 @@ date_default_timezone_set('Asia/Manila');
     include "src/get_data_from_database/get_member_account.php";
     include "src/get_data_from_database/get_customer_information.php";
     include "src/get_data_from_database/get_reservation_info.php";
+    include "src/get_data_from_database/convert_to_normal_time.php";
     include "encodeDecode.php";
     $key = "TheGreatestNumberIs73";
 
@@ -17,49 +18,6 @@ date_default_timezone_set('Asia/Manila');
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
- /*if(isset($_POST['selectedRowsReject'])){ 
-    $selectedRowsReject = $_POST['selectedRowsReject'];
-    $reservationStatus = "Rejected";
-    /* $reason = $_POST['rejectionReason']; // get rejection reason
-     $txtReason = $_POST['thirdOptionTextarea']; // third option text area
-
-     if ($reason == 'thirdOption') {
-         $reason = $txtReason;
-     }
-
-     
-        foreach($selectedRowsReject as $rowIdReject){
-            //update reservation status
-            $qryRejectReservation = "UPDATE `pool_table_reservation` SET reservationStatus = ? where reservationID = ?";
-            $connRejectReservation = mysqli_prepare($conn, $qryRejectReservation);
-            mysqli_stmt_bind_param($connRejectReservation,'si',$reservationStatus,$rowIdReject);
-            mysqli_stmt_execute($connRejectReservation);
-
-            // Data to encode into the QR code
-            $data = encryptData($rowIdReject, $key);
-            // Output file name
-            $outputFile = 'src/phpqrcode/temp/'.$data.'.png';
-
-            //get reservation details 
-          foreach($arrayReservationInfo as $reservationInfo){
-            if($reservationInfo['reservationID'] == $rowIdReject){
-              $memberID = $reservationInfo['memberID'];
-                foreach($arrayMemberAccount as $memberAccount){
-                  if($memberAccount['memberID'] == $memberID){
-                    $memberEmail = $memberAccount['customerEmail'];
-                    RejectedEmail($memberEmail, $rowIdReject, $reason, $date, $time);                  }
-                  
-                }
-            }
-
-          }
-          
-
-        }
-      // Assuming you want to return a success message
-        echo "Rows deleted successfully";
-        unset($_POST['selectedRowsReject']);
-}*/
 if (isset($_POST['selectedRowsReject'])) { 
     $selectedRowsReject = json_decode($_POST['selectedRowsReject'], true);
     $reservationStatus = "Rejected";
@@ -85,8 +43,8 @@ if (isset($_POST['selectedRowsReject'])) {
         // Get reservation details 
         foreach ($arrayReservationInfo as $reservationInfo) {
             if ($reservationInfo['reservationID'] == $rowIdReject) {
-                $date = $reservationInfo['reservationDate'];
-                $time = $reservationInfo['reservationTimeStart'];
+                $date = convertToNormalDate($reservationInfo['reservationDate']);
+                $time = convertToNormalTime($reservationInfo['reservationTimeStart']);
                 $memberID = $reservationInfo['memberID'];
                 foreach ($arrayMemberAccount as $memberAccount) {
                     if ($memberAccount['memberID'] == $memberID) {
@@ -135,8 +93,8 @@ if(isset($_POST['selectedRowsAccept'])){
            //get reservation details 
            foreach($arrayReservationInfo as $reservationInfo){
             if($reservationInfo['reservationID'] == $rowIdAccept){
-            $date  = $reservationInfo['reservationDate'];
-            $time  = $reservationInfo['reservationTimeStart'];
+            $date  = convertToNormalDate($reservationInfo['reservationDate']);
+            $time  = convertToNormalTime($reservationInfo['reservationTimeStart']);
               $memberID = $reservationInfo['memberID'];
                 foreach($arrayMemberAccount as $memberAccount){
                   if($memberAccount['memberID'] == $memberID){
