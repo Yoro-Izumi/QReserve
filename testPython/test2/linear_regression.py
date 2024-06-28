@@ -33,8 +33,8 @@ future_dates = [last_date + datetime.timedelta(days=i) for i in range(1, 11)]
 future_dates_ordinal = [date.toordinal() for date in future_dates]
 X_future = np.array(future_dates_ordinal).reshape(-1, 1)
 
-# Predict using the model
-predictions = model.predict(X_future)
+# Predict using the model and convert predictions to integers
+predictions = model.predict(X_future).round().astype(int)
 
 # Format the data for Highcharts
 actual_data = [(int(date.timestamp() * 1000), count) for date, count in zip(data['date'], y)]
