@@ -491,14 +491,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
         yAxis: {
             min: 0,
             title: {
-                text: 'Population (millions)'
+                text: 'Reservations'
             }
         },
         legend: {
             enabled: false
         },
         tooltip: {
-            pointFormat: 'Population in 2021: <b>{point.y:.1f} millions</b>'
+            pointFormat: 'Reservations in 2024: <b>{point.y}</b>'
         },
         series: [{
             name: 'Population',
@@ -517,7 +517,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 color: '#FFFFFF',
                 inside: true,
                 verticalAlign: 'top',
-                format: '{point.y:.1f}', // one decimal
+                format: '{point.y}', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
                     fontSize: '13px',
