@@ -11,17 +11,19 @@ if (isset($_SESSION["userSuperAdminID"])) {
   $userSuperAdmin = $_SESSION["userSuperAdminID"];
 
   $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
-  
+
   foreach($arrayMemberAccount as $memberAccount){
-    $membershipID = decryptData($memberAccount['membershipID'],$key);
-    $validityDate = $memberAccount['validityDate'];
-    $customerFirstName = decryptData($memberAccount['customerFirstName'],$key);
-    $customerLastName = decryptData($memberAccount['customerLastName'],$key);
-    $customerMiddleName = decryptData($memberAccount['customerMiddleName'],$key);
-    $customerBirthdate = decryptData($memberAccount['customerBirthdate'],$key);
-    $customerPhone = decryptData($memberAccount['customerNumber'],$key);
-    $customerEmail = decryptData($memberAccount['customerEmail'],$key);
-    $oldPassword = " ";
+    if($memberAccount['customerID'] == $ID){
+      $membershipID = decryptData($memberAccount['membershipID'],$key);
+      $validityDate = $memberAccount['validityDate'];
+      $customerFirstName = decryptData($memberAccount['customerFirstName'],$key);
+      $customerLastName = decryptData($memberAccount['customerLastName'],$key);
+      $customerMiddleName = decryptData($memberAccount['customerMiddleName'],$key);
+      $customerBirthdate = decryptData($memberAccount['customerBirthdate'],$key);
+      $customerPhone = decryptData($memberAccount['customerNumber'],$key);
+      $customerEmail = decryptData($memberAccount['customerEmail'],$key);
+      $oldPassword = " ";
+    }
   }
 
 
