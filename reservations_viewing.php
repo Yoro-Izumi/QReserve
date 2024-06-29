@@ -9,6 +9,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
   include "src/get_data_from_database/get_walk_in.php";
   include "src/get_data_from_database/get_customer_information.php";
   include "src/get_data_from_database/get_member_account.php";
+  include "src/get_data_from_database/convert_to_normal_time.php";
   include "encodeDecode.php";
   $key = "TheGreatestNumberIs73";
 
@@ -121,8 +122,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
               echo "
                 <td>$reservationCode</td>
                 <td>$customerName</td>
-                <td>$reservationDate</td>
-                <td>$reservationTimeStart - $reservationTimeEnd</td>
+                <td>".convertToNormalDate($reservationDate)."</td>
+                <td>".convertToNormalTime($reservationTimeStart)." - ".convertToNormalTime($reservationTimeEnd)."</td>
                 <td>$tableNumber</td>
                 <td>$contactNumber</td>
                 <td>$email</td>
@@ -145,8 +146,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <td></td>
                 <td>Walk-in</td>
                 <td>$customerName</td>
-                <td>$walkinDate</td>
-                <td>$walkinTimeStart - $walkinTimeEnd</td>
+                <td>".convertToNormalDate($walkinDate)."</td>
+                <td>".convertToNormalTime($walkinTimeStart)." - ".convertToNormalTime($walkinTimeEnd)."</td>
                 <td>$tableNumber</td>
                 <td>$contactNumber</td>
                 <td>$email</td>";
@@ -225,7 +226,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       echo "
         <td>$reservationCode</td>
         <td>$customerName</td>
-        <td>$reservationDate</td>
+        <td>".convertToNormalDate($reservationDate)."</td>
         <td>$formattedTimeStart - $formattedTimeEnd</td>
         <td>$tableNumber</td>
         <td>$contactNumber</td>
@@ -252,7 +253,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <td></td>
         <td>Walk-in</td>
         <td>$customerName</td>
-        <td>$walkinDate</td>
+        <td>".convertToNormalDate($walkinDate)."</td>
         <td>$formattedWalkinTimeStart - $formattedWalkinTimeEnd</td>
         <td>$tableNumber</td>
         <td>$contactNumber</td>

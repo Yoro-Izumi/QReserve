@@ -5,6 +5,7 @@
   include "src/get_data_from_database/get_walk_in.php";
   include "src/get_data_from_database/get_reservation_info.php";
   include "src/get_data_from_database/get_customer_information.php";
+  include "src/get_data_from_database/convert_to_normal_time.php";
 
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
@@ -37,8 +38,8 @@ $currentTime = date('H:i:s');
             
             echo "<tr>
               <td>".$poolTableNumber."</td>
-              <td>".$timeStarted[1]."</td>
-              <td>".$timeEnd[1]."</td>";
+              <td>".($poolTableStatus == "Available" ? "--:--" : convertToNormalTime($timeStarted[1]))."</td>
+              <td>".($poolTableStatus == "Available" ? "--:--" : convertToNormalTime($timeEnd[1]))."</td>";
                 if($poolTableStatus == "Done" || $poolTableStatus == "Available"){
                   $status = "badge bg-success";
                 }
