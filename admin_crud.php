@@ -105,7 +105,7 @@ if (isset($_POST['updateAdmin'])) {
   mysqli_stmt_execute($conUpdateAdminInfo);
 
   // here is where account of admin is updated
-  if($password == "."){
+  if($password === "."){
     $qryUpdateAdminAccounts = "UPDATE `admin_accounts` SET `adminShiftID`= ?,`adminUsername`= ? WHERE adminInfoID = ?";
     $conUpdateAdminAccounts = mysqli_prepare($conn, $qryUpdateAdminAccounts);
     mysqli_stmt_bind_param($conUpdateAdminAccounts, 'isi', $shift, $username, $adminInfoID);
