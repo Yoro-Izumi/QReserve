@@ -153,25 +153,25 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
             <div class="col-md-3 mb-3">
-  <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-  <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required min="10:00" oninput="adjustEndTime()">
-  <div class="valid-feedback">
-    <!-- Looks good! -->
-  </div>
-  <div class="invalid-feedback">
-    Start time must be after 10:00 AM.
-  </div>
-</div>
-<div class="col-md-3 mb-3">
-  <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-  <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
-  <div class="valid-feedback">
-    <!-- Looks good! -->
-  </div>
-  <div class="invalid-feedback">
-    Please provide a valid end time.
-  </div>
-</div>
+              <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
+              <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required min="10:00" oninput="adjustEndTime()">
+              <div class="valid-feedback">
+                <!-- Looks good! -->
+              </div>
+              <div class="invalid-feedback">
+                Start time must be after 10:00 AM.
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
+              <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
+              <div class="valid-feedback">
+                <!-- Looks good! -->
+              </div>
+              <div class="invalid-feedback">
+                Please provide a valid end time.
+              </div>
+            </div>
             <div class="col-md-3 mb-3">
               <label for="selectTable" class="form-label">Select Table <span>*</span></label>
               <select class="form-control" name="selectTable" id="selectTable" required>
@@ -229,10 +229,10 @@ if (isset($_SESSION['userMemberID'])) {
             <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/file.gif" alt="Wait Icon" class="modal-icons">On Process...</h2>
           </div>
           <div class="modal-body text-center">
-          <p>Your booking is now on process!<br>Please check your email for the details of your reservation.</p>
-          <p class="proceed">Proceed to pay your reservation through the provided Payment Details</p>
-          <p class="gcash">GCash: 09123456789</p>
-          <p>Send your proof of payment to <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore’s Facebook Page.</a></p>
+            <p>Your booking is now on process!<br>Please check your email for the details of your reservation.</p>
+            <p class="proceed">Proceed to pay your reservation through the provided Payment Details</p>
+            <p class="gcash">GCash: 09123456789</p>
+            <p>Send your proof of payment to <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore’s Facebook Page.</a></p>
           </div>
           <div class="modal-footer">
             <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
@@ -241,7 +241,60 @@ if (isset($_SESSION['userMemberID'])) {
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="dataPrivacy" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fw-bold" id="success">
+                        <img src="src/images/icons/insurance.gif" alt="Wait Icon" class="modal-icons">Bevitore Customer Policy
+                    </h2>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold">Please be guided to Bevitore Customer Policy:</p>
+                    <p class="fw-bold mt-3 mb-0">Reservation Confirmation:</p>
+                    <ul class="mt-0 mb-0">
+                        <li>The reservation will be confirmed once the table is available upon checking. You will receive an email containing the confirmed reservation and your reservation details.</li>
+                    </ul>
+                    <p class="fw-bold mt-3 mb-0">Reservation Rejection:</p>
+                    <ul class="mt-0 mb-0">
+                        <li>You will receive an email indicating the reason for your rejected reservation.</li>
+                    </ul>
+                    <p class="fw-bold mt-3 mb-0">Cancellation Policy:</p>
+                    <ul class="mt-0 mb-0">
+                        <li>If you wish to cancel your reservation, your payment will be non-refundable and non-transferable.</li>
+                    </ul>
+                    <p class="fw-bold mt-3 mb-0">No-show Policy:</p>
+                    <ul class="mt-0 mb-0">
+                        <li>If you fail to show up to your scheduled and confirmed reservation without prior notice, your reservation will be voided.</li>
+                        <li>Your payment will be non-refundable and non-transferable.</li>
+                    </ul>
+                    <p class="fw-bold mt-4 mb-0">For more inquiries, contact us at <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore Santa Rosa</a></p>
+                </div>
+                <div class="modal-footer text-center">
+                    <button class="btn btn-primary create-button" data-bs-toggle="modal">Proceed</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+    <script>
+      $(document).ready(function() {
+        $('#dataPrivacy').modal('show'); // Show the modal on page load
+      });
+    </script>
+
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
     <script src="src/js/booking_form.js"></script>
