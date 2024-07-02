@@ -491,11 +491,8 @@ label.customer-account{
 
 
 
-.create-button#submitReserve {
-  background-color: #240046 !important;
-  color: #FFB800;
+.create-button-member#submitReserve {
   width: 400px;
-  border-color: #240046 !important; 
 }
 
 .create-button#create-reservation-button{
@@ -554,6 +551,16 @@ label.customer-account{
   border-radius: 10px;
 }
 
+.dashboard-square-kebab#full-screen {
+  padding: 2%;
+  background-image: linear-gradient(to bottom, #1b5532, #073109);
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column; /* Align items in a column */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+}
 
 #full-screen-logo{
   width: 8%
@@ -618,6 +625,64 @@ label.customer-account{
   align-items: center; /* Vertically center the modal */
   justify-content: center; /* Horizontally center the modal */
 }
+
+
+.table-box-not-available{
+  background-color: #d39700; 
+  border-radius: 10px;
+  padding: 2%;
+  font-size: 20px;
+  padding: 0%;
+  margin: 0%;
+  /* Change the color to whatever you prefer */
+}
+
+
+.table-box{
+  background-color: #ffb800;
+  border-radius: 10px;
+  padding: 2%;
+  font-size: 23px;
+  padding: 0%;
+  margin: 0%;
+}
+
+
+.table-number{
+  font-weight: 600;
+  padding-left: 5%;
+  font-size: 20px;
+}
+
+.table-time{
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5%;
+  font-size: 20px;
+}
+
+.table-oras{
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5%;
+}
+
+#tangina{
+  color: #073109;
+}
+
+.bi-fullscreen {
+  color: white;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  transition: transform 0.3s ease; /* Add transition for smooth effect */
+}
+
 
 @media (max-width: 768px) {
   .bevitore-logo {
