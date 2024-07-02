@@ -1,13 +1,90 @@
+
 $(document).ready(function () {
     $("#example").DataTable({
         paging: true,
         lengthChange: true,
-        searching: true, // Ensure this option is set to true
+        searching: true,
         ordering: true,
         info: true,
         autoWidth: false,
         responsive: true,
-        scrollX: true // Enable horizontal scrolling
+        scrollX: true,
+        pagingType: 'full_numbers',
+        language: {
+            paginate: {
+                first: 'First',
+                last: 'Last',
+                next: 'Next',
+                previous: 'Previous'
+            }
+        },
+        drawCallback: function (settings) {
+            var api = this.api();
+            var pagination = $(this)
+                .closest('.dataTables_wrapper')
+                .find('.dataTables_paginate .pagination');
+
+            pagination.html(''); // Clear existing pagination buttons
+
+            var currentPage = api.page();
+            var totalPages = api.page.info().pages;
+
+            // Determine the threshold for the number of pages to simplify pagination
+            var threshold = 5;
+
+            if (totalPages > 1) {
+                // Previous button
+                if (currentPage > 0) {
+                    pagination.append('<li class="paginate_button page-item previous"><a href="#" aria-controls="example" data-dt-idx="previous" tabindex="0" class="page-link">Previous</a></li>');
+                }
+
+                // Show all page numbers if the total number of pages is below the threshold
+                if (totalPages <= threshold) {
+                    for (var i = 0; i < totalPages; i++) {
+                        pagination.append('<li class="paginate_button page-item ' + (currentPage === i ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="' + i + '" tabindex="0" class="page-link">' + (i + 1) + '</a></li>');
+                    }
+                } else {
+                    // Simplified pagination for larger number of pages
+                    // First page
+                    pagination.append('<li class="paginate_button page-item ' + (currentPage === 0 ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">1</a></li>');
+
+                    // Ellipsis for pages before the current page
+                    if (currentPage > 2) {
+                        pagination.append('<li class="paginate_button page-item disabled"><a href="#" tabindex="-1" class="page-link">...</a></li>');
+                    }
+
+                    // Current page and neighbors
+                    for (var i = Math.max(1, currentPage - 1); i <= Math.min(currentPage + 1, totalPages - 2); i++) {
+                        pagination.append('<li class="paginate_button page-item ' + (currentPage === i ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="' + i + '" tabindex="0" class="page-link">' + (i + 1) + '</a></li>');
+                    }
+
+                    // Ellipsis for pages after the current page
+                    if (currentPage < totalPages - 3) {
+                        pagination.append('<li class="paginate_button page-item disabled"><a href="#" tabindex="-1" class="page-link">...</a></li>');
+                    }
+
+                    // Last page
+                    pagination.append('<li class="paginate_button page-item ' + (currentPage === totalPages - 1 ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="' + (totalPages - 1) + '" tabindex="0" class="page-link">' + totalPages + '</a></li>');
+                }
+
+                // Next button
+                if (currentPage < totalPages - 1) {
+                    pagination.append('<li class="paginate_button page-item next"><a href="#" aria-controls="example" data-dt-idx="next" tabindex="0" class="page-link">Next</a></li>');
+                }
+            }
+
+            pagination.find('a').on('click', function (e) {
+                e.preventDefault();
+                var newPage = $(this).data('dt-idx');
+                if (newPage === 'previous') {
+                    api.page('previous').draw('page');
+                } else if (newPage === 'next') {
+                    api.page('next').draw('page');
+                } else {
+                    api.page(parseInt(newPage)).draw('page');
+                }
+            });
+        }
     });
 });
 
@@ -196,98 +273,56 @@ $(document).ready(function() {
 
 
 
-    // Function to fetch data based on the scanned QR code ID
-    function fetchInfo(id) {
-        fetch('zgetInfo.php?id=' + id)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    document.getElementById('result').innerText = data.error;
-                    document.getElementById('modal-body-content').innerText = data.error;
-                } else {
-                    const info = data.info;
-                    const infoText = `
-                        <p><strong>Reservation ID:</strong> ${info.reservationID}</p>
-                        <p><strong>Member ID:</strong> ${info.memberID}</p>
-                        <p><strong>Table Number:</strong> ${info.tableNumber}</p>
-                        <p><strong>Reservation Status:</strong> ${info.reservationStatus}</p>
-                        <p><strong>Reservation Date:</strong> ${info.reservationDate}</p>
-                        <p><strong>Reservation Time Start:</strong> ${info.reservationTimeStart}</p>
-                        <p><strong>Reservation Time End:</strong> ${info.reservationTimeEnd}</p>
-                    `;
-                    document.getElementById('result').innerText = infoText;
-
-                    // Show the modal with the fetched data
-                    document.getElementById('modal-body-content').innerHTML = infoText;
-                    $('#reservation_details').modal('show');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('result').innerText = 'An error occurred while fetching the data.';
-                document.getElementById('modal-body-content').innerText = 'An error occurred while fetching the data.';
-            });
-    }
-
-    // Function to hide the keyboard on mobile devices
-    function hideMobileKeyboard() {
-        // Temporarily create an input, focus it, then blur it
-        const field = document.createElement('input');
-        field.setAttribute('type', 'text');
-        field.setAttribute('style', 'position: absolute; top: -9999px;');
-        document.body.appendChild(field);
-        field.focus();
-        field.blur();
-        document.body.removeChild(field);
-    }
 
 
+// Function to fetch data based on the scanned QR code ID
+function fetchInfo(id) {
+    fetch('zgetInfo.php?id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('result').innerText = data.error;
+                document.getElementById('modal-body-content').innerText = data.error;
+                $('#invalid_qr_modal').modal('show'); // Show the invalid QR code modal
+            } else {
+                const info = data.info;
+                const infoText = `
+                    <p><strong>Reservation ID:</strong> ${info.reservationID}</p>
+                    <p><strong>Member ID:</strong> ${info.memberID}</p>
+                    <p><strong>Table Number:</strong> ${info.tableNumber}</p>
+                    <p><strong>Reservation Status:</strong> ${info.reservationStatus}</p>
+                    <p><strong>Reservation Date:</strong> ${info.reservationDate}</p>
+                    <p><strong>Reservation Time Start:</strong> ${info.reservationTimeStart}</p>
+                    <p><strong>Reservation Time End:</strong> ${info.reservationTimeEnd}</p>
+                `;
+                document.getElementById('result').innerText = infoText;
 
-    
-    // Event listener for the input field
-    /*document.addEventListener('DOMContentLoaded', () => {
-        const qrInput = document.getElementById('qrInput');
-        const formInputs = document.querySelectorAll('form input');
-
-        // Ensure the QR input field is always focused
-        function focusQrInput() {
-            if (document.activeElement !== qrInput) {
-                qrInput.focus();
+                // Show the modal with the fetched data
+                document.getElementById('modal-body-content').innerHTML = infoText;
+                $('#reservation_details').modal('show');
             }
-        }
-
-        qrInput.addEventListener('keydown', () => {
-            const id = qrInput.value.trim();
-                if (id && event.key == 'Enter') {
-                    fetchInfo(id);
-                    hideMobileKeyboard();  // Hide the mobile keyboard
-                    qrInput.value = '';  // Clear the input field after scanning
-                }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('result').innerText = 'An error occurred while fetching the data.';
+            document.getElementById('modal-body-content').innerText = 'An error occurred while fetching the data.';
+            $('#invalid_qr_modal').modal('show'); // Show the invalid QR code modal in case of an error
         });
+}
 
-        // Add event listeners to all form inputs to manage focus
-        formInputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                // Temporarily disable QR input focus
-                document.removeEventListener('click', focusQrInput);
-            });
 
-            input.addEventListener('blur', () => {
-                // Re-enable QR input focus
-                document.addEventListener('click', focusQrInput);
-            });
-        });
+// Function to hide the keyboard on mobile devices
+function hideMobileKeyboard() {
+    // Temporarily create an input, focus it, then blur it
+    const field = document.createElement('input');
+    field.setAttribute('type', 'text');
+    field.setAttribute('style', 'position: absolute; top: -9999px;');
+    document.body.appendChild(field);
+    field.focus();
+    field.blur();
+    document.body.removeChild(field);
+}
 
-        // Initial focus on the QR input field
-        focusQrInput();
-        // Ensure the QR input field remains focused after interactions
-        document.addEventListener('click', focusQrInput);
-
-        // Close button in the modal
-        document.getElementById('submitReserve').addEventListener('click', () => {
-            $('#reservation_details').modal('hide');
-        });
-    });*/
 document.addEventListener('DOMContentLoaded', () => {
     const qrInput = document.getElementById('qrInput');
     const formInputs = document.querySelectorAll('form input:not(#qrInput)'); // Exclude qrInput from the list
@@ -296,6 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function focusQrInput() {
         if (document.activeElement !== qrInput && !document.querySelector('form input:focus')) {
             qrInput.focus();
+            qrInput.scrollIntoView({ block: 'center', behavior: 'smooth' }); // Scroll into the center
         }
     }
 
@@ -323,6 +359,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Make DataTable pagination and number of entry dropdown clickable
+    function allowInteractionOnDataTable() {
+        // Adding click event to the DataTable elements to stop propagation
+        document.querySelectorAll('.dataTables_paginate, .dataTables_length, .dataTables_filter').forEach(element => {
+            element.addEventListener('click', (event) => {
+                event.stopPropagation(); // Stop the focus event from triggering on QR input
+            });
+        });
+
+        // Adding focus and blur events to the dropdown to handle focus properly
+        document.querySelectorAll('.dataTables_length select').forEach(select => {
+            select.addEventListener('focus', () => {
+                // Temporarily disable QR input focus
+                document.removeEventListener('click', focusQrInput);
+            });
+
+            select.addEventListener('blur', () => {
+                // Re-enable QR input focus after a delay
+                setTimeout(() => {
+                    document.addEventListener('click', focusQrInput);
+                }, 100);
+            });
+        });
+    }
+
+    // Call the function to make DataTable interactions work
+    allowInteractionOnDataTable();
+
     // Initial focus on the QR input field
     focusQrInput();
     // Ensure the QR input field remains focused after interactions
@@ -333,6 +397,8 @@ document.addEventListener('DOMContentLoaded', () => {
         $('#reservation_details').modal('hide');
     });
 });
+
+
 
 
 

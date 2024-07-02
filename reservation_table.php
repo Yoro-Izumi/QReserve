@@ -1,4 +1,4 @@
-<!-- <?php 
+<?php 
 session_start();
 include "connect_database.php";
 include "encodeDecode.php";
@@ -30,12 +30,12 @@ echo "
 <tbody>";
 
 foreach ($arrayReservationInfo as $reservations) {
-  $reservationID = $reservations['reservationID'];
-  $reservationDate = $reservations['reservationDate'];
-  $reservationStatus = $reservations['reservationStatus'];
-  $reservationTimeStart = $reservations['reservationTimeStart'];
-  $reservationTimeEnd = $reservations['reservationTimeEnd'];
-  $tableNumber = $reservations['poolTableNumber'];
+  $reservationID = $reservations['reservationID'] ?? '';
+  $reservationDate = $reservations['reservationDate'] ?? '';
+  $reservationStatus = $reservations['reservationStatus'] ?? '';
+  $reservationTimeStart = $reservations['reservationTimeStart'] ?? '';
+  $reservationTimeEnd = $reservations['reservationTimeEnd'] ?? '';
+  $tableNumber = $reservations['poolTableNumber'] ?? '';
   $reservationCode = '';
 
   $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
@@ -44,14 +44,14 @@ foreach ($arrayReservationInfo as $reservations) {
   mysqli_stmt_execute($getQRCodePrepare);
   $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
   $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
-  $reservationCode = $getQRCodeRow['codeQR'];
+  $reservationCode = $getQRCodeRow['codeQR'] ?? '';
 
 
   foreach ($arrayMemberAccount as $members) {
     if ($members['memberID'] == $reservations['memberID']) {
       $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
-      $contactNumber = decryptData($members['customerNumber'], $key);
-      $email = decryptData($members['customerEmail'], $key);
+      $contactNumber = decryptData($members['customerNumber'], $key) ?? '';
+      $email = decryptData($members['customerEmail'], $key) ?? '';
     }
   }
 
@@ -81,16 +81,16 @@ foreach ($arrayReservationInfo as $reservations) {
 }
 
 foreach ($arrayWalkinDetails as $walkin) {
-  $walkinDate = $walkin['walkinDate'];
-  $walkinStatus = $walkin['walkinStatus'];
-  $walkinTimeStart = $walkin['walkinTimeStart'];
-  $walkinTimeEnd = $walkin['walkinTimeEnd'];
-  $tableNumber = $walkin['poolTableNumber'];
+  $walkinDate = $walkin['walkinDate'] ?? '';
+  $walkinStatus = $walkin['walkinStatus'] ?? '';
+  $walkinTimeStart = $walkin['walkinTimeStart'] ?? '';
+  $walkinTimeEnd = $walkin['walkinTimeEnd'] ?? '';
+  $tableNumber = $walkin['poolTableNumber'] ?? '';
 
   // Directly access customer information from the walk-in array
   $customerName = decryptData($walkin['customerFirstName'], $key) . " " . decryptData($walkin['customerMiddleName'], $key) . " " . decryptData($walkin['customerLastName'], $key);
-  $contactNumber = decryptData($walkin['customerNumber'], $key);
-  $email = decryptData($walkin['customerEmail'], $key);
+  $contactNumber = decryptData($walkin['customerNumber'], $key) ?? '';
+  $email = decryptData($walkin['customerEmail'], $key) ?? '';
 
   echo "
   <tr>
@@ -102,7 +102,7 @@ foreach ($arrayWalkinDetails as $walkin) {
     <td>$tableNumber</td>
     <td>$contactNumber</td>
     <td>$email</td>";
-    if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus = "Reserved") {
+    if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
       $status = "badge bg-success";
     } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
       $status = "badge bg-warning";
@@ -133,12 +133,12 @@ echo "
 <tbody>";
 
 foreach ($arrayReservationInfo as $reservations) {
-  $reservationID = $reservations['reservationID'];
-  $reservationDate = $reservations['reservationDate'];
-  $reservationStatus = $reservations['reservationStatus'];
-  $reservationTimeStart = $reservations['reservationTimeStart'];
-  $reservationTimeEnd = $reservations['reservationTimeEnd'];
-  $tableNumber = $reservations['poolTableNumber'];
+  $reservationID = $reservations['reservationID'] ?? '';
+  $reservationDate = $reservations['reservationDate'] ?? '';
+  $reservationStatus = $reservations['reservationStatus'] ?? '';
+  $reservationTimeStart = $reservations['reservationTimeStart'] ?? '';
+  $reservationTimeEnd = $reservations['reservationTimeEnd'] ?? '';
+  $tableNumber = $reservations['poolTableNumber'] ?? '';
   $reservationCode = '';
 
   $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
@@ -147,14 +147,14 @@ foreach ($arrayReservationInfo as $reservations) {
   mysqli_stmt_execute($getQRCodePrepare);
   $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
   $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
-  $reservationCode = $getQRCodeRow['codeQR'];
+  $reservationCode = $getQRCodeRow['codeQR'] ?? '';
 
 
   foreach ($arrayMemberAccount as $members) {
     if ($members['memberID'] == $reservations['memberID']) {
       $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
-      $contactNumber = decryptData($members['customerNumber'], $key);
-      $email = decryptData($members['customerEmail'], $key);
+      $contactNumber = decryptData($members['customerNumber'], $key) ?? '';
+      $email = decryptData($members['customerEmail'], $key) ?? '';
     }
   }
 
@@ -181,16 +181,16 @@ foreach ($arrayReservationInfo as $reservations) {
 }
 
 foreach ($arrayWalkinDetails as $walkin) {
-  $walkinDate = $walkin['walkinDate'];
-  $walkinStatus = $walkin['walkinStatus'];
-  $walkinTimeStart = $walkin['walkinTimeStart'];
-  $walkinTimeEnd = $walkin['walkinTimeEnd'];
-  $tableNumber = $walkin['poolTableNumber'];
+  $walkinDate = $walkin['walkinDate'] ?? '';
+  $walkinStatus = $walkin['walkinStatus'] ?? '';
+  $walkinTimeStart = $walkin['walkinTimeStart'] ?? '';
+  $walkinTimeEnd = $walkin['walkinTimeEnd'] ?? '';
+  $tableNumber = $walkin['poolTableNumber'] ?? '';
 
   // Directly access customer information from the walk-in array
   $customerName = decryptData($walkin['customerFirstName'], $key) . " " . decryptData($walkin['customerMiddleName'], $key) . " " . decryptData($walkin['customerLastName'], $key);
-  $contactNumber = decryptData($walkin['customerNumber'], $key);
-  $email = decryptData($walkin['customerEmail'], $key);
+  $contactNumber = decryptData($walkin['customerNumber'], $key) ?? '';
+  $email = decryptData($walkin['customerEmail'], $key) ?? '';
 
   echo "
   <tr>
@@ -201,7 +201,7 @@ foreach ($arrayWalkinDetails as $walkin) {
     <td>$tableNumber</td>
     <td>$contactNumber</td>
     <td>$email</td>";
-    if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus = "Reserved") {
+    if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
       $status = "badge bg-success";
     } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
       $status = "badge bg-warning";
@@ -213,4 +213,4 @@ foreach ($arrayWalkinDetails as $walkin) {
 }
 echo "</tbody>";
 }
-?> -->
+?>
