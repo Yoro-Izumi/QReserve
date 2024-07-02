@@ -59,6 +59,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
           <div class="col-md-12">
             <h3 class="fw-bold ps-4">Fill up the form</h3>
             <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
+              
               <div class="col-md-4 mb-3">
                 <label for="firstName" class="form-label">First Name <span>*</span></label>
                 <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
@@ -69,6 +70,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please provide a valid first name.
                 </div>
               </div>
+              
               <div class="col-md-4 mb-3">
                 <label for="middleName" class="form-label">Middle Name</label>
                 <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
@@ -79,6 +81,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please provide a valid middle name.
                 </div>
               </div>
+              
               <div class="col-md-4 mb-3">
                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
                 <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
