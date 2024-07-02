@@ -299,31 +299,25 @@ if (isset($_SESSION['userMemberID'])) {
     </div>
 
 
-
-    <div class="modal fade" id="confirmUnsavedReloadModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
+<!-- Bootstrap Modal -->
+<!-- Example Bootstrap Modal for unsaved changes -->
+<div class="modal fade" id="confirmUnsavedReloadModal" tabindex="-1" aria-labelledby="confirmUnsavedReloadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+        <h5 class="modal-title" id="confirmUnsavedReloadModalLabel">Unsaved Changes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
-        <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+        <p>You have unsaved changes. Are you sure you want to reload the page?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="proceedReloadBtn">Proceed</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="proceedReloadBtn" class="btn btn-primary">Reload</button>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
     </div>
 
 

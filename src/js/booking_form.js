@@ -367,3 +367,80 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
+//For reloading na nagana kaso default
+// document.addEventListener('DOMContentLoaded', () => {
+//   let isFormDirty = false; // Track if form has unsaved changes
+
+//   // Track form changes (example)
+//   document.getElementById('booking-form').addEventListener('input', () => {
+//     isFormDirty = true;
+//   });
+
+//   // Handle page reload attempt
+//   window.addEventListener('beforeunload', (e) => {
+//     if (isFormDirty) {
+//       // Customize the message shown by the browser
+//       e.returnValue = 'may unsaved ka bobo';
+//     }
+//   });
+
+//   // Optional: Clear form dirty flag on form submission or other action
+//   document.getElementById('booking-form').addEventListener('submit', () => {
+//     isFormDirty = false;
+//   });
+
+//   // Show modal for custom interaction when leaving page
+//   document.getElementById('reloadPageBtn').addEventListener('click', () => {
+//     if (isFormDirty) {
+//       const unsavedChangesModal = new bootstrap.Modal(document.getElementById('confirmUnsavedReloadModal'));
+//       unsavedChangesModal.show();
+
+//       // Handle modal buttons
+//       document.getElementById('proceedReloadBtn').addEventListener('click', () => {
+//         window.location.reload(); // Reload the page
+//       });
+//     } else {
+//       window.location.reload(); // Directly reload if no unsaved changes
+//     }
+//   });
+// });
+
+document.addEventListener('DOMContentLoaded', () => {
+  let isFormDirty = false; // Track if form has unsaved changes
+
+  // Track form changes (example)
+  document.getElementById('booking-form').addEventListener('input', () => {
+    isFormDirty = true;
+  });
+
+  // Handle page reload attempt
+  window.addEventListener('beforeunload', (e) => {
+    if (isFormDirty) {
+      // Customize the message shown by the browser
+      e.returnValue = 'tanga.';
+    }
+  });
+
+  // Optional: Clear form dirty flag on form submission or other action
+  document.getElementById('booking-form').addEventListener('submit', () => {
+    isFormDirty = false;
+  });
+
+  // Show modal for custom interaction when leaving page
+  document.getElementById('reloadPageBtn').addEventListener('click', () => {
+    if (isFormDirty) {
+      const unsavedChangesModal = new bootstrap.Modal(document.getElementById('confirmUnsavedReloadModal'));
+      unsavedChangesModal.show();
+
+      // Handle modal buttons
+      document.getElementById('proceedReloadBtn').addEventListener('click', () => {
+        window.location.reload(); // Reload the page
+      });
+    } else {
+      window.location.reload(); // Directly reload if no unsaved changes
+    }
+  });
+});
+
+
