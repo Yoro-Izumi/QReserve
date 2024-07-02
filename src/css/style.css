@@ -328,6 +328,19 @@ img.modal-icons {
   color: #ffb800 !important;
 }
 
+.continue-button {
+  background-color: #ffb800 !important;
+  color: white;
+  width: 150px;
+  border-color: #ffb800 !important; 
+}
+
+.continue-button:hover {
+  background-color: #0d2818 !important;
+  font-weight: bold;
+  color: #ffb800 !important;
+}
+
 .create-button#proceed {
     width: 400px;
   }

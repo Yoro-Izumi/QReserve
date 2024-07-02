@@ -165,6 +165,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               Please select a shift.
             </div>
           </div>
+          
           <div class="col-12 col-md-6 ">
             <label for="password" class="form-label">Password <span>*</span></label>
             <div class="input-group">
@@ -175,6 +176,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
             <div id="password-strength-indicator"></div>
           </div>
+          
           <div class="col-12 col-md-6 ">
             <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
             <div class="input-group">
@@ -191,6 +193,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               Passwords do not match.
             </div>
           </div>
+          
           <div class="row justify-content-end mt-5">
             <div class="col-12 col-md-2 mb-2 mb-md-0">
               <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
