@@ -697,6 +697,22 @@ label.customer-account{
 }
 
 
+  /* Pagination button default color */
+  .dataTables_wrapper .dataTables_paginate .pagination .page-link {
+    color: #1b5532;
+}
+/* Pagination button active color */
+.dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
+    background-color: #1b5532;
+    border-color: #1b5532;
+    color: #ffb800;
+    font-weight: 600;
+}
+/* Pagination button hover color */
+.dataTables_wrapper .dataTables_paginate .pagination .page-link:hover {
+    color: #1b5532;
+}
+
 @media (max-width: 768px) {
   .bevitore-logo {
       width: 25%;
