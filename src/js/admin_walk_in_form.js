@@ -303,3 +303,87 @@ $(document).ready(function () {
     });
   });
 });
+
+
+
+
+
+// Unsaved Changes
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('booking-form');
+  let isFormDirty = false;
+
+  form.addEventListener('input', () => {
+    isFormDirty = true;
+  });
+
+  const cancelButton = document.querySelector('.cancel-button');
+  cancelButton.addEventListener('click', () => {
+    if (isFormDirty) {
+      const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
+      unsavedChangesModal.show();
+    } else {
+      window.location.href = 'admin_dashboard.php';
+    }
+  });
+
+  const proceedButton = document.getElementById('proceedButton');
+  proceedButton.addEventListener('click', () => {
+    window.location.href = 'admin_dashboard.php';
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Display initial alert for the default selected option
+  if (document.getElementById('success-outlined').checked) {
+      alert('Walk-In');
+  }
+
+  // Add event listeners to radio buttons
+  document.getElementById('success-outlined').addEventListener('change', function () {
+      if (this.checked) {
+          alert('Walk-In');
+      }
+  });
+
+  document.getElementById('danger-outlined').addEventListener('change', function () {
+      if (this.checked) {
+          alert('Member');
+      }
+  });
+});
