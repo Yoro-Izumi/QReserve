@@ -194,7 +194,9 @@ if (isset($_SESSION['userMemberID'])) {
                 <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
               </div>
               <div class="col-12 col-md-2 mb-3 mb-md-0">
-                <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
+                <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button> -->
+                <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="handleCancel()">Cancel</button>
+
               </div>
             </div>
           </form>
@@ -243,40 +245,79 @@ if (isset($_SESSION['userMemberID'])) {
     </div>
 
     <div class="modal fade" id="dataPrivacy" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title fw-bold" id="success">
-                        <img src="src/images/icons/insurance.gif" alt="Wait Icon" class="modal-icons">Bevitore Customer Policy
-                    </h2>
-                </div>
-                <div class="modal-body">
-                    <p class="fw-bold">Please be guided to Bevitore Customer Policy:</p>
-                    <p class="fw-bold mt-3 mb-0">Reservation Confirmation:</p>
-                    <ul class="mt-0 mb-0">
-                        <li>The reservation will be confirmed once the table is available upon checking. You will receive an email containing the confirmed reservation and your reservation details.</li>
-                    </ul>
-                    <p class="fw-bold mt-3 mb-0">Reservation Rejection:</p>
-                    <ul class="mt-0 mb-0">
-                        <li>You will receive an email indicating the reason for your rejected reservation.</li>
-                    </ul>
-                    <p class="fw-bold mt-3 mb-0">Cancellation Policy:</p>
-                    <ul class="mt-0 mb-0">
-                        <li>If you wish to cancel your reservation, your payment will be non-refundable and non-transferable.</li>
-                    </ul>
-                    <p class="fw-bold mt-3 mb-0">No-show Policy:</p>
-                    <ul class="mt-0 mb-0">
-                        <li>If you fail to show up to your scheduled and confirmed reservation without prior notice, your reservation will be voided.</li>
-                        <li>Your payment will be non-refundable and non-transferable.</li>
-                    </ul>
-                    <p class="fw-bold mt-4 mb-0">For more inquiries, contact us at <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore Santa Rosa</a></p>
-                </div>
-                <div class="modal-footer text-center">
-                    <button class="btn btn-primary create-button" data-bs-toggle="modal">Proceed</button>
-                </div>
-            </div>
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold" id="success">
+              <img src="src/images/icons/insurance.gif" alt="Wait Icon" class="modal-icons">Bevitore Customer Policy
+            </h2>
+          </div>
+          <div class="modal-body">
+            <p class="fw-bold">Please be guided to Bevitore Customer Policy:</p>
+            <p class="fw-bold mt-3 mb-0">Reservation Confirmation:</p>
+            <ul class="mt-0 mb-0">
+              <li>The reservation will be confirmed once the table is available upon checking. You will receive an email containing the confirmed reservation and your reservation details.</li>
+            </ul>
+            <p class="fw-bold mt-3 mb-0">Reservation Rejection:</p>
+            <ul class="mt-0 mb-0">
+              <li>You will receive an email indicating the reason for your rejected reservation.</li>
+            </ul>
+            <p class="fw-bold mt-3 mb-0">Cancellation Policy:</p>
+            <ul class="mt-0 mb-0">
+              <li>If you wish to cancel your reservation, your payment will be non-refundable and non-transferable.</li>
+            </ul>
+            <p class="fw-bold mt-3 mb-0">No-show Policy:</p>
+            <ul class="mt-0 mb-0">
+              <li>If you fail to show up to your scheduled and confirmed reservation without prior notice, your reservation will be voided.</li>
+              <li>Your payment will be non-refundable and non-transferable.</li>
+            </ul>
+            <p class="fw-bold mt-4 mb-0">For more inquiries, contact us at <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore Santa Rosa</a></p>
+          </div>
+          <div class="modal-footer text-center">
+            <button class="btn btn-primary create-button" data-bs-toggle="modal">Proceed</button>
+          </div>
         </div>
+      </div>
     </div>
+
+    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button-member" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="modal fade" id="confirmUnsavedReloadModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+      </div>
+      <div class="modal-body">
+        <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+        <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="proceedReloadBtn">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
