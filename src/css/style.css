@@ -491,11 +491,8 @@ label.customer-account{
 
 
 
-.create-button#submitReserve {
-  background-color: #240046 !important;
-  color: #FFB800;
+.create-button-member#submitReserve {
   width: 400px;
-  border-color: #240046 !important; 
 }
 
 .create-button#create-reservation-button{
