@@ -12,6 +12,8 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   include "src/get_data_from_database/convert_to_normal_time.php";
   include "encodeDecode.php";
   $key = "TheGreatestNumberIs73";
+
+  $customerName = $email = $contactNumber = " ";
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -254,6 +256,24 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Modal for Invalid QR Code -->
+    <div class="modal fade" id="invalid_qr_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="invalid_qr_modal_label" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="invalid_qr_modal_label">Invalid QR Code
+            </h2>
+          </div>
+          <div class="modal-body text-center" id="modal-body-content">
+            The scanned QR code is invalid or does not exist.
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary create-button" id="closeInvalidQRModal" type="button" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
 
