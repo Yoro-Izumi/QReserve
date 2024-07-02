@@ -488,6 +488,9 @@ label.customer-account{
   font-weight: bold;
 }
 
+
+
+
 .create-button#submitReserve {
   background-color: #240046 !important;
   color: #FFB800;
@@ -513,15 +516,33 @@ label.customer-account{
   border-color: #FFB800 !important; 
 }
 
-.cancel-button#member-cancel{
-  border-color: #240046 !important; 
-  color: #240046;
+
+
+.create-button-member{
+  background-color: #240046 !important;
+  color: #FFB800 !important;
+  border-color: #240046 !important;
 }
 
-.cancel-button#member-cancel:hover{
+.create-button-member:hover{
+  background-color: #FFB800 !important;
+  color: #240046 !important;
+  border-color: #FFB800 !important;
+  font-weight: 600;
+}
+
+
+.cancel-button-member{
   border-color: #240046 !important; 
-  color: #FFB800;
+  color: #240046 !important;
+  
+}
+
+.cancel-button-member:hover{
+  border-color: #240046 !important; 
+  color: #FFB800 !important;
   background-color: #240046 !important;
+  font-weight: 600;
 }
 
 

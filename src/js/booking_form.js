@@ -315,3 +315,55 @@ $(document).ready(function () {
     });
   });
 });
+
+
+
+
+
+
+
+
+
+
+// For the save changes
+// let formChanged = false;
+// document.querySelectorAll('input, select').forEach(item => {
+//     item.addEventListener('input', () => {
+//         formChanged = true;
+//     });
+// });
+
+// // Function to handle cancel button click
+// function handleCancel() {
+//     if (formChanged) {
+//         $('#cancelModal').modal('show'); // Show modal if form has changes
+//     } else {
+//         window.location.href = 'customer_dashboard.php'; // Directly redirect if no changes
+//     }
+// }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('booking-form');
+  let isFormDirty = false;
+
+  form.addEventListener('input', () => {
+    isFormDirty = true;
+  });
+
+  const cancelButton = document.querySelector('.cancel-button');
+  cancelButton.addEventListener('click', () => {
+    if (isFormDirty) {
+      const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
+      unsavedChangesModal.show();
+    } else {
+      window.location.href = 'customer_dashboard.php';
+    }
+  });
+
+  const proceedButton = document.getElementById('proceedButton');
+  proceedButton.addEventListener('click', () => {
+    window.location.href = 'customer_dashboard.php';
+  });
+});
+
