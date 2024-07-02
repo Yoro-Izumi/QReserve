@@ -713,6 +713,14 @@ label.customer-account{
     color: #1b5532;
 }
 
+
+
+.huhu{
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
 @media (max-width: 768px) {
   .bevitore-logo {
       width: 25%;

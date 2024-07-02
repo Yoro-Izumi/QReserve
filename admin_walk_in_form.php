@@ -2,6 +2,8 @@
 session_start();
 if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { // Check for admin session too
   $visitors = 0;
+
+  $today = date('Y-m-d');
 ?>
 
   <!DOCTYPE html>
@@ -55,11 +57,20 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             <hr class="my-4">
           </div>
         </div>
+
         <div class="row">
-          <div class="col-md-12">
+          <div class="d-flex justify-content-between align-items-center">
             <h3 class="fw-bold ps-4">Fill up the form</h3>
+            <div class="fw-bold pe-4">
+              <!-- <input type="radio" class="btn-check " name="options-outlined" id="success-outlined" autocomplete="off" checked>
+              <label class="btn btn-outline-success" for="success-outlined">Walk-In</label>
+
+              <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
+              <label class="btn btn-outline-danger" for="danger-outlined">Member</label> -->
+            </div>
+          </div>
+          <div class="col-md-12">
             <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
-              
               <div class="col-md-4 mb-3">
                 <label for="firstName" class="form-label">First Name <span>*</span></label>
                 <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
@@ -70,7 +81,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please provide a valid first name.
                 </div>
               </div>
-              
+
               <div class="col-md-4 mb-3">
                 <label for="middleName" class="form-label">Middle Name</label>
                 <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
@@ -81,7 +92,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   Please provide a valid middle name.
                 </div>
               </div>
-              
+
               <div class="col-md-4 mb-3">
                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
                 <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
@@ -125,7 +136,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-3 mb-3">
                 <label for="selectDate" class="form-label">Select Date <span>*</span></label>
-                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" max="2100-12-31" />
+                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required readonly value="<?php echo date('Y-m-d'); ?>" />
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
@@ -178,7 +189,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                   <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
                 </div>
                 <div class="col-12 col-md-2 mb-3 mb-md-0">
-                  <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
+                  <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="handleCancel()">Cancel</button>
                 </div>
               </div>
             </form>
@@ -207,7 +218,6 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       </div>
     </div>
 
-
     <!-- Success Add New Walkin Modal -->
     <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -225,6 +235,25 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button-member" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button-member" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     </div>
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
