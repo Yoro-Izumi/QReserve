@@ -122,14 +122,15 @@ if (isset($_POST['login'])) {
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 
   <!-- Online Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
   <!-- Montserrat Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -272,34 +273,28 @@ if (isset($_POST['login'])) {
             <div class="invalid-feedback">
               Please provide a valid pin.
             </div>
-
-
-              <label for="password" class="form-label">Password <span>*</span></label>
-              <div class="input-group">
-                <input type="password" class="form-control" name="new-password" id="new-password" placeholder="Enter password here" required oninput="checkPasswordStrength(this.value)" />
-                <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
-                  <i class="fas fa-eye-slash"></i>
-                </button>
-              </div>
-              <div id="password-strength-indicator"></div
-
-              <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
-              <div class="input-group">
-                <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="Re-enter password here" required />
-                <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
-                  <i class="fas fa-eye-slash"></i>
-                </button>
-              </div>
-              <div class="feedback" id="passwordMatchFeedback"></div>
-              <div class="valid-feedback" id="passwordMatch">
-                Passwords match!
-              </div>
-              <div class="invalid-feedback" id="passwordMismatch">
-                Passwords do not match.
-              </div>
-
-
-
+            <label for="password" class="form-label">Password <span>*</span></label>
+            <div class="input-group">
+              <input type="password" class="form-control" name="new-password" id="new-password" placeholder="Enter password here" required oninput="checkPasswordStrength(this.value)" />
+              <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
+                <i class="fas fa-eye-slash"></i>
+              </button>
+            </div>
+            <div id="password-strength-indicator"></div>
+            <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
+            <div class="input-group">
+              <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="Re-enter password here" required />
+              <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
+                <i class="fas fa-eye-slash"></i>
+              </button>
+            </div>
+            <div class="feedback" id="passwordMatchFeedback"></div>
+            <div class="valid-feedback" id="passwordMatch">
+              Passwords match!
+            </div>
+            <div class="invalid-feedback" id="passwordMismatch">
+              Passwords do not match.
+            </div>
             <div id="resetPasswordError" class="alert alert-danger" role="alert" style="display: none;"></div>
           </div>
           <div class="modal-footer">
@@ -316,7 +311,7 @@ if (isset($_POST['login'])) {
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content modal-content-custom" id="wait">
         <div class="modal-header">
-          <h4 class="modal-title fw-bold text-center" id="success">Success!</p></h4>
+          <h4 class="modal-title fw-bold text-center" id="success">Success!</h4>
         </div>
         <div class="modal-body">
           You have successfully changed your password. Try to log in again.
@@ -327,8 +322,6 @@ if (isset($_POST['login'])) {
       </div>
     </div>
   </div>
-
-
   <!-- End of Modals -->
   <script>
     $(document).ready(function () {
@@ -342,116 +335,92 @@ if (isset($_POST['login'])) {
 
       // Handle AJAX for sending reset PIN
       $('#forgetPassButton').click(function () {
-        const email = $('#email').val();
-        if (email) {
-          $.ajax({
-            url: 'send_pin.php',
-            type: 'POST',
-            data: { email: email },
-            success: function (response) {
-              const res = JSON.parse(response);
-              if (res.status === 'success') {
-                $('#forget-password-modal').modal('hide');
-                $('#continue-forget-password').modal('show');
-              } else {
-                $('#sendPinError').text(res.message).show();
-              }
-            },
-            error: function () {
-              $('#sendPinError').text('Error sending PIN.').show();
+        const form = $('#send-pin-form');
+        $.ajax({
+          url: 'send_pin.php',
+          type: 'POST',
+          data: form.serialize(),
+          success: function (response) {
+            const res = JSON.parse(response);
+            if (res.status === 'success') {
+              $('#forget-password-modal').modal('hide');
+              $('#continue-forget-password').modal('show');
+            } else {
+              $('#sendPinError').text(res.message).show();
             }
-          });
-        }
+          },
+          error: function () {
+            $('#sendPinError').text('Error sending PIN.').show();
+          }
+        });
       });
 
       // Handle AJAX for submitting new password
       $('#submitPinButton').click(function () {
-        const pin = $('#pinInput').val();
-        const password = $('#new-password').val();
-        const confirmPassword = $('#confirm-password').val();
-        if (pin && password && confirmPassword && password === confirmPassword) {
-          $.ajax({
-            url: 'submit_new_password.php',
-            type: 'POST',
-            data: { pin: pin, password: password, confirmPassword: confirmPassword },
-            success: function (response) {
-              const res = JSON.parse(response);
-              if (res.status === 'success') {
-                //alert('Password reset successful!');
-                $('#continue-forget-password').modal('hide');
-                $('#success-forget-password').modal('show');
-              } else {
-                $('#resetPasswordError').text(res.message).show();
-              }
-            },
-            error: function () {
-              $('#resetPasswordError').text('Error resetting password.').show();
-            }
-          }); 
-        } else {
-          $('#resetPasswordError').text('Invalid Pin Number').show();
+        const form = $('#submit-new-pass');
+        if ($('#new-password').val() !== $('#confirm-password').val()) {
+          $('#resetPasswordError').text('Passwords do not match.').show();
+          return;
         }
+        $.ajax({
+          url: 'submit_new_password.php',
+          type: 'POST',
+          data: form.serialize(),
+          success: function (response) {
+            const res = JSON.parse(response);
+            if (res.status === 'success') {
+              $('#continue-forget-password').modal('hide');
+              $('#success-forget-password').modal('show');
+            } else {
+              $('#resetPasswordError').text(res.message).show();
+            }
+          },
+          error: function () {
+            $('#resetPasswordError').text('Error resetting password.').show();
+          }
+        });
       });
     });
 
+    // Password Strength Indicator
+    function checkPasswordStrength(password) {
+      const strength = document.getElementById('password-strength-indicator');
+      const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+      const mediumRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
 
-    //   For password checking
+      if (strongRegex.test(password)) {
+        strength.innerHTML = '<span style="color:green">Strong password</span>';
+      } else if (mediumRegex.test(password)) {
+        strength.innerHTML = '<span style="color:orange">Moderate password</span>';
+      } else {
+        strength.innerHTML = '<span style="color:red">Weak password</span>';
+      }
+    }
+
+    // Password Match Validation
     document.addEventListener("DOMContentLoaded", function() {
       const passwordInput = document.querySelector("#new-password");
       const confirmPasswordInput = document.querySelector("#confirm-password");
-      const passwordMatchFeedback = document.querySelector("#passwordMatchFeedback");
       const passwordMatch = document.querySelector("#passwordMatch");
       const passwordMismatch = document.querySelector("#passwordMismatch");
 
-      confirmPasswordInput.addEventListener("input", function() {
+      function validatePasswordMatch() {
         const password = passwordInput.value;
         const confirmPassword = confirmPasswordInput.value;
-
         if (password === confirmPassword) {
-          passwordMatchFeedback.innerHTML = "";
           passwordMatch.style.display = "block";
           passwordMismatch.style.display = "none";
         } else {
-          passwordMatchFeedback.innerHTML = "";
           passwordMatch.style.display = "none";
           passwordMismatch.style.display = "block";
-        }
-      });
-
-      passwordInput.addEventListener("input", function() {
-        const password = passwordInput.value;
-        const confirmPassword = confirmPasswordInput.value;
-
-        if (password === confirmPassword) {
-          passwordMatchFeedback.innerHTML = "";
-          passwordMatch.style.display = "block";
-          passwordMismatch.style.display = "none";
-        } else {
-          passwordMatchFeedback.innerHTML = "";
-          passwordMatch.style.display = "none";
-          passwordMismatch.style.display = "block";
-        }
-      });
-
-    });
-
-      //   SPassword Strength Indicator
-      function checkPasswordStrength(password) {
-        var strength = document.getElementById('password-strength-indicator');
-        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
-        var mediumRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
-
-        if (strongRegex.test(password)) {
-          strength.innerHTML = '<span style="color:green">Strong password</span>';
-        } else if (mediumRegex.test(password)) {
-          strength.innerHTML = '<span style="color:orange">Moderate password</span>';
-        } else {
-          strength.innerHTML = '<span style="color:red">Weak password</span>';
         }
       }
 
-
+      passwordInput.addEventListener("input", validatePasswordMatch);
+      confirmPasswordInput.addEventListener("input", validatePasswordMatch);
+    });
   </script>
+
 
 
 
