@@ -60,7 +60,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
           <div class="col-md-3 mb-2">
             <label for="firstName" class="form-label">First Name <span>*</span></label>
-            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
+            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -70,7 +70,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-3 mb-2">
             <label for="middleName" class="form-label">Middle Name</label>
-            <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
+            <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -80,7 +80,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-3 mb-2">
             <label for="lastName" class="form-label">Last Name <span>*</span></label>
-            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
+            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -90,7 +90,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-3 mb-2">
             <label for="username" class="form-label">Username <span>*</span></label>
-            <input type="text" class="form-control" id="username" placeholder="Enter username here" name="username" required onblur="handleInput(event)" oninput="validateUsername(event)">
+            <input type="text" class="form-control" id="username" placeholder="Enter username here" name="username" required onblur="handleInput(event)" oninput="validateUsername(event)" maxlength="50">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -115,7 +115,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-3 mb-2">
             <label for="email" class="form-label">Email Address <span>*</span></label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email here" required oninput="validateEmail(event)" onblur="handleInput(event)">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email here" required oninput="validateEmail(event)" onblur="handleInput(event)" maxlength="50">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -169,7 +169,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div class="col-12 col-md-6 ">
             <label for="password" class="form-label">Password <span>*</span></label>
             <div class="input-group">
-              <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required oninput="checkPasswordStrength(this.value)" />
+              <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required oninput="checkPasswordStrength(this.value)" maxlength="50"/>
               <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
                 <i class="fas fa-eye-slash"></i>
               </button>
@@ -180,7 +180,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div class="col-12 col-md-6 ">
             <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
             <div class="input-group">
-              <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required />
+              <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required maxlength="50"/>
               <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
                 <i class="fas fa-eye-slash"></i>
               </button>
@@ -199,7 +199,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
             </div>
             <div class="col-12 col-md-2 mb-2 mb-md-0">
-              <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
+              <button class="btn btn-outline-primary w-100 cancel-button" type="button">Cancel</button>
             </div>
           </div>
         </form>
@@ -241,6 +241,26 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
     </div>
+
+
+    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <div id="updateTable" style="display:none;"></div>
 

@@ -104,7 +104,7 @@ date_default_timezone_set('Asia/Manila');
                             <button class="btn btn-primary w-100 create-button" type="submit" id="create-member-button">Create</button>
                         </div>
                         <div class="col-12 col-md-2 mb-2 mb-md-0">
-                            <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.href='service_management.php'">Cancel</button>
+                            <button class="btn btn-outline-primary w-100 cancel-button" type="button">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -150,6 +150,23 @@ date_default_timezone_set('Asia/Manila');
         </div>
 
 
+        <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
         <script src="src/js/edit_services.js"></script>
         <script src="src/js/sidebar.js"></script>

@@ -235,3 +235,32 @@ $(document).ready(function() {
     });
   });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('edit-service-form');
+  let isFormDirty = false;
+
+  form.addEventListener('input', () => {
+    isFormDirty = true;
+  });
+
+  const cancelButton = document.querySelector('.cancel-button');
+  cancelButton.addEventListener('click', () => {
+    if (isFormDirty) {
+      // Ensure the modal is shown using Bootstrap's modal instance
+      const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
+      unsavedChangesModal.show();
+    } else {
+      // Directly redirect if form is not dirty
+      window.location.href = 'service_management.php';
+    }
+  });
+
+  const proceedButton = document.getElementById('proceedButton');
+  proceedButton.addEventListener('click', () => {
+    // Handle the proceed button action
+    window.location.href = 'service_management.php';
+  });
+});

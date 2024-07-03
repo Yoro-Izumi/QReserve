@@ -73,7 +73,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
               <div class="col-md-4 mb-3">
                 <label for="firstName" class="form-label">First Name <span>*</span></label>
-                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50" minlength="3">
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
@@ -84,7 +84,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
 
               <div class="col-md-4 mb-3">
                 <label for="middleName" class="form-label">Middle Name</label>
-                <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)">
+                <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
@@ -95,7 +95,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
 
               <div class="col-md-4 mb-3">
                 <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)">
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
@@ -126,7 +126,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               </div>
               <div class="col-md-4 mb-3">
                 <label for="email" class="form-label">Email Address <span>*</span></label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" required oninput="validateEmail(event)">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" required oninput="validateEmail(event)" maxlength="50">
                 <div class="valid-feedback">
                   <!-- Looks good! -->
                 </div>
