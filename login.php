@@ -317,7 +317,9 @@ if (isset($_POST['login'])) {
           You have successfully changed your password. Try to log in again.
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary continue-button" onclick="location.reload();" id="proceed" data-bs-target="#" data-bs-toggle="modal">Continue</button>
+          <!-- <button class="btn btn-primary continue-button" onclick="location.reload();" id="proceed" data-bs-target="#" data-bs-toggle="modal">Continue</button> -->
+          <button class="btn btn-primary continue-button" onclick="window.location.href = window.location.href;" id="proceed" data-bs-target="#" data-bs-toggle="modal">Continue</button>
+
         </div>
       </div>
     </div>
