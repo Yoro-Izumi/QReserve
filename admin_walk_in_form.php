@@ -62,11 +62,11 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
           <div class="d-flex justify-content-between align-items-center">
             <h3 class="fw-bold ps-4">Fill up the form</h3>
             <div class="fw-bold pe-4">
-              <!-- <input type="radio" class="btn-check " name="options-outlined" id="success-outlined" autocomplete="off" checked>
-              <label class="btn btn-outline-success" for="success-outlined">Walk-In</label>
+              <input type="radio" class="btn-check" name="price-option" id="walkin-button" data-price="0" autocomplete="off" checked>
+              <label class="btn btn-outline-success" for="walkin-button">Walk-In</label>
 
-              <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
-              <label class="btn btn-outline-danger" for="danger-outlined">Member</label> -->
+              <input type="radio" class="btn-check" name="price-option" id="member-button" data-price="-50" autocomplete="off">
+              <label class="btn btn-outline-danger" for="member-button">Member</label>
             </div>
           </div>
           <div class="col-md-12">

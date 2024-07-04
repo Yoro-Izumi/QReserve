@@ -223,6 +223,58 @@ $(document).ready(function() {
   });
 });
 
+// function getUserInputs() {
+//   const firstName = $("#firstName").val();
+//   const middleName = $("#middleName").val();
+//   const lastName = $("#lastName").val();
+//   const birthDate = $("#birthDate").val();
+//   const contactNumber = $("#contactNumber").val();
+//   const email = $("#email").val();
+//   const selectDate = $("#selectDate").val();
+//   const selectStartTime = $("#selectStartTime").val();
+//   const selectEndTime = $("#selectEndTime").val();
+//   const selectTable = $("#selectTable").val();
+
+//   // Calculate total price based on selected start and end times
+//   const startTime = new Date(`2024-06-14T${selectStartTime}`);
+//   const endTime = new Date(`2024-06-14T${selectEndTime}`);
+//   const durationInMinutes = (endTime - startTime) / (1000 * 60);
+//   const durationInHours = durationInMinutes / 60;
+
+//   const basePrice = 150; // Base price in pesos
+//   const additionalHourPrice = 150; // Additional cost per hour in pesos
+
+//   let totalPrice = basePrice;
+
+//   if (durationInHours > 1) {
+//     const extraHours = Math.ceil(durationInHours - 1); // Calculate extra hours beyond the first hour
+//     totalPrice += extraHours * additionalHourPrice;
+//   }
+
+//   // Format the total price as PHP currency
+//   const formattedPrice = new Intl.NumberFormat('en-PH', {
+//     style: 'currency',
+//     currency: 'PHP'
+//   }).format(totalPrice);
+
+//   document.getElementById('getTotalPriceHour').value = totalPrice;
+
+//   return `
+//     <div class="modal-content-wrapper">
+//         <p><span class="modal-label">Name:</span> <span class="modal-input">${firstName} ${middleName} ${lastName}</span></p>
+//         <p><span class="modal-label">Birthdate:</span> <span class="modal-input">${birthDate}</span></p>
+//         <p><span class="modal-label">Contact Number:</span> <span class="modal-input">${contactNumber}</span></p>
+//         <p><span class="modal-label">Email Address:</span> <span class="modal-input">${email}</span></p>
+//         <p><span class="modal-label mt-3">- Reservation -</span> <span class="modal-input"></span></p>
+//         <p><span class="modal-label">Date:</span> <span class="modal-input">${selectDate}</span></p>
+//         <p><span class="modal-label">Time:</span> <span class="modal-input">${selectStartTime} - ${selectEndTime}</span></p>
+//         <p><span class="modal-label">Table:</span> <span class="modal-input">${selectTable}</span></p>
+//         <p><span class="modal-total mt-3">Total:</span> <span class="modal-input mt-3" id="total">${formattedPrice}</span></p>
+//     </div>
+//   `;
+// }
+
+
 function getUserInputs() {
   const firstName = $("#firstName").val();
   const middleName = $("#middleName").val();
@@ -251,6 +303,13 @@ function getUserInputs() {
     totalPrice += extraHours * additionalHourPrice;
   }
 
+  // Get the selected price adjustment option
+  const selectedOption = $('input[name="price-option"]:checked');
+  const priceAdjustment = parseInt(selectedOption.data('price'));
+
+  // Adjust the total price based on the selected option
+  totalPrice += priceAdjustment;
+
   // Format the total price as PHP currency
   const formattedPrice = new Intl.NumberFormat('en-PH', {
     style: 'currency',
@@ -261,18 +320,29 @@ function getUserInputs() {
 
   return `
     <div class="modal-content-wrapper">
-        <p><span class="modal-label">Name:</span> <span class="modal-input">${firstName} ${middleName} ${lastName}</span></p>
-        <p><span class="modal-label">Birthdate:</span> <span class="modal-input">${birthDate}</span></p>
-        <p><span class="modal-label">Contact Number:</span> <span class="modal-input">${contactNumber}</span></p>
-        <p><span class="modal-label">Email Address:</span> <span class="modal-input">${email}</span></p>
-        <p><span class="modal-label mt-3">- Reservation -</span> <span class="modal-input"></span></p>
-        <p><span class="modal-label">Date:</span> <span class="modal-input">${selectDate}</span></p>
-        <p><span class="modal-label">Time:</span> <span class="modal-input">${selectStartTime} - ${selectEndTime}</span></p>
-        <p><span class="modal-label">Table:</span> <span class="modal-input">${selectTable}</span></p>
-        <p><span class="modal-total mt-3">Total:</span> <span class="modal-input mt-3" id="total">${formattedPrice}</span></p>
+      <p><span class="modal-label">Name:</span> <span class="modal-input">${firstName} ${middleName} ${lastName}</span></p>
+      <p><span class="modal-label">Birthdate:</span> <span class="modal-input">${birthDate}</span></p>
+      <p><span class="modal-label">Contact Number:</span> <span class="modal-input">${contactNumber}</span></p>
+      <p><span class="modal-label">Email Address:</span> <span class="modal-input">${email}</span></p>
+      <p><span class="modal-label mt-3">- Reservation -</span> <span class="modal-input"></span></p>
+      <p><span class="modal-label">Date:</span> <span class="modal-input">${selectDate}</span></p>
+      <p><span class="modal-label">Time:</span> <span class="modal-input">${selectStartTime} - ${selectEndTime}</span></p>
+      <p><span class="modal-label">Table:</span> <span class="modal-input">${selectTable}</span></p>
+      <p><span class="modal-total mt-3">Total:</span> <span class="modal-input mt-3" id="total">${formattedPrice}</span></p>
     </div>
   `;
 }
+
+
+$('input[name="price-option"]').change(function() {
+  // Recalculate the total price when the radio button selection changes
+  getUserInputs();
+});
+
+// Also call getUserInputs initially to set the initial price correctly
+$(document).ready(function() {
+  getUserInputs();
+});
 
 
 
@@ -370,18 +440,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', function () {
   // Display initial alert for the default selected option
-  if (document.getElementById('success-outlined').checked) {
+  if (document.getElementById('walkin-button').checked) {
       alert('Walk-In');
   }
 
   // Add event listeners to radio buttons
-  document.getElementById('success-outlined').addEventListener('change', function () {
+  document.getElementById('walkin-button').addEventListener('change', function () {
       if (this.checked) {
           alert('Walk-In');
       }
   });
 
-  document.getElementById('danger-outlined').addEventListener('change', function () {
+  document.getElementById('member-button').addEventListener('change', function () {
       if (this.checked) {
           alert('Member');
       }
