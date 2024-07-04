@@ -15,7 +15,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
     $email = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
     $username = encryptData(mysqli_real_escape_string($conn, $_POST['username']), $key);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $adminSex = $_POST['adminSex']);
+    // $adminSex = $_POST['adminSex']);
+    $adminSex = $_POST['adminSex'];
     $contactNumber = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
     $shift = intVal($_POST['adminShift']);
 

@@ -371,3 +371,29 @@ document.getElementById('birthDate').addEventListener('keydown', function(event)
 document.getElementById('validity').addEventListener('keydown', function(event) {
   event.preventDefault();
 });
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('booking-form');
+  let isFormDirty = false;
+
+  form.addEventListener('input', () => {
+    isFormDirty = true;
+  });
+
+  const cancelButton = document.querySelector('.cancel-button');
+  cancelButton.addEventListener('click', () => {
+    if (isFormDirty) {
+      const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
+      unsavedChangesModal.show();
+    } else {
+      window.location.href = 'member-profiles.php';
+    }
+  });
+
+  const proceedButton = document.getElementById('proceedButton');
+  proceedButton.addEventListener('click', () => {
+    window.location.href = 'member-profiles.php';
+  });
+});
