@@ -627,6 +627,11 @@ label.customer-account{
   font-weight: 600;
 }
 
+.breadcrumbs{
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
 
 #dataPrivacy .modal-dialog {
   max-width: 800px; /* Set your desired maximum width */
