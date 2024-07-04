@@ -204,8 +204,7 @@ if (isset($_POST['login'])) {
             <?php endif; ?>
 
             <div class="form-floating mb-3">
-              <!-- <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required oninput="validateEmail(event)" maxlength="56" onblur="handleInput(event)"/> -->
-              <input type="email" class="form-control" id="floatingInput" name="username" placeholder="Enter email here" required oninput="validateEmail(event)" onblur="handleInput(event)" maxlength="50">
+              <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required oninput="validateEmail(event)" maxlength="56" onblur="handleInput(event)"/>
               <label for="floatingInput">Email address <span>*</span></label>
             </div>
             <div class="form-floating mb-2 position-relative">
@@ -232,11 +231,12 @@ if (isset($_POST['login'])) {
   <!-- Change Password Modal -->
   <div class="modal fade" id="forget-password-modal" name="forget-password-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-content-custom" id="wait">
+      <div class="modal-content modal-content-custom" id="">
         <div class="modal-header">
           <h4 class="modal-title fw-bold text-center" id="success">Forget Password</h4>
         </div>
         <div class="modal-body">
+        <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
           <form id="send-pin-form" name="send-pin-form">
             <label for="email" class="form-label">Email Address <span>*</span></label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" oninput="validateEmail(event)" maxlength="56" required>
@@ -247,7 +247,7 @@ if (isset($_POST['login'])) {
           <div id="emailError" class="invalid-feedback">
             Please provide a valid email address.
           </div>
-          <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
+         
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
@@ -260,12 +260,13 @@ if (isset($_POST['login'])) {
   <!-- Continue Change Password Modal -->
   <div class="modal fade" id="continue-forget-password" name="continue-forget-password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-content-custom" id="wait">
+      <div class="modal-content modal-content-custom" id="">
         <div class="modal-header">
           <h4 class="modal-title fw-bold text-center" id="success">Enter Reset Code</h4>
         </div>
         <form id="submit-new-pass" name="submit-new-pass">
           <div class="modal-body">
+          <div id="resetPasswordError" class="alert alert-danger" role="alert" style="display: none;"></div>
             <label for="pinInput" class="form-label">Reset Code <span>*</span></label>
             <input type="text" class="form-control" id="pinInput" placeholder="Enter reset code here" name="pinInput" required minlength="6" maxlength="6" oninput="validateContactNumber(event)">
             <div class="valid-feedback">
@@ -296,10 +297,10 @@ if (isset($_POST['login'])) {
             <div class="invalid-feedback" id="passwordMismatch">
               Passwords do not match.
             </div>
-            <div id="resetPasswordError" class="alert alert-danger" role="alert" style="display: none;"></div>
+            
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-outline-primary cancel-button" onclick="location.reload();" data-bs-dismiss="modal">Cancel</button>
             <button type="button" id="submitPinButton" name="submitPinButton" class="btn btn-primary continue-button">Submit</button>
           </div>
         </form>
@@ -310,7 +311,7 @@ if (isset($_POST['login'])) {
   <!-- Success Change Password Modal -->
   <div class="modal fade" id="success-forget-password" name="success-forget-password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-content-custom" id="wait">
+      <div class="modal-content modal-content-custom" id="">
         <div class="modal-header">
           <h4 class="modal-title fw-bold text-center" id="success">Success!</h4>
         </div>
@@ -326,10 +327,252 @@ if (isset($_POST['login'])) {
     </div>
   </div>
   <!-- End of Modals -->
+  <script>
+    $(document).ready(function () {
+      // $('.toggle-password').click(function () {
+      //   const input = $(this).siblings('input');
+      //   const icon = $(this).children('i');
+      //   const type = input.attr('type') === 'password' ? 'text' : 'password';
+      //   input.attr('type', type);
+      //   icon.toggleClass('fa-eye-slash fa-eye');
+      // });
+
+      // Handle AJAX for sending reset PIN
+      $('#forgetPassButton').click(function () {
+        const form = $('#send-pin-form');
+        $.ajax({
+          url: 'send_pin.php',
+          type: 'POST',
+          data: form.serialize(),
+          success: function (response) {
+            const res = JSON.parse(response);
+            if (res.status === 'success') {
+              $('#forget-password-modal').modal('hide');
+              $('#continue-forget-password').modal('show');
+            } else {
+              $('#sendPinError').text(res.message).show();
+            }
+          },
+          error: function () {
+            $('#sendPinError').text('Error sending PIN.').show();
+          }
+        });
+      });
+
+      // Handle AJAX for submitting new password
+      $('#submitPinButton').click(function () {
+        const form = $('#submit-new-pass');
+        if ($('#new-password').val() !== $('#confirm-password').val()) {
+          $('#resetPasswordError').text('Passwords do not match.').show();
+          return;
+        }
+        $.ajax({
+          url: 'submit_new_password.php',
+          type: 'POST',
+          data: form.serialize(),
+          success: function (response) {
+            const res = JSON.parse(response);
+            if (res.status === 'success') {
+              $('#continue-forget-password').modal('hide');
+              $('#success-forget-password').modal('show');
+            } else {
+              $('#resetPasswordError').text(res.message).show();
+            }
+          },
+          error: function () {
+            $('#resetPasswordError').text('Error resetting password.').show();
+          }
+        });
+      });
+    });
+
+    // Password Strength Indicator
+    function checkPasswordStrength(password) {
+      const strength = document.getElementById('password-strength-indicator');
+      const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+      const mediumRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
+
+      if (strongRegex.test(password)) {
+        strength.innerHTML = '<span style="color:green">Strong password</span>';
+      } else if (mediumRegex.test(password)) {
+        strength.innerHTML = '<span style="color:orange">Moderate password</span>';
+      } else {
+        strength.innerHTML = '<span style="color:red">Weak password</span>';
+      }
+    }
+
+    // Password Match Validation
+    document.addEventListener("DOMContentLoaded", function() {
+      const passwordInput = document.querySelector("#new-password");
+      const confirmPasswordInput = document.querySelector("#confirm-password");
+      const passwordMatch = document.querySelector("#passwordMatch");
+      const passwordMismatch = document.querySelector("#passwordMismatch");
+
+      function validatePasswordMatch() {
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        if (password === confirmPassword) {
+          passwordMatch.style.display = "block";
+          passwordMismatch.style.display = "none";
+        } else {
+          passwordMatch.style.display = "none";
+          passwordMismatch.style.display = "block";
+        }
+      }
+
+      passwordInput.addEventListener("input", validatePasswordMatch);
+      confirmPasswordInput.addEventListener("input", validatePasswordMatch);
+    });
+  </script>
+
+
+
+
+  
+
+
+  <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'pool_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#updateTable').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+
+    </script> 
+
+<script>
+  function validatePassword(event) {
+  // Allow only alphabetic characters, numbers, and specified special characters
+  const regex = /^[a-zA-Z0-9._%+\-!@#$^&*]*$/;
+  if (!regex.test(event.target.value)) {
+    event.target.value = event.target.value.replace(/[^a-zA-Z0-9._%+\-!@#$^&*]/g, '');
+  }
+}
+
+</script>
 
 <script src="src/loader/loader.js"></script>
-  <script src="src/js/login.js"></script>
+  <script>
+    // For password toggle
+    document.addEventListener("DOMContentLoaded", function() {
+      const togglePassword = document.querySelector(".toggle-password");
+      const passwordInput = document.querySelector("#floatingPassword");
+      const eyeIcon = togglePassword.querySelector("i");
 
+      togglePassword.addEventListener("click", function() {
+        const type =
+          passwordInput.getAttribute("type") === "password" ?
+          "text" :
+          "password";
+        passwordInput.setAttribute("type", type);
+
+        // Toggle eye icon classes
+        eyeIcon.classList.toggle("fa-eye-slash");
+        eyeIcon.classList.toggle("fa-eye");
+      });
+    });
+
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const togglePassword1 = document.querySelector("#password-toggle-1");
+    const passwordInput1 = document.querySelector("#new-password"); // Corrected selector for password input
+
+    togglePassword1.addEventListener("click", function() {
+        const type = passwordInput1.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput1.setAttribute("type", type);
+
+        // Toggle eye icon classes
+        togglePassword1.querySelector("i").classList.toggle("fa-eye-slash");
+        togglePassword1.querySelector("i").classList.toggle("fa-eye");
+    });
+
+    const togglePassword2 = document.querySelector("#password-toggle-2");
+    const passwordInput2 = document.querySelector("#confirm-password"); // Corrected selector for confirm password input
+
+    togglePassword2.addEventListener("click", function() {
+        const type = passwordInput2.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput2.setAttribute("type", type);
+
+        // Toggle eye icon classes
+        togglePassword2.querySelector("i").classList.toggle("fa-eye-slash");
+        togglePassword2.querySelector("i").classList.toggle("fa-eye");
+    });
+});
+
+  
+  </script>
+
+  <script>
+      //For Email 
+function validateEmail(event) {
+  var emailInput = event.target.value;
+
+  event.target.value = emailInput.replace(/\s+/g, '');
+
+  emailInput = event.target.value.trim();
+
+  var isValid = /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailInput);
+
+  if (!isValid) {
+    document.getElementById("emailError").style.display = "block";
+    event.target.setCustomValidity("Please enter a valid email address.");
+  } else {
+    document.getElementById("emailError").style.display = "none";
+    event.target.setCustomValidity("");
+  }
+}
+document.getElementById("email").addEventListener("input", validateEmail);
+        <div>
+          <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
+        </div>
+  </script>
+
+  <script>
+    // Validation for Control Number
+    function validateControlNumber() {
+      const controlNumber = document.getElementById('controlNumber').value;
+      const errorMessageDiv = document.getElementById('error-message');
+      const pattern = /^[0-9]{1,4}-[0-9]{1,4}$/;
+
+      if (!pattern.test(controlNumber)) {
+        errorMessageDiv.textContent = 'Please input a valid control number.';
+        errorMessageDiv.classList.remove('d-none');
+        return false;
+      }
+
+      errorMessageDiv.classList.add('d-none');
+      return true;
+    }
+  </script>
+
+  <script>
+    function validatePassword(event) {
+      // Allow only alphabetic characters, numbers, and specified special characters
+      const regex = /^[a-zA-Z0-9._%+\-!@#$^&*]*$/;
+      if (!regex.test(event.target.value)) {
+        event.target.value = event.target.value.replace(/[^a-zA-Z0-9._%+\-!@#$^&*]/g, '');
+      }
+    }
+  </script>
+
+  <script src="src/js/add_new_admin.js"></script>
 
 
   

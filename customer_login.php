@@ -182,11 +182,12 @@ if (isset($_POST['login_member'])) {
   <!-- Change Password Modal -->
   <div class="modal fade" id="forget-password-modal" name="forget-password-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-content-custom" id="wait">
+      <div class="modal-content modal-content-custom" id="">
         <div class="modal-header">
           <h4 class="modal-title fw-bold text-center" id="success">Forget Password</h4>
         </div>
         <div class="modal-body">
+        <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
           <form id="send-pin-form" name="send-pin-form">
             <label for="email" class="form-label">Email Address <span>*</span></label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" oninput="validateEmail(event)" maxlength="56" required>
@@ -197,7 +198,6 @@ if (isset($_POST['login_member'])) {
           <div id="emailError" class="invalid-feedback">
             Please provide a valid email address.
           </div>
-          <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
@@ -210,12 +210,13 @@ if (isset($_POST['login_member'])) {
   <!-- Continue Change Password Modal -->
   <div class="modal fade" id="continue-forget-password" name="continue-forget-password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-content-custom" id="wait">
+      <div class="modal-content modal-content-custom" id="">
         <div class="modal-header">
           <h4 class="modal-title fw-bold text-center" id="success">Enter Reset Code</h4>
         </div>
         <form id="submit-new-pass" name="submit-new-pass">
           <div class="modal-body">
+          <div id="resetPasswordError" class="alert alert-danger" role="alert" style="display: none;"></div>
             <label for="pinInput" class="form-label">Reset Code <span>*</span></label>
             <input type="text" class="form-control" id="pinInput" placeholder="Enter reset code here" name="pinInput" required minlength="6" maxlength="6" oninput="validateContactNumber(event)">
             <div class="valid-feedback">
@@ -245,8 +246,7 @@ if (isset($_POST['login_member'])) {
             </div>
             <div class="invalid-feedback" id="passwordMismatch">
               Passwords do not match.
-            </div>
-            <div id="resetPasswordError" class="alert alert-danger" role="alert" style="display: none;"></div>
+            </div>          
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
@@ -260,7 +260,7 @@ if (isset($_POST['login_member'])) {
   <!-- Success Change Password Modal -->
   <div class="modal fade" id="success-forget-password" name="success-forget-password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-content-custom" id="wait">
+      <div class="modal-content modal-content-custom" id="">
         <div class="modal-header">
           <h4 class="modal-title fw-bold text-center" id="success">Success!</h4>
         </div>
@@ -276,13 +276,13 @@ if (isset($_POST['login_member'])) {
   <!-- End of Modals -->
   <script>
     $(document).ready(function () {
-      $('.toggle-password').click(function () {
-        const input = $(this).siblings('input');
-        const icon = $(this).children('i');
-        const type = input.attr('type') === 'password' ? 'text' : 'password';
-        input.attr('type', type);
-        icon.toggleClass('fa-eye-slash fa-eye');
-      });
+      // $('.toggle-password').click(function () {
+      //   const input = $(this).siblings('input');
+      //   const icon = $(this).children('i');
+      //   const type = input.attr('type') === 'password' ? 'text' : 'password';
+      //   input.attr('type', type);
+      //   icon.toggleClass('fa-eye-slash fa-eye');
+      // });
 
       // Handle AJAX for sending reset PIN
       $('#forgetPassButton').click(function () {
@@ -402,24 +402,31 @@ if (isset($_POST['login_member'])) {
 
 
   <script>
-    // For password toggle
-    document.addEventListener("DOMContentLoaded", function() {
-      const togglePassword = document.querySelector(".toggle-password");
-      const passwordInput = document.querySelector("#floatingPassword");
-      const eyeIcon = togglePassword.querySelector("i");
+document.addEventListener("DOMContentLoaded", function() {
+    const togglePassword1 = document.querySelector("#password-toggle-1");
+    const passwordInput1 = document.querySelector("#new-password"); // Corrected selector for password input
 
-      togglePassword.addEventListener("click", function() {
-        const type =
-          passwordInput.getAttribute("type") === "password" ?
-          "text" :
-          "password";
-        passwordInput.setAttribute("type", type);
+    togglePassword1.addEventListener("click", function() {
+        const type = passwordInput1.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput1.setAttribute("type", type);
 
         // Toggle eye icon classes
-        eyeIcon.classList.toggle("fa-eye-slash");
-        eyeIcon.classList.toggle("fa-eye");
-      });
+        togglePassword1.querySelector("i").classList.toggle("fa-eye-slash");
+        togglePassword1.querySelector("i").classList.toggle("fa-eye");
     });
+
+    const togglePassword2 = document.querySelector("#password-toggle-2");
+    const passwordInput2 = document.querySelector("#confirm-password"); // Corrected selector for confirm password input
+
+    togglePassword2.addEventListener("click", function() {
+        const type = passwordInput2.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput2.setAttribute("type", type);
+
+        // Toggle eye icon classes
+        togglePassword2.querySelector("i").classList.toggle("fa-eye-slash");
+        togglePassword2.querySelector("i").classList.toggle("fa-eye");
+    });
+});
 
     // Validation for Control Number
     function validateControlNumber() {
