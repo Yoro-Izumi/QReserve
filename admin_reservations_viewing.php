@@ -12,7 +12,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   include "src/get_data_from_database/convert_to_normal_time.php";
   include "encodeDecode.php";
   $key = "TheGreatestNumberIs73";
-  $currentDate = convertToNormalDate(date("Y-m-d"));
+  $currentDate = date("Y-m-d");
 
   $customerName = $email = $contactNumber = " ";
 ?>
@@ -83,7 +83,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             <?php
             foreach ($arrayReservationInfo as $reservations) {
               $reservationID = $reservations['reservationID'] ?? '';
-              $reservationDate = convertToNormalDate($reservations['reservationDate']) ?? '';
+              $reservationDate = $reservations['reservationDate'] ?? '';
               $reservationStatus = $reservations['reservationStatus'] ?? '';
               $reservationTimeStart = convertToNormalTime($reservations['reservationTimeStart']) ?? '';
               $reservationTimeEnd = convertToNormalTime($reservations['reservationTimeEnd']) ?? '';
@@ -118,7 +118,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 echo "
                   <td>$reservationCode</td>
                   <td>$customerName</td>
-                  <td>$reservationDate</td>
+                  <td>".convertToNormalDate($reservationDate)."</td>
                   <td>$reservationTimeStart - $reservationTimeEnd</td>
                   <td>$tableNumber</td>
                   <td>$contactNumber</td>
@@ -131,7 +131,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             }
 
             foreach ($arrayWalkinDetails as $walkin) {
-              $walkinDate = convertToNormalDate($walkin['walkinDate']) ?? '';
+              $walkinDate = $walkin['walkinDate'] ?? '';
               $walkinStatus = $walkin['walkinStatus'] ?? '';
               $walkinTimeStart = convertToNormalTime($walkin['walkinTimeStart']) ?? '';
               $walkinTimeEnd = convertToNormalTime($walkin['walkinTimeEnd']) ?? '';
@@ -145,7 +145,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 echo "<tr>
                   <td>Walk-in</td>
                   <td>$customerName</td>
-                  <td>$walkinDate</td>
+                  <td>".convertToNormalDate($walkinDate)."</td>
                   <td>$walkinTimeStart - $walkinTimeEnd</td>
                   <td>$tableNumber</td>
                   <td>$contactNumber</td>
