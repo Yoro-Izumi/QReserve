@@ -33,7 +33,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       $shiftTimeStart = $adminAccount['shiftTimeStart'];
       $shiftTimeEnd = $adminAccount['shiftTimeEnd'];
       $adminShift = $adminAccount['adminShiftID'];
-    } 
+    }
   }
 
 ?>
@@ -87,7 +87,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
         <form class="row dashboard-square-kebab needs-validation" id="edit-admin-form" novalidate>
-          <input type='hidden' value='<?php echo $adminInfoID;?>' name='updateAdmin'>
+          <input type='hidden' value='<?php echo $adminInfoID; ?>' name='updateAdmin'>
           <div class="col-md-3 mb-2">
             <label for="firstName" class="form-label">First Name <span>*</span></label>
             <input type="text" value="<?php echo $adminFirstName; ?>" class="form-control" id="firstName" name="FirstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
@@ -120,7 +120,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-3 mb-2">
             <label for="username" class="form-label">Username <span>*</span></label>
-            <input type="text"  value="<?php echo $adminUsername; ?>" class="form-control" id="username" placeholder="Enter username here" name="username" required onblur="handleInput(event)" oninput="validateUsername(event)">
+            <input type="text" value="<?php echo $adminUsername; ?>" class="form-control" id="username" placeholder="Enter username here" name="username" required onblur="handleInput(event)" oninput="validateUsername(event)">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -133,8 +133,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
             <select class="form-control" name="adminSex" id="adminSex" required onchange="this.setCustomValidity('')" onblur="handleInput(event)">
               <option value="" selected disabled>Select Sex</option>
               <option value="Male" <?php if ($adminSex == 'Male') echo 'selected'; ?>>Male</option>
-                <option value="Female" <?php if ($adminSex == 'Female') echo 'selected'; ?>>Female</option>
-                <option value="Others" <?php if ($adminSex == 'Others') echo 'selected'; ?>>Others</option>
+              <option value="Female" <?php if ($adminSex == 'Female') echo 'selected'; ?>>Female</option>
+              <option value="Others" <?php if ($adminSex == 'Others') echo 'selected'; ?>>Others</option>
             </select>
             <div class="valid-feedback">
               <!-- Looks good! -->
@@ -166,29 +166,29 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div class="col-12 col-md-3 mb-2">
             <label for="adminShift" class="form-label">Shift <span>*</span></label>
             <select class="form-control" name="adminShift" id="adminShift" required onchange="this.setCustomValidity('')">
-                <option value="" selected disabled>Select shift</option>
-                <?php // get the shifts in the db so that select shift will be dynamic in case shifts are edited
-                foreach ($arrayShifts as $shift) {
-                  $tempShiftStart = explode(":", $shift['shiftTimeStart']);
-                  $tempShiftEnd = explode(":", $shift['shiftTimeEnd']);
-                  //convert tempShift variables to integers
-                  $shiftStartHour = intval($tempShiftStart[0]);
-                  $shiftEndHour = intval($tempShiftEnd[0]);
+              <option value="" selected disabled>Select shift</option>
+              <?php // get the shifts in the db so that select shift will be dynamic in case shifts are edited
+              foreach ($arrayShifts as $shift) {
+                $tempShiftStart = explode(":", $shift['shiftTimeStart']);
+                $tempShiftEnd = explode(":", $shift['shiftTimeEnd']);
+                //convert tempShift variables to integers
+                $shiftStartHour = intval($tempShiftStart[0]);
+                $shiftEndHour = intval($tempShiftEnd[0]);
 
-                  if ($shiftStartHour >= 13) {
-                    $shiftStart = ($shiftStartHour - 12) . ":" . $tempShiftStart[1] . " PM";
-                  } else {
-                    $shiftStart = $shiftStartHour . ":" . $tempShiftStart[1] . " AM";
-                  }
+                if ($shiftStartHour >= 13) {
+                  $shiftStart = ($shiftStartHour - 12) . ":" . $tempShiftStart[1] . " PM";
+                } else {
+                  $shiftStart = $shiftStartHour . ":" . $tempShiftStart[1] . " AM";
+                }
 
-                  if ($shiftEndHour >= 13) {
-                    $shiftEnd = ($shiftEndHour - 12) . ":" . $tempShiftEnd[1] . " PM";
-                  } else {
-                    $shiftEnd = $shiftEndHour . ":" . $tempShiftEnd[1] . " AM";
-                  } ?>
-                  <option value="<?php echo $shift['adminShiftID']; ?>" <?php if ($adminShift == $shift['adminShiftID']) echo 'selected' ?>><?php echo $shiftStart . " - " . $shiftEnd; ?></option>
-                <?php } ?>
-              </select>
+                if ($shiftEndHour >= 13) {
+                  $shiftEnd = ($shiftEndHour - 12) . ":" . $tempShiftEnd[1] . " PM";
+                } else {
+                  $shiftEnd = $shiftEndHour . ":" . $tempShiftEnd[1] . " AM";
+                } ?>
+                <option value="<?php echo $shift['adminShiftID']; ?>" <?php if ($adminShift == $shift['adminShiftID']) echo 'selected' ?>><?php echo $shiftStart . " - " . $shiftEnd; ?></option>
+              <?php } ?>
+            </select>
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -227,7 +227,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <button class="btn btn-primary w-100 create-button" type="submit" id="create-admin-button">Create</button>
             </div>
             <div class="col-12 col-md-2 mb-2 mb-md-0">
-              <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
+              <button class="btn btn-outline-primary w-100 cancel-button" type="button">Cancel</button>
             </div>
           </div>
         </form>
@@ -237,12 +237,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <!-- Add this div at the end of your HTML body to contain the modal -->
     <div class="modal fade" id="confirmEditAdmin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-      <div class="modal-content text-center">
+        <div class="modal-content text-center">
           <div class="modal-header">
             <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
           </div>
           <div class="modal-body">
-          Are you sure you want to edit this account?
+            Are you sure you want to edit this account?
           </div>
           <div class="modal-footer d-flex justify-content-center">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
@@ -268,7 +268,26 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
     </div>
-    
+
+
+    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="updateTable" style="display:none;"></div>
 
     <script src="src/js/edit_admin_account.js"></script>
