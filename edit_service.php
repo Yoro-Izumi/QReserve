@@ -21,6 +21,7 @@ date_default_timezone_set('Asia/Manila');
             $serviceName = $service['serviceName'];
             $serviceCapacity = $service['serviceCapacity'];
             $serviceRate = $service['serviceRate'];
+            $serviceImage = $service['serviceImage'];
         }}
 ?>    <!DOCTYPE html>
     <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -72,6 +73,7 @@ date_default_timezone_set('Asia/Manila');
             <div class="container-fluid" id="profmanage-add-new-profile">
                 <form class="row dashboard-square-kebab needs-validation" id="edit-service-form" novalidate>
                     <input type="hidden" name="editID" id="editID" value="<?php echo $ID; ?>">
+                    <input type='hidden' name='isImage' id="isImage" value="false">
                     <div class="col-md-12 mb-2">
                         <label for="editServiceName" class="form-label">Service Name <span>*</span></label>
                         <input type="text" value="<?php echo $serviceName; ?>" class="form-control" id="editServiceName" name="editServiceName" placeholder="Enter service name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="100">
@@ -97,7 +99,7 @@ date_default_timezone_set('Asia/Manila');
                         <div class="invalid-feedback">Please provide a valid file.</div>
                     </div>
                     <div class="col-md-2 mb-2">
-                        <img id="imagePreview" src="#" alt="Image Preview">
+                        <img id="imagePreview" src="src/images/Services/<?php echo $serviceImage;?>" alt="Image Preview">
                     </div>
                     <div class="row justify-content-end mt-5">
                         <div class="col-12 col-md-2 mb-2 mb-md-0">
@@ -169,6 +171,16 @@ date_default_timezone_set('Asia/Manila');
     </div>
         <script src="src/js/edit_services.js"></script>
         <script src="src/js/sidebar.js"></script>
+
+        <script> //js code to monitor if file input has file
+            document.getElementById('editImage').addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    document.getElementById('isImage').value = 'true';
+                } else {
+                    document.getElementById('isImage').value = 'false';
+                  }
+            });
+        </script>
     </body>
 
     </html>
