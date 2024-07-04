@@ -1,30 +1,3 @@
-<?php
-date_default_timezone_set('Asia/Manila');
-
-include 'src/get_data_from_database/get_super_admin_accounts.php';
-include 'src/get_data_from_database/get_admin_accounts.php';
-
-$key = "TheGreatestNumberIs73";
-
-if (isset($_POST['login'])) {
-  $username = mysqli_real_escape_string($conn, $_POST['adminUsername']);
-  $password = mysqli_real_escape_string($conn, $_POST['password']);
-
-  // Assuming your login verification is done here
-  // Example login verification code:
-  // $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-  // $result = mysqli_query($conn, $query);
-  // if (mysqli_num_rows($result) == 1) {
-  //   $_SESSION['username'] = $username;
-  //   header("Location: admin_dashboard.php");
-  //   exit();
-  // }
-
-
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <body>
@@ -59,8 +32,8 @@ if (isset($_POST['login'])) {
     <li class="profile">
       <div class="profile-details">
         <div class="name_job">
-          <div class="name"><?php echo isset($_SESSION['username']) ? $_SESSION['adminUsername'] : 'Guest'; ?></div>
-          <div class="job">Admin</div>
+          <div class="name">Admin</div>
+          <div class="job">Front-Desk</div>
         </div>
       </div>
       <!-- Change the logout link to trigger the modal -->
