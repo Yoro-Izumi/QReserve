@@ -12,6 +12,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   include "src/get_data_from_database/convert_to_normal_time.php";
   include "encodeDecode.php";
   $key = "TheGreatestNumberIs73";
+  $currentDate = convertToNormalDate(date("Y-m-d"));
 
   $customerName = $email = $contactNumber = " ";
 ?>
@@ -81,15 +82,15 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
           <tbody>
             <?php
             foreach ($arrayReservationInfo as $reservations) {
-              $reservationID = $reservations['reservationID'] ?? null;
-              $reservationDate = $reservations['reservationDate'] ?? null;
-              $reservationStatus = $reservations['reservationStatus'] ?? null;
-              $reservationTimeStart = $reservations['reservationTimeStart'] ?? null;
-              $reservationTimeEnd = $reservations['reservationTimeEnd'] ?? null;
-              $tableNumber = $reservations['poolTableNumber'] ?? null;
+              $reservationID = $reservations['reservationID'] ?? '';
+              $reservationDate = convertToNormalDate($reservations['reservationDate']) ?? '';
+              $reservationStatus = $reservations['reservationStatus'] ?? '';
+              $reservationTimeStart = convertToNormalTime($reservations['reservationTimeStart']) ?? '';
+              $reservationTimeEnd = convertToNormalTime($reservations['reservationTimeEnd']) ?? '';
+              $tableNumber = $reservations['poolTableNumber'] ?? '';
               $reservationCode = '';
 
-              if ($reservationID) {
+              if ($reservationDate >= $currentDate) {
                 $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
                 $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
                 mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
@@ -97,64 +98,70 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
                 $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
                 $reservationCode = $getQRCodeRow['codeQR'] ?? '';
-              }
 
-              foreach ($arrayMemberAccount as $members) {
-                if (isset($members['memberID']) && $members['memberID'] == $reservations['memberID']) {
-                  $customerName = decryptData($members['customerFirstName'] ?? '', $key) . " " . decryptData($members['customerMiddleName'] ?? '', $key) . " " . decryptData($members['customerLastName'] ?? '', $key);
-                  $contactNumber = decryptData($members['customerNumber'] ?? '', $key);
-                  $email = decryptData($members['customerEmail'] ?? '', $key);
+                foreach ($arrayMemberAccount as $members) {
+                  if ($members['memberID'] == $reservations['memberID']) {
+                    $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
+                    $contactNumber = decryptData($members['customerNumber'], $key) ?? '';
+                    $email = decryptData($members['customerEmail'], $key) ?? '';
+                  }
                 }
-              }
 
-              echo "<tr>";
-              if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
-                $status = "badge bg-success";
-              } else if ($reservationStatus == "On Process") {
-                $status = "badge bg-warning";
+                echo "<tr>";
+                if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
+                  $status = "badge bg-success";
+                } else if ($reservationStatus == "On Process") {
+                  $status = "badge bg-warning";
+                } else {
+                  $status = "badge bg-danger";
+                }
+                echo "
+                  <td>$reservationCode</td>
+                  <td>$customerName</td>
+                  <td>$reservationDate</td>
+                  <td>$reservationTimeStart - $reservationTimeEnd</td>
+                  <td>$tableNumber</td>
+                  <td>$contactNumber</td>
+                  <td>$email</td>
+                  <td><span class='$status'>$reservationStatus</span></td>
+                </tr>";
               } else {
-                $status = "badge bg-danger";
+                // Additional code for else case, if needed
               }
-              echo "
-                <td>$reservationCode</td>
-                <td>$customerName</td>
-                <td>".convertToNormalDate($reservationDate)."</td>
-                <td>".convertToNormalTime($reservationTimeStart)." - ".convertToNormalTime($reservationTimeEnd)."</td>
-                <td>$tableNumber</td>
-                <td>$contactNumber</td>
-                <td>$email</td>
-                <td><span class='$status'>$reservationStatus</span></td>
-              </tr>";
             }
 
             foreach ($arrayWalkinDetails as $walkin) {
-              $walkinDate = $walkin['walkinDate'] ?? null;
-              $walkinStatus = $walkin['walkinStatus'] ?? null;
-              $walkinTimeStart = $walkin['walkinTimeStart'] ?? null;
-              $walkinTimeEnd = $walkin['walkinTimeEnd'] ?? null;
-              $tableNumber = $walkin['poolTableNumber'] ?? null;
+              $walkinDate = convertToNormalDate($walkin['walkinDate']) ?? '';
+              $walkinStatus = $walkin['walkinStatus'] ?? '';
+              $walkinTimeStart = convertToNormalTime($walkin['walkinTimeStart']) ?? '';
+              $walkinTimeEnd = convertToNormalTime($walkin['walkinTimeEnd']) ?? '';
+              $tableNumber = $walkin['poolTableNumber'] ?? '';
 
-              $customerName = decryptData($walkin['customerFirstName'] ?? '', $key) . " " . decryptData($walkin['customerMiddleName'] ?? '', $key) . " " . decryptData($walkin['customerLastName'] ?? '', $key);
-              $contactNumber = decryptData($walkin['customerNumber'] ?? '', $key);
-              $email = decryptData($walkin['customerEmail'] ?? '', $key);
+              if ($walkinDate >= $currentDate) {
+                $customerName = decryptData($walkin['customerFirstName'], $key) . " " . decryptData($walkin['customerMiddleName'], $key) . " " . decryptData($walkin['customerLastName'], $key);
+                $contactNumber = decryptData($walkin['customerNumber'], $key) ?? '';
+                $email = decryptData($walkin['customerEmail'], $key) ?? '';
 
-              echo "<tr>
-                <td>Walk-in</td>
-                <td>$customerName</td>
-                <td>".convertToNormalDate($walkinDate)."</td>
-                <td>".convertToNormalTime($walkinTimeStart)." - ".convertToNormalTime($walkinTimeEnd)."</td>
-                <td>$tableNumber</td>
-                <td>$contactNumber</td>
-                <td>$email</td>";
-              if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
-                $status = "badge bg-success";
-              } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
-                $status = "badge bg-warning";
+                echo "<tr>
+                  <td>Walk-in</td>
+                  <td>$customerName</td>
+                  <td>$walkinDate</td>
+                  <td>$walkinTimeStart - $walkinTimeEnd</td>
+                  <td>$tableNumber</td>
+                  <td>$contactNumber</td>
+                  <td>$email</td>";
+                if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
+                  $status = "badge bg-success";
+                } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
+                  $status = "badge bg-warning";
+                } else {
+                  $status = "badge bg-danger";
+                }
+                echo "<td><span class='$status'>$walkinStatus</span></td>
+                </tr>";
               } else {
-                $status = "badge bg-danger";
+                // Additional code for else case, if needed
               }
-              echo "<td><span class='$status'>$walkinStatus</span></td>
-              </tr>";
             }
             ?>
           </tbody>

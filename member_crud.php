@@ -24,6 +24,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
     $memberValidity = mysqli_real_escape_string($conn, $_POST['validity']);
     $x = "None";
     $y = 1;
+    $statusValidity = 'Valid';
 
     // Hash the password using Argon2
     $options = [
@@ -48,31 +49,27 @@ if (isset($_SESSION["userSuperAdminID"])) {
     mysqli_stmt_execute($conInsertCustomerInfo);
     $customerID = mysqli_insert_id($conn);
 
-    $qryInsertMemberDetails = "INSERT INTO `member_details`(`memberID`, `membershipID`, `perk_id`, `membershipPassword`, `customerID`, `creationDate`, `validityDate`, `superAdminID`) VALUES (NULL,?,?,?,?,?,?,?)";
+    $qryInsertMemberDetails = "INSERT INTO `member_details`(`memberID`, `membershipID`, `perk_id`, `membershipPassword`, `customerID`, `creationDate`, `validityDate`, `superAdminID`, `validity`) VALUES (NULL,?,?,?,?,?,?,?,?)";
     $conInsertMemberDetails = mysqli_prepare($conn, $qryInsertMemberDetails);
-    mysqli_stmt_bind_param($conInsertMemberDetails, "sssssss", $memberControlNumber, $y, $hashedPassword, $customerID, $currentDate, $sqlDate, $userSuperAdmin);
+    mysqli_stmt_bind_param($conInsertMemberDetails, "ssssssss", $memberControlNumber, $y, $hashedPassword, $customerID, $currentDate, $sqlDate, $userSuperAdmin, $statusValidity);
     mysqli_stmt_execute($conInsertMemberDetails);
 
 
 
     unset($_POST['firstName']);
   }
+  
 // delete member details
   if(isset($_POST['selectedRows'])){ 
     $selectedRows = $_POST['selectedRows'];
+    $validityStatus = "Expired";
         foreach($selectedRows as $rowId){
 
             //delete member account
-            $qryDeleteMemberAccount = "DELETE FROM `member_details` WHERE customerID = ?";
+            $qryDeleteMemberAccount = "UPDATE `member_details` SET `validity` = ? WHERE customerID = ?";
             $connDeleteMemberAccount = mysqli_prepare($conn, $qryDeleteMemberAccount);
-            mysqli_stmt_bind_param($connDeleteMemberAccount,'i',$rowId);
+            mysqli_stmt_bind_param($connDeleteMemberAccount,'si',$validityStatus,$rowId);
             mysqli_stmt_execute($connDeleteMemberAccount);
-
-            //delete member info (customer_information)
-            $qryDeleteMemberInfo = "DELETE FROM `customer_info` WHERE customerID = ?";
-            $connDeleteMemberInfo = mysqli_prepare($conn, $qryDeleteMemberInfo);
-            mysqli_stmt_bind_param($connDeleteMemberInfo,'i',$rowId);
-            mysqli_stmt_execute($connDeleteMemberInfo);
 
             foreach($arrayMemberAccount as $memberAccount){
               if($memberAccount['customerID'] == $rowId){
@@ -80,13 +77,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 $customerEmail = $memberAccount['customerEmail'];
                 $memberControlNumber = $memberAccount['membershipID'];
                 sendDeleteNotif($customerEmail,$memberControlNumber,$key);
-                
-                $qryModifyReserve  = "UPDATE pool_table_reservation SET memberID = NULL where memberID = ?";
-                $prepareModifyReserve = mysqli_prepare($conn, $qryModifyReserve);
-                mysqli_stmt_bind_param($prepareModifyReserve, "i", $memberID);
-                mysqli_stmt_execute($prepareModifyReserve);
               }
-            }
+            } 
         }
       // Assuming you want to return a success message
         echo "Rows deleted successfully";

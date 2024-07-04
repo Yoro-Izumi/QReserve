@@ -93,18 +93,15 @@ echo "</tbody>";
 // Remove expired memberships
 foreach($arrayMemberAccount as $memberAccount) {
     $memberValidity  = $memberAccount['validityDate'];
+    $validity = "Expired";
     $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
     $sqlDate = $date->format('Y-m-d');
     if($sqlDate < $currentDate) {
         $memberID = $memberAccount['memberID'];
-        $qryModifyReserve = "UPDATE pool_table_reservation SET memberID = NULL WHERE memberID = ?";
-        $prepareModifyReserve = mysqli_prepare($conn, $qryModifyReserve);
-        mysqli_stmt_bind_param($prepareModifyReserve, "i", $memberID);
-        mysqli_stmt_execute($prepareModifyReserve);
 
-        $qryDeleteMembershipAccount = "DELETE FROM member_details WHERE memberID = ?";
+        $qryDeleteMembershipAccount = "UPDATE member_details SET validity = ? WHERE memberID = ?";
         $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
-        mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "i", $memberID);
+        mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "si", $validity, $memberID);
         mysqli_stmt_execute($prepareDeleteMembershipAccount);
     }
 }
