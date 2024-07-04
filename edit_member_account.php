@@ -12,16 +12,16 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
   $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
 
-  foreach($arrayMemberAccount as $memberAccount){
-    if($memberAccount['customerID'] == $ID){
-      $membershipID = decryptData($memberAccount['membershipID'],$key);
+  foreach ($arrayMemberAccount as $memberAccount) {
+    if ($memberAccount['customerID'] == $ID) {
+      $membershipID = decryptData($memberAccount['membershipID'], $key);
       $validityDate = $memberAccount['validityDate'];
-      $customerFirstName = decryptData($memberAccount['customerFirstName'],$key);
-      $customerLastName = decryptData($memberAccount['customerLastName'],$key);
-      $customerMiddleName = decryptData($memberAccount['customerMiddleName'],$key);
-      $customerBirthdate = decryptData($memberAccount['customerBirthdate'],$key);
-      $customerPhone = decryptData($memberAccount['customerNumber'],$key);
-      $customerEmail = decryptData($memberAccount['customerEmail'],$key);
+      $customerFirstName = decryptData($memberAccount['customerFirstName'], $key);
+      $customerLastName = decryptData($memberAccount['customerLastName'], $key);
+      $customerMiddleName = decryptData($memberAccount['customerMiddleName'], $key);
+      $customerBirthdate = decryptData($memberAccount['customerBirthdate'], $key);
+      $customerPhone = decryptData($memberAccount['customerNumber'], $key);
+      $customerEmail = decryptData($memberAccount['customerEmail'], $key);
       $oldPassword = " ";
     }
   }
@@ -77,8 +77,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <h4 class="qreserve mt-5">Edit Member Account</h4>
       <hr class="my-4">
       <div class="container-fluid" id="profmanage-add-new-profile">
-      <form class="row dashboard-square-kebab needs-validation" id="edit-admin-form" novalidate>
-      <input type="hidden" id="memberID" name="memberID" value="<?php echo $ID;?>">
+        <form class="row dashboard-square-kebab needs-validation" id="edit-admin-form" novalidate>
+          <input type="hidden" id="memberID" name="memberID" value="<?php echo $ID; ?>">
           <div class="col-md-4 mb-2">
             <label for="firstName" class="form-label">First Name <span>*</span></label>
             <input type="text" value="<?php echo $customerFirstName; ?>" class="form-control" id="firstName" name="FirstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
@@ -111,7 +111,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-4 mb-2">
             <label for="birthDate" class="form-label">Birthday <span>*</span></label>
-            <input type="date" value="<?php echo $customerBirthdate;?>" class="form-control" id="birthDate" placeholder="Enter birthDate here" name="birthDate" required onblur="handleInput(event)" oninput="validateUsername(event)">
+            <input type="date" value="<?php echo $customerBirthdate; ?>" class="form-control" id="birthDate" placeholder="Enter birthDate here" name="birthDate" required onblur="handleInput(event)" oninput="validateUsername(event)">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -141,7 +141,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-6 mb-2">
             <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
-            <input type="text"  value="<?php echo $membershipID;?>"  class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" oninput="validateControlNumber(event)">
+            <input type="text" value="<?php echo $membershipID; ?>" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" oninput="validateControlNumber(event)">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -151,7 +151,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-6 mb-2">
             <label for="validity" class="form-label">Validity Date <span>*</span></label>
-            <input type="date" value="<?php echo $validityDate;?>" class="form-control" id="validity" placeholder="Enter birthDate here" name="validity" required onblur="handleInput(event)" oninput="validateUsername(event)">
+            <input type="date" value="<?php echo $validityDate; ?>" class="form-control" id="validity" placeholder="Enter birthDate here" name="validity" required onblur="handleInput(event)" oninput="validateUsername(event)">
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -167,7 +167,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <i class="fas fa-eye-slash"></i>
               </button>
             </div>
-            
+
             <div id="password-strength-indicator"></div>
           </div>
           <div class="col-12 col-md-6 ">
@@ -191,7 +191,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <button class="btn btn-primary w-100 create-button" type="submit" id="create-admin-button">Create</button>
             </div>
             <div class="col-12 col-md-2 mb-2 mb-md-0">
-              <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.href='member-profiles.php'">Cancel</button>
+              <button class="btn btn-outline-primary w-100 cancel-button" type="button">Cancel</button>
             </div>
           </div>
         </form>
@@ -205,12 +205,12 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <!-- Add this div at the end of your HTML body to contain the modal -->
     <div class="modal fade" id="confirmEditAdmin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
-      <div class="modal-content text-center">
+        <div class="modal-content text-center">
           <div class="modal-header">
             <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
           </div>
           <div class="modal-body">
-          Are you sure you want to edit this account?
+            Are you sure you want to edit this account?
           </div>
           <div class="modal-footer d-flex justify-content-center">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
@@ -239,7 +239,23 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-
+    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
     <script>
@@ -259,14 +275,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
-    </script> 
+    </script>
 
-<script src="src/js/edit_member_account.js"></script>
-<script src="src/js/sidebar.js"></script>
+    <script src="src/js/edit_member_account.js"></script>
+    <script src="src/js/sidebar.js"></script>
 
-<script>
+    <script>
 
-</script>
+    </script>
 
   </body>
 
