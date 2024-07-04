@@ -743,6 +743,32 @@ label.customer-account{
   align-items: end;
 }
 
+.btn-outline-success {
+  border-color: #04471C;
+  color: #04471C;
+}
+
+.btn-outline-danger {
+  border-color: #04471C;
+  color: #04471C;
+}
+
+    /* Change background color when radio button is checked */
+    input[type="radio"]:checked + .btn-outline-success {
+      background-color: #04471C;
+      color: #ffb800;
+      font-weight: 600;
+      border: none;
+    }
+
+    input[type="radio"]:checked + .btn-outline-danger {
+      background-color: #04471C;
+      color: #ffb800;
+      font-weight: 600;
+      border: none;
+      outline: none;
+    }
+
 @media (max-width: 768px) {
   .bevitore-logo {
       width: 25%;
