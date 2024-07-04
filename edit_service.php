@@ -74,7 +74,7 @@ date_default_timezone_set('Asia/Manila');
                     <input type="hidden" name="editID" id="editID" value="<?php echo $ID; ?>">
                     <div class="col-md-12 mb-2">
                         <label for="editServiceName" class="form-label">Service Name <span>*</span></label>
-                        <input type="text" value="<?php echo $serviceName; ?>" class="form-control" id="editServiceName" name="editServiceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="100">
+                        <input type="text" value="<?php echo $serviceName; ?>" class="form-control" id="editServiceName" name="editServiceName" placeholder="Enter service name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="100">
                         <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid service name.</div>
                     </div>
