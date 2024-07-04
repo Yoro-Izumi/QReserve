@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
     isFormDirty = true;
   });
 
-  const cancelButton = document.querySelector('.cancel-button');
+  const cancelButton = document.querySelector('.cancel-button-member');
   cancelButton.addEventListener('click', () => {
     if (isFormDirty) {
       const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));

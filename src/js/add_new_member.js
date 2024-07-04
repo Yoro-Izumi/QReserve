@@ -363,4 +363,11 @@ $(document).ready(function () {
 
 
 
-//For control number checking
+// Prevent typing in the date input fields
+document.getElementById('birthDate').addEventListener('keydown', function(event) {
+  event.preventDefault();
+});
+
+document.getElementById('validity').addEventListener('keydown', function(event) {
+  event.preventDefault();
+});

@@ -56,7 +56,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
                     <div class="col-md-12 mb-2">
                         <label for="serviceName" class="form-label">Service Name <span>*</span></label>
-                        <input type="text" class="form-control" id="serviceName" name="serviceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)">
+                        <input type="text" class="form-control" id="serviceName" name="serviceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
                         <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid service name.</div>
                     </div>
@@ -87,7 +87,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
                             <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
                         </div>
                         <div class="col-12 col-md-2 mb-2 mb-md-0">
-                            <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button>
+                            <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="window.location.reload()">Cancel</button> -->
+                            <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="handleCancel()">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -127,6 +128,25 @@ if (isset($_SESSION["userSuperAdminID"])) {
                     <div class="modal-footer">
                         <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
                         <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example Bootstrap Modal for unsaved changes -->
+        <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" id="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+                        <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
                     </div>
                 </div>
             </div>
