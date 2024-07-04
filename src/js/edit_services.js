@@ -23,7 +23,6 @@ function handleInput(event) {
   event.target.value = inputValue.trim(); // Remove leading and trailing whitespaces
 }
 
-
 // For first names that it wont accept any numeric and special characters
 function validateName(event) {
   const regex = /^[A-Za-z0-9\s]*$/; // Allow alphabetic, numeric characters, and spaces
