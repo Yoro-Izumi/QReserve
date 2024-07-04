@@ -138,6 +138,7 @@ function validateImage(event) {
   const file = input.files[0];
   const validImageTypes = ["image/jpeg", "image/jpg", "image/png"];
   const imagePreview = document.getElementById('imagePreview');
+    
 
   if (file) {
       const fileType = file.type;

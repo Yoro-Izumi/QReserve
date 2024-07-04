@@ -49,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newServiceName = mysqli_real_escape_string($conn, $_POST['editServiceName']);
         $newServiceCapacity = (int) mysqli_real_escape_string($conn, $_POST['editCapacity']);
         $newServiceRate = (int) mysqli_real_escape_string($conn, $_POST['editServiceRate']);
-        //$isImageChosen = mysqli_real_escape_string($conn, $_POST['isImageChosen']);
+        $isImageChosen = mysqli_real_escape_string($conn, $_POST['isImage']);
         $newServiceImage = $_FILES["editImage"];
     
-        //if ($isImageChosen == 'yes') {
+        if ($isImageChosen === 'true') {
             $newServiceImageName = $newServiceImage["name"];
             $newServiceImageTmpName = $newServiceImage["tmp_name"];
             $newServiceImageError = $newServiceImage["error"];
@@ -91,12 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
             }
         } 
-        /*else {
+        else {
             // Update service without changing the image
             $qryUpdateService = "UPDATE `services` SET `serviceName` = ?, `serviceCapacity` = ?, `serviceRate` = ?, `superAdminID` = ? WHERE `serviceID` = ?";
             $connUpdateService = mysqli_prepare($conn, $qryUpdateService);
             mysqli_stmt_bind_param($connUpdateService, 'siiii', $newServiceName, $newServiceCapacity, $newServiceRate, $_SESSION["userSuperAdminID"], $newServiceID);
-        }*/
+        }
     
         // Execute the update query
         if (mysqli_stmt_execute($connUpdateService)) {
@@ -141,5 +141,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         unset($_POST['selectedRows']);
     }
-// }
+}
 ?>
