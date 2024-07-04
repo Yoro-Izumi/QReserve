@@ -444,18 +444,27 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </script>-->
 
     <script>
-    // Create an array to hold customer names and populations
+    // Create an array to hold admin names and their counts
     <?php
     $arrayAdmin = array();
-    $arrayAdminNumber = array(); 
+    $arrayAdminNumber = array();
+    $arrayAdminName = array();
 
     foreach ($arrayWalkinDetails as $walkin) {
         $adminID = $walkin['adminID'];
-        if (in_array($adminID, $arrayAdmin)) {
-            $index = array_search($adminID, $arrayAdmin);
+        // Fetch and decrypt admin names based on adminID
+        foreach ($arrayAdminAccount as $admin) {
+            if ($admin['adminID'] == $adminID) {
+                $adminName = decryptData($admin['adminFirstName'], $key) . " " . decryptData($admin['adminMiddleName'], $key) . " " . decryptData($admin['adminLastName'], $key);
+                break;
+            }
+        }
+
+        if (in_array($adminName, $arrayAdmin)) {
+            $index = array_search($adminName, $arrayAdmin);
             $arrayAdminNumber[$index]++;
         } else {
-            array_push($arrayAdmin, $adminID);
+            array_push($arrayAdmin, $adminName);
             array_push($arrayAdminNumber, 1); // Initial count as 1
         }
     }
@@ -527,6 +536,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }]
     });
     </script>
+
+
 
 
 <!-- 4th Graph -->
