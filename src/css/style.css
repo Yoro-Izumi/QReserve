@@ -504,7 +504,7 @@ label.customer-account{
 
 
 
-.create-button-member#submitReserve {
+.create-button-member#submitReserve, #finalLogoutButton, #submitWalkin {
   width: 400px;
 }
 
