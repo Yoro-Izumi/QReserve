@@ -78,7 +78,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <tr>
                 <td><input type='checkbox' class='admin-checkbox' name='admin[]' value='<?php echo $adminAccount['adminInfoID']; ?>'></td>
                 <td><?php echo htmlspecialchars(decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key)); ?></td>
-                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminSex'], $key)); ?></td>
+                <td><?php echo htmlspecialchars($adminAccount['adminSex']); ?></td>
                 <td><?php echo htmlspecialchars(decryptData($adminAccount['adminUsername'], $key)); ?></td>
                 <td><?php echo htmlspecialchars(decryptData($adminAccount['adminContactNumber'], $key)); ?></td>
                 <td><?php echo htmlspecialchars(decryptData($adminAccount['adminEmail'], $key)); ?></td>

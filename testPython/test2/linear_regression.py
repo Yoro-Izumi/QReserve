@@ -16,6 +16,15 @@ data['date'] = pd.to_datetime(data['date'])
 data['count'] = 1
 data = data.groupby('date').count().reset_index()
 
+# Create a complete date range
+start_date = data['date'].min()
+end_date = data['date'].max()
+date_range = pd.date_range(start=start_date, end=end_date)
+
+# Ensure all dates are present in the dataset
+data = data.set_index('date').reindex(date_range, fill_value=0).reset_index()
+data.rename(columns={'index': 'date'}, inplace=True)
+
 # Add additional features
 data['date_ordinal'] = data['date'].map(datetime.datetime.toordinal)
 

@@ -72,7 +72,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </tr>
           </thead>
           <tbody>
-                <?php foreach ($arrayMemberAccount as $memberAccount) : ?>
+                <?php foreach ($arrayMemberAccount as $memberAccount) { if($memberAccount['validity']  === "Valid"){ ?>
                     <tr>
                         <td><input type='checkbox' class='member-checkbox' name='member[]' value='<?php echo $memberAccount['customerID']; ?>'></td>
                         <td><?php echo htmlspecialchars(decryptData($memberAccount['customerFirstName'], $key) . " " . decryptData($memberAccount['customerMiddleName'], $key) . " " . decryptData($memberAccount['customerLastName'], $key)); ?></td>
@@ -82,7 +82,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                         <td><?php echo htmlspecialchars(decryptData($memberAccount['customerEmail'], $key)); ?></td>
                         <td><?php echo htmlspecialchars($memberAccount['validityDate']); ?></td>
                     </tr>
-                <?php endforeach; ?>
+                <?php } else {} } ?>
             </tbody>
         </table>
         <div>
