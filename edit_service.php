@@ -93,8 +93,8 @@ date_default_timezone_set('Asia/Manila');
                         <div class="invalid-feedback">Please provide a valid capacity.</div>
                     </div>
                     <div class="col-md-10 mb-2">
-                        <label for="editImage" class="form-label">Image <span>*</span></label>
-                        <input type="file" value="<?php echo $serviceName; ?>" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" required onchange="validateImage(event)">
+                        <label for="editImage" class="form-label">Image</label>
+                        <input type="file" value="<?php echo $serviceName; ?>" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" onchange="validateImage(event)">
                         <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid file.</div>
                     </div>
