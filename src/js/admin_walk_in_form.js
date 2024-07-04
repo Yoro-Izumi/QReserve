@@ -438,22 +438,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Display initial alert for the default selected option
-  if (document.getElementById('walkin-button').checked) {
-      alert('Walk-In');
-  }
+// document.addEventListener('DOMContentLoaded', function () {
+//   // Display initial alert for the default selected option
+//   if (document.getElementById('walkin-button').checked) {
+//       alert('Walk-In');
+//   }
 
-  // Add event listeners to radio buttons
-  document.getElementById('walkin-button').addEventListener('change', function () {
-      if (this.checked) {
-          alert('Walk-In');
-      }
-  });
+//   // Add event listeners to radio buttons
+//   document.getElementById('walkin-button').addEventListener('change', function () {
+//       if (this.checked) {
+//           alert('Walk-In');
+//       }
+//   });
 
-  document.getElementById('member-button').addEventListener('change', function () {
-      if (this.checked) {
-          alert('Member');
-      }
-  });
-});
+//   document.getElementById('member-button').addEventListener('change', function () {
+//       if (this.checked) {
+//           alert('Member');
+//       }
+//   });
+// });
