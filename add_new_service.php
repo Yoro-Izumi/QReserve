@@ -56,7 +56,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
                     <div class="col-md-12 mb-2">
                         <label for="serviceName" class="form-label">Service Name <span>*</span></label>
-                        <input type="text" class="form-control" id="serviceName" name="serviceName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
+                        <input type="text" class="form-control" id="serviceName" name="serviceName" placeholder="Enter service name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
                         <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid service name.</div>
                     </div>
@@ -68,7 +68,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for="capacity" class="form-label">Capacity <span>*</span></label>
-                        <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="3" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
+                        <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
                         <div class="valid-feedback"><!-- Looks good! --></div>
                         <div class="invalid-feedback">Please provide a valid capacity of at least 2.</div>
                     </div>
@@ -123,7 +123,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                         <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
                     </div>
                     <div class="modal-body text-center">
-                        You have successfully registered a new account.
+                        You have successfully registered a new service.
                     </div>
                     <div class="modal-footer">
                         <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
