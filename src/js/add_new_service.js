@@ -41,8 +41,7 @@ function validateRate(event) {
   const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
 
   if (numericValue.length <= 4) { // Limit the length to 4 digits
-      const formattedValue = new Intl.NumberFormat().format(numericValue);
-      input.value = formattedValue;
+      input.value = numericValue;
 
       // Check for minimum value
       if (numericValue === '' || parseInt(numericValue, 10) < 100) {
@@ -55,8 +54,7 @@ function validateRate(event) {
   } else {
       // If the input exceeds 4 digits, truncate the value
       const truncatedValue = numericValue.slice(0, 4);
-      const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
-      input.value = formattedTruncatedValue;
+      input.value = truncatedValue;
 
       // Check for minimum value
       if (parseInt(truncatedValue, 10) < 100) {
