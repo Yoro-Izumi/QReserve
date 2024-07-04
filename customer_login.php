@@ -153,7 +153,7 @@ if (isset($_POST['login_member'])) {
                 <label for="controlNumber">Control Number <span>*</span></label>
               </div> -->
               <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber2(event)">
+                <input type="text" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" onblur="validateControlNumber2(event)">
                 <label for="controlNumber">Control Number <span>*</span></label>
               </div>
               <div class="form-floating mb-2 position-relative">
@@ -187,7 +187,7 @@ if (isset($_POST['login_member'])) {
           <h4 class="modal-title fw-bold text-center" id="success">Forget Password</h4>
         </div>
         <div class="modal-body">
-        <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
+          <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
           <form id="send-pin-form" name="send-pin-form">
             <label for="email" class="form-label">Email Address <span>*</span></label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" oninput="validateEmail(event)" maxlength="56" required>
@@ -216,7 +216,7 @@ if (isset($_POST['login_member'])) {
         </div>
         <form id="submit-new-pass" name="submit-new-pass">
           <div class="modal-body">
-          <div id="resetPasswordError" class="alert alert-danger" role="alert" style="display: none;"></div>
+            <div id="resetPasswordError" class="alert alert-danger" role="alert" style="display: none;"></div>
             <label for="pinInput" class="form-label">Reset Code <span>*</span></label>
             <input type="text" class="form-control" id="pinInput" placeholder="Enter reset code here" name="pinInput" required minlength="6" maxlength="6" oninput="validateContactNumber(event)">
             <div class="valid-feedback">
@@ -246,7 +246,7 @@ if (isset($_POST['login_member'])) {
             </div>
             <div class="invalid-feedback" id="passwordMismatch">
               Passwords do not match.
-            </div>          
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
@@ -275,7 +275,7 @@ if (isset($_POST['login_member'])) {
   </div>
   <!-- End of Modals -->
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       // $('.toggle-password').click(function () {
       //   const input = $(this).siblings('input');
       //   const icon = $(this).children('i');
@@ -285,13 +285,13 @@ if (isset($_POST['login_member'])) {
       // });
 
       // Handle AJAX for sending reset PIN
-      $('#forgetPassButton').click(function () {
+      $('#forgetPassButton').click(function() {
         const form = $('#send-pin-form');
         $.ajax({
           url: 'customer_send_pin.php',
           type: 'POST',
           data: form.serialize(),
-          success: function (response) {
+          success: function(response) {
             const res = JSON.parse(response);
             if (res.status === 'success') {
               $('#forget-password-modal').modal('hide');
@@ -300,14 +300,14 @@ if (isset($_POST['login_member'])) {
               $('#sendPinError').text(res.message).show();
             }
           },
-          error: function () {
+          error: function() {
             $('#sendPinError').text('Error sending PIN.').show();
           }
         });
       });
 
       // Handle AJAX for submitting new password
-      $('#submitPinButton').click(function () {
+      $('#submitPinButton').click(function() {
         const form = $('#submit-new-pass');
         if ($('#new-password').val() !== $('#confirm-password').val()) {
           $('#resetPasswordError').text('Passwords do not match.').show();
@@ -317,7 +317,7 @@ if (isset($_POST['login_member'])) {
           url: 'customer_submit_new_password.php',
           type: 'POST',
           data: form.serialize(),
-          success: function (response) {
+          success: function(response) {
             const res = JSON.parse(response);
             if (res.status === 'success') {
               $('#continue-forget-password').modal('hide');
@@ -326,7 +326,7 @@ if (isset($_POST['login_member'])) {
               $('#resetPasswordError').text(res.message).show();
             }
           },
-          error: function () {
+          error: function() {
             $('#resetPasswordError').text('Error resetting password.').show();
           }
         });
@@ -373,7 +373,7 @@ if (isset($_POST['login_member'])) {
   </script>
 
 
-  
+
 
 
   <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
@@ -402,31 +402,31 @@ if (isset($_POST['login_member'])) {
 
 
   <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const togglePassword1 = document.querySelector("#password-toggle-1");
-    const passwordInput1 = document.querySelector("#new-password"); // Corrected selector for password input
+    document.addEventListener("DOMContentLoaded", function() {
+      const togglePassword1 = document.querySelector("#password-toggle-1");
+      const passwordInput1 = document.querySelector("#new-password"); // Corrected selector for password input
 
-    togglePassword1.addEventListener("click", function() {
+      togglePassword1.addEventListener("click", function() {
         const type = passwordInput1.getAttribute("type") === "password" ? "text" : "password";
         passwordInput1.setAttribute("type", type);
 
         // Toggle eye icon classes
         togglePassword1.querySelector("i").classList.toggle("fa-eye-slash");
         togglePassword1.querySelector("i").classList.toggle("fa-eye");
-    });
+      });
 
-    const togglePassword2 = document.querySelector("#password-toggle-2");
-    const passwordInput2 = document.querySelector("#confirm-password"); // Corrected selector for confirm password input
+      const togglePassword2 = document.querySelector("#password-toggle-2");
+      const passwordInput2 = document.querySelector("#confirm-password"); // Corrected selector for confirm password input
 
-    togglePassword2.addEventListener("click", function() {
+      togglePassword2.addEventListener("click", function() {
         const type = passwordInput2.getAttribute("type") === "password" ? "text" : "password";
         passwordInput2.setAttribute("type", type);
 
         // Toggle eye icon classes
         togglePassword2.querySelector("i").classList.toggle("fa-eye-slash");
         togglePassword2.querySelector("i").classList.toggle("fa-eye");
+      });
     });
-});
 
     // Validation for Control Number
     function validateControlNumber() {
@@ -453,38 +453,58 @@ document.addEventListener("DOMContentLoaded", function() {
         event.target.value = event.target.value.replace(/[^a-zA-Z0-9._%+\-!@#$^&*]/g, '');
       }
     }
+
+
+    // For password toggle
+    document.addEventListener("DOMContentLoaded", function() {
+      const togglePassword = document.querySelector(".toggle-password");
+      const passwordInput = document.querySelector("#floatingPassword");
+      const eyeIcon = togglePassword.querySelector("i");
+
+      togglePassword.addEventListener("click", function() {
+        const type =
+          passwordInput.getAttribute("type") === "password" ?
+          "text" :
+          "password";
+        passwordInput.setAttribute("type", type);
+
+        // Toggle eye icon classes
+        eyeIcon.classList.toggle("fa-eye-slash");
+        eyeIcon.classList.toggle("fa-eye");
+      });
+    });
   </script>
-<script>
-  function validateControlNumber2(event) {
-    const input = event.target;
-    let value = input.value;
+  <script>
+    function validateControlNumber2(event) {
+      const input = event.target;
+      let value = input.value;
 
-    // Allow only numeric characters and a single hyphen
-    value = value.replace(/[^0-9-]/g, '');
+      // Allow only numeric characters and a single hyphen
+      value = value.replace(/[^0-9-]/g, '');
 
-    // Ensure there's only one hyphen and it's in the correct position (after two digits)
-    const parts = value.split('-');
-    if (parts.length > 2 || (parts[1] && parts[1].length > 4) || (parts[0] && parts[0].length > 2)) {
-      input.setCustomValidity('Please provide a valid contact number (format: 00-0000).');
-    } else {
-      // Reconstruct the value ensuring the correct format
-      value = parts[0].slice(0, 2);
-      if (parts.length > 1) {
-        value += '-' + parts[1].slice(0, 4);
-      }
-
-      input.value = value;
-
-      // Check if the pattern is valid: two digits, one hyphen, four digits
-      const pattern = /^\d{2}-\d{4}$/;
-      if (pattern.test(input.value) && input.value !== '-') {
-        input.setCustomValidity(''); // Valid input
-      } else {
+      // Ensure there's only one hyphen and it's in the correct position (after two digits)
+      const parts = value.split('-');
+      if (parts.length > 2 || (parts[1] && parts[1].length > 4) || (parts[0] && parts[0].length > 2)) {
         input.setCustomValidity('Please provide a valid contact number (format: 00-0000).');
+      } else {
+        // Reconstruct the value ensuring the correct format
+        value = parts[0].slice(0, 2);
+        if (parts.length > 1) {
+          value += '-' + parts[1].slice(0, 4);
+        }
+
+        input.value = value;
+
+        // Check if the pattern is valid: two digits, one hyphen, four digits
+        const pattern = /^\d{2}-\d{4}$/;
+        if (pattern.test(input.value) && input.value !== '-') {
+          input.setCustomValidity(''); // Valid input
+        } else {
+          input.setCustomValidity('Please provide a valid contact number (format: 00-0000).');
+        }
       }
     }
-  }
-</script>
+  </script>
 
   <script src="src/js/add_new_admin.js"></script>
 
