@@ -167,10 +167,8 @@ date_default_timezone_set('Asia/Manila');
         </div>
       </div>
     </div>
-
         <script src="src/js/edit_services.js"></script>
         <script src="src/js/sidebar.js"></script>
-
     </body>
 
     </html>
