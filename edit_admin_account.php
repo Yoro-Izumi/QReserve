@@ -27,7 +27,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       $adminFirstName = decryptData($adminAccount['adminFirstName'], $key);
       $adminMiddleName = decryptData($adminAccount['adminMiddleName'], $key);
       $adminLastName = decryptData($adminAccount['adminLastName'], $key);
-      $adminSex = decryptData($adminAccount['adminSex'], $key);
+      $adminSex = $adminAccount['adminSex'];
       $adminPhone = decryptData($adminAccount['adminContactNumber'], $key);
       $adminEmail = decryptData($adminAccount['adminEmail'], $key);
       $shiftTimeStart = $adminAccount['shiftTimeStart'];
