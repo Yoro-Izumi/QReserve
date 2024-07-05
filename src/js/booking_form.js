@@ -238,7 +238,13 @@ function getUserInputs() {
 
   // Calculate total price based on selected start and end times
   const startTime = new Date(`2024-06-14T${selectStartTime}`);
-  const endTime = new Date(`2024-06-14T${selectEndTime}`);
+  let endTime = new Date(`2024-06-14T${selectEndTime}`);
+
+  // If end time is earlier than start time, it means it extends to the next day
+  if (endTime < startTime) {
+    endTime.setDate(endTime.getDate() + 1);
+  }
+
   const durationInMinutes = (endTime - startTime) / (1000 * 60);
   const durationInHours = durationInMinutes / 60;
 
@@ -272,6 +278,7 @@ function getUserInputs() {
     </div>
   `;
 }
+
 
 // For the readonly fields
 document.addEventListener("DOMContentLoaded", function () {
