@@ -205,30 +205,36 @@ $(document).ready(function() {
 
 
     //add reservation
-$(document).ready(function () {
-  $("#submitEditAdmin").click(function (e) {
-    e.preventDefault();
-
-    var formData = new FormData($("#edit-admin-form")[0]);
-
-    $.ajax({
-      type: "POST",
-      url: "admin_crud.php", // Replace 'process_form.php' with the URL of your PHP script
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (response) {
-        // Handle success response here
-        //alert(response); // For demonstration purposes, you can display an alert with the response
-        window.location.href = "admin-profiles.php";
-      },
-      error: function (xhr, status, error) {
-        // Handle error
-        console.error(xhr.responseText);
-      },
+    $(document).ready(function () {
+      $("#submitEditAdmin").click(function (e) {
+        e.preventDefault();
+    
+        var formData = new FormData($("#edit-admin-form")[0]);
+    
+        // Disable the button to prevent multiple clicks
+        $(this).prop("disabled", true);
+    
+        $.ajax({
+          type: "POST",
+          url: "admin_crud.php", // Replace 'process_form.php' with the URL of your PHP script
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            // Handle success response here
+            //alert(response); // For demonstration purposes, you can display an alert with the response
+            window.location.href = "admin-profiles.php";
+          },
+          error: function (xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+            // Re-enable the button if there's an error
+            $("#submitEditAdmin").prop("disabled", false);
+          },
+        });
+      });
     });
-  });
-});
+    
 
 
 //   set default value for password field in case if super admin does not want to edit password
