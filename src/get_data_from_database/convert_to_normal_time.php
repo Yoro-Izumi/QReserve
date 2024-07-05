@@ -9,6 +9,7 @@ function convertToNormalDate($date) {
     if ($dateTime === false) {
         return "Invalid date format";
     }
-    return $dateTime->format('F j, Y');
+    return $dateTime->format('F d, Y'); // Changed 'j' to 'd' to add leading zero
 }
+
 ?>
