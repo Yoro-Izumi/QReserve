@@ -252,6 +252,9 @@ $(document).ready(function () {
 
     var formData = new FormData($("#edit-admin-form")[0]);
 
+                // Disable the button to prevent multiple clicks
+                $(this).prop("disabled", true);
+
     $.ajax({
       type: "POST",
       url: "member_crud.php", // Replace 'process_form.php' with the URL of your PHP script
