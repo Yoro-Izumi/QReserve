@@ -204,30 +204,36 @@ function getUserInputs() {
   `;
 }
     //add reservation
-$(document).ready(function () {
-  $("#submitWalkin").click(function (e) {
-    e.preventDefault();
-
-    var formData = new FormData($("#booking-form")[0]);
-
-    $.ajax({
-      type: "POST",
-      url: "service_crud.php", // Replace 'process_form.php' with the URL of your PHP script
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (response) {
-        // Handle success response here
-        //alert(response); // For demonstration purposes, you can display an alert with the response
-        window.location.href = "service_management.php";
-      },
-      error: function (xhr, status, error) {
-        // Handle error
-        console.error(xhr.responseText);
-      },
+    $(document).ready(function () {
+      $("#submitWalkin").click(function (e) {
+        e.preventDefault();
+    
+        var formData = new FormData($("#booking-form")[0]);
+    
+        // Disable the button to prevent multiple clicks
+        $(this).prop("disabled", true);
+    
+        $.ajax({
+          type: "POST",
+          url: "service_crud.php", // Replace 'process_form.php' with the URL of your PHP script
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            // Handle success response here
+            //alert(response); // For demonstration purposes, you can display an alert with the response
+            window.location.href = "service_management.php";
+          },
+          error: function (xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+            // Re-enable the button if there's an error
+            $("#submitWalkin").prop("disabled", false);
+          },
+        });
+      });
     });
-  });
-});
+    
 
 
 
