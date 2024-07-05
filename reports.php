@@ -37,11 +37,16 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
   $peak_times_data = json_decode($outputPeak, true);
 
+  //change
+
   //if (json_last_error() !== JSON_ERROR_NONE) {
    //   echo "Error decoding JSON: " . json_last_error_msg();
    //   echo "Python output: " . htmlspecialchars($output);
    //   exit();
 //  }
+
+
+  
 
   // Prepare data for Highcharts
   $formatted_data = [];

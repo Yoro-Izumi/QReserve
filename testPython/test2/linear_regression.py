@@ -4,6 +4,8 @@ from sklearn.linear_model import LinearRegression
 import datetime
 import json
 
+
+
 # Read the data from the JSON file
 with open('data.json', 'r') as file:
     data = json.load(file)
