@@ -87,7 +87,7 @@ if (isset($_POST['updateAdmin'])) {
   $email = encryptData(mysqli_real_escape_string($conn, $_POST['email']), $key);
   $username = encryptData(mysqli_real_escape_string($conn, $_POST['username']), $key);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
-  $sex = encryptData(mysqli_real_escape_string($conn, $_POST['adminSex']), $key);
+  $sex = $_POST['adminSex'];
   $contactNumber = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
   $shift = intVal($_POST['adminShift']);
 
