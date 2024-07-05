@@ -120,7 +120,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="modal-footer">
             <button onclick="reload()" class="btn btn-primary create-button" id="proceed-delete-button" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
-            <button onclick="reload()" class="btn btn-primary create-button" id="proceed-delete-button" data-bs-target="#" data-bs-toggle="modal">Proceed</button>
           </div>
         </div>
       </div>
