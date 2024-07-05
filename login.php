@@ -27,7 +27,7 @@ if (isset($_POST['login'])) {
 
   // Validate email domain
   if (substr($username, -10) !== '@gmail.com') {
-    $error_message = "Invalid Email Address or password";
+    $error_message = "Invalid email address.";
   } else {
     // Check if the username exists in either super admin or admin accounts
     $usernameExists = false;
@@ -93,7 +93,7 @@ if (isset($_POST['login'])) {
           exit();
         }
       } else {
-        $error_message = "Email or Password is mismatched."; // Set error message
+        $error_message = "Email and Password are mismatched."; // Set error message
       }
     }
   }
@@ -204,7 +204,7 @@ if (isset($_POST['login'])) {
             <?php endif; ?>
 
             <div class="form-floating mb-3">
-              <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" required oninput="validateEmail(event)" maxlength="56" onblur="handleInput(event)"/>
+              <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com" maxlength="56" required oninput="validateEmail(event)" onblur="handleInput(event)"/>
               <label for="floatingInput">Email address <span>*</span></label>
             </div>
             <div class="form-floating mb-2 position-relative">
@@ -519,7 +519,7 @@ if (isset($_POST['login'])) {
   
   </script>
 
-  <script>
+  <!-- <script>
       //For Email 
 function validateEmail(event) {
   var emailInput = event.target.value;
@@ -540,6 +540,32 @@ function validateEmail(event) {
 }
 document.getElementById("email").addEventListener("input", validateEmail);
         <div>
+          <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
+        </div>
+  </script> -->
+
+
+  <script>
+      //For Email 
+function validateEmail(event) {
+  var emailInput = event.target.value;
+
+  event.target.value = emailInput.replace(/\s+/g, '');
+
+  emailInput = event.target.value.trim();
+
+  var isValid = /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailInput);
+
+  if (!isValid) {
+    document.getElementById("emailError").style.display = "block";
+    event.target.setCustomValidity("Please enter a valid email address.");
+  } else {
+    document.getElementById("emailError").style.display = "none";
+    event.target.setCustomValidity("");
+  }
+}
+document.getElementById("email").addEventListener("input", validateEmail);
+<div>
           <div id="sendPinError" class="alert alert-danger" role="alert" style="display: none;"></div>
         </div>
   </script>
