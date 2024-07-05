@@ -10,10 +10,14 @@ if ($conn->connect_error) {
 $data = array();
 
 foreach ($arrayReservationInfo as $reservation) {
+    if($reservation['reservationStatus'] === "Reserved"){
     $data[] = array('date' => $reservation['reservationDate']);
+    }
 }
 foreach ($arrayWalkinDetails as $walkin) {
+    if($walkin['walkinStatus'] === "Reserved"){
     $data[] = array('date' => $walkin['walkinDate']);
+    }
 }
 
 $conn->close();
