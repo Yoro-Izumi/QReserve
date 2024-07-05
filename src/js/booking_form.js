@@ -304,6 +304,10 @@ $(document).ready(function () {
 
     var formData = new FormData($("#booking-form")[0]);
 
+
+                    // Disable the button to prevent multiple clicks
+                    $(this).prop("disabled", true);
+
     $.ajax({
       type: "POST",
       url: "reservation_crud.php", // Replace 'process_form.php' with the URL of your PHP script
