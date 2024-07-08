@@ -341,9 +341,9 @@ img.modal-icons {
   color: #ffb800 !important;
 }
 
-.create-button#proceed {
+/* .create-button#proceed {
     width: 400px;
-  }
+  } */
 
 /* Add New Service Modal */
 .service-modal {
@@ -501,12 +501,9 @@ label.customer-account{
   font-weight: bold;
 }
 
-
-
-
-.create-button-member#submitReserve, #finalLogoutButton, #submitWalkin {
+/* .create-button-member#submitReserve, #finalLogoutButton, #submitWalkin {
   width: 400px;
-}
+} */
 
 .create-button#create-reservation-button{
   border-color: #240046 !important; 
@@ -525,8 +522,6 @@ label.customer-account{
   color: #240046 !important;
   border-color: #FFB800 !important; 
 }
-
-
 
 .create-button-member{
   background-color: #240046 !important;

@@ -71,10 +71,16 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <tr>
                 <!-- <td><input type='checkbox' onchange='getSelected(this)' class='service-checkbox' name='serviceID[]' value='<?php echo $services['serviceID']; ?>'></td> -->
                 <td><input type='checkbox' class='admin-checkbox' name='admin[]' value='<?php echo $services['serviceID']; ?>'></td>
-                <td><?php echo htmlspecialchars($services['serviceName']); ?></td>
+                <td><?php echo htmlspecialchars(substr($services['serviceName'], 0, 15)) . '...'; ?></td>
                 <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
                 <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
-                <td><a href="#" class="image-link" data-bs-toggle="modal" data-bs-target="#image-modal" data-image="src/images/Services/<?php echo htmlspecialchars($services['serviceImage']); ?>"><?php echo htmlspecialchars($services['serviceImage']); ?></a></td>              </tr>
+                <td>
+    <a href="#" class="image-link" data-bs-toggle="modal" data-bs-target="#image-modal" 
+       data-image="src/images/Services/<?php echo htmlspecialchars($services['serviceImage']); ?>">
+       <?php echo htmlspecialchars(strlen($services['serviceImage']) > 15 ? substr($services['serviceImage'], 0, 15) . '...' : $services['serviceImage']); ?>
+    </a>
+</td>
+
             <?php endforeach; ?>
           </tbody>
         </table>
