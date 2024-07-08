@@ -69,6 +69,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <th>Contact Number</th>
               <th>Email Address</th>
               <th>Validity</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -81,6 +82,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
                         <td><?php echo htmlspecialchars(decryptData($memberAccount['customerNumber'], $key)); ?></td>
                         <td><?php echo htmlspecialchars(decryptData($memberAccount['customerEmail'], $key)); ?></td>
                         <td><?php echo htmlspecialchars($memberAccount['validityDate']); ?></td>
+                        <td>
+  <span class="<?php echo ($memberAccount['validity'] == 'Valid')? "badge bg-success" : "badge bg-danger";?>"><?php echo $memberAccount['validity'];?></span>
+</td>
                     </tr>
                 <?php } else {} } ?>
             </tbody>
