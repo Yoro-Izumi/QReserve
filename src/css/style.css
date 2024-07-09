@@ -769,6 +769,11 @@ label.customer-account{
       outline: none;
     }
 
+    .all-links li.active a {
+      font-weight: bold;
+      color: #ffb800;
+  }
+
 @media (max-width: 768px) {
   .bevitore-logo {
       width: 25%;
