@@ -2,6 +2,11 @@
 <html lang="en">
 <body>
 
+<style>
+
+</style>
+
+
 <header>
     <nav class="navbar p-0">
         <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
@@ -13,10 +18,18 @@
             </svg>
         </label>
         <ul class="all-links">
-            <li><a href="customer_dashboard.php">Home</a></li>
-            <li><a href="booking_form.php">Reservations</a></li>
-            <li><a href="customer_account.php">Account</a></li>
-            <li><a href="customer_logout.php">Log Out</a></li>
+            <li <?php if (strpos($_SERVER['PHP_SELF'], 'customer_dashboard.php') !== false) echo 'class="active"'; ?>>
+                <a href="customer_dashboard.php">Home</a>
+            </li>
+            <li <?php if (strpos($_SERVER['PHP_SELF'], 'booking_form.php') !== false) echo 'class="active"'; ?>>
+                <a href="booking_form.php">Reservations</a>
+            </li>
+            <li <?php if (strpos($_SERVER['PHP_SELF'], 'customer_account.php') !== false) echo 'class="active"'; ?>>
+                <a href="customer_account.php">Account</a>
+            </li>
+            <li <?php if (strpos($_SERVER['PHP_SELF'], 'customer_logout.php') !== false) echo 'class="active"'; ?>>
+                <a href="customer_logout.php">Log Out</a>
+            </li>
         </ul>
     </nav>
 </header>

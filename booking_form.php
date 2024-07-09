@@ -61,8 +61,11 @@ if (isset($_SESSION['userMemberID'])) {
   </head>
 
   <body class="body">
-    <?php include "customer_header.php";
-    ?>
+  <?php
+    include "customer_header.php";
+    $current_page = basename($_SERVER['PHP_SELF']);
+?>
+
 
     <div class="container-fluid">
       <div class="row">
