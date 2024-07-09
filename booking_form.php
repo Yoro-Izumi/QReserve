@@ -165,11 +165,11 @@ if (isset($_SESSION['userMemberID'])) {
 </div>
 <div class="col-md-3 mb-3">
   <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-  <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
+  <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required oninput="validateEndTime()">
   <div class="valid-feedback">
     <!-- Looks good! -->
   </div>
-  <div class="invalid-feedback">
+  <div class="invalid-feedback" id="endTimeFeedback">
     Please provide a valid end time.
   </div>
 </div>

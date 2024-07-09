@@ -137,28 +137,23 @@ $(document).ready(function () {
 function adjustEndTime() {
   const startTimeInput = document.getElementById('selectStartTime');
   const endTimeInput = document.getElementById('selectEndTime');
+  const endTimeFeedback = document.getElementById('endTimeFeedback');
 
   if (startTimeInput.value) {
     const [startHour, startMinute] = startTimeInput.value.split(':').map(Number);
-    
-    if (startHour < 10 || (startHour >= 24 && startHour < 34)) {
-      // If start time is invalid (before 10:00 AM or after 3:00 AM next day), clear the end time input
+
+    if (startHour < 10 || (startHour >= 0 && startHour < 3)) {
+      // If start time is invalid (before 10:00 AM or between 12:00 AM and 3:00 AM)
       endTimeInput.value = '';
-      startTimeInput.setCustomValidity('Start time must be between 10:00 AM and 3:00 AM.');
+      startTimeInput.setCustomValidity('Start time must be between 10:00 AM and 12:00 AM.');
     } else {
       startTimeInput.setCustomValidity('');
       let endHour = startHour + 2; // Adding 2 hours for minimum duration
-      const endMinute = startMinute;
+      let endMinute = startMinute;
 
       // Handle hour overflow for the next day
       if (endHour >= 24) {
         endHour = endHour - 24;
-      }
-
-      // Ensure the end time does not exceed 3:00 AM the following day
-      if (startHour >= 12 && endHour >= 3 && endMinute > 0) {
-        endHour = 3;
-        endMinute = 0;
       }
 
       // Format end hour and minute
@@ -167,6 +162,7 @@ function adjustEndTime() {
       endTimeInput.value = `${formattedEndHour}:${formattedEndMinute}`;
       endTimeInput.min = `${formattedEndHour}:${formattedEndMinute}`;
       endTimeInput.max = '03:00';
+      endTimeFeedback.textContent = 'Please provide a valid end time.';
     }
   } else {
     // Clear the end time input if the start time is empty
@@ -174,8 +170,24 @@ function adjustEndTime() {
   }
 }
 
-// Add event listener
+function validateEndTime() {
+  const endTimeInput = document.getElementById('selectEndTime');
+  const endTimeFeedback = document.getElementById('endTimeFeedback');
+  const [endHour, endMinute] = endTimeInput.value.split(':').map(Number);
+
+  if (endHour > 3 || (endHour === 3 && endMinute > 0)) {
+    // If end time is later than 3:00 AM
+    endTimeInput.setCustomValidity('End time must be at 3:00 AM or earlier.');
+    endTimeFeedback.textContent = 'End time must be at 3:00 AM or earlier.';
+  } else {
+    endTimeInput.setCustomValidity('');
+    endTimeFeedback.textContent = 'Please provide a valid end time.';
+  }
+}
+
+// Add event listeners
 document.getElementById('selectStartTime').addEventListener('input', adjustEndTime);
+document.getElementById('selectEndTime').addEventListener('input', validateEndTime);
 
 
 // Prevent typing in the date input fields
