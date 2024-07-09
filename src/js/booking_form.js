@@ -1,23 +1,26 @@
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (() => {
-  'use strict'
+  "use strict";
 
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.needs-validation')
+  const forms = document.querySelectorAll(".needs-validation");
 
   // Loop over them and prevent submission
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
+  Array.from(forms).forEach((form) => {
+    form.addEventListener(
+      "submit",
+      (event) => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
 
-      form.classList.add('was-validated')
-    }, false)
-  })
-})()
-
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
 
 //   For trimming whitespaces
 function handleInput(event) {
@@ -25,15 +28,13 @@ function handleInput(event) {
   event.target.value = inputValue.trim(); // Remove leading and trailing whitespaces
 }
 
-
 // For first names that it wont accept any numeric and special characters
 function validateName(event) {
   const regex = /^[A-Za-z\s]*$/; // Allow only alphabetic characters and spaces
   if (!regex.test(event.target.value)) {
-    event.target.value = event.target.value.replace(/[^A-Za-z\s]/g, '');
+    event.target.value = event.target.value.replace(/[^A-Za-z\s]/g, "");
   }
 }
-
 
 //For birthdate
 document.addEventListener("DOMContentLoaded", function () {
@@ -61,29 +62,29 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 //For Contact Number
 function validateContactNumber(event) {
   const input = event.target;
   const value = input.value;
 
   // Allow only numeric characters
-  input.value = value.replace(/[^0-9]/g, '');
+  input.value = value.replace(/[^0-9]/g, "");
 
   // Check if the length is exactly 11 and starts with '09'
-  if (input.value.length === 11 && input.value.startsWith('09')) {
-    input.setCustomValidity(''); // Valid input
+  if (input.value.length === 11 && input.value.startsWith("09")) {
+    input.setCustomValidity(""); // Valid input
   } else {
-    input.setCustomValidity('Please provide a valid contact number (11 digits, starts with 09).');
+    input.setCustomValidity(
+      "Please provide a valid contact number (11 digits, starts with 09)."
+    );
   }
 }
 
-
-//For Email 
+//For Email
 function validateEmail(event) {
   var emailInput = event.target.value;
 
-  event.target.value = emailInput.replace(/\s+/g, '');
+  event.target.value = emailInput.replace(/\s+/g, "");
 
   emailInput = event.target.value.trim();
 
@@ -98,10 +99,7 @@ function validateEmail(event) {
   }
 }
 
-
 document.getElementById("email").addEventListener("input", validateEmail);
-
-
 
 //   get available pool tables
 $(document).ready(function () {
@@ -132,20 +130,23 @@ $(document).ready(function () {
   });
 });
 
-
 function adjustEndTime() {
-  const startTimeInput = document.getElementById('selectStartTime');
-  const endTimeInput = document.getElementById('selectEndTime');
+  const startTimeInput = document.getElementById("selectStartTime");
+  const endTimeInput = document.getElementById("selectEndTime");
 
   if (startTimeInput.value) {
-    const [startHour, startMinute] = startTimeInput.value.split(':').map(Number);
-    
+    const [startHour, startMinute] = startTimeInput.value
+      .split(":")
+      .map(Number);
+
     if (startHour < 10 || (startHour >= 24 && startHour < 34)) {
       // If start time is invalid (before 10:00 AM or after 3:00 AM next day), clear the end time input
-      endTimeInput.value = '';
-      startTimeInput.setCustomValidity('Start time must be between 10:00 AM and 3:00 AM.');
+      endTimeInput.value = "";
+      startTimeInput.setCustomValidity(
+        "Start time must be between 10:00 AM and 3:00 AM."
+      );
     } else {
-      startTimeInput.setCustomValidity('');
+      startTimeInput.setCustomValidity("");
       let endHour = startHour + 2; // Adding 2 hours for minimum duration
       const endMinute = startMinute;
 
@@ -161,73 +162,77 @@ function adjustEndTime() {
       }
 
       // Format end hour and minute
-      const formattedEndHour = endHour.toString().padStart(2, '0');
-      const formattedEndMinute = endMinute.toString().padStart(2, '0');
+      const formattedEndHour = endHour.toString().padStart(2, "0");
+      const formattedEndMinute = endMinute.toString().padStart(2, "0");
       endTimeInput.value = `${formattedEndHour}:${formattedEndMinute}`;
       endTimeInput.min = `${formattedEndHour}:${formattedEndMinute}`;
-      endTimeInput.max = '03:00';
+      endTimeInput.max = "03:00";
     }
   } else {
     // Clear the end time input if the start time is empty
-    endTimeInput.value = '';
+    endTimeInput.value = "";
   }
 }
 
 // Add event listener
-document.getElementById('selectStartTime').addEventListener('input', adjustEndTime);
-
+document
+  .getElementById("selectStartTime")
+  .addEventListener("input", adjustEndTime);
 
 // Prevent typing in the date input fields
-document.getElementById('selectDate').addEventListener('keydown', function(event) {
-  event.preventDefault();
-});
+document
+  .getElementById("selectDate")
+  .addEventListener("keydown", function (event) {
+    event.preventDefault();
+  });
 
-document.getElementById('birthDate').addEventListener('keydown', function(event) {
-  event.preventDefault();
-});
+document
+  .getElementById("birthDate")
+  .addEventListener("keydown", function (event) {
+    event.preventDefault();
+  });
 
-document.getElementById('selectStartTime').addEventListener('keydown', function(event) {
-  event.preventDefault();
-});
+document
+  .getElementById("selectStartTime")
+  .addEventListener("keydown", function (event) {
+    event.preventDefault();
+  });
 
-document.getElementById('selectEndTime').addEventListener('keydown', function(event) {
-  event.preventDefault();
-});
-
-
-
-
-
-
+document
+  .getElementById("selectEndTime")
+  .addEventListener("keydown", function (event) {
+    event.preventDefault();
+  });
 
 // For calling the modal
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('booking-form');
-  const submitButton = document.getElementById('submitReserve');
-  const confirmAddWalkin = new bootstrap.Modal(document.getElementById('confirmAddWalkin'));
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("booking-form");
+  const submitButton = document.getElementById("submitReserve");
+  const confirmAddWalkin = new bootstrap.Modal(
+    document.getElementById("confirmAddWalkin")
+  );
 
-  form.addEventListener('submit', function (event) {
+  form.addEventListener("submit", function (event) {
     event.preventDefault(); // Prevent form submission
     if (form.checkValidity()) {
       // Form is valid, show success modal
       confirmAddWalkin.show();
       // You can also submit the form via AJAX here if needed
     } else {
-      form.classList.add('was-validated'); // Show validation messages
+      form.classList.add("was-validated"); // Show validation messages
     }
   });
 
   // Optional: Reset form validation on modal close
-  confirmAddWalkin.addEventListener('hidden.bs.modal', function () {
-    form.classList.remove('was-validated');
+  confirmAddWalkin.addEventListener("hidden.bs.modal", function () {
+    form.classList.remove("was-validated");
   });
 });
 
-
 //For Modal Body
-$(document).ready(function() {
-  $("#create-walkin-button").click(function() {
-      $("#confirmAddWalkin .modal-body").html(getUserInputs());
+$(document).ready(function () {
+  $("#create-walkin-button").click(function () {
+    $("#confirmAddWalkin .modal-body").html(getUserInputs());
   });
 });
 
@@ -266,9 +271,9 @@ function getUserInputs() {
   }
 
   // Format the total price as PHP currency
-  const formattedPrice = new Intl.NumberFormat('en-PH', {
-    style: 'currency',
-    currency: 'PHP'
+  const formattedPrice = new Intl.NumberFormat("en-PH", {
+    style: "currency",
+    currency: "PHP",
   }).format(totalPrice);
 
   return `
@@ -286,7 +291,6 @@ function getUserInputs() {
   `;
 }
 
-
 // For the readonly fields
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("hiddenFirstName").value =
@@ -303,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("email").value;
 });
 
-
 //add reservation
 $(document).ready(function () {
   $("#submitReserve").click(function (e) {
@@ -311,9 +314,8 @@ $(document).ready(function () {
 
     var formData = new FormData($("#booking-form")[0]);
 
-
-                    // Disable the button to prevent multiple clicks
-                    $(this).prop("disabled", true);
+    // Disable the button to prevent multiple clicks
+    $(this).prop("disabled", true);
 
     $.ajax({
       type: "POST",
@@ -334,15 +336,6 @@ $(document).ready(function () {
   });
 });
 
-
-
-
-
-
-
-
-
-
 // For the save changes
 // let formChanged = false;
 // document.querySelectorAll('input, select').forEach(item => {
@@ -360,31 +353,31 @@ $(document).ready(function () {
 //     }
 // }
 
-
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('booking-form');
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("booking-form");
   let isFormDirty = false;
 
-  form.addEventListener('input', () => {
+  form.addEventListener("input", () => {
     isFormDirty = true;
   });
 
-  const cancelButton = document.querySelector('.cancel-button-member');
-  cancelButton.addEventListener('click', () => {
+  const cancelButton = document.querySelector(".cancel-button-member");
+  cancelButton.addEventListener("click", () => {
     if (isFormDirty) {
-      const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
+      const unsavedChangesModal = new bootstrap.Modal(
+        document.getElementById("unsavedChangesModal")
+      );
       unsavedChangesModal.show();
     } else {
-      window.location.href = 'customer_dashboard.php';
+      window.location.href = "customer_dashboard.php";
     }
   });
 
-  const proceedButton = document.getElementById('proceedButton');
-  proceedButton.addEventListener('click', () => {
-    window.location.href = 'customer_dashboard.php';
+  const proceedButton = document.getElementById("proceedButton");
+  proceedButton.addEventListener("click", () => {
+    window.location.href = "customer_dashboard.php";
   });
 });
-
 
 //For reloading na nagana kaso default
 // document.addEventListener('DOMContentLoaded', () => {
@@ -460,5 +453,3 @@ document.addEventListener('DOMContentLoaded', () => {
 //     }
 //   });
 // });
-
-
