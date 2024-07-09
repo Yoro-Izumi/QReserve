@@ -143,21 +143,15 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
             <div class="col-md-3 mb-3">
-  <label for="selectDate" class="form-label">Select Date <span>*</span></label>
-  <input type="date" class="form-control" name="selectDate" id="selectDate" 
-         placeholder="Enter membership validity here" required 
-         oninvalid="this.setCustomValidity('Please enter a valid birthdate')" 
-         oninput="this.setCustomValidity('')" 
-         value="<?php echo $customerValidity; ?>" 
-         min="<?php echo date('Y-m-d'); ?>" 
-         max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" />
-  <div class="valid-feedback">
-    <!-- Looks good! -->
-  </div>
-  <div class="invalid-feedback">
-    Please provide a valid date.
-  </div>
-</div>
+              <label for="selectDate" class="form-label">Select Date <span>*</span></label>
+              <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" />
+              <div class="valid-feedback">
+                <!-- Looks good! -->
+              </div>
+              <div class="invalid-feedback">
+                Please provide a valid date.
+              </div>
+            </div>
 
             <div class="col-md-3 mb-3">
   <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
@@ -171,11 +165,11 @@ if (isset($_SESSION['userMemberID'])) {
 </div>
 <div class="col-md-3 mb-3">
   <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-  <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
+  <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required oninput="validateEndTime()">
   <div class="valid-feedback">
     <!-- Looks good! -->
   </div>
-  <div class="invalid-feedback">
+  <div class="invalid-feedback" id="endTimeFeedback">
     Please provide a valid end time.
   </div>
 </div>
@@ -240,6 +234,7 @@ if (isset($_SESSION['userMemberID'])) {
           <div class="modal-body text-center">
             <p>Your booking is now on process!<br>Please check your email for the details of your reservation.</p>
             <p class="proceed">Proceed to pay your reservation through the provided Payment Details</p>
+            <p class="gcash mb-0 pb-0">M****o M****o</p>
             <p class="gcash">GCash: 09123456789</p>
             <p>Send your proof of payment to <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore’s Facebook Page.</a></p>
           </div>
