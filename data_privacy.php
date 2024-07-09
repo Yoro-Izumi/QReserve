@@ -54,7 +54,7 @@ if (isset($_SESSION["userMemberID"])) {
                         <div class="col-6">
                             <h3 class="fw-bold">Bevitore Data Privacy Policy</h3>
                         </div>
-                        <div class="col-6 tanga">
+                        <div class="col-6 breadcrumbs">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="customer_account.php">My Account</a></li>
