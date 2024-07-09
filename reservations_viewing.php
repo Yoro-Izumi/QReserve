@@ -367,6 +367,38 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <script src="src/js/reservations_viewing.js"></script>
 
 
+    <script>
+        function removeInputField() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            // Check for iOS devices
+            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+
+            // Check for other mobile devices
+            var isMobile = /Android|webOS|BlackBerry|IEMobile|Opera Mini/.test(userAgent) || isIOS;
+
+            if (isMobile) {
+                var inputField = document.getElementById('qrInput');
+                if (inputField) {
+                    inputField.parentNode.removeChild(inputField);
+                }
+            }
+            if (isIOS) {
+                var inputField = document.getElementById('qrInput');
+                if (inputField) {
+                    inputField.parentNode.removeChild(inputField);
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            removeInputField();
+        });
+    </script>
+
+    
+
+
 
 
   </body>

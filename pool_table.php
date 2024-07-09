@@ -90,19 +90,56 @@ foreach($arrayPoolTables as $poolTable) {
 
 echo "</tbody>";
 
-// Remove expired memberships
-foreach($arrayMemberAccount as $memberAccount) {
-    $memberValidity  = $memberAccount['validityDate'];
-    $validity = "Expired";
-    $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
-    $sqlDate = $date->format('Y-m-d');
-    if($sqlDate < $currentDate) {
-        $memberID = $memberAccount['memberID'];
 
-        $qryDeleteMembershipAccount = "UPDATE member_details SET validity = ? WHERE memberID = ?";
-        $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
-        mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "si", $validity, $memberID);
-        mysqli_stmt_execute($prepareDeleteMembershipAccount);
-    }
+
+// Path to the file that stores the last execution date
+$lastExecutionFile = 'last_execution_date.txt';
+
+// Get today's date
+$today = date('Y-m-d');
+
+// Check if the last execution date file exists
+if (file_exists($lastExecutionFile)) {
+    // Read the last execution date from the file
+    $lastExecutionDate = file_get_contents($lastExecutionFile);
+} else {
+    // If the file doesn't exist, set the last execution date to a past date
+    $lastExecutionDate = '';
 }
+
+// If the script hasn't been executed today, execute the code and update the file
+if ($lastExecutionDate !== $today) {
+    // Remove expired memberships
+    foreach($arrayMemberAccount as $memberAccount) {
+        $memberValidity  = $memberAccount['validityDate'];
+        $validity = "Expired";
+        $date = DateTime::createFromFormat('Y-m-d', $memberValidity);
+        $sqlDate = $date->format('Y-m-d');
+        $dateDifference  = dateDifference($sqlDate, $currentDate); //difference between two dates
+
+        // Notify customer that their membership is about to expire
+        if ($dateDifference === 5) {
+            include 'src/send_email/send_advance_expiration_notification.php';
+        }
+
+            
+        else if($sqlDate < $currentDate) {
+            $memberID = $memberAccount['memberID'];
+
+            $qryDeleteMembershipAccount = "UPDATE member_details SET validity = ? WHERE memberID = ?";
+            $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
+            mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "si", $validity, $memberID);
+            mysqli_stmt_execute($prepareDeleteMembershipAccount);
+
+            include 'src/send_email/send_expiration_notification.php';
+        }
+    }
+
+    
+    // Update the last execution date in the file
+    file_put_contents($lastExecutionFile, $today);
+}
+
+
+
 ?>

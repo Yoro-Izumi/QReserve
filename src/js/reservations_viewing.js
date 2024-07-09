@@ -323,7 +323,97 @@ function hideMobileKeyboard() {
     document.body.removeChild(field);
 }
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
+    const qrInput = document.getElementById('qrInput');
+    const formInputs = document.querySelectorAll('form input:not(#qrInput)'); // Exclude qrInput from the list
+
+    // Ensure the QR input field is always focused when necessary
+    function focusQrInput() {
+        if (document.activeElement !== qrInput && !document.querySelector('form input:focus')) {
+            qrInput.focus();
+            qrInput.scrollIntoView({ block: 'center', behavior: 'smooth' }); // Scroll into the center
+        }
+    }
+
+    qrInput.addEventListener('keydown', (event) => {
+        const id = qrInput.value.trim();
+        if (id && event.key === 'Enter') {
+            fetchInfo(id);
+            hideMobileKeyboard();  // Hide the mobile keyboard
+            qrInput.value = '';  // Clear the input field after scanning
+        }
+    });
+
+    // Add event listeners to all form inputs to manage focus
+    formInputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            // Temporarily disable QR input focus
+            document.removeEventListener('click', focusQrInput);
+        });
+
+        input.addEventListener('blur', () => {
+            // Re-enable QR input focus after a delay
+            setTimeout(() => {
+                document.addEventListener('click', focusQrInput);
+            }, 100);
+        });
+    });
+
+    // Make DataTable pagination and number of entry dropdown clickable
+    function allowInteractionOnDataTable() {
+        // Adding click event to the DataTable elements to stop propagation
+        document.querySelectorAll('.dataTables_paginate, .dataTables_length, .dataTables_filter').forEach(element => {
+            element.addEventListener('click', (event) => {
+                event.stopPropagation(); // Stop the focus event from triggering on QR input
+            });
+        });
+
+        // Adding focus and blur events to the dropdown to handle focus properly
+        document.querySelectorAll('.dataTables_length select').forEach(select => {
+            select.addEventListener('focus', () => {
+                // Temporarily disable QR input focus
+                document.removeEventListener('click', focusQrInput);
+            });
+
+            select.addEventListener('blur', () => {
+                // Re-enable QR input focus after a delay
+                setTimeout(() => {
+                    document.addEventListener('click', focusQrInput);
+                }, 100);
+            });
+        });
+    }
+
+    // Call the function to make DataTable interactions work
+    allowInteractionOnDataTable();
+
+    // Initial focus on the QR input field
+    focusQrInput();
+    // Ensure the QR input field remains focused after interactions
+    document.addEventListener('click', (event) => {
+        // Check if the click is inside the DataTable controls
+        const isInsideDataTableControls = event.target.closest('.dataTables_paginate, .dataTables_length, .dataTables_filter');
+        if (!isInsideDataTableControls) {
+            focusQrInput();
+        }
+    });
+
+    // Close button in the modal
+    document.getElementById('submitReserve').addEventListener('click', () => {
+        $('#reservation_details').modal('hide');
+    });
+});
+
+
+
+
+
+
+
+
+/*document.addEventListener('DOMContentLoaded', () => {
     const qrInput = document.getElementById('qrInput');
     const formInputs = document.querySelectorAll('form input:not(#qrInput)'); // Exclude qrInput from the list
 
@@ -396,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('submitReserve').addEventListener('click', () => {
         $('#reservation_details').modal('hide');
     });
-});
+});*/
 
 
 
