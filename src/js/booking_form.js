@@ -133,31 +133,39 @@ $(document).ready(function () {
 });
 
 
-//For End Time
 function adjustEndTime() {
   const startTimeInput = document.getElementById('selectStartTime');
   const endTimeInput = document.getElementById('selectEndTime');
 
   if (startTimeInput.value) {
-    const [startHour, startMinute] = startTimeInput.value.split(':');
-    if (parseInt(startHour) < 10) {
-      // If start time is before 10:00 AM, clear the end time input
+    const [startHour, startMinute] = startTimeInput.value.split(':').map(Number);
+    
+    if (startHour < 10 || (startHour >= 24 && startHour < 34)) {
+      // If start time is invalid (before 10:00 AM or after 3:00 AM next day), clear the end time input
       endTimeInput.value = '';
-      startTimeInput.setCustomValidity('Start time must be after 10:00 AM.');
+      startTimeInput.setCustomValidity('Start time must be between 10:00 AM and 3:00 AM.');
     } else {
       startTimeInput.setCustomValidity('');
-      let endHour = parseInt(startHour) + 2; // Adding 2 hours for minimum duration
+      let endHour = startHour + 2; // Adding 2 hours for minimum duration
       const endMinute = startMinute;
 
-      // Handle hour overflow
+      // Handle hour overflow for the next day
       if (endHour >= 24) {
         endHour = endHour - 24;
       }
 
+      // Ensure the end time does not exceed 3:00 AM the following day
+      if (startHour >= 12 && endHour >= 3 && endMinute > 0) {
+        endHour = 3;
+        endMinute = 0;
+      }
+
       // Format end hour and minute
       const formattedEndHour = endHour.toString().padStart(2, '0');
-      const formattedEndMinute = endMinute.padStart(2, '0');
+      const formattedEndMinute = endMinute.toString().padStart(2, '0');
       endTimeInput.value = `${formattedEndHour}:${formattedEndMinute}`;
+      endTimeInput.min = `${formattedEndHour}:${formattedEndMinute}`;
+      endTimeInput.max = '03:00';
     }
   } else {
     // Clear the end time input if the start time is empty
@@ -167,7 +175,6 @@ function adjustEndTime() {
 
 // Add event listener
 document.getElementById('selectStartTime').addEventListener('input', adjustEndTime);
-
 
 
 // Prevent typing in the date input fields
