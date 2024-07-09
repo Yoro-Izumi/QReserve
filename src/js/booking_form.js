@@ -130,6 +130,7 @@ $(document).ready(function () {
   });
 });
 
+
 function adjustEndTime() {
   const startTimeInput = document.getElementById("selectStartTime");
   const endTimeInput = document.getElementById("selectEndTime");
@@ -147,6 +148,7 @@ function adjustEndTime() {
       );
     } else {
       startTimeInput.setCustomValidity("");
+
       let endHour = startHour + 2; // Adding 2 hours for minimum duration
       const endMinute = startMinute;
 
@@ -162,11 +164,13 @@ function adjustEndTime() {
       }
 
       // Format end hour and minute
+
       const formattedEndHour = endHour.toString().padStart(2, "0");
       const formattedEndMinute = endMinute.toString().padStart(2, "0");
       endTimeInput.value = `${formattedEndHour}:${formattedEndMinute}`;
       endTimeInput.min = `${formattedEndHour}:${formattedEndMinute}`;
       endTimeInput.max = "03:00";
+
     }
   } else {
     // Clear the end time input if the start time is empty
@@ -175,9 +179,11 @@ function adjustEndTime() {
 }
 
 // Add event listener
+
 document
   .getElementById("selectStartTime")
   .addEventListener("input", adjustEndTime);
+
 
 // Prevent typing in the date input fields
 document

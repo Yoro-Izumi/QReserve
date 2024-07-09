@@ -146,6 +146,7 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
             <div class="col-md-3 mb-3">
+
               <label for="selectDate" class="form-label">Select Date <span>*</span></label>
               <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" />
               <div class="valid-feedback">
@@ -176,6 +177,7 @@ if (isset($_SESSION['userMemberID'])) {
                 Please provide a valid end time.
               </div>
             </div>
+
             <div class="col-md-3 mb-3">
               <label for="selectTable" class="form-label">Select Table <span>*</span></label>
               <select class="form-control" name="selectTable" id="selectTable" required>
