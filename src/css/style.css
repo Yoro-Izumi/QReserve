@@ -42,6 +42,7 @@ span {
 
 .table-box-not-available{
   background-color: #d39700; 
+  color: white;
   border-radius: 10px;
   padding: 2%;
   font-size: 20px;
@@ -58,6 +59,7 @@ span {
   font-size: 23px;
   padding: 0%;
   margin: 0%;
+  
 }
 
 
@@ -74,6 +76,7 @@ span {
   align-items: center;
   padding-bottom: 5%;
   font-size: 20px;
+ 
 }
 
 .table-oras{
@@ -82,6 +85,7 @@ span {
   justify-content: center;
   align-items: center;
   padding-bottom: 5%;
+  
 }
 
 #tangina{
@@ -640,61 +644,13 @@ label.customer-account{
 }
 
 
-.table-box-not-available{
-  background-color: #d39700; 
-  border-radius: 10px;
-  padding: 2%;
-  font-size: 20px;
-  padding: 0%;
-  margin: 0%;
-  /* Change the color to whatever you prefer */
-}
 
 
-.table-box{
-  background-color: #ffb800;
-  border-radius: 10px;
-  padding: 2%;
-  font-size: 23px;
-  padding: 0%;
-  margin: 0%;
-}
 
 
-.table-number{
-  font-weight: 600;
-  padding-left: 5%;
-  font-size: 20px;
-}
 
-.table-time{
-  font-weight: 600;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 5%;
-  font-size: 20px;
-}
 
-.table-oras{
-  font-weight: 600;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 5%;
-}
 
-#tangina{
-  color: #073109;
-}
-
-.bi-fullscreen {
-  color: white;
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  transition: transform 0.3s ease; /* Add transition for smooth effect */
-}
 
 
   /* Pagination button default color */
@@ -774,6 +730,76 @@ label.customer-account{
       color: #ffb800;
   }
 
+
+
+/* .cards {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.card img {
+  max-width: 100%;
+  display: block;
+} */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.card.fullscreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  max-width: 90%;
+  max-height: 90%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  cursor: zoom-out;
+}
+
+.card.fullscreen img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.card.selected {
+  z-index: 10;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  
 @media (max-width: 768px) {
   .bevitore-logo {
       width: 25%;

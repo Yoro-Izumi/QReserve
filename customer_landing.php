@@ -2,6 +2,26 @@
 include "connect_database.php";
 include "src/get_data_from_database/get_services.php";
 date_default_timezone_set('Asia/Manila');
+
+
+
+
+
+
+foreach ($arrayServices as $services) {
+  $serviceID = $services['serviceID'];
+  $serviceName = $services['serviceName'];
+  $serviceCapacity = $services['serviceCapacity'];
+  $serviceRate = $services['serviceRate'];
+  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+}
+
+
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,65 +78,110 @@ date_default_timezone_set('Asia/Manila');
   </section>
 
   <section class="services" id="services">
-      <h2>Our Services</h2>
-      <!-- <p>Explore our wide range of camping gear services.</p> -->
-      <ul class="cards">
+    <h2>Our Services</h2>
+    <!-- <p>Explore our wide range of camping gear services.</p> -->
+    <ul class="cards">
+      <?php foreach ($arrayServices as $services) : ?>
+        <?php
+        $serviceID = $services['serviceID'];
+        $serviceName = $services['serviceName'];
+        $serviceCapacity = $services['serviceCapacity'];
+        $serviceRate = $services['serviceRate'];
+        $serviceImage = "src/images/Services/" . $services['serviceImage'];
+        ?>
         <li class="card">
-          <img src="src/images/Services/Billiards Hall.jpg" alt="img">
-          <h3>Billiards</h3>
-          <p>Rate: ₱150/hr</p>
+          <img src="<?php echo $serviceImage; ?>" alt="<?php echo $serviceName; ?>">
+          <h3><?php echo $serviceName; ?></h3>
+          <p>Rate: ₱<?php echo $serviceRate; ?></p>
         </li>
-        <li class="card">
-          <img src="src/images/Services/KTV Room 1.jpg" alt="img">
-          <h3>KTV Room 1</h3>
-          <p>Rate: ₱5000/2hrs</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/KTV Room 2.jpg" alt="img">
-          <h3>KTV Room 2</h3>
-          <p>Rate: ₱3000/2hrs</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/KTV Room 3.jpg" alt="img">
-          <h3>KTV Room 3</h3>
-          <p>Rate: ₱3000/2hrs</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/Karaoke.jpg" alt="img">
-          <h3>Karaoke Night</h3>
-          <p>Rate: Free</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/Membership.jpg" alt="img">
-          <h3>Membership</h3>
-          <p>Rate: 250</p>
-        </li>
-      </ul>
-    </section>
+      <?php endforeach; ?>
+    </ul>
+  </section>
 
   <section class="amenities" id="amenities">
     <h2>Amenities</h2>
     <ul class="cards">
       <li class="card">
-        <img src="src/images/Services/Billiards Hall.jpg" alt="img">
+        <a href="src/images/IMG_20240628_140415.webp"><img src="src/images/IMG_20240628_140415.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="img">
+        <a href="src/images/IMG_20240628_120929.webp"><img src="src/images/IMG_20240628_120929.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_121355.webp"><img src="src/images/IMG_20240628_121355.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_123118.webp"><img src="src/images/IMG_20240628_123118.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_111713.webp"><img src="src/images/IMG_20240628_111713.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_115926.webp"><img src="src/images/IMG_20240628_115926.webp" alt="amenities"></a>
       </li>
     </ul>
   </section>
+  <div class="overlay"></div>
+
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.card');
+    const overlay = document.querySelector('.overlay');
+
+    cards.forEach(card => {
+      card.addEventListener('click', (event) => {
+        event.preventDefault();
+        const clickedCard = event.currentTarget;
+        const imgSrc = clickedCard.querySelector('img').src;
+
+        const fullscreenCard = document.createElement('div');
+        fullscreenCard.classList.add('card', 'fullscreen');
+        fullscreenCard.innerHTML = `<img src="${imgSrc}" alt="amenity">`;
+        document.body.appendChild(fullscreenCard);
+
+        overlay.classList.add('active');
+
+        fullscreenCard.addEventListener('click', () => {
+          fullscreenCard.classList.remove('fullscreen');
+          overlay.classList.remove('active');
+          setTimeout(() => {
+            fullscreenCard.remove();
+          }, 300);
+        });
+      });
+    });
+
+    overlay.addEventListener('click', () => {
+      const fullscreenCard = document.querySelector('.card.fullscreen');
+      if (fullscreenCard) {
+        fullscreenCard.classList.remove('fullscreen');
+        overlay.classList.remove('active');
+        setTimeout(() => {
+          fullscreenCard.remove();
+        }, 300);
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('.card') || event.target.matches('.card.fullscreen img')) {
+        // Click inside card or on fullscreen image, do nothing
+        return;
+      }
+      const fullscreenCard = document.querySelector('.card.fullscreen');
+      if (fullscreenCard) {
+        fullscreenCard.classList.remove('fullscreen');
+        overlay.classList.remove('active');
+        setTimeout(() => {
+          fullscreenCard.remove();
+        }, 300);
+      }
+    });
+  });
+</script>
+
+
+
 
 
   <section class="about" id="about">
@@ -180,15 +245,8 @@ date_default_timezone_set('Asia/Manila');
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
-
-    </script> 
-
-
-
-  
+    </script>
   </section>
-  
-
   <footer>
     <div>
       <span>Copyright © 2024 All Rights Reserved</span>
