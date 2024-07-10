@@ -4,6 +4,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
   include "connect_database.php";
   include "src/get_data_from_database/get_visitor_num.php";
   include "src/get_data_from_database/get_pool_table_info.php";
+  include "src/get_data_from_database/get_services.php";
 
   $visitors = $totalVisitor;
 
@@ -87,17 +88,20 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div class="col-md-4 mb-3">
             <div class="dashboard-square-kebab">
               <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="src/images/Services/Membership.jpg" class="d-block w-100" alt="..." />
+              <div class="carousel-inner">
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
                   </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                </div>
+                <?php endforeach; ?>
+              </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>
@@ -113,17 +117,20 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <div class="col-md-4 mb-3">
             <div class="dashboard-square-kebab">
               <div id="pubmat-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100" alt="..." />
+              <div class="carousel-inner">
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
                   </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                </div>
+                <?php endforeach; ?>
+              </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#pubmat-carousel" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>

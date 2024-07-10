@@ -3,25 +3,6 @@ include "connect_database.php";
 include "src/get_data_from_database/get_services.php";
 date_default_timezone_set('Asia/Manila');
 
-
-
-
-
-
-foreach ($arrayServices as $services) {
-  $serviceID = $services['serviceID'];
-  $serviceName = $services['serviceName'];
-  $serviceCapacity = $services['serviceCapacity'];
-  $serviceRate = $services['serviceRate'];
-  $serviceImage = "src/images/Services/" . $services['serviceImage'];
-}
-
-
-
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
