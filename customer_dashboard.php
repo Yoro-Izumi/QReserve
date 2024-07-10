@@ -8,6 +8,7 @@ if (isset($_SESSION['userMemberID'])) {
   include "src/get_data_from_database/get_pool_table_info.php";
   include "src/get_data_from_database/get_member_account.php";
   include "src/get_data_from_database/get_customer_information.php";
+  include "src/get_data_from_database/get_services.php";
   $key = "TheGreatestNumberIs73";
   foreach ($arrayMemberAccount as $memberAccount) {
     if ($memberAccount["memberID"] == $userID) {
@@ -74,23 +75,26 @@ if (isset($_SESSION['userMemberID'])) {
       <div class="row justify-content-center text-center">
         <div class="col-md-4 mb-3">
           <div class="dashboard-square-kebab visitors-box">
-          <h1 class="member-validity-date"><?php echo $validityDate; ?></h1>
-          <h6 class="Visitors-today"> Membership valid until</h6>
+            <h1 class="member-validity-date"><?php echo $validityDate; ?></h1>
+            <h6 class="Visitors-today"> Membership valid until</h6>
           </div>
         </div>
         <div class="col-md-4 mb-3">
           <div class="dashboard-square-kebab">
             <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="src/images/Services/Membership.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
-                </div>
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
+                  </div>
+                <?php endforeach; ?>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -104,19 +108,23 @@ if (isset($_SESSION['userMemberID'])) {
           </div>
         </div>
 
+
         <div class="col-md-4 mb-3">
           <div class="dashboard-square-kebab">
             <div id="pubmat-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100" alt="..." />
-                </div>
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
+                  </div>
+                <?php endforeach; ?>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#pubmat-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -155,8 +163,7 @@ if (isset($_SESSION['userMemberID'])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
-
-    </script> 
+    </script>
 
 
 
