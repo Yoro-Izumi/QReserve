@@ -144,7 +144,7 @@ if (isset($_SESSION['userMemberID'])) {
             </div>
             <div class="col-md-3 mb-3">
               <label for="selectDate" class="form-label">Select Date <span>*</span></label>
-              <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" />
+              <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required oninvalid="this.setCustomValidity('Please enter a valid date')" oninput="this.setCustomValidity('')" />
               <div class="valid-feedback">
                 <!-- Looks good! -->
               </div>
@@ -153,26 +153,52 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
 
+            <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                const selectDateInput = document.getElementById('selectDate');
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = today.getMonth();
+                const firstDayOfMonth = new Date(year, month, 1);
+                const lastDayOfMonth = new Date(year, month + 1, 0);
+
+                // Format dates to YYYY-MM-DD
+                const formatDateString = (date) => {
+                  const year = date.getFullYear();
+                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                  const day = String(date.getDate()).padStart(2, '0');
+                  return `${year}-${month}-${day}`;
+                };
+
+                const minDate = formatDateString(today);
+                const maxDate = formatDateString(lastDayOfMonth);
+
+                selectDateInput.min = minDate;
+                selectDateInput.max = maxDate;
+              });
+            </script>
+
+
             <div class="col-md-3 mb-3">
-  <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-  <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required min="10:00" oninput="adjustEndTime()">
-  <div class="valid-feedback">
-    <!-- Looks good! -->
-  </div>
-  <div class="invalid-feedback">
-    Start time must be after 10:00 AM.
-  </div>
-</div>
-<div class="col-md-3 mb-3">
-  <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-  <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required oninput="validateEndTime()">
-  <div class="valid-feedback">
-    <!-- Looks good! -->
-  </div>
-  <div class="invalid-feedback" id="endTimeFeedback">
-    Please provide a valid end time.
-  </div>
-</div>
+              <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
+              <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required min="10:00" oninput="adjustEndTime()">
+              <div class="valid-feedback">
+                <!-- Looks good! -->
+              </div>
+              <div class="invalid-feedback">
+                Start time must be after 10:00 AM.
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
+              <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required oninput="validateEndTime()">
+              <div class="valid-feedback">
+                <!-- Looks good! -->
+              </div>
+              <div class="invalid-feedback" id="endTimeFeedback">
+                Please provide a valid end time.
+              </div>
+            </div>
             <div class="col-md-3 mb-3">
               <label for="selectTable" class="form-label">Select Table <span>*</span></label>
               <select class="form-control" name="selectTable" id="selectTable" required>
