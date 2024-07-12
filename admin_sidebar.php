@@ -29,6 +29,13 @@
       </a>
       <span class="tooltip">Walk-In</span>
     </li>
+    <li>
+      <a href="admin_add_new_member.php">
+        <i class="bx bx-user"></i>
+        <span class="links_name">Add New Member</span>
+      </a>
+      <span class="tooltip">Add New Member</span>
+    </li>
     <li class="profile">
       <div class="profile-details">
         <div class="name_job">
