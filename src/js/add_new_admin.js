@@ -157,19 +157,120 @@ document.getElementById("email").addEventListener("input", validateEmail);
   });
 
     //   SPassword Strength Indicator
-    function checkPasswordStrength(password) {
-      var strength = document.getElementById('password-strength-indicator');
-      var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
-      var mediumRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
+    document.addEventListener("DOMContentLoaded", function() {
+      const passwordInput = document.querySelector("#password");
+      const confirmPasswordInput = document.querySelector("#confirmPassword");
+      const passwordMatchFeedback = document.querySelector("#passwordMatchFeedback");
+      const passwordMatch = document.querySelector("#passwordMatch");
+      const passwordMismatch = document.querySelector("#passwordMismatch");
+      const strengthIndicator = document.getElementById('password-strength-indicator');
+  
+      // Function to check password match
+      function checkPasswordMatch() {
+          const password = passwordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+  
+          if (confirmPassword === password) {
+              confirmPasswordInput.classList.add('is-valid');
+              confirmPasswordInput.classList.remove('is-invalid');
+              passwordMatchFeedback.style.display = 'block';
+              passwordMismatch.style.display = 'none';
+              confirmPasswordInput.setCustomValidity(''); // Clear any custom validation message
+          } else {
+              confirmPasswordInput.classList.add('is-invalid');
+              confirmPasswordInput.classList.remove('is-valid');
+              passwordMatchFeedback.style.display = 'none';
+              passwordMismatch.style.display = 'block';
+              confirmPasswordInput.setCustomValidity('Passwords do not match.'); // Set custom validation message
+          }
+      }
+  
+      // Event listeners for input in passwordInput and confirmPasswordInput
+      passwordInput.addEventListener("input", function() {
+          checkPasswordMatch();
+          checkPasswordStrength(passwordInput);
+      });
+  
+      confirmPasswordInput.addEventListener("input", function() {
+          checkPasswordMatch();
+      });
+  
+      // Event listener for form submission
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function(event) {
+          const passwordStrength = checkPasswordStrength(passwordInput);
+  
+          if (passwordStrength === 'Weak' || passwordInput.value !== confirmPasswordInput.value) {
+              event.preventDefault(); // Prevent form submission
+  
+              if (passwordStrength === 'Weak') {
+                  passwordInput.classList.remove('is-valid');
+                  passwordInput.classList.add('is-invalid');
+                  passwordInput.focus(); // Focus the password input
+              }
+  
+              if (passwordInput.value !== confirmPasswordInput.value) {
+                  confirmPasswordInput.classList.remove('is-valid');
+                  confirmPasswordInput.classList.add('is-invalid');
+                  confirmPasswordInput.focus(); // Focus the confirm password input
+              }
+          }
+      });
+  
+      // Function to check password strength
+      function checkPasswordStrength(input) {
+          var password = input.value;
+  
+          var strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+          var mediumRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/;
+  
+          if (strongRegex.test(password)) {
+              strengthIndicator.innerHTML = '<span style="color:green">Strong password</span>';
+              input.classList.add('is-valid');
+              input.classList.remove('is-invalid');
+              input.setCustomValidity(''); // Clear any custom validation message
+              return 'Strong';
+          } else if (mediumRegex.test(password)) {
+              strengthIndicator.innerHTML = '<span style="color:orange">Moderate password</span>';
+              input.classList.add('is-valid');
+              input.classList.remove('is-invalid');
+              input.setCustomValidity(''); // Clear any custom validation message
+              return 'Moderate';
+          } else {
+              strengthIndicator.innerHTML = '<span style="color:red">Weak password</span>';
+              input.classList.add('is-invalid');
+              input.classList.remove('is-valid');
+              input.setCustomValidity('Password strength is weak. Please enter a stronger password.'); // Set custom validation message
+              return 'Weak';
+          }
+      }
+  });
+  
     
-      if (strongRegex.test(password)) {
-        strength.innerHTML = '<span style="color:green">Strong password</span>';
-      } else if (mediumRegex.test(password)) {
-        strength.innerHTML = '<span style="color:orange">Moderate password</span>';
+    function checkPasswordMatch() {
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const passwordMatchFeedback = document.getElementById('passwordMatchFeedback');
+      const passwordMatch = document.getElementById('passwordMatch');
+      const passwordMismatch = document.getElementById('passwordMismatch');
+    
+      if (confirmPasswordInput.value === passwordInput.value) {
+        confirmPasswordInput.classList.add('is-valid');
+        confirmPasswordInput.classList.remove('is-invalid');
+        passwordMatchFeedback.style.display = 'block';
+        passwordMismatch.style.display = 'none';
+        confirmPasswordInput.setCustomValidity(''); // Clear any custom validation message
       } else {
-        strength.innerHTML = '<span style="color:red">Weak password</span>';
+        confirmPasswordInput.classList.add('is-invalid');
+        confirmPasswordInput.classList.remove('is-valid');
+        passwordMatchFeedback.style.display = 'none';
+        passwordMismatch.style.display = 'block';
+        confirmPasswordInput.setCustomValidity('Passwords do not match.'); // Set custom validation message
       }
     }
+    
+  
+    
 
 
 // For calling the modal
