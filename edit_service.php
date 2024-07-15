@@ -87,17 +87,19 @@ date_default_timezone_set('Asia/Manila');
                         <div class="invalid-feedback">Please provide a valid rate.</div>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <label for="editCapacity" class="form-label">Capacity <span>*</span></label>
-                        <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="editCapacity" placeholder="Enter capacity here" name="editCapacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
-                        <div class="valid-feedback"><!-- Looks good! --></div>
-                        <div class="invalid-feedback">Please provide a valid capacity.</div>
-                    </div>
-                    <div class="col-md-10 mb-2">
-                        <label for="editImage" class="form-label">Image</label>
-                        <input type="file" value="<?php echo $serviceName; ?>" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" onchange="validateImage(event)">
-                        <div class="valid-feedback"><!-- Looks good! --></div>
-                        <div class="invalid-feedback">Please provide a valid file.</div>
-                    </div>
+    <label for="capacity" class="form-label">Capacity <span>*</span></label>
+    <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please provide a valid capacity between 2 and 50.</div>
+</div>
+<div class="col-md-10 mb-2">
+    <label for="editImage" class="form-label">Image</label>
+    <input type="file" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" onchange="validateImage(event)">
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please provide a valid file. Accepted formats: jpg, jpeg, png. Maximum size: 5MB.</div>
+    <img id="imagePreview" style="display:none; max-width: 100px; margin-top: 10px;" />
+</div>
+
                     <div class="col-md-2 mb-2">
                         <img id="imagePreview" src="src/images/Services/<?php echo $serviceImage;?>" alt="Image Preview">
                     </div>
