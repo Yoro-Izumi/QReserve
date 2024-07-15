@@ -82,18 +82,18 @@ function handleRateInput(event) {
 }
 
 
-//For Capacity
 function validateCapacity(event) {
   const input = event.target;
   let value = input.value.replace(/,/g, ''); // Remove existing commas
   const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
 
-  if (numericValue.length <= 3) { // Limit the length to 3 digits
+  if (numericValue.length <= 2) { // Limit the length to 2 digits
       const formattedValue = new Intl.NumberFormat().format(numericValue);
       input.value = formattedValue;
 
-      // Check for minimum value
-      if (numericValue === '' || parseInt(numericValue, 10) < 2) {
+      // Check for minimum and maximum value
+      const parsedValue = parseInt(numericValue, 10);
+      if (numericValue === '' || parsedValue < 2 || parsedValue > 50) {
           input.classList.remove('is-valid');
           input.classList.add('is-invalid');
       } else {
@@ -101,13 +101,14 @@ function validateCapacity(event) {
           input.classList.add('is-valid');
       }
   } else {
-      // If the input exceeds 3 digits, truncate the value
-      const truncatedValue = numericValue.slice(0, 3);
+      // If the input exceeds 2 digits, truncate the value
+      const truncatedValue = numericValue.slice(0, 2);
       const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
       input.value = formattedTruncatedValue;
 
-      // Check for minimum value
-      if (parseInt(truncatedValue, 10) < 2) {
+      // Check for minimum and maximum value
+      const parsedTruncatedValue = parseInt(truncatedValue, 10);
+      if (parsedTruncatedValue < 2 || parsedTruncatedValue > 50) {
           input.classList.remove('is-valid');
           input.classList.add('is-invalid');
       } else {
@@ -122,7 +123,8 @@ function handleCapacityInput(event) {
   let value = input.value.replace(/,/g, ''); // Remove existing commas
   const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
 
-  if (numericValue === '' || parseInt(numericValue, 10) < 2) {
+  const parsedValue = parseInt(numericValue, 10);
+  if (numericValue === '' || parsedValue < 2 || parsedValue > 50) {
       input.classList.remove('is-valid');
       input.classList.add('is-invalid');
   } else {
@@ -132,17 +134,20 @@ function handleCapacityInput(event) {
 }
 
 
+
 //For Image upload
 function validateImage(event) {
   const input = event.target;
   const file = input.files[0];
   const validImageTypes = ["image/jpeg", "image/jpg", "image/png"];
+  const maxSizeInMB = 5;
   const imagePreview = document.getElementById('imagePreview');
 
   if (file) {
       const fileType = file.type;
-      
-      if (validImageTypes.includes(fileType)) {
+      const fileSizeInMB = file.size / (1024 * 1024); // Convert size to MB
+
+      if (validImageTypes.includes(fileType) && fileSizeInMB <= maxSizeInMB) {
           input.classList.add("is-valid");
           input.classList.remove("is-invalid");
 
@@ -158,9 +163,22 @@ function validateImage(event) {
           input.classList.remove("is-valid");
           input.value = ""; // Clear the input value to remove the invalid file
           imagePreview.style.display = 'none';
+          
+          // Update invalid feedback message
+          const invalidFeedback = input.nextElementSibling.nextElementSibling;
+          if (!validImageTypes.includes(fileType)) {
+              invalidFeedback.textContent = "Please provide a valid file. Accepted formats: jpg, jpeg, png.";
+          } else if (fileSizeInMB > maxSizeInMB) {
+              invalidFeedback.textContent = "File size exceeds 5MB. Please upload a smaller file.";
+          }
       }
+  } else {
+      input.classList.remove("is-valid");
+      input.classList.add("is-invalid");
+      imagePreview.style.display = 'none';
   }
 }
+
 
 
 
