@@ -67,11 +67,11 @@ if (isset($_SESSION["userSuperAdminID"])) {
                         <div class="invalid-feedback">Please provide a valid rate.</div>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <label for="capacity" class="form-label">Capacity <span>*</span></label>
-                        <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
-                        <div class="valid-feedback"><!-- Looks good! --></div>
-                        <div class="invalid-feedback">Please provide a valid capacity of at least 2.</div>
-                    </div>
+    <label for="capacity" class="form-label">Capacity <span>*</span></label>
+    <input type="text" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please provide a valid capacity between 1 and 50.</div>
+</div>
 
                     <div class="col-md-10 mb-2">
                         <label for="serviceImage" class="form-label">Image <span>*</span></label>

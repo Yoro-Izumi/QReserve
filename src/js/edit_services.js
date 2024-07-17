@@ -83,15 +83,11 @@ function handleRateInput(event) {
 //For Capacity
 function validateCapacity(event) {
   const input = event.target;
-  let value = input.value.replace(/,/g, ''); // Remove existing commas
-  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+  const value = input.value;
 
-  if (numericValue.length <= 3) { // Limit the length to 3 digits
-      const formattedValue = new Intl.NumberFormat().format(numericValue);
-      input.value = formattedValue;
-
-      // Check for minimum value
-      if (numericValue === '' || parseInt(numericValue, 10) < 2) {
+  // Ensure the input is numeric and within the valid range
+  if (/^\d*$/.test(value)) {
+      if (value < 1 || value > 50) {
           input.classList.remove('is-valid');
           input.classList.add('is-invalid');
       } else {
@@ -99,34 +95,24 @@ function validateCapacity(event) {
           input.classList.add('is-valid');
       }
   } else {
-      // If the input exceeds 3 digits, truncate the value
-      const truncatedValue = numericValue.slice(0, 3);
-      const formattedTruncatedValue = new Intl.NumberFormat().format(truncatedValue);
-      input.value = formattedTruncatedValue;
-
-      // Check for minimum value
-      if (parseInt(truncatedValue, 10) < 2) {
-          input.classList.remove('is-valid');
-          input.classList.add('is-invalid');
-      } else {
-          input.classList.remove('is-invalid');
-          input.classList.add('is-valid');
-      }
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
   }
 }
 
 function handleCapacityInput(event) {
   const input = event.target;
-  let value = input.value.replace(/,/g, ''); // Remove existing commas
-  const numericValue = value.replace(/[^0-9]/g, ''); // Allow only numeric characters
+  const value = parseInt(input.value, 10);
 
-  if (numericValue === '' || parseInt(numericValue, 10) < 2) {
-      input.classList.remove('is-valid');
-      input.classList.add('is-invalid');
-  } else {
-      input.classList.remove('is-invalid');
-      input.classList.add('is-valid');
+  // Ensure the value is within the range
+  if (value < 1) {
+      input.value = 1;
+  } else if (value > 50) {
+      input.value = 50;
   }
+
+  // Trigger the validation again to update feedback
+  validateCapacity(event);
 }
 
 

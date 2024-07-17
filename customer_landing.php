@@ -83,7 +83,7 @@ date_default_timezone_set('Asia/Manila');
     <h2>Amenities</h2>
     <ul class="cards">
       <li class="card">
-        <a href="src/images/IMG_20240628_140415.webp"><img src="src/images/IMG_20240628_140415.webp" alt="amenities"></a>
+        <a href="src/images/IMG_20240628_120053.webp"><img src="src/images/IMG_20240628_120053.webp" alt="amenities"></a>
       </li>
       <li class="card">
         <a href="src/images/IMG_20240628_120929.webp"><img src="src/images/IMG_20240628_120929.webp" alt="amenities"></a>
@@ -95,7 +95,7 @@ date_default_timezone_set('Asia/Manila');
         <a href="src/images/IMG_20240628_123118.webp"><img src="src/images/IMG_20240628_123118.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <a href="src/images/IMG_20240628_111713.webp"><img src="src/images/IMG_20240628_111713.webp" alt="amenities"></a>
+        <a href="src/images/IMG_20240628_121039.webp"><img src="src/images/IMG_20240628_121039.webp" alt="amenities"></a>
       </li>
       <li class="card">
         <a href="src/images/IMG_20240628_115926.webp"><img src="src/images/IMG_20240628_115926.webp" alt="amenities"></a>
