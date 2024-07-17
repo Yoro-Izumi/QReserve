@@ -152,33 +152,6 @@ if (isset($_SESSION['userMemberID'])) {
                 Please provide a valid date.
               </div>
             </div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", function() {
-                const selectDateInput = document.getElementById('selectDate');
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = today.getMonth();
-                const firstDayOfMonth = new Date(year, month, 1);
-                const lastDayOfMonth = new Date(year, month + 1, 0);
-
-                // Format dates to YYYY-MM-DD
-                const formatDateString = (date) => {
-                  const year = date.getFullYear();
-                  const month = String(date.getMonth() + 1).padStart(2, '0');
-                  const day = String(date.getDate()).padStart(2, '0');
-                  return `${year}-${month}-${day}`;
-                };
-
-                const minDate = formatDateString(today);
-                const maxDate = formatDateString(lastDayOfMonth);
-
-                selectDateInput.min = minDate;
-                selectDateInput.max = maxDate;
-              });
-            </script>
-
-
             <div class="col-md-3 mb-3">
               <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
               <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required min="10:00" oninput="adjustEndTime()">

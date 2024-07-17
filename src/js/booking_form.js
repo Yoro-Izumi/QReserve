@@ -61,6 +61,29 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Select date are only per month
+document.addEventListener("DOMContentLoaded", function() {
+  const selectDateInput = document.getElementById('selectDate');
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const firstDayOfMonth = new Date(year, month, 1);
+  const lastDayOfMonth = new Date(year, month + 1, 0);
+
+  // Format dates to YYYY-MM-DD
+  const formatDateString = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const minDate = formatDateString(today);
+  const maxDate = formatDateString(lastDayOfMonth);
+
+  selectDateInput.min = minDate;
+  selectDateInput.max = maxDate;
+});
 
 //For Contact Number
 function validateContactNumber(event) {

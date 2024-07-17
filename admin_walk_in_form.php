@@ -156,15 +156,15 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
                 </div>
               </div>
               <div class="col-md-3 mb-3">
-                <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-                <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required>
-                <div class="valid-feedback">
-                  <!-- Looks good! -->
-                </div>
-                <div class="invalid-feedback">
-                  Please provide a valid end time.
-                </div>
+              <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
+              <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required oninput="validateEndTime()">
+              <div class="valid-feedback">
+                <!-- Looks good! -->
               </div>
+              <div class="invalid-feedback" id="endTimeFeedback">
+                Please provide a valid end time.
+              </div>
+            </div>
 
               <div class="col-md-3 mb-3">
                 <label for="selectTable" class="form-label">Select Table <span>*</span></label>

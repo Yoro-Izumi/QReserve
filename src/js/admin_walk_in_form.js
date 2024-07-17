@@ -137,27 +137,32 @@ $(document).ready(function () {
 function adjustEndTime() {
   const startTimeInput = document.getElementById('selectStartTime');
   const endTimeInput = document.getElementById('selectEndTime');
+  const endTimeFeedback = document.getElementById('endTimeFeedback');
 
   if (startTimeInput.value) {
-    const [startHour, startMinute] = startTimeInput.value.split(':');
-    if (parseInt(startHour) < 10) {
-      // If start time is before 10:00 AM, clear the end time input
+    const [startHour, startMinute] = startTimeInput.value.split(':').map(Number);
+
+    if (startHour < 10 || (startHour >= 0 && startHour < 3)) {
+      // If start time is invalid (before 10:00 AM or between 12:00 AM and 3:00 AM)
       endTimeInput.value = '';
-      startTimeInput.setCustomValidity('Start time must be after 10:00 AM.');
+      startTimeInput.setCustomValidity('Start time must be between 10:00 AM and 12:00 AM.');
     } else {
       startTimeInput.setCustomValidity('');
-      let endHour = parseInt(startHour) + 1;
-      const endMinute = startMinute;
+      let endHour = startHour + 1; // Adding 2 hours for minimum duration
+      let endMinute = startMinute;
 
-      // Handle hour overflow
+      // Handle hour overflow for the next day
       if (endHour >= 24) {
         endHour = endHour - 24;
       }
 
       // Format end hour and minute
       const formattedEndHour = endHour.toString().padStart(2, '0');
-      const formattedEndMinute = endMinute.padStart(2, '0');
+      const formattedEndMinute = endMinute.toString().padStart(2, '0');
       endTimeInput.value = `${formattedEndHour}:${formattedEndMinute}`;
+      endTimeInput.min = `${formattedEndHour}:${formattedEndMinute}`;
+      endTimeInput.max = '03:00';
+      endTimeFeedback.textContent = 'Please provide a valid end time.';
     }
   } else {
     // Clear the end time input if the start time is empty
@@ -165,8 +170,24 @@ function adjustEndTime() {
   }
 }
 
-// Add event listener
+function validateEndTime() {
+  const endTimeInput = document.getElementById('selectEndTime');
+  const endTimeFeedback = document.getElementById('endTimeFeedback');
+  const [endHour, endMinute] = endTimeInput.value.split(':').map(Number);
+
+  if (endHour > 3 || (endHour === 3 && endMinute > 0)) {
+    // If end time is later than 3:00 AM
+    endTimeInput.setCustomValidity('End time must be at 3:00 AM or earlier.');
+    endTimeFeedback.textContent = 'End time must be at 3:00 AM or earlier.';
+  } else {
+    endTimeInput.setCustomValidity('');
+    endTimeFeedback.textContent = 'Please provide a valid end time.';
+  }
+}
+
+// Add event listeners
 document.getElementById('selectStartTime').addEventListener('input', adjustEndTime);
+document.getElementById('selectEndTime').addEventListener('input', validateEndTime);
 
 
 // Prevent typing in the date input fields
@@ -304,8 +325,9 @@ function getUserInputs() {
   }
 
   // Get the selected price adjustment option
-  const selectedOption = $('input[name="price-option"]:checked');
-  const priceAdjustment = parseInt(selectedOption.data('price'));
+ const selectedOption = $('input[name="price-option"]:checked');
+ const priceAdjustment = selectedOption.attr('id') === 'member-button' ? -50 * Math.ceil(durationInHours) : 0;
+
 
   // Adjust the total price based on the selected option
   totalPrice += priceAdjustment;
