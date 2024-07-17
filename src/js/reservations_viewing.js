@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ensure the QR input field is always focused when necessary
     function focusQrInput() {
-        if (document.activeElement !== qrInput && !document.querySelector('form input:focus')) {
+        if (document.activeElement !== qrInput && !document.querySelector('form input:focus') && !document.querySelector('.dataTables_length select:focus') && !document.querySelector('#statusFilter:focus')) {
             qrInput.focus();
             qrInput.scrollIntoView({ block: 'center', behavior: 'smooth' }); // Scroll into the center
         }
@@ -530,7 +530,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
 /*document.addEventListener('DOMContentLoaded', () => {
     const qrInput = document.getElementById('qrInput');
     const formInputs = document.querySelectorAll('form input:not(#qrInput)'); // Exclude qrInput from the list
@@ -605,9 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
         $('#reservation_details').modal('hide');
     });
 });*/
-
-
-
 
 
 

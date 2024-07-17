@@ -88,7 +88,7 @@ date_default_timezone_set('Asia/Manila');
                     </div>
                     <div class="col-md-6 mb-2">
     <label for="capacity" class="form-label">Capacity <span>*</span></label>
-    <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="capacity" placeholder="Enter capacity here" name="capacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
+    <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="capacity" placeholder="Enter capacity here" name="editCapacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
     <div class="valid-feedback">Looks good!</div>
     <div class="invalid-feedback">Please provide a valid capacity between 2 and 50.</div>
 </div>
