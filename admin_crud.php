@@ -6,7 +6,7 @@ $key = "TheGreatestNumberIs73";
 session_start();
 date_default_timezone_set('Asia/Manila');
 
-if (isset($_SESSION["userSuperAdminID"])) {
+if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
   $superAdminID = $_SESSION["userSuperAdminID"];
   if (isset($_POST['firstName'])) {
     $firstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);

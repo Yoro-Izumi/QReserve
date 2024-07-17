@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\Exception;
 
 session_start();
 date_default_timezone_set('Asia/Manila');
-if (isset($_SESSION["userSuperAdminID"])) {
+if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
   $userSuperAdmin = $_SESSION["userSuperAdminID"];
   if (isset($_POST['firstName'])) {
     $customerFirstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);

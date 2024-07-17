@@ -5,9 +5,11 @@ include "src/get_data_from_database/get_admin_accounts.php";
 include "src/get_data_from_database/get_admin_info.php";
 include "src/get_data_from_database/get_reservation_info.php";
 include "src/get_data_from_database/get_walk_in.php";
+include "src/get_data_from_database/convert_to_normal_time.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
+$currentDate = date('Y-m-d');
 
 if (isset($_SESSION["userSuperAdminID"])) {
   //for linear regression
@@ -292,255 +294,110 @@ if (isset($_SESSION["userSuperAdminID"])) {
         });
       });
     </script>
-   <!-- <script>
-      Highcharts.chart('container2', {
-        chart: {
-          type: 'area'
-        },
-        accessibility: {
-          description: 'Image description: An area chart compares the number of reservation in Bevitore between 10:00 AM today and 3:00 AM the following day Philippine time. The number of Reservation is plotted on the Y-axis and the time on the X-axis. The chart is interactive, and the resrvation levels can be traced for each pool table.'
-        },
-        title: {
-          text: ''
-        },
-        subtitle: {
-          text: ''
-        },
-        xAxis: {
-          allowDecimals: false,
-          type: 'datetime',
-          accessibility: {
-            rangeDescription: 'Range: 10:00 AM today to 3:00 AM the following day Philippine time.'
-          },
-          min: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10), // Start at 10:00 AM Philippine time today (GMT+8)
-          max: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 3), // End at 3:00 AM Philippine time the following day (GMT+8)
-          labels: {
-            format: '{value:%I:%M %p}', // Format for displaying labels
-          }
-        },
-        yAxis: {
-          title: {
-            text: 'Reservation'
-          }
-        },
-        tooltip: {
-          pointFormat: '{series.name} had reserved <b>{point.y:,.0f}</b><br/>pool table at {point.x:%I:%M %p} Philippine time'
-        },
-        plotOptions: {
-          area: {
-            pointStart: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10), // Start at 10:00 AM Philippine time today (GMT+8)
-            pointInterval: 50 * 20000, // Represents hours, as each point is an hour increment
-            marker: {
-              enabled: false,
-              symbol: 'circle',
-              radius: 2,
-              states: {
-                hover: {
-                  enabled: true
-                }
-              }
-            }
-          }
-        },
-        series: [{
-          name: 'Operational Hours',
-          data: [
-            2,3, 5,1,7, 2, 9, 13, 50, 170, 299, 438, 841,
-            1169, 1703, 2422, 3692, 5543, 7345, 12298, 18638, 22229, 25540,
-            28133, 29463, 31139, 31175, 31255, 29561, 27552, 26008, 25830,
-            26516, 27835, 28537, 27519, 25914, 25542, 24418, 24138, 24104,
-            23208, 22886, 23305, 23459, 23368, 23317, 23575, 23205, 22217,
-            21392, 19008, 13708, 11511, 10979, 10904, 11011, 10903, 10732,
-            10685, 10577, 10526, 10457, 10027, 8570, 8360, 7853, 5709, 5273,
-            5113, 5066, 4897, 4881, 4804, 4717, 4571, 4018, 3822, 3785
-          ]
-        }]
-      });
-    </script> -->
 
-
-    <!-- 3rd Graph 
-     <script>
-      // Create an array to hold customer names and populations
-       <?php
-         /* $arrayAdmin = array();
-          $arrayAdminNumber = array(); 
-          $x = $y = $z = 0;
-            foreach ($arrayWalkinDetails as $walkin){
-              if(empty($arrayAdmin)){
-                array_push($arrayAdmin,$walkin['adminID']);
-                array_push($arrayAdminNumber,$y);
-              }
-              else{
-                if($arrayAdmin[x] == $walkin['adminID']){
-                  $arrayAdminNumber[$x] = $y+1;
-                }
-                else{
-                  $y = 0;
-                  array_push($arrayAdmin,$walkin['adminID']);
-                  array_push($arrayAdminNumber,$y);
-                }
-              }
-            } 
-       ?>
-       var adminData = [
-         <?php foreach ($arrayAdmin as $name) : ?>['<?php echo $name; ?>', <?php $arrayAdminNumber[$z]; $z++?>],
-         <?php endforeach; */ ?>
-       ];
-
-      Highcharts.chart('container3', {
-        chart: {
-          type: 'column'
-        },
-        title: {
-          text: ''
-        },
-        subtitle: {
-          text: ''
-        },
-        xAxis: {
-          type: 'category',
-          labels: {
-            autoRotation: [-45, -90],
-            style: {
-              fontSize: '13px',
-              fontFamily: 'Verdana, sans-serif'
-            }
-          }
-        },
-        yAxis: {
-          min: 0,
-          title: {
-            text: 'Population'
-          }
-        },
-        legend: {
-          enabled: false
-        },
-        tooltip: {
-          pointFormat: 'Reservations in 2024: <b>{point.y:.1f}</b>'
-        },
-        series: [{
-          name: 'Population',
-          colors: [
-            '#9b20d9', '#9215ac', '#861ec9', '#7a17e6', '#7010f9', '#691af3',
-            '#6225ed', '#5b30e7', '#533be1', '#4c46db', '#4551d5', '#3e5ccf',
-            '#3667c9', '#2f72c3', '#277dbd', '#1f88b7', '#1693b1', '#0a9eaa',
-            '#03c69b', '#00f194'
-          ],
-          colorByPoint: true,
-          groupPadding: 0,
-          data: adminData,
-          dataLabels: {
-            enabled: true,
-            rotation: -90,
-            color: '#FFFFFF',
-            inside: true,
-            verticalAlign: 'top',
-            format: '{point.y:.1f}', // one decimal
-            y: 10, // 10 pixels down from the top
-            style: {
-              fontSize: '13px',
-              fontFamily: 'Verdana, sans-serif'
-            }
-          }
-        }]
-      });
-    </script>-->
 
     <script>
-    // Create an array to hold admin names and their counts
-    <?php
-    $arrayAdmin = array();
-    $arrayAdminNumber = array();
-    $arrayAdminName = array();
+        // Create an array to hold admin names and their counts
+        <?php
+        $arrayAdmin = [];
+        $arrayAdminNumber = [];
 
-    foreach ($arrayWalkinDetails as $walkin) {
-        $adminID = $walkin['adminID'];
-        // Fetch and decrypt admin names based on adminID
-        foreach ($arrayAdminAccount as $admin) {
-            if ($admin['adminID'] == $adminID) {
-                $adminName = decryptData($admin['adminFirstName'], $key) . " " . decryptData($admin['adminMiddleName'], $key) . " " . decryptData($admin['adminLastName'], $key);
-                break;
+        foreach ($arrayWalkinDetails as $walkin) {
+            $adminID = $walkin['adminID'];
+            $adminName = '';
+
+            // Fetch and decrypt admin names based on adminID
+            foreach ($arrayAdminAccount as $admin) {
+                if ($admin['adminID'] == $adminID && $walkin["walkinDate"] === $currentDate) {
+                    $adminName = decryptData($admin['adminFirstName'], $key) . " " . decryptData($admin['adminMiddleName'], $key) . " " . decryptData($admin['adminLastName'], $key);
+                    break;
+                }
+            }
+
+            if (!empty($adminName)) {
+                if (in_array($adminName, $arrayAdmin)) {
+                    $index = array_search($adminName, $arrayAdmin);
+                    $arrayAdminNumber[$index]++;
+                } else {
+                    $arrayAdmin[] = $adminName;
+                    $arrayAdminNumber[] = 1; // Initial count as 1
+                }
             }
         }
-
-        if (in_array($adminName, $arrayAdmin)) {
-            $index = array_search($adminName, $arrayAdmin);
-            $arrayAdminNumber[$index]++;
-        } else {
-            array_push($arrayAdmin, $adminName);
-            array_push($arrayAdminNumber, 1); // Initial count as 1
-        }
-    }
-    ?>
-    var adminData = [
-        <?php 
-        foreach ($arrayAdmin as $index => $name) : 
-            echo "['$name', {$arrayAdminNumber[$index]}],";
-        endforeach; 
         ?>
-    ];
 
-    Highcharts.chart('container3', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: ''
-        },
-        subtitle: {
-            text: ''
-        },
-        xAxis: {
-            type: 'category',
-            labels: {
-                autoRotation: [-45, -90],
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
+        var adminData = [
+            <?php 
+            foreach ($arrayAdmin as $index => $name) {
+                echo "['" . addslashes($name) . "', {$arrayAdminNumber[$index]}],";
             }
-        },
-        yAxis: {
-            min: 0,
+            ?>
+        ];
+
+        Highcharts.chart('container3', {
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Reservations'
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            pointFormat: 'Reservations in 2024: <b>{point.y}</b>'
-        },
-        series: [{
-            name: 'Population',
-            colors: [
-                '#9b20d9', '#9215ac', '#861ec9', '#7a17e6', '#7010f9', '#691af3',
-                '#6225ed', '#5b30e7', '#533be1', '#4c46db', '#4551d5', '#3e5ccf',
-                '#3667c9', '#2f72c3', '#277dbd', '#1f88b7', '#1693b1', '#0a9eaa',
-                '#03c69b', '#00f194'
-            ],
-            colorByPoint: true,
-            groupPadding: 0,
-            data: adminData,
-            dataLabels: {
-                enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                inside: true,
-                verticalAlign: 'top',
-                format: '{point.y}', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                type: 'category',
+                title:
+                {
+                 text: 'Admin Name' 
+                },
+                labels: {
+                    autoRotation: [-45, -90],
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
                 }
-            }
-        }]
-    });
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Reservations'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: 'Reservations on <?php echo addslashes(convertToNormalDate($currentDate)); ?>: <b>{point.y}</b>'
+            },
+            series: [{
+                name: 'Reservations',
+                colors: [
+                    '#9b20d9', '#9215ac', '#861ec9', '#7a17e6', '#7010f9', '#691af3',
+                    '#6225ed', '#5b30e7', '#533be1', '#4c46db', '#4551d5', '#3e5ccf',
+                    '#3667c9', '#2f72c3', '#277dbd', '#1f88b7', '#1693b1', '#0a9eaa',
+                    '#03c69b', '#00f194'
+                ],
+                colorByPoint: true,
+                groupPadding: 0,
+                data: adminData,
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    inside: true,
+                    verticalAlign: 'top',
+                    format: '{point.y}', // one decimal
+                    y: 10, // 10 pixels down from the top
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+        });
     </script>
+
 
 
 
