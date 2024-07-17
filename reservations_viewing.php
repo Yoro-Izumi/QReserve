@@ -66,6 +66,13 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab">
         <form>
+          <label for="statusFilter">Filter by Status:</label>
+          <select id="statusFilter">
+              <option value="">All</option>
+              <option value="Reserved">Reserved</option>
+              <option value="On Process">On Process</option>
+              <option value="Rejected">Rejected</option>
+          </select>
 <table id="example" class="table table-striped" style="width: 100%">
   <thead>
     <tr>
@@ -182,7 +189,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         </div>
       </div>
     </section>
-
 
     <!-- Modals -->
     <!-- Accept Reservation Modals -->
