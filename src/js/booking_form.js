@@ -65,10 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function() {
   const selectDateInput = document.getElementById('selectDate');
   const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const firstDayOfMonth = new Date(year, month, 1);
-  const lastDayOfMonth = new Date(year, month + 1, 0);
+
+  // Calculate the date 4 weeks from today
+  const fourWeeksFromToday = new Date();
+  fourWeeksFromToday.setDate(today.getDate() + 28);
 
   // Format dates to YYYY-MM-DD
   const formatDateString = (date) => {
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   const minDate = formatDateString(today);
-  const maxDate = formatDateString(lastDayOfMonth);
+  const maxDate = formatDateString(fourWeeksFromToday);
 
   selectDateInput.min = minDate;
   selectDateInput.max = maxDate;
