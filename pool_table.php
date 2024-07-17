@@ -37,7 +37,7 @@ foreach($arrayPoolTables as $poolTable) {
     // Check reservations
     foreach($arrayReservationInfo as $reservation) {
         if($reservation['tableID'] == $tableID && $reservation['reservationDate'] === $currentDate && 
-           $reservation['reservationTimeStart'] <= $currentTime && $reservation['reservationTimeEnd'] >= $currentTime) {
+           $reservation['reservationTimeStart'] <= $currentTime && $reservation['reservationTimeEnd'] >= $currentTime && $reservation['reservationStatus'] === "Reserved") {
             $newStatus = "Playing";
             $newTimeStart = $currentDate . " " . $reservation['reservationTimeStart'];
             $newTimeEnd = $currentDate . " " . $reservation['reservationTimeEnd'];
@@ -48,7 +48,7 @@ foreach($arrayPoolTables as $poolTable) {
     // Check walk-ins
     foreach($arrayWalkinDetails as $walkin) {
         if($walkin['tableID'] == $tableID && $walkin['walkinDate'] === $currentDate && 
-           $walkin['walkinTimeStart'] <= $currentTime && $walkin['walkinTimeEnd'] >= $currentTime) {
+           $walkin['walkinTimeStart'] <= $currentTime && $walkin['walkinTimeEnd'] >= $currentTime && $walkin["walkinStatus"] === "Reserved") {
             $newStatus = "Playing";
             $newTimeStart = $currentDate . " " . $walkin['walkinTimeStart'];
             $newTimeEnd = $currentDate . " " . $walkin['walkinTimeEnd'];
