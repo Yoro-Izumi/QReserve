@@ -231,8 +231,8 @@ if (isset($_SESSION['userMemberID'])) {
             <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/file.gif" alt="Wait Icon" class="modal-icons">On Process...</h2>
           </div>
           <div class="modal-body text-center">
-            <p>Your booking is now on process!<br>Please check your email for the details of your reservation.</p>
-            <p class="proceed">Proceed to pay your reservation through the provided Payment Details</p>
+            <p>Your booking is currently being processed.<br>Please note that you will receive an email with the details of your reservation once it has been confirmed.</p>
+            <p class="proceed">To secure your reservation, proceed to make payment using the details below:</p>
             <p class="gcash mb-0 pb-0">M****o M****o</p>
             <p class="gcash">GCash: 09123456789</p>
             <p>Send your proof of payment to <a href="https://www.facebook.com/Bevitore.Sta.Rosa">Bevitore’s Facebook Page.</a></p>
