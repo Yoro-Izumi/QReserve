@@ -170,18 +170,36 @@ function adjustEndTime() {
   }
 }
 
+
 function validateEndTime() {
+  const startTimeInput = document.getElementById('selectStartTime');
   const endTimeInput = document.getElementById('selectEndTime');
   const endTimeFeedback = document.getElementById('endTimeFeedback');
-  const [endHour, endMinute] = endTimeInput.value.split(':').map(Number);
 
-  if (endHour > 3 || (endHour === 3 && endMinute > 0)) {
-    // If end time is later than 3:00 AM
-    endTimeInput.setCustomValidity('End time must be at 3:00 AM or earlier.');
-    endTimeFeedback.textContent = 'End time must be at 3:00 AM or earlier.';
-  } else {
-    endTimeInput.setCustomValidity('');
-    endTimeFeedback.textContent = 'Please provide a valid end time.';
+  if (startTimeInput.value && endTimeInput.value) {
+    const [startHour, startMinute] = startTimeInput.value.split(':').map(Number);
+    const [endHour, endMinute] = endTimeInput.value.split(':').map(Number);
+
+    // Calculate total minutes for start and end times
+    const startTotalMinutes = startHour * 60 + startMinute;
+    const endTotalMinutes = endHour * 60 + endMinute;
+    let validEndTime = false;
+
+    if (endTotalMinutes < startTotalMinutes) {
+      // Case where end time is in the next day
+      validEndTime = (endTotalMinutes + 24 * 60 - startTotalMinutes) >= 120 && endHour <= 3;
+    } else {
+      // Case where end time is on the same day
+      validEndTime = (endTotalMinutes - startTotalMinutes) >= 120;
+    }
+
+    if (validEndTime) {
+      endTimeInput.setCustomValidity('');
+      endTimeFeedback.textContent = 'Please provide a valid end time.';
+    } else {
+      endTimeInput.setCustomValidity('End time must be at least 2 hours after start time and no later than 3:00 AM.');
+      endTimeFeedback.textContent = 'End time must be at least 2 hours after start time and no later than 3:00 AM.';
+    }
   }
 }
 
@@ -310,7 +328,13 @@ function getUserInputs() {
 
   // Calculate total price based on selected start and end times
   const startTime = new Date(`2024-06-14T${selectStartTime}`);
-  const endTime = new Date(`2024-06-14T${selectEndTime}`);
+  let endTime = new Date(`2024-06-14T${selectEndTime}`);
+
+  // If end time is earlier than start time, it means it extends to the next day
+  if (endTime < startTime) {
+    endTime.setDate(endTime.getDate() + 1);
+  }
+
   const durationInMinutes = (endTime - startTime) / (1000 * 60);
   const durationInHours = durationInMinutes / 60;
 
@@ -325,9 +349,8 @@ function getUserInputs() {
   }
 
   // Get the selected price adjustment option
- const selectedOption = $('input[name="price-option"]:checked');
- const priceAdjustment = selectedOption.attr('id') === 'member-button' ? -50 * Math.ceil(durationInHours) : 0;
-
+  const selectedOption = $('input[name="price-option"]:checked');
+  const priceAdjustment = selectedOption.attr('id') === 'member-button' ? -50 * Math.ceil(durationInHours) : 0;
 
   // Adjust the total price based on the selected option
   totalPrice += priceAdjustment;
@@ -354,7 +377,6 @@ function getUserInputs() {
     </div>
   `;
 }
-
 
 $('input[name="price-option"]').change(function() {
   // Recalculate the total price when the radio button selection changes
