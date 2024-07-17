@@ -1,7 +1,7 @@
 <?php //connect to database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "qreserve_data";
+$servername = "77.37.45.112";
+$username = "QReserveSAD";
+$password = "QReserveSAD#11";
+$dbname = "QReserveSAD";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 ?>
