@@ -1,5 +1,5 @@
 
-$(document).ready(function () {
+/*$(document).ready(function () {
     $("#example").DataTable({
         paging: true,
         lengthChange: true,
@@ -86,7 +86,130 @@ $(document).ready(function () {
             });
         }
     });
+});*/
+
+document.addEventListener('DOMContentLoaded', () => {
+    const statusFilter = document.getElementById('statusFilter');
+    const table = $("#example").DataTable({
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true,
+        scrollX: true,
+        pagingType: 'full_numbers',
+        language: {
+            paginate: {
+                first: 'First',
+                last: 'Last',
+                next: 'Next',
+                previous: 'Previous'
+            }
+        },
+        drawCallback: function (settings) {
+            var api = this.api();
+            var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate .pagination');
+            pagination.html(''); // Clear existing pagination buttons
+            var currentPage = api.page();
+            var totalPages = api.page.info().pages;
+            var threshold = 5; // Determine the threshold for the number of pages to simplify pagination
+            if (totalPages > 1) {
+                // Previous button
+                if (currentPage > 0) {
+                    pagination.append('<li class="paginate_button page-item previous"><a href="#" aria-controls="example" data-dt-idx="previous" tabindex="0" class="page-link">Previous</a></li>');
+                }
+                // Show all page numbers if the total number of pages is below the threshold
+                if (totalPages <= threshold) {
+                    for (var i = 0; i < totalPages; i++) {
+                        pagination.append('<li class="paginate_button page-item ' + (currentPage === i ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="' + i + '" tabindex="0" class="page-link">' + (i + 1) + '</a></li>');
+                    }
+                } else {
+                    // Simplified pagination for larger number of pages
+                    pagination.append('<li class="paginate_button page-item ' + (currentPage === 0 ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">1</a></li>');
+                    // Ellipsis for pages before the current page
+                    if (currentPage > 2) {
+                        pagination.append('<li class="paginate_button page-item disabled"><a href="#" tabindex="-1" class="page-link">...</a></li>');
+                    }
+                    // Current page and neighbors
+                    for (var i = Math.max(1, currentPage - 1); i <= Math.min(currentPage + 1, totalPages - 2); i++) {
+                        pagination.append('<li class="paginate_button page-item ' + (currentPage === i ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="' + i + '" tabindex="0" class="page-link">' + (i + 1) + '</a></li>');
+                    }
+                    // Ellipsis for pages after the current page
+                    if (currentPage < totalPages - 3) {
+                        pagination.append('<li class="paginate_button page-item disabled"><a href="#" tabindex="-1" class="page-link">...</a></li>');
+                    }
+                    // Last page
+                    pagination.append('<li class="paginate_button page-item ' + (currentPage === totalPages - 1 ? 'active' : '') + '"><a href="#" aria-controls="example" data-dt-idx="' + (totalPages - 1) + '" tabindex="0" class="page-link">' + totalPages + '</a></li>');
+                }
+                // Next button
+                if (currentPage < totalPages - 1) {
+                    pagination.append('<li class="paginate_button page-item next"><a href="#" aria-controls="example" data-dt-idx="next" tabindex="0" class="page-link">Next</a></li>');
+                }
+            }
+            pagination.find('a').on('click', function (e) {
+                e.preventDefault();
+                var newPage = $(this).data('dt-idx');
+                if (newPage === 'previous') {
+                    api.page('previous').draw('page');
+                } else if (newPage === 'next') {
+                    api.page('next').draw('page');
+                } else {
+                    api.page(parseInt(newPage)).draw('page');
+                }
+            });
+        }
+    });
+
+    // Add event listener to the status filter dropdown
+    statusFilter.addEventListener('change', () => {
+        var selectedValue = statusFilter.value;
+        var numColumns = table.columns().count();
+
+        // Clear previous filters
+        for (var i = 0; i < numColumns; i++) {
+            table.column(i).search('');
+        }
+
+        // Apply new filter
+        if (numColumns > 8) {
+            table.column(8).search(selectedValue).draw();
+        } else if (numColumns > 7) {
+            table.column(7).search(selectedValue).draw();
+        }
+    }); 
+
+    // Make DataTable pagination and number of entry dropdown clickable
+    function allowInteractionOnDataTable() {
+        // Adding click event to the DataTable elements to stop propagation
+        document.querySelectorAll('.dataTables_paginate, .dataTables_length, .dataTables_filter').forEach(element => {
+            element.addEventListener('click', (event) => {
+                event.stopPropagation(); // Stop the focus event from triggering on QR input
+            });
+        });
+
+        // Adding focus and blur events to the dropdown to handle focus properly
+        document.querySelectorAll('.dataTables_length select').forEach(select => {
+            select.addEventListener('focus', () => {
+                // Temporarily disable QR input focus
+                document.removeEventListener('click', focusQrInput);
+            });
+
+            select.addEventListener('blur', () => {
+                // Re-enable QR input focus after a delay
+                setTimeout(() => {
+                    document.addEventListener('click', focusQrInput);
+                }, 100);
+            });
+        });
+    }
+
+    // Call the function to make DataTable interactions work
+    allowInteractionOnDataTable();
 });
+
+
 
 
 
@@ -324,7 +447,6 @@ function hideMobileKeyboard() {
 }
 
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const qrInput = document.getElementById('qrInput');
     const formInputs = document.querySelectorAll('form input:not(#qrInput)'); // Exclude qrInput from the list
@@ -361,17 +483,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Make DataTable pagination and number of entry dropdown clickable
+    // Make DataTable pagination, number of entry dropdown, and filter clickable
     function allowInteractionOnDataTable() {
         // Adding click event to the DataTable elements to stop propagation
-        document.querySelectorAll('.dataTables_paginate, .dataTables_length, .dataTables_filter').forEach(element => {
+        document.querySelectorAll('.dataTables_paginate, .dataTables_length, .dataTables_filter, #statusFilter').forEach(element => {
             element.addEventListener('click', (event) => {
                 event.stopPropagation(); // Stop the focus event from triggering on QR input
             });
         });
 
-        // Adding focus and blur events to the dropdown to handle focus properly
-        document.querySelectorAll('.dataTables_length select').forEach(select => {
+        // Adding focus and blur events to the dropdown and filter to handle focus properly
+        document.querySelectorAll('.dataTables_length select, #statusFilter').forEach(select => {
             select.addEventListener('focus', () => {
                 // Temporarily disable QR input focus
                 document.removeEventListener('click', focusQrInput);
@@ -391,10 +513,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial focus on the QR input field
     focusQrInput();
+
     // Ensure the QR input field remains focused after interactions
     document.addEventListener('click', (event) => {
         // Check if the click is inside the DataTable controls
-        const isInsideDataTableControls = event.target.closest('.dataTables_paginate, .dataTables_length, .dataTables_filter');
+        const isInsideDataTableControls = event.target.closest('.dataTables_paginate, .dataTables_length, .dataTables_filter, #statusFilter');
         if (!isInsideDataTableControls) {
             focusQrInput();
         }
@@ -405,11 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
         $('#reservation_details').modal('hide');
     });
 });
-
-
-
-
-
 
 
 
