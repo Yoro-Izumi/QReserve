@@ -61,125 +61,167 @@ if (isset($_SESSION["userSuperAdminID"])) {
   <body class="body">
     <?php include "superadmin_sidebar.php"; ?>
 
-    <section class="home-section">
-      <h4 class="qreserve">Reservations</h4>
-      <hr class="my-4 mb-3 mt-3">
-      <div class="container-fluid dashboard-square-kebab">
-        <form>
-          <label for="statusFilter">Filter by Status:</label>
-          <select id="statusFilter">
+
+    <script>
+  $(document).ready(function() {
+    var table = $('#example').DataTable();
+    var searchContainer = table.table().container().querySelector('.dataTables_filter');
+
+    // Move the DataTables search input into the custom container
+    document.getElementById('datatableSearchContainer').appendChild(searchContainer);
+  });
+
+  // Custom filter function for status
+  $('#statusFilter').on('change', function() {
+    var selectedStatus = $(this).val();
+    $('#example').DataTable().column(8).search(selectedStatus).draw();
+  });
+</script>
+
+<style>
+  .form-group label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  #statusFilter {
+    display: inline-block;
+    width: auto;
+  }
+
+  .dataTables_filter {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+</style>
+
+<section class="home-section">
+  <h4 class="qreserve">Reservations</h4>
+  <hr class="my-4 mb-3 mt-3">
+  <div class="container-fluid dashboard-square-kebab">
+    <form>
+      <div class="row">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+          <div class="form-group mb-0 d-flex align-items-center">
+            <label for="statusFilter" class="mb-0 me-2">Filter by Status:</label>
+            <select class="form-control" id="statusFilter">
               <option value="">All</option>
               <option value="Reserved">Reserved</option>
               <option value="On Process">On Process</option>
               <option value="Rejected">Rejected</option>
-          </select>
-<table id="example" class="table table-striped" style="width: 100%">
-  <thead>
-    <tr>
-      <th>Actions</th>
-      <th>Reservation Code</th>
-      <th>Name</th>
-      <th>Date of Reservation</th>
-      <th>Time of Reservation</th>
-      <th>Pool Table</th>
-      <th>Contact Number</th>
-      <th>Email Address</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-    foreach ($arrayReservationInfo as $reservations) {
-        $reservationID = $reservations['reservationID'] ?? '';
-        $reservationDate = $reservations['reservationDate'] ?? '';
-        $reservationStatus = $reservations['reservationStatus'] ?? '';
-        $reservationTimeStart = convertToNormalTime($reservations['reservationTimeStart']) ?? '';
-        $reservationTimeEnd = convertToNormalTime($reservations['reservationTimeEnd']) ?? '';
-        $tableNumber = $reservations['poolTableNumber'] ?? '';
-        $reservationCode = '';
+            </select>
+          </div>
+          <div id="datatableSearchContainer"></div>
+        </div>
+      </div>
+      <table id="example" class="table table-striped" style="width: 100%">
+        <thead>
+          <tr>
+            <th>Actions</th>
+            <th>Reservation Code</th>
+            <th>Name</th>
+            <th>Date of Reservation</th>
+            <th>Time of Reservation</th>
+            <th>Pool Table</th>
+            <th>Contact Number</th>
+            <th>Email Address</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+              <?php
+              foreach ($arrayReservationInfo as $reservations) {
+                $reservationID = $reservations['reservationID'] ?? '';
+                $reservationDate = $reservations['reservationDate'] ?? '';
+                $reservationStatus = $reservations['reservationStatus'] ?? '';
+                $reservationTimeStart = convertToNormalTime($reservations['reservationTimeStart']) ?? '';
+                $reservationTimeEnd = convertToNormalTime($reservations['reservationTimeEnd']) ?? '';
+                $tableNumber = $reservations['poolTableNumber'] ?? '';
+                $reservationCode = '';
 
-        if ($reservationDate >= $currentDate) {
-            $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
-            $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
-            mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
-            mysqli_stmt_execute($getQRCodePrepare);
-            $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
-            $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
-            $reservationCode = $getQRCodeRow['codeQR'] ?? '';
+                if ($reservationDate >= $currentDate) {
+                  $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
+                  $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
+                  mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
+                  mysqli_stmt_execute($getQRCodePrepare);
+                  $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
+                  $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
+                  $reservationCode = $getQRCodeRow['codeQR'] ?? '';
 
-            foreach ($arrayMemberAccount as $members) {
-                if ($members['memberID'] == $reservations['memberID']) {
-                    $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
-                    $contactNumber = decryptData($members['customerNumber'], $key) ?? '';
-                    $email = decryptData($members['customerEmail'], $key) ?? '';
-                }
-            }
+                  foreach ($arrayMemberAccount as $members) {
+                    if ($members['memberID'] == $reservations['memberID']) {
+                      $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
+                      $contactNumber = decryptData($members['customerNumber'], $key) ?? '';
+                      $email = decryptData($members['customerEmail'], $key) ?? '';
+                    }
+                  }
 
-            echo "<tr>";
-            if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
-                $status = "badge bg-success";
-                echo "<td> </td>";
-            } else if ($reservationStatus == "On Process") {
-                $status = "badge bg-warning";
-                echo "<td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>";
-            } else {
-                $status = "badge bg-danger";
-                echo "<td> </td>";
-            }
-            echo "
+                  echo "<tr>";
+                  if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
+                    $status = "badge bg-success";
+                    echo "<td> </td>";
+                  } else if ($reservationStatus == "On Process") {
+                    $status = "badge bg-warning";
+                    echo "<td><input type='checkbox' class='reservation-checkbox' value='{$reservations['reservationID']}'></td>";
+                  } else {
+                    $status = "badge bg-danger";
+                    echo "<td> </td>";
+                  }
+                  echo "
                 <td>$reservationCode</td>
                 <td>$customerName</td>
-                <td>".convertToNormalDate($reservationDate)."</td>
+                <td>" . convertToNormalDate($reservationDate) . "</td>
                 <td>$reservationTimeStart - $reservationTimeEnd</td>
                 <td>$tableNumber</td>
                 <td>$contactNumber</td>
                 <td>$email</td>
                 <td><span class='$status'>$reservationStatus</span></td>
             </tr>";
-        } else {
-            // Additional code for else case, if needed
-        }
-    }
+                } else {
+                  // Additional code for else case, if needed
+                }
+              }
 
-    foreach ($arrayWalkinDetails as $walkin) {
-        $walkinDate = $walkin['walkinDate'] ?? '';
-        $walkinStatus = $walkin['walkinStatus'] ?? '';
-        $walkinTimeStart = convertToNormalTime($walkin['walkinTimeStart']) ?? '';
-        $walkinTimeEnd = convertToNormalTime($walkin['walkinTimeEnd']) ?? '';
-        $tableNumber = $walkin['poolTableNumber'] ?? '';
+              foreach ($arrayWalkinDetails as $walkin) {
+                $walkinDate = $walkin['walkinDate'] ?? '';
+                $walkinStatus = $walkin['walkinStatus'] ?? '';
+                $walkinTimeStart = convertToNormalTime($walkin['walkinTimeStart']) ?? '';
+                $walkinTimeEnd = convertToNormalTime($walkin['walkinTimeEnd']) ?? '';
+                $tableNumber = $walkin['poolTableNumber'] ?? '';
 
-        if ($walkinDate >= $currentDate) {
-            $customerName = decryptData($walkin['customerFirstName'], $key) . " " . decryptData($walkin['customerMiddleName'], $key) . " " . decryptData($walkin['customerLastName'], $key);
-            $contactNumber = decryptData($walkin['customerNumber'], $key) ?? '';
-            $email = decryptData($walkin['customerEmail'], $key) ?? '';
+                if ($walkinDate >= $currentDate) {
+                  $customerName = decryptData($walkin['customerFirstName'], $key) . " " . decryptData($walkin['customerMiddleName'], $key) . " " . decryptData($walkin['customerLastName'], $key);
+                  $contactNumber = decryptData($walkin['customerNumber'], $key) ?? '';
+                  $email = decryptData($walkin['customerEmail'], $key) ?? '';
 
-            echo "<tr>
+                  echo "<tr>
                 <td></td>
                 <td>Walk-in</td>
                 <td>$customerName</td>
-                <td>".convertToNormalDate($walkinDate)."</td>
+                <td>" . convertToNormalDate($walkinDate) . "</td>
                 <td>$walkinTimeStart - $walkinTimeEnd</td>
                 <td>$tableNumber</td>
                 <td>$contactNumber</td>
                 <td>$email</td>";
-            if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
-                $status = "badge bg-success";
-            } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
-                $status = "badge bg-warning";
-            } else {
-                $status = "badge bg-danger";
-            }
-            echo "<td><span class='$status'>$walkinStatus</span></td>
+                  if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
+                    $status = "badge bg-success";
+                  } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
+                    $status = "badge bg-warning";
+                  } else {
+                    $status = "badge bg-danger";
+                  }
+                  echo "<td><span class='$status'>$walkinStatus</span></td>
             </tr>";
-        } else {
-            // Additional code for else case, if needed
-        }
-    }
-    ?>
-</tbody>
+                } else {
+                  // Additional code for else case, if needed
+                }
+              }
+              ?>
+            </tbody>
 
-</table>
-</form>
+          </table>
+        </form>
 
         <div class="mt-3">
           <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button> -->
@@ -192,25 +234,25 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
     <!-- Modals -->
     <!-- Accept Reservation Modals -->
-<!-- Accept Reservation Modals -->
-<div class="modal fade" id="accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" id="wait">
-      <div class="modal-header">
-        <h2 class="modal-title fw-bold text-center" id="warning">
-          <img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Wait!
-        </h2>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to accept this reservation?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" id="confirm-accept-reservation" class="btn btn-primary create-button" data-bs-target="#success-accept-modal" data-bs-toggle="modal">Confirm</button>
+    <!-- Accept Reservation Modals -->
+    <div class="modal fade" id="accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="warning">
+              <img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Wait!
+            </h2>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to accept this reservation?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" id="confirm-accept-reservation" class="btn btn-primary create-button" data-bs-target="#success-accept-modal" data-bs-toggle="modal">Confirm</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
     <!-- Success Accept Reservation Modals -->
     <div class="modal fade" id="success-accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -249,47 +291,47 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </div>
 
     <!-- Reject Reservation Modals -->
-<!-- Reject Reservation Modals -->
-<div class="modal fade" id="reject-confirmation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" id="wait">
-      <div class="modal-header">
-        <h2 class="modal-title fw-bold text-center" id="deleted">Reason for Rejection</h2>
+    <!-- Reject Reservation Modals -->
+    <div class="modal fade" id="reject-confirmation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="deleted">Reason for Rejection</h2>
+          </div>
+          <form id='reject-reason-form' name='reject-reason-form' method="POST">
+            <div class="modal-body">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="rejectionReason" id="firstDefaultReason" value="Choose another date and time. A reservation was already made with the same date and time.">
+                <label class="form-check-label" for="firstDefaultReason">
+                  Choose another date and time. A reservation was already made with the same date and time.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="rejectionReason" id="secondDefaultReason" value="The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.">
+                <label class="form-check-label" for="secondDefaultReason">
+                  The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="rejectionReason" id="thirdOption" value="thirdOption">
+                <label class="form-check-label" for="thirdOption">
+                  Others (Please specify)
+                </label>
+              </div>
+              <div id="thirdOptionText" class="form-group" style="display: none; margin-top: 10px;">
+                <textarea id="thirdOptionTextarea" name="thirdOptionTextarea" class="form-control" maxlength="300" rows="3" placeholder="Specify your reason (max 50 words)"></textarea>
+                <small id="wordCount" class="form-text text-muted">0 / 50 words</small>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="confirm-reject-reservation-reason" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <form id='reject-reason-form' name='reject-reason-form' method="POST">
-        <div class="modal-body">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="rejectionReason" id="firstDefaultReason" value="Choose another date and time. A reservation was already made with the same date and time.">
-            <label class="form-check-label" for="firstDefaultReason">
-              Choose another date and time. A reservation was already made with the same date and time.
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="rejectionReason" id="secondDefaultReason" value="The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.">
-            <label class="form-check-label" for="secondDefaultReason">
-              The member previously violated the establishment’s policy. Not adhering to dress code and/or causing disturbances to other guests.
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="rejectionReason" id="thirdOption" value="thirdOption">
-            <label class="form-check-label" for="thirdOption">
-              Others (Please specify)
-            </label>
-          </div>
-          <div id="thirdOptionText" class="form-group" style="display: none; margin-top: 10px;">
-            <textarea id="thirdOptionTextarea" name="thirdOptionTextarea" class="form-control" maxlength="300" rows="3" placeholder="Specify your reason (max 50 words)"></textarea>
-            <small id="wordCount" class="form-text text-muted">0 / 50 words</small>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" id="confirm-reject-reservation-reason" class="btn btn-primary create-button" data-bs-target="#success-reject-modal" data-bs-toggle="modal">Confirm</button>
-        </div>
-      </form>
     </div>
-  </div>
-</div>
-    
+
     <!-- Success Reject Reservation Modals -->
     <div class="modal fade" id="success-reject-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -356,7 +398,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
       #result {
         position: absolute;
         left: -9999px;
-        display:none;
+        display: none;
       }
     </style>
     <style>
@@ -374,35 +416,35 @@ if (isset($_SESSION["userSuperAdminID"])) {
 
 
     <script>
-        function removeInputField() {
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      function removeInputField() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-            // Check for iOS devices
-            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+        // Check for iOS devices
+        var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 
-            // Check for other mobile devices
-            var isMobile = /Android|webOS|BlackBerry|IEMobile|Opera Mini/.test(userAgent) || isIOS;
+        // Check for other mobile devices
+        var isMobile = /Android|webOS|BlackBerry|IEMobile|Opera Mini/.test(userAgent) || isIOS;
 
-            if (isMobile) {
-                var inputField = document.getElementById('qrInput');
-                if (inputField) {
-                    inputField.parentNode.removeChild(inputField);
-                }
-            }
-            if (isIOS) {
-                var inputField = document.getElementById('qrInput');
-                if (inputField) {
-                    inputField.parentNode.removeChild(inputField);
-                }
-            }
+        if (isMobile) {
+          var inputField = document.getElementById('qrInput');
+          if (inputField) {
+            inputField.parentNode.removeChild(inputField);
+          }
         }
+        if (isIOS) {
+          var inputField = document.getElementById('qrInput');
+          if (inputField) {
+            inputField.parentNode.removeChild(inputField);
+          }
+        }
+      }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            removeInputField();
-        });
+      document.addEventListener("DOMContentLoaded", function() {
+        removeInputField();
+      });
     </script>
 
-    
+
 
 
   </body>
