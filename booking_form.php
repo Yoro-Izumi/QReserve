@@ -77,7 +77,7 @@ if (isset($_SESSION['userMemberID'])) {
           <h3 class="fw-bold ps-4">Fill up the form</h3>
           <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
             <div class="col-md-4 mb-3">
-              <label for="firstName" class="form-label">First Name <span>*</span></label>
+              <label for="firstName" class="form-label">First Name</label>
               <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" required onblur="handleInput(event)" oninput="validateName(event)" readonly value="<?php echo $customerFirstName; ?>" />
               <input type="hidden" name="hiddenFirstName" id="hiddenFirstName" value="<?php echo $customerFirstName; ?>" />
               <div class="valid-feedback">
@@ -99,7 +99,7 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <label for="lastName" class="form-label">Last Name <span>*</span></label>
+              <label for="lastName" class="form-label">Last Name</label>
               <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" required onblur="handleInput(event)" oninput="validateName(event)" readonly value="<?php echo $customerLastName; ?>" />
               <input type="hidden" name="hiddenLastName" id="hiddenLastName" value="<?php echo $customerLastName; ?>" />
               <div class="valid-feedback">
@@ -110,7 +110,7 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
+              <label for="birthDate" class="form-label">Birthdate</label>
               <input type="date" class="form-control" id="birthDate" required readonly value="<?php echo $customerBirthdate; ?>" />
               <input type="hidden" name="hiddenBirthDate" id="hiddenBirthDate" value="<?php echo $customerBirthdate; ?>" />
               <div class="valid-feedback">
@@ -121,7 +121,7 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
+              <label for="contactNumber" class="form-label">Contact Number</label>
               <input type="text" class="form-control" id="contactNumber" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)" readonly value="<?php echo $customerNumber; ?>" />
               <input type="hidden" name="hiddenContactNumber" id="hiddenContactNumber" value="<?php echo $customerNumber; ?>" />
               <div class="valid-feedback">
@@ -132,7 +132,7 @@ if (isset($_SESSION['userMemberID'])) {
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <label for="email" class="form-label">Email Address <span>*</span></label>
+              <label for="email" class="form-label">Email Address</label>
               <input type="email" class="form-control" id="email" name="email" required oninput="validateEmail(event)" readonly value="<?php echo $customerEmail; ?>" />
               <input type="hidden" name="hiddenContactNumber" id="hiddenContactNumber" value="<?php echo $customerNumber; ?>" />
               <div class="valid-feedback">

@@ -123,7 +123,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                         <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
                     </div>
                     <div class="modal-body text-center">
-                        You have successfully registered a new service.
+                        You have successfully added a new service.
                     </div>
                     <div class="modal-footer">
                         <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->

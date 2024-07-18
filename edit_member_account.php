@@ -141,7 +141,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-6 mb-2">
             <label for="controlNumber" class="form-label">Control Number <span>*</span></label>
-            <input type="text" value="<?php echo $membershipID; ?>" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" oninput="validateControlNumber(event)">
+            <input type="text" value="<?php echo $membershipID; ?>" class="form-control" id="controlNumber" placeholder="Enter control number here (e.g., 00-0000)" name="controlNumber" required minlength="7" maxlength="7" oninput="validateControlNumber(event)" readonly>
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -151,7 +151,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
           <div class="col-md-6 mb-2">
             <label for="validity" class="form-label">Validity Date <span>*</span></label>
-            <input type="date" value="<?php echo $validityDate; ?>" class="form-control" id="validity" placeholder="Enter birthDate here" name="validity" required onblur="handleInput(event)" oninput="validateUsername(event)">
+            <input type="date" value="<?php echo $validityDate; ?>" class="form-control" id="validity" placeholder="Enter birthDate here" name="validity" required onblur="handleInput(event)" oninput="validateUsername(event)" readonly>
             <div class="valid-feedback">
               <!-- Looks good! -->
             </div>
@@ -195,12 +195,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
             </div>
           </div>
         </form>
-
-
       </div>
     </section>
-
-
 
     <!-- Add this div at the end of your HTML body to contain the modal -->
     <div class="modal fade" id="confirmEditAdmin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
