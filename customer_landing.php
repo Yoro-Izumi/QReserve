@@ -28,7 +28,18 @@ date_default_timezone_set('Asia/Manila');
 </head>
 
 <body class="customer-landing">
-  <header>
+<style>
+    .navbar a {
+      color: white;
+      font-weight: normal;
+    }
+
+    .navbar a.active {
+      color: #FFB800;
+      font-weight: bold;
+    }
+  </style>
+ <header>
     <nav class="navbar">
       <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
       <input type="checkbox" id="menu-toggler">
@@ -39,14 +50,15 @@ date_default_timezone_set('Asia/Manila');
         </svg>
       </label>
       <ul class="all-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#amenities">Amenities</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#amenities" class="nav-link">Amenities</a></li>
+        <li><a href="#about" class="nav-link">About Us</a></li>
+        <li><a href="#contact" class="nav-link">Contact Us</a></li>
       </ul>
     </nav>
   </header>
+
 
   <section class="homepage" id="home">
     <div class="content">
@@ -227,7 +239,51 @@ date_default_timezone_set('Asia/Manila');
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
     </script>
+      <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.nav-link');
+      const sections = document.querySelectorAll('section');
+
+      const makeActive = (link) => {
+        navLinks.forEach((navLink) => navLink.classList.remove('active'));
+        link.classList.add('active');
+      };
+
+      const options = {
+        threshold: 0.6
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            const link = document.querySelector(`.nav-link[href="#${id}"]`);
+            if (link) {
+              makeActive(link);
+            }
+          }
+        });
+      }, options);
+
+      sections.forEach((section) => {
+        observer.observe(section);
+      });
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          window.scrollTo({
+            top: targetSection.offsetTop,
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+  </script>
   </section>
+
   <footer>
     <div>
       <span>Copyright © 2024 All Rights Reserved</span>
