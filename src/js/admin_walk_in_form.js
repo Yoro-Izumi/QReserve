@@ -423,30 +423,62 @@ $(document).ready(function () {
 
 
 // Unsaved Changes
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('booking-form');
-  let isFormDirty = false;
+// document.addEventListener('DOMContentLoaded', () => {
+//   const form = document.getElementById('booking-form');
+//   let isFormDirty = false;
 
-  form.addEventListener('input', () => {
-    isFormDirty = true;
-  });
+//   form.addEventListener('input', () => {
+//     isFormDirty = true;
+//   });
 
-  const cancelButton = document.querySelector('.cancel-button');
-  cancelButton.addEventListener('click', () => {
-    if (isFormDirty) {
-      const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
-      unsavedChangesModal.show();
-    } else {
-      window.location.href = 'admin_dashboard.php';
-    }
-  });
+//   const cancelButton = document.querySelector('.cancel-button');
+//   cancelButton.addEventListener('click', () => {
+//     if (isFormDirty) {
+//       const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
+//       unsavedChangesModal.show();
+//     } else {
+//       window.location.href = 'admin_dashboard.php';
+//     }
+//   });
 
-  const proceedButton = document.getElementById('proceedButton');
-  proceedButton.addEventListener('click', () => {
-    window.location.href = 'admin_dashboard.php';
-  });
+//   const proceedButton = document.getElementById('proceedButton');
+//   proceedButton.addEventListener('click', () => {
+//     window.location.href = 'admin_dashboard.php';
+//   });
+// });
+
+let formChanged = false;
+
+// Function to handle input changes
+function handleInputChange(event) {
+  formChanged = true;
+}
+
+// Attach event listeners to all input fields to track changes
+document.querySelectorAll('#booking-form input, #booking-form select').forEach(input => {
+  input.addEventListener('change', handleInputChange);
 });
 
+// Function to handle cancel button click
+function handleCancel() {
+  if (formChanged) {
+    const unsavedChangesModal = new bootstrap.Modal(document.getElementById('unsavedChangesModal'));
+    unsavedChangesModal.show();
+  } else {
+    window.location.href = 'admin_dashboard.php';
+  }
+}
+
+// Function to handle proceed button click in the modal
+document.getElementById('proceedButton').addEventListener('click', function () {
+  window.location.href = 'admin_dashboard.php';
+});
+
+// Optionally handle modal cancel button
+document.querySelector('.cancel-button-member').addEventListener('click', function () {
+  const unsavedChangesModal = bootstrap.Modal.getInstance(document.getElementById('unsavedChangesModal'));
+  unsavedChangesModal.hide();
+});
 
 
 

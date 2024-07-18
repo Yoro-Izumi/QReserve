@@ -247,8 +247,8 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
             <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button-member" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button-member" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
           </div>
         </div>
       </div>
