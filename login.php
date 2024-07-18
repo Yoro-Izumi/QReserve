@@ -100,9 +100,11 @@ if (isset($_POST['login'])) {
 }
 ?>
 
-
-
-
+<style>
+        ::-ms-reveal {
+        display: none !important;
+    }
+</style>
 
 <!DOCTYPE html>
 <html lang="en">
