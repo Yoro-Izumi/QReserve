@@ -10,20 +10,22 @@ date_default_timezone_set('Asia/Manila');
 // Initialize variables with default values
 // $ID = $adminID = $serviceID = $serviceName = $serviceCapacity = $serviceRate = $serviceImage = "";
 
-    if (isset($_SESSION["userSuperAdminID"])) {
-        $superAdminID = $_SESSION["userSuperAdminID"];
-      
-        $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
-        
-        foreach($arrayServices as $service){
-            $serviceID = $ID;
-	if($service['serviceID'] == $serviceID){
+if (isset($_SESSION["userSuperAdminID"])) {
+    $superAdminID = $_SESSION["userSuperAdminID"];
+
+    $ID = isset($_GET['value']) ? $_GET['value'] : ' ';
+
+    foreach ($arrayServices as $service) {
+        $serviceID = $ID;
+        if ($service['serviceID'] == $serviceID) {
             $serviceName = $service['serviceName'];
             $serviceCapacity = $service['serviceCapacity'];
             $serviceRate = $service['serviceRate'];
             $serviceImage = $service['serviceImage'];
-        }}
-?>    <!DOCTYPE html>
+        }
+    }
+?>
+    <!DOCTYPE html>
     <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
     <html lang="en" dir="ltr">
 
@@ -87,21 +89,20 @@ date_default_timezone_set('Asia/Manila');
                         <div class="invalid-feedback">Please provide a valid rate.</div>
                     </div>
                     <div class="col-md-6 mb-2">
-    <label for="capacity" class="form-label">Capacity <span>*</span></label>
-    <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="capacity" placeholder="Enter capacity here" name="editCapacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
-    <div class="valid-feedback">Looks good!</div>
-    <div class="invalid-feedback">Please provide a valid capacity between 2 and 50.</div>
-</div>
-<div class="col-md-10 mb-2">
-    <label for="editImage" class="form-label">Image</label>
-    <input type="file" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" onchange="validateImage(event)">
-    <div class="valid-feedback">Looks good!</div>
-    <div class="invalid-feedback">Please provide a valid file. Accepted formats: jpg, jpeg, png. Maximum size: 5MB.</div>
-    <img id="imagePreview" style="display:none; max-width: 100px; margin-top: 10px;" />
-</div>
+                        <label for="capacity" class="form-label">Capacity <span>*</span></label>
+                        <input type="text" value="<?php echo $serviceCapacity; ?>" class="form-control" id="capacity" placeholder="Enter capacity here" name="editCapacity" maxlength="2" required onblur="handleCapacityInput(event)" oninput="validateCapacity(event)">
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Please provide a valid capacity between 2 and 50.</div>
+                    </div>
+                    <div class="col-md-10 mb-2">
+                        <label for="editImage" class="form-label">Image <span>*</span></label>
+                        <input type="file" class="form-control" id="editImage" name="editImage" accept=".jpeg, .jpg, .png" onchange="validateImage(event)">
+                        <div class="valid-feedback"><!-- Looks good! --></div>
+                        <div class="invalid-feedback" id="imageFeedback">Please provide a valid file.</div>
+                    </div>
 
                     <div class="col-md-2 mb-2">
-                        <img id="imagePreview" src="src/images/Services/<?php echo $serviceImage;?>" alt="Image Preview">
+                        <img id="imagePreview" src="src/images/Services/<?php echo $serviceImage; ?>" alt="Image Preview">
                     </div>
                     <div class="row justify-content-end mt-5">
                         <div class="col-12 col-md-2 mb-2 mb-md-0">
@@ -155,32 +156,33 @@ date_default_timezone_set('Asia/Manila');
 
 
         <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" id="">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
-          </div>
-          <div class="modal-body">
-            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
-            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
-          </div>
+            <div class="modal-dialog modal-dialog-centered" id="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+                        <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
         <script src="src/js/edit_services.js"></script>
         <script src="src/js/sidebar.js"></script>
 
-        <script> //js code to monitor if file input has file
+        <script>
+            //js code to monitor if file input has file
             document.getElementById('editImage').addEventListener('change', function() {
                 if (this.files && this.files.length > 0) {
                     document.getElementById('isImage').value = 'true';
                 } else {
                     document.getElementById('isImage').value = 'false';
-                  }
+                }
             });
         </script>
     </body>
