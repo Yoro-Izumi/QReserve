@@ -61,20 +61,61 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   <body class="body">
   <?php include "admin_sidebar.php"; ?>
 
-    <section class="home-section">
-      <h4 class="qreserve">Reservations</h4>
-      <hr class="my-4 mb-3 mt-3">
-      <div class="container-fluid dashboard-square-kebab">
-      <form>
-        <label for="statusFilter">Filter by Status:</label>
-        <select id="statusFilter">
-            <option value="">All</option>
-            <option value="Reserved">Reserved</option>
-            <option value="On Process">On Process</option>
-            <option value="Rejected">Rejected</option>
-        </select>
+  <script>
+  $(document).ready(function() {
+    var table = $('#example').DataTable();
+    var searchContainer = table.table().container().querySelector('.dataTables_filter');
+
+    // Move the DataTables search input into the custom container
+    document.getElementById('datatableSearchContainer').appendChild(searchContainer);
+  });
+
+  // Custom filter function for status
+  $('#statusFilter').on('change', function() {
+    var selectedStatus = $(this).val();
+    $('#example').DataTable().column(8).search(selectedStatus).draw();
+  });
+</script>
+
+<style>
+  .form-group label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  #statusFilter {
+    display: inline-block;
+    width: auto;
+  }
+
+  .dataTables_filter {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+</style>
+
+<section class="home-section">
+  <h4 class="qreserve">Reservations</h4>
+  <hr class="my-4 mb-3 mt-3">
+  <div class="container-fluid dashboard-square-kebab">
+    <form>
+      <div class="row">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+          <div class="form-group mb-0 d-flex align-items-center">
+            <label for="statusFilter" class="mb-0 me-2">Filter by Status:</label>
+            <select class="form-control" id="statusFilter">
+              <option value="">All</option>
+              <option value="Reserved">Reserved</option>
+              <option value="On Process">On Process</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          <div id="datatableSearchContainer"></div>
+        </div>
+      </div>
       <table id="example" class="table table-striped" style="width: 100%">
-          <thead>
+        <thead>
             <tr>
               <th>Reservation Code</th>
               <th>Name</th>
