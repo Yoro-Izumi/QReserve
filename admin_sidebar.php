@@ -1,3 +1,13 @@
+<?php
+include "src/get_data_from_database/get_admin_accounts.php";
+$adminSessionID = $_SESSION['userAdmin'];
+$adminUsername = " ";
+  foreach($arrayAdminAccount as $admin){
+    if($admin['adminID'] === $adminSessionID){
+      $adminUsername = $admin['adminUsername'];
+    } 
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <body>
@@ -60,8 +70,8 @@
     <li class="profile">
       <div class="profile-details">
         <div class="name_job">
-          <div class="name">Admin</div>
-          <div class="job">Front-Desk</div>
+          <div class="name"><?php echo $adminUsername;?></div>
+          <div class="job">Front-Desk/Admin</div>
         </div>
       </div>
       <!-- Change the logout link to trigger the modal -->
