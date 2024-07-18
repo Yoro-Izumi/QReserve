@@ -165,7 +165,8 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
               <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
             </div>
             <div class="col-12 col-md-2 mb-2 mb-md-0">
-              <button class="btn btn-outline-primary w-100 cancel-button" type="button">Cancel</button>
+              <!-- <button class="btn btn-outline-primary w-100 cancel-button" type="button">Cancel</button> -->
+              <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="handleCancel()">Cancel</button>
             </div>
           </div>
         </form>
@@ -228,7 +229,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
     </div>
 
     <div id="updateTable" style="display:none;"></div>
-    <script src="src/js/add_new_member.js"></script>
+    <script src="src/js/admin_add_new_member.js"></script>
     <script src="src/js/sidebar.js"></script>
   </body>
 
