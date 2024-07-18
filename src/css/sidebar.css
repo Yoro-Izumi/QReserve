@@ -260,6 +260,24 @@
     color: #E4E9F7;
   }
 
+
+  .sidebar li a.active {
+    background-color: #FFB800;
+    color: #0D2818;
+    font-weight: bold;
+  }
+  
+  .sidebar li a.active .links_name,
+  .sidebar li a.active i {
+    color: #0D2818;
+    font-weight: 600;
+  }
+
+  .sidebar .dropdown-menu .dropdown-item.active {
+    background-color: #FFB800;
+    color: #0D2818;
+  }
+
   @media (max-width: 420px) {
     .sidebar li .tooltip{
       display: none;
