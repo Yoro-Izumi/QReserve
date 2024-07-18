@@ -121,15 +121,18 @@ function validateImage(event) {
   const input = event.target;
   const file = input.files[0];
   const validImageTypes = ["image/jpeg", "image/jpg", "image/png"];
+  const maxSize = 5 * 1024 * 1024; // 5MB in bytes
   const imagePreview = document.getElementById('imagePreview');
-    
+  const imageFeedback = document.getElementById('imageFeedback');
 
   if (file) {
       const fileType = file.type;
-      
-      if (validImageTypes.includes(fileType)) {
+      const fileSize = file.size;
+
+      if (validImageTypes.includes(fileType) && fileSize <= maxSize) {
           input.classList.add("is-valid");
           input.classList.remove("is-invalid");
+          imageFeedback.textContent = "";
 
           // Preview the image
           const reader = new FileReader();
@@ -143,6 +146,12 @@ function validateImage(event) {
           input.classList.remove("is-valid");
           input.value = ""; // Clear the input value to remove the invalid file
           imagePreview.style.display = 'none';
+
+          if (!validImageTypes.includes(fileType)) {
+              imageFeedback.textContent = "Invalid file type. Please upload an image file (jpeg, jpg, png).";
+          } else if (fileSize > maxSize) {
+              imageFeedback.textContent = "File size exceeds 5MB. Please upload a smaller image.";
+          }
       }
   }
 }
