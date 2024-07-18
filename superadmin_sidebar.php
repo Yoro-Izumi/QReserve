@@ -1,3 +1,13 @@
+<?php
+include "src/get_data_from_database/get_super_admin_accounts.php";
+$superAdminSessionID = $_SESSION['userSuperAdmin'];
+$superAdminUsername = " ";
+  foreach($arraySuperAdminAccount as $superAdmin){
+    if($superAdmin['superAdminID'] === $superAdminSessionID){
+      $superAdminUsername = $superAdmin['superAdminUsername'];
+    } 
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <body>
@@ -70,8 +80,8 @@
       <li class="profile">
         <div class="profile-details">
           <div class="name_job">
-            <div class="name">Admin Name</div>
-            <div class="job">Web designer</div>
+            <div class="name"><?php echo $superAdminUsername;?></div>
+            <div class="job">Super Admin</div>
           </div>
         </div>
         <a href="logout.php">
