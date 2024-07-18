@@ -8,51 +8,65 @@
       <i class="bx bx-menu" id="btn"></i>
     </div>
     <ul class="nav-list">
-      <!-- <li>
-          <i class='bx bx-search' ></i>
-         <input type="text" placeholder="Search...">
-         <span class="tooltip">Search</span>
-      </li> -->
+      <?php 
+        $currentPage = basename($_SERVER['PHP_SELF']);
+        
+        // Define sections and their respective pages
+        $sections = [
+          'dashboard' => ['dashboard.php'],
+          'reservations' => ['reservations_viewing.php'],
+          'services' => ['service_management.php', 'add_new_service.php', 'edit_service.php'],
+          'profile' => ['admin-profiles.php', 'add_new_admin.php', 'edit_admin_account.php', 'member-profiles.php', 'add_new_member.php', 'edit_member_account.php'],
+          'reports' => ['reports.php']
+        ];
+        
+        // Determine the active section
+        $activeSection = '';
+        foreach ($sections as $section => $pages) {
+          if (in_array($currentPage, $pages)) {
+            $activeSection = $section;
+            break;
+          }
+        }
+      ?>
       <li>
-        <a href="dashboard.php">
+        <a href="dashboard.php" class="<?= ($activeSection == 'dashboard') ? 'active' : '' ?>">
           <i class="bx bx-home"></i>
           <span class="links_name">Home</span>
         </a>
         <span class="tooltip">Home</span>
       </li>
       <li>
-        <a href="reservations_viewing.php">
+        <a href="reservations_viewing.php" class="<?= ($activeSection == 'reservations') ? 'active' : '' ?>">
           <i class="bx bx-book"></i>
           <span class="links_name">Reservations Viewing</span>
         </a>
         <span class="tooltip">Reservations</span>
       </li>
       <li>
-        <a href="service_management.php">
+        <a href="service_management.php" class="<?= ($activeSection == 'services') ? 'active' : '' ?>">
           <i class="bx bx-aperture"></i>
           <span class="links_name">Service Management</span>
         </a>
         <span class="tooltip">Services</span>
       </li>
-
       <li class="nav-item dropdown">
-        <a class="nav-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link <?= ($activeSection == 'profile') ? 'active' : '' ?>" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bx bx-user"></i>
-          <span class="links_name dropdown-toggle">Profile Management </span>
+          <span class="links_name dropdown-toggle">Profile Management</span>
         </a>
         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="admin-profiles.php">Admin Accounts</a></li>
-          <li><a class="dropdown-item" href="member-profiles.php">Member Accounts</a></li>
+          <li><a class="dropdown-item <?= ($currentPage == 'admin-profiles.php') ? 'active' : '' ?>" href="admin-profiles.php">Admin Accounts</a></li>
+          <li><a class="dropdown-item <?= ($currentPage == 'member-profiles.php') ? 'active' : '' ?>" href="member-profiles.php">Member Accounts</a></li>
         </ul>
       </li>
       <li>
-        <a href="reports.php">
+        <a href="reports.php" class="<?= ($activeSection == 'reports') ? 'active' : '' ?>">
           <i class="bx bx-pie-chart-alt-2"></i>
           <span class="links_name">Reports</span>
         </a>
         <span class="tooltip">Reports</span>
       </li>
-
       <li class="profile">
         <div class="profile-details">
           <div class="name_job">
