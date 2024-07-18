@@ -5,6 +5,7 @@
   include "src/get_data_from_database/get_walk_in.php";
   include "src/get_data_from_database/get_reservation_info.php";
   include "src/get_data_from_database/get_customer_information.php";
+  include "src/get_data_from_database/convert_to_normal_time.php";
 
 $key = "TheGreatestNumberIs73";
 date_default_timezone_set('Asia/Manila');
@@ -34,34 +35,11 @@ $currentTime = date('H:i:s');
               $poolTableStatus = $poolTables['poolTableStatus']; $poolTableNumber = $poolTables['poolTableNumber']; 
               $timeStarted = explode(' ',$poolTables['timeStarted']); 
               $timeEnd = explode(' ',$poolTables['timeEnd']);
-
-
-              foreach($arrayReservationInfo as $reservation){
-                if($reservation['reservationDate'] == $currentDate && $reservation['reservationTimeStart'] <= $currentTime && $reservation['reservationTimeEnd'] >= $currentTime && $poolTables['poolTableID'] == $reservation['tableID']){
-                    $poolStatus = "Playing";
-                    $insertTimeEnd = $currentDate." ".$reservation['reservationTimeEnd'];
-                    $insertTimeStart = $currentDate." ".$reservation['reservationTimeStart']; 
-                    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-                    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-                    mysqli_stmt_bind_param($stmt, "siss", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
-                    mysqli_stmt_execute($stmt);
-
-                }
-                else{
-                    $poolStatus = "Available";
-                    $insertTimeEnd = $currentDate." 00:00:00";
-                    $insertTimeStart = $currentDate." 00:00:00"; 
-                    $qryUpdatePoolTable = "UPDATE `pool_tables` SET poolTableStatus = ?, timeStarted = ?, timeEnd = ? WHERE poolTableID = ?";
-                    $stmt = mysqli_prepare($conn, $qryUpdatePoolTable);
-                    mysqli_stmt_bind_param($stmt, "siss", $poolStatus, $insertTimeStart, $insertTimeEnd, $poolTables['poolTableID']);
-                    mysqli_stmt_execute($stmt);
-                }
-            }
             
             echo "<tr>
               <td>".$poolTableNumber."</td>
-              <td>".$timeStarted[1]."</td>
-              <td>".$timeEnd[1]."</td>";
+              <td>".($poolTableStatus == "Available" ? "--:--" : convertToNormalTime($timeStarted[1]))."</td>
+              <td>".($poolTableStatus == "Available" ? "--:--" : convertToNormalTime($timeEnd[1]))."</td>";
                 if($poolTableStatus == "Done" || $poolTableStatus == "Available"){
                   $status = "badge bg-success";
                 }

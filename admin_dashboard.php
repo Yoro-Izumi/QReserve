@@ -1,7 +1,13 @@
 <?php
 session_start();
-if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { // Check for admin session too
-  $visitors = 0;
+if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
+  // Check for admin session too
+  include "connect_database.php";
+  include "src/get_data_from_database/get_services.php";
+  include "src/get_data_from_database/get_visitor_num.php";
+
+  $visitors = $totalVisitor;
+
 ?>
 
   <!DOCTYPE html>
@@ -42,41 +48,54 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
     <!-- External CSS -->
     <link rel="stylesheet" href="src/css/sidebar.css" />
     <link rel="stylesheet" href="src/css/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   </head>
 
   <body class="body">
-  <?php include "admin_sidebar.php"; ?>
+    <?php include "admin_sidebar.php"; ?>
     <section class="home-section">
-      <h4 class="qreserve">Active Playing</h4>
+
+      <div class="container-fluid dashboard-square-kebab" id="full-screen">
+        <i id="toggleFullScreen" class="bi bi-fullscreen"></i>
+        <img src="src/images/Bevitore-logo.png" class="img-fluid icon" id="full-screen-logo" />
+        <h1 class="qreserve bevitore">BILLIARDS TABLE</h1>
+        <div class="row col-md-12 full-screen-tables mb-2">
+          <!-- Pool tables will be loaded here -->
+        </div>
+      </div>
+
+      <h4 class="qreserve mt-5">Active Playing</h4>
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="home-active-playing">
         <table id="example" class="table table-striped" style="width: 100%">
           <!--table data is dynamicaly updated and is from pool_table.php-->
         </table>
       </div>
-
       <div class="container-fluid mt-4">
         <div class="row justify-content-center text-center">
           <div class="col-md-4 mb-3">
-            <div class="dashboard-square-kebab">
-              Number of Visitors
-              <h1><?php echo $visitors; ?></h1>
+            <div class="dashboard-square-kebab visitors-box">
+              <h1 class="number-of-visitors"><?php echo $visitors; ?></h1>
+              <h6 class="Visitors-today">Visitors today</h6>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="dashboard-square-kebab">
               <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="src/images/Services/Membership.jpg" class="d-block w-100" alt="..." />
+              <div class="carousel-inner">
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
                   </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                </div>
+                <?php endforeach; ?>
+              </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>
@@ -92,17 +111,20 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
           <div class="col-md-4 mb-3">
             <div class="dashboard-square-kebab">
               <div id="pubmat-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100" alt="..." />
+              <div class="carousel-inner">
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
                   </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item">
-                    <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                </div>
+                <?php endforeach; ?>
+              </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#pubmat-carousel" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>
@@ -117,6 +139,34 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
         </div>
       </div>
     </section>
+
+    <script>
+      document.getElementById('toggleFullScreen').addEventListener('click', function() {
+        var elem = document.getElementById('full-screen');
+
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+          } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+          } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+        }
+      });
+    </script>
 
     <script>
       $(document).ready(function() {
@@ -155,6 +205,28 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
         }
       }
     </script>
+
+    <!--script refresh pool table full screen section-->
+    <script>
+      $(document).ready(function() {
+        function refreshPoolTables() {
+          $.ajax({
+            url: 'src/get_data_from_database/get_pool_tables.php',
+            method: 'GET',
+            success: function(data) {
+              $('.full-screen-tables').html(data);
+            }
+          });
+        }
+
+        // Initial load
+        refreshPoolTables();
+
+        // Refresh every 2 seconds
+        setInterval(refreshPoolTables, 1000);
+      });
+    </script>
+
     <script>
       $(document).ready(function() {
         // Function to update table content

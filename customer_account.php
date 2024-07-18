@@ -37,24 +37,8 @@ if (isset($_SESSION["userMemberID"])) {
     </head>
 
     <body class="body">
-        <header>
-            <nav class="navbar p-0">
-                <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
-                <input type="checkbox" id="menu-toggler">
-                <label for="menu-toggler" id="hamburger-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z" />
-                    </svg>
-                </label>
-                <ul class="all-links">
-                <li><a href="customer_dashboard.php">Home</a></li>
-          <li><a href="customer_account.php">Reservations</a></li>
-          <li><a href="customer_account.php">Account</a></li>
-          <li><a href="customer_logout.php">Log Out</a></li>
-                </ul>
-            </nav>
-        </header>
+        <?php include "customer_header.php";
+        ?>
 
         <div class="container-fluid">
             <div class="row">
@@ -66,42 +50,79 @@ if (isset($_SESSION["userMemberID"])) {
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="fw-bold ps-4">My Account</h3>
-                    <form class="needs-validation dashboard-square-kebab" id="account-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
-                        <div class="row">
-                            <?php
-                            foreach ($arrayMemberAccount as $memberAccount) {
-                                if ($memberAccount["memberID"] == $userID) {
-                                    $memberControlNumber = decryptData($memberAccount['membershipID'], $key);
-                                    $customerFirstName = decryptData($memberAccount['customerFirstName'], $key);
-                                    $customerLastName = decryptData($memberAccount['customerLastName'], $key);
-                                    $customerMiddleName = decryptData($memberAccount['customerMiddleName'], $key);
-                                    $customerBirthdate = decryptData($memberAccount['customerBirthdate'], $key);
-                                    $customerNumber = decryptData($memberAccount['customerNumber'], $key);
-                                    $customerEmail = decryptData($memberAccount['customerEmail'], $key);
-                                }
-                            }
-                            ?>
-                            <div class="col-12 col-md-12 mb-3 ">
-                                <label for="firstName" class="form-label customer-account" >First Name: <h1 class="customer-account-field" id="customer-name"><?php echo $customerFirstName; ?> <?php echo $customerMiddleName; ?> <?php echo $customerLastName; ?></h1></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Control Number: <h4 class="customer-account-field" id="customer-name"><?php echo $memberControlNumber; ?></h4></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Birthdate: <h4 class="customer-account-field" id="customer-name"><?php echo $customerBirthdate; ?></h4></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Contact Number: <h4 class="customer-account-field" id="customer-name"><?php echo $customerNumber; ?></h4></label>
-                            </div>
-                            <div class="col-12 col-md-3 mb-3">
-                                <label for="firstName" class="form-label customer-account">Email Address: <h4 class="customer-account-field" id="customer-name"><?php echo $customerEmail; ?></h4></label>
-                            </div>
-                    </form>
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="fw-bold">My Account</h3>
+                        </div>
+                        <div class="col-6 breadcrumbs">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <!-- <li class="breadcrumb-item"><a href="customer_account.php">My Account</a></li> -->
+                                    <li class="breadcrumb-item"><a href="data_privacy.php">Data Privacy</a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
 
                 </div>
+                <form class="needs-validation dashboard-square-kebab" id="account-form" novalidate action="submit_customer_reservation.php" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <?php
+                        foreach ($arrayMemberAccount as $memberAccount) {
+                            if ($memberAccount["memberID"] == $userID) {
+                                $memberControlNumber = decryptData($memberAccount['membershipID'], $key);
+                                $customerFirstName = decryptData($memberAccount['customerFirstName'], $key);
+                                $customerLastName = decryptData($memberAccount['customerLastName'], $key);
+                                $customerMiddleName = decryptData($memberAccount['customerMiddleName'], $key);
+                                $customerBirthdate = decryptData($memberAccount['customerBirthdate'], $key);
+                                $customerNumber = decryptData($memberAccount['customerNumber'], $key);
+                                $customerEmail = decryptData($memberAccount['customerEmail'], $key);
+                            }
+                        }
+                        ?>
+                        <div class="col-12 col-md-12 mb-3 ">
+                            <label for="firstName" class="form-label customer-account">Member Name: <h1 class="customer-account-field" id="customer-name"><?php echo $customerFirstName; ?> <?php echo $customerMiddleName; ?> <?php echo $customerLastName; ?></h1></label>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3">
+                            <label for="firstName" class="form-label customer-account">Control Number: <h4 class="customer-account-field" id="customer-name"><?php echo $memberControlNumber; ?></h4></label>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3">
+                            <label for="firstName" class="form-label customer-account">Birthdate: <h4 class="customer-account-field" id="customer-name"><?php echo $customerBirthdate; ?></h4></label>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3">
+                            <label for="firstName" class="form-label customer-account">Contact Number: <h4 class="customer-account-field" id="customer-name"><?php echo $customerNumber; ?></h4></label>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3">
+                            <label for="firstName" class="form-label customer-account">Email Address: <h4 class="customer-account-field text-truncate" id="customer-name"><?php echo strlen($customerEmail) > 20 ? substr($customerEmail, 0, 20) . '...' : $customerEmail; ?></h4></label>
+                        </div>
+                </form>
+
             </div>
         </div>
+        </div>
+
+        <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+        <script>
+            $(document).ready(function() {
+                // Function to update table content
+                function updateTable() {
+                    $.ajax({
+                        url: 'pool_table.php',
+                        type: 'GET',
+                        success: function(response) {
+                            $('#updateTable').html(response);
+                        }
+                    });
+                }
+
+                // Initial table update
+                updateTable();
+
+                // Refresh table every 5 seconds
+                setInterval(updateTable, 1000); // Adjust interval as needed
+            });
+        </script>
+
     </body>
 
     </html>

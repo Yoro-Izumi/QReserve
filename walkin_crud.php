@@ -9,12 +9,14 @@ date_default_timezone_set('Asia/Manila');
     include "encodeDecode.php";
     $key = "TheGreatestNumberIs73";
 
+    $currentDateTime = date('Y-m-d H:i:s');
+
 
 
   $adminID = $_SESSION['userAdminID'];
    // if($conn){
         // Code to execute when the connection is successful
-        if(isset($_POST["selectDate"])){
+        if(isset($_POST["selectStartTime"])){
             $customerFirstName = encryptData(mysqli_real_escape_string($conn, $_POST['firstName']), $key);
             $customerLastName = encryptData(mysqli_real_escape_string($conn, $_POST['lastName']), $key);
             $customerMiddleName = encryptData(mysqli_real_escape_string($conn, $_POST['middleName']), $key);
@@ -23,8 +25,8 @@ date_default_timezone_set('Asia/Manila');
             $customerPhone = encryptData(mysqli_real_escape_string($conn, $_POST['contactNumber']), $key);
             $customerBirthdate = encryptData(mysqli_real_escape_string($conn, $_POST['birthDate']), $key);
             $selectDate = mysqli_real_escape_string($conn,$_POST["selectDate"]);
-            $selectStartTime = mysqli_real_escape_string($conn,$_POST["selectStartTime"]);
-            $selectEndTime = mysqli_real_escape_string($conn,$_POST["selectEndTime"]);
+            $selectStartTime = mysqli_real_escape_string($conn,$_POST["selectStartTime"]).":00";
+            $selectEndTime = mysqli_real_escape_string($conn,$_POST["selectEndTime"]).":00";
             $duration = 1;
               // get duration of time
               $sTime = explode(":",$selectStartTime);
@@ -42,8 +44,8 @@ date_default_timezone_set('Asia/Manila');
             $poolTable = mysqli_real_escape_string($conn,$_POST["selectTable"]);
             $paymentID = 1;
             $serviceID = 1; 
-            $walkinStatus = "Waiting";
-            $paymentAmount = 0; 
+            $walkinStatus = "Reserved";
+            $paymentAmount = 0.00; 
 
             //get service price and update payment amount
             $qryGetServicePrice = "SELECT serviceRate from services where serviceID = ? ";
@@ -71,15 +73,15 @@ date_default_timezone_set('Asia/Manila');
           //insert payment information
           $qryInsertPaymentInfo = "INSERT INTO `payment_history`(`paymentID`, `customerID`, `paymentAmount`) VALUES (NULL,?,?)";
           $conInsertPaymentInfo = mysqli_prepare($conn, $qryInsertPaymentInfo);
-          mysqli_stmt_bind_param($conInsertPaymentInfo, "ii", $customerID, $paymentAmount);
+          mysqli_stmt_bind_param($conInsertPaymentInfo, "id", $customerID, $paymentAmount);
           mysqli_stmt_execute($conInsertPaymentInfo);
 
           $paymentID = mysqli_insert_id($conn);
 
           //For walkin information
-          $walkinQuery = "INSERT INTO `pool_table_walk_in`(`walkinID`, `tableID`, `customerID`, `paymentID`, `adminID`, `serviceID`, `walkinDate`, `walkinTimeStart`, `walkinTimeEnd`, `walkinStatus`) VALUES (NULL,?,?,?,?,?,?,?,?,?)";
+          $walkinQuery = "INSERT INTO `pool_table_walk_in`(`walkinID`, `tableID`, `customerID`, `paymentID`, `adminID`, `serviceID`, `walkinDate`, `walkinTimeStart`, `walkinTimeEnd`, `walkinStatus`, `walkinCreationDate`) VALUES (NULL,?,?,?,?,?,?,?,?,?,?)";
           $walkinPrepare = mysqli_prepare($conn,$walkinQuery);
-          mysqli_stmt_bind_param($walkinPrepare,'iiiiissss',$poolTable,$customerID,$paymentID,$adminID,$serviceID,$currentDate,$selectStartTime,$selectEndTime,$walkinStatus);
+          mysqli_stmt_bind_param($walkinPrepare,'iiiiisssss',$poolTable,$customerID,$paymentID,$adminID,$serviceID,$selectDate,$selectStartTime,$selectEndTime,$walkinStatus,$currentDateTime);
           mysqli_stmt_execute($walkinPrepare);
 
           //For updating pool table info

@@ -1,7 +1,8 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . "/QReserve/connect_database.php";
-include __DIR__ . "/get_pool_table_info.php"; // Adjusted to use __DIR__
-include __DIR__ . "/get_walk_in.php"; // Adjusted to use __DIR__
+include "../../connect_database.php";
+include "get_pool_table_info.php"; // Adjusted to use __DIR__
+include "get_walk_in.php"; // Adjusted to use __DIR__
+include "get_reservation_info.php";
 date_default_timezone_set('Asia/Manila');
 
 // $options = [];
@@ -18,6 +19,10 @@ if (isset($_POST['startTime']) && isset($_POST['endTime']) && isset($_POST['date
     // Function to check if a time range overlaps with another time range
     function isOverlapping($start1, $end1, $start2, $end2) {
         return $start1 < $end2 && $start2 < $end1;
+        //$start1  == $startTime
+        //$end1 == $endTime
+        //$start2 == $reservation/walkin Start Time
+        //$end2 == $reservation/walkin End Time
     }
 
     // Check reservations for overlap

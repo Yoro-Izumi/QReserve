@@ -2,6 +2,8 @@
 session_start();
 if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { // Check for admin session too
   $visitors = 0;
+
+  $today = date('Y-m-d');
 ?>
 
   <!DOCTYPE html>
@@ -49,219 +51,145 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
     <section class="home-section">
       <div class="container-fluid">
         <div class="row">
-                <div class="col-12 text-center">
-                    <h1 class="qreserve mb-0">QReserve</h1>
-                    <h6 id="booking-sub">BEVITORE SANTA ROSA</h6>
-                    <hr class="my-4">
-                </div>
-            </div>
+          <div class="col-12 text-center">
+            <h1 class="qreserve mb-0">QReserve</h1>
+            <h6 id="booking-sub">BEVITORE SANTA ROSA</h6>
+            <hr class="my-4">
+          </div>
+        </div>
+
         <div class="row">
-          <div class="col-md-12">
+          <div class="d-flex justify-content-between align-items-center">
             <h3 class="fw-bold ps-4">Fill up the form</h3>
-            <form class="needs-validation dashboard-square-kebab" id="booking-form" novalidate>
-              <div class="row">
-                <div class="col-12 col-md-4 mb-3">
-                  <label for="firstName" class="form-label">First Name <span>*</span></label>
-                  <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name here" required maxlength="30" pattern="^(?!\s*$)[A-Za-z\- ]" title="Please enter a valid first name." oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
-                  <div class="invalid-feedback">
-                    Please enter a valid first name.
-                  </div>
+            <div class="fw-bold pe-4">
+              <input type="radio" class="btn-check" name="price-option" id="walkin-button" data-price="0" autocomplete="off" checked>
+              <label class="btn btn-outline-success walkin-button" for="walkin-button">Walk-In</label>
+
+              <input type="radio" class="btn-check" name="price-option" id="member-button" data-price="-50" autocomplete="off">
+              <label class="btn btn-outline-danger" for="member-button">Member</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <form class="row dashboard-square-kebab needs-validation" id="booking-form" novalidate>
+              <div class="col-md-4 mb-3">
+                <label for="firstName" class="form-label">First Name <span>*</span></label>
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50" minlength="3">
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
                 </div>
-                <div class="col-12 col-md-4 mb-3">
-                  <label for="middleName" class="form-label">Middle Name</label>
-                  <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter middle name here" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid middle name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
-                  <div class="invalid-feedback">
-                    Please enter a valid middle name.
-                  </div>
-                </div>
-                <div class="col-12 col-md-4 mb-3">
-                  <label for="lastName" class="form-label">Last Name <span>*</span></label>
-                  <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name here" required pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" oninvalid="this.setCustomValidity('Please enter a valid last name')" oninput="handleInput(event); this.value = this.value.replace(/[^A-Za-z\- ]/g, '')" />
-                  <div class="invalid-feedback">
-                    Please enter a valid last name.
-                  </div>
-                </div>
-                <div class="col-12 col-md-4 mb-3">
-                  <label for="birthDate" class="form-label">Birthday<span>*</span></label>
-                  <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Enter birthdate name here" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" />
-
-                  <div class="invalid-feedback">
-                    Please enter a valid birthdate.
-                  </div>
-                </div>
-                <div class="col-12 col-md-4 mb-3">
-                  <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
-                  <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter contact number here" minlength="11" maxlength="11" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long without spaces')" oninput="this.setCustomValidity(''); if (!/^\d*$/.test(this.value)) this.value = ''; this.value = this.value.replace(/\s/g, '')" />
-                  <div class="invalid-feedback">
-                    Please enter a valid contact number.
-                  </div>
-                </div>
-                <div class="col-12 col-md-4 mb-3">
-                  <label for="email" class="form-label">Email Address <span>*</span></label>
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address without spaces')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/\s/g, '')" />
-                  <div class="invalid-feedback">
-                    Please enter a valid email address.
-                  </div>
-                </div>
-                <div class="col-12 col-md-3 mb-3">
-  <label for="validity" class="form-label">Select Date <span>*</span></label>
-  <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter date" required oninvalid="this.setCustomValidity('Please enter a valid birthdate')" oninput="this.setCustomValidity('')" value="<?php echo $customerValidity; ?>" min="<?php echo date('Y-m-d'); ?>" />
-  <div class="invalid-feedback">
-    Please select a date.
-  </div>
-</div>
-
-
-                <!-- <div class="col-12 col-md-3 mb-3">
-                            <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-                            <select class="form-control" name="selectStartTime" id="selectStartTime" required>
-                                <option value="" selected disabled>Select table</option>
-                                <option value="10:00am">10:00am</option>
-                                <option value="11:00am">11:00am</option>
-                                <option value="12:00 noon">12:00 noon</option>
-                                <option value="1:00pm">1:00pm</option>
-                                <option value="2:00pm">2:00pm</option>
-                                <option value="3:00pm">3:00pm</option>
-                                <option value="4:00pm">4:00pm</option>
-                                <option value="5:00pm">5:00pm</option>
-                                <option value="6:00pm">6:00pm</option>
-                                <option value="7:00pm">7:00pm</option>
-                                <option value="8:00pm">8:00pm</option>
-                                <option value="9:00pm">9:00pm</option>
-                                <option value="10:00pm">10:00pm</option>
-                                <option value="11:00pm">11:00pm</option>
-                                <option value="12:00 midnight">12:00 midnight</option>
-                                <option value="1:00am">1:00am</option>
-                                <option value="2:00am">2:00am</option>
-                                <option value="3:00am">3:00am</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please select a start time.
-                            </div>
-                        </div>   -->
-                <div class="col-12 col-md-3 mb-3">
-                  <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
-                  <select class="form-control" name="selectStartTime" id="selectStartTime" required onchange="updateEndTime()">
-                    <option value="" selected disabled>Select start time</option>
-                    <option value="10:00:00">10:00am</option>
-                    <option value="11:00:00">11:00am</option>
-                    <option value="12:00:00">12:00 noon</option>
-                    <option value="13:00:00">1:00pm</option>
-                    <option value="14:00:00">2:00pm</option>
-                    <option value="15:00:00">3:00pm</option>
-                    <option value="16:00:00">4:00pm</option>
-                    <option value="17:00:00">5:00pm</option>
-                    <option value="18:00:00">6:00pm</option>
-                    <option value="19:00:00">7:00pm</option>
-                    <option value="20:00:00">8:00pm</option>
-                    <option value="21:00:00">9:00pm</option>
-                    <option value="22:00:00">10:00pm</option>
-                    <option value="23:00:00">11:00pm</option>
-                    <option value="00:00:00">12:00 midnight</option>
-                    <option value="1:00:00">1:00am</option>
-                    <option value="2:00:00">2:00am</option>
-                    <option value="3:00:00">3:00am</option>
-                  </select>
-                  <div class="invalid-feedback">
-                    Please select a start time.
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-3 mb-3">
-                  <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
-                  <select class="form-control" name="selectEndTime" id="selectEndTime" required>
-                    <option value="" selected disabled>Select end time</option>
-                    <!-- Options will be dynamically added based on selected start time -->
-                  </select>
-                  <div class="invalid-feedback">
-                    Please select an end time.
-                  </div>
-                </div>
-
-                <script>
-                  const endTimesMap = {
-                    "10:00:00": ["12:00nn", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "11:00:00": ["1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "12:00:00": ["2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "13:00:00": ["3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "14:00:00": ["4:00pm", "5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am"],
-                    "15:00:00": ["5:00pm", "6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am"],
-                    "16:00:00": ["6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "17:00:00": ["7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "18:00:00": ["8:00pm", "9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "19:00:00": ["9:00pm", "10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "20:00:00": ["10:00pm", "11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "21:00:00": ["11:00pm", "12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "22:00:00": ["12:00 midnight", "1:00am", "2:00am", "3:00am"],
-                    "23:00:00": ["1:00am", "2:00am", "3:00am"],
-                    "00:00:00": ["2:00am", "3:00am", "4:00am", "5:00am"],
-                    "1:00:00": ["3:00am", "4:00am", "5:00am"],
-                    "2:00:00": ["4:00am", "5:00am"],
-                  };
-
-                  function updateEndTime() {
-                    const startTimeSelect = document.getElementById("selectStartTime");
-                    const endTimeSelect = document.getElementById("selectEndTime");
-                    const selectedStartTime = startTimeSelect.value;
-
-                    // Clear previous options
-                    endTimeSelect.innerHTML = '<option value="" selected disabled>Select end time</option>';
-
-                    // Define available end times based on selected start time
-                    const endTimes = endTimesMap[selectedStartTime] || [];
-
-                    // Add options to select end time
-                    endTimes.forEach(function(time) {
-                      const option = document.createElement("option");
-
-                      var timeSplit = time.split(":"); // split hour from minutes
-                      if (timeSplit[1] == "00am" || timeSplit[1] == "00nn") {
-                        var actualTime = timeSplit[0] + ":00:00";
-                      } else if (timeSplit[1] == "00pm") {
-                        var actualTime = (12 + parseInt(timeSplit[0])) + ":00:00";
-                      } else {
-                        var actualTime = "00:00:00";
-                      }
-                      option.text = time;
-                      option.value = actualTime;
-                      endTimeSelect.add(option);
-                    });
-                  }
-                </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class="col-12 col-md-3 mb-3">
-                    <label for="selectTable" class="form-label">Select Table <span>*</span></label>
-                        <select class="form-control" name="selectTable" id="selectTable" required>
-                            <!-- Options will be dynamically added based on selected start time onchange="this.setCustomValidity('')"-->
-                        </select>
-                    <div class="invalid-feedback">
-                        Please select a table.
-                    </div>
-                </div>
-
-                <div class="col-12 col-md-12 mb-3 mb-4">
-                  <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
-                  <img src="src/images/map.png" alt="" style="width: 100%; height: 100%;">
+                <div class="invalid-feedback">
+                  Please provide a valid first name.
                 </div>
               </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="middleName" class="form-label">Middle Name</label>
+                <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Enter middle name here" onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div class="invalid-feedback">
+                  Please provide a valid middle name.
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="lastName" class="form-label">Last Name <span>*</span></label>
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name here" required onblur="handleInput(event)" oninput="validateName(event)" maxlength="50">
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div class="invalid-feedback">
+                  Please provide a valid last name.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="birthDate" class="form-label">Birthdate <span>*</span></label>
+                <input type="date" class="form-control" id="birthDate" name="birthDate" required max="2100-12-31">
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div class="invalid-feedback">
+                  Please provide a valid birthdate.
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="contactNumber" class="form-label">Contact Number <span>*</span></label>
+                <input type="text" class="form-control" id="contactNumber" placeholder="Enter contact number here" name="contactNumber" required minlength="11" maxlength="11" oninput="validateContactNumber(event)">
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div class="invalid-feedback">
+                  Please provide a valid contact number.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="email" class="form-label">Email Address <span>*</span></label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address here" required oninput="validateEmail(event)" maxlength="50">
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div id="emailError" class="invalid-feedback">
+                  Please provide a valid email address.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="selectDate" class="form-label">Select Date <span>*</span></label>
+                <input type="date" class="form-control" name="selectDate" id="selectDate" placeholder="Enter membership validity here" required readonly value="<?php echo date('Y-m-d'); ?>" />
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div class="invalid-feedback">
+                  Please provide a valid date.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="selectStartTime" class="form-label">Start Time <span>*</span></label>
+                <input type="time" class="form-control" id="selectStartTime" name="selectStartTime" required min="10:00" oninput="adjustEndTime()">
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div class="invalid-feedback">
+                  Start time must be after 10:00 AM.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+              <label for="selectEndTime" class="form-label">End Time <span>*</span></label>
+              <input type="time" class="form-control" id="selectEndTime" name="selectEndTime" required oninput="validateEndTime()">
+              <div class="valid-feedback">
+                <!-- Looks good! -->
+              </div>
+              <div class="invalid-feedback" id="endTimeFeedback">
+                Please provide a valid end time.
+              </div>
+            </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="selectTable" class="form-label">Select Table <span>*</span></label>
+                <select class="form-control" name="selectTable" id="selectTable" required>
+                  <option value="">Select table</option>
+                  <!-- Options will be dynamically added based on selected start time -->
+                </select>
+                <div class="valid-feedback">
+                  <!-- Looks good! -->
+                </div>
+                <div class="invalid-feedback">
+                  Please provide a valid table.
+                </div>
+              </div>
+              <div class="col-12 col-md-12 mb-3 mb-4">
+                <h6 class="mb-0 pb-0">Bevitore 2D Map</h6>
+                <img src="src/images/map.png" alt="" style="width: 100%; height: 100%;">
+              </div>
+              <input type="hidden" id="getTotalPriceHour" name="getTotalPriceHour">
               <div class="row justify-content-end mt-5">
                 <div class="col-12 col-md-2 mb-3 mb-md-0">
-                  <button class="btn btn-primary w-100 create-button" name="submitWalkin" id="submitWalkin" type="submit">Create</button>
+                  <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
                 </div>
-                <div class="col-12 col-md-2">
-                  <button class="btn btn-outline-primary w-100 cancel-button" type="reset" onclick="resetForm()">Cancel</button>
+                <div class="col-12 col-md-2 mb-3 mb-md-0">
+                  <button class="btn btn-outline-primary w-100 cancel-button" type="button" onclick="handleCancel()">Cancel</button>
                 </div>
               </div>
             </form>
@@ -270,205 +198,67 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       </div>
     </section>
 
-    <script>
-      $(document).ready(function() {
-        $("#example").DataTable({
-          paging: true,
-          lengthChange: true,
-          searching: true,
-          ordering: true,
-          info: true,
-          autoWidth: false,
-          responsive: true,
-        });
-      });
 
-      let sidebar = document.querySelector(".sidebar");
-      let closeBtn = document.querySelector("#btn");
-      let searchBtn = document.querySelector(".bx-search");
+    <!-- Add this div at the end of your HTML body to contain the modal -->
+    <div class="modal fade" id="confirmAddWalkin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="add-new-service-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/hourglass.gif" alt="Wait Icon" class="modal-icons">Wait!</h2>
+            <h6 class="mt-2 mb-0 pb-0">Here's what we received:</h6>
+          </div>
+          <div class="modal-body">
+            <!-- The content will be dynamically generated here -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Edit</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" data-bs-target="#success-add-walkin-modal" id="success-reservation-button">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
+    <!-- Success Add New Walkin Modal -->
+    <div class="modal fade" id="success-add-walkin-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title  fw-bold text-center" id="success"><img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Success!</h2>
+          </div>
+          <div class="modal-body text-center">
+            Kindly wait for your turn to play!
+          </div>
+          <div class="modal-footer">
+            <!-- <button class="btn btn-primary create-button" id="proceed" data-bs-target="#" data-bs-toggle="modal">Proceed</button> -->
+            <button class="btn btn-primary  create-button" name="submitWalkin" id="submitWalkin" type="submit">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      searchBtn.addEventListener("click", () => {
-        // Sidebar open when you click on the search icon
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
+    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" id="">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="wait"><img src="src/images/icons/alert.gif" alt="Wait Icon" class="modal-icons">Leaving Page?</h2>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Looks like you’re in the middle of writing something. Changes that you’ve made will not be saved.</p>
+            <p class="mt-3 mb-0 text-center fw-bold">Are you sure you want to leave this page?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary cancel-button" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary create-button" data-bs-toggle="modal" id="proceedButton">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      // following are the code to change sidebar button(optional)
-      function menuBtnChange() {
-        if (sidebar.classList.contains("open")) {
-          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right"); //replacing the icons class
-        } else {
-          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu"); //replacing the icons class
-        }
-      }
-    </script>
-    <script>
-      //For birthdate
-      document.addEventListener('DOMContentLoaded', function() {
-        var birthDateInput = document.getElementById('birthDate');
+    </div>
 
-        // Set min and max date for birthdate input
-        var currentDate = new Date();
-        var minDate = new Date('1900-01-01');
-        var maxDate = new Date(currentDate);
-        maxDate.setFullYear(currentDate.getFullYear() - 18); // 18 years ago from current year
-
-        birthDateInput.min = minDate.toISOString().split('T')[0]; // Minimum date is 1900-01-01
-        birthDateInput.max = maxDate.toISOString().split('T')[0]; // Maximum date is 18 years ago
-
-        birthDateInput.addEventListener('input', function() {
-          var selectedDate = new Date(this.value);
-
-          if (selectedDate < minDate || selectedDate > maxDate) {
-            this.setCustomValidity('Please enter a valid birthdate (minimum 1900 and at least 18 years ago).');
-          } else {
-            this.setCustomValidity('');
-          }
-        });
-      });
-    </script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const validityInput = document.querySelector("#validity");
-
-        // Get today's date
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth() + 1; // Month is zero-indexed
-        const day = today.getDate();
-
-        // Set the minimum date to today's date
-        const minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-        validityInput.setAttribute("min", minDate);
-
-        // Set the maximum date to 1 year from today's date
-        const maxDate = new Date(today.getTime() + (365 * 24 * 60 * 60 * 1000));
-        const maxYear = maxDate.getFullYear();
-        const maxMonth = maxDate.getMonth() + 1; // Month is zero-indexed
-        const maxDay = maxDate.getDate();
-        const maxDateString = `${maxYear}-${maxMonth.toString().padStart(2, '0')}-${maxDay.toString().padStart(2, '0')}`;
-        validityInput.setAttribute("max", maxDateString);
-      });
-    </script>
-
-
-    <script>
-      //For File Upload
-      function validateImageUpload(input) {
-        const file = input.files[0];
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
-        if (file && allowedTypes.includes(file.type)) {
-          input.setCustomValidity('');
-        } else {
-          input.setCustomValidity('Please select a valid image file (JPEG, PNG, or GIF).');
-        }
-      }
-    </script>
-
-    <script>
-      //For Form Validation
-      (function() {
-        'use strict'
-
-        var forms = document.querySelectorAll('.needs-validation')
-
-        Array.prototype.slice.call(forms)
-          .forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-              if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-              }
-
-              form.classList.add('was-validated')
-            }, false)
-          })
-      })()
-    </script>
-
-
-    <script>
-      // Reset the form
-      function resetForm() {
-        document.querySelector('form').reset();
-        location.reload();
-      }
-    </script>
-
-    <script>
-      //add walk in details
-      $(document).ready(function() {
-        $('#submitWalkin').click(function(e) {
-          e.preventDefault();
-
-          var formData = new FormData($('#booking-form')[0]);
-
-          $.ajax({
-            type: 'POST',
-            url: 'walkin_crud.php', // Replace 'process_form.php' with the URL of your PHP script
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-              // Handle success response here
-              //alert(response); // For demonstration purposes, you can display an alert with the response
-              location.reload();
-            },
-            error: function(xhr, status, error) {
-              // Handle error
-              console.error(xhr.responseText);
-            }
-          });
-        });
-      });
-    </script>
-
-    <!-- For trimming whitespacecs -->
-    <script>
-      function handleInput(event) {
-        const inputValue = event.target.value.trim(); // Remove leading and trailing whitespaces
-        const lastChar = inputValue.slice(-1); // Get the last character of the input
-
-        // Check if the input is only whitespaces and it's not the last character
-        if (inputValue === '' || (inputValue === ' ' && lastChar !== ' ')) {
-          event.target.value = ''; // Clear the input if it's only whitespaces
-        }
-      }
-    </script>
-
-<!--get available pool tables-->
-<script>
-        $(document).ready(function() {
-            $('#selectEndTime, #selectStartTime, #selectDate').change(function() {
-                var startTime = $('#selectStartTime').val();
-                var endTime = $('#selectEndTime').val();
-                var date = $('#selectDate').val();
-                
-                if (startTime && endTime) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'src/get_data_from_database/get_available_table.php',
-                        data: { startTime: startTime, endTime: endTime, date: date},
-                        success: function(response) {
-                            $('#selectTable').html(response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('AJAX Error: ' + status + error);
-                        }
-                    });
-                } else {
-                    $('#selectTable').html('<option value="">Select Table</option>');
-                }
-            });
-        });
-    </script>
+    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <script src="src/js/sidebar.js"></script>
+    <script src="src/js/admin_walk_in_form.js"></script>
 
   </body>
 

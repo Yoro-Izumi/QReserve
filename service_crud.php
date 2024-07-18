@@ -6,12 +6,12 @@ include "src/get_data_from_database/get_services.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['serviceName'])) {
         $serviceName = mysqli_real_escape_string($conn, $_POST['serviceName']);
-        $serviceCapacity = (int) mysqli_real_escape_string($conn, $_POST['capacity']);
-        $serviceRateWithPeso = mysqli_real_escape_string($conn, $_POST['serviceRate']);
-        $serviceRate = (int) $serviceRateWithPeso;
+        $serviceCapacity = (int)mysqli_real_escape_string($conn, $_POST['capacity']);
+        //$serviceRateWithPeso = mysqli_real_escape_string($conn, $_POST['serviceRate']); //₱
+        $serviceRate = (int)mysqli_real_escape_string($conn, $_POST['serviceRate']); //$serviceRateWithPeso;
 
         // For uploading the service image
-        $serviceImage = $_FILES["serviceImage"];
+        $serviceImage = $_FILES["serviceImage"]; 
         $serviceImageName = $serviceImage["name"];
         $serviceImageTmpName = $serviceImage["tmp_name"];
         $serviceImageError = $serviceImage["error"];
@@ -47,12 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['editID'])) {
         $newServiceID = (int) mysqli_real_escape_string($conn, $_POST['editID']);
         $newServiceName = mysqli_real_escape_string($conn, $_POST['editServiceName']);
-        $newServiceCapacity = (int) mysqli_real_escape_string($conn, $_POST['editCapacity']);
-        $newServiceRate = (int) mysqli_real_escape_string($conn, $_POST['editServiceRate']);
-        $isImageChosen = mysqli_real_escape_string($conn, $_POST['isImageChosen']);
+        $newServiceCapacity = (int)mysqli_real_escape_string($conn, $_POST['editCapacity']);
+        $newServiceRate = (int)mysqli_real_escape_string($conn, $_POST['editServiceRate']);
+        $isImageChosen = mysqli_real_escape_string($conn, $_POST['isImage']);
         $newServiceImage = $_FILES["editImage"];
     
-        if ($isImageChosen == 'yes') {
+        if ($isImageChosen === 'true') {
             $newServiceImageName = $newServiceImage["name"];
             $newServiceImageTmpName = $newServiceImage["tmp_name"];
             $newServiceImageError = $newServiceImage["error"];
@@ -90,7 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "Error with image upload: " . $newServiceImageError;
                 exit;
             }
-        } else {
+        } 
+        else {
             // Update service without changing the image
             $qryUpdateService = "UPDATE `services` SET `serviceName` = ?, `serviceCapacity` = ?, `serviceRate` = ?, `superAdminID` = ? WHERE `serviceID` = ?";
             $connUpdateService = mysqli_prepare($conn, $qryUpdateService);

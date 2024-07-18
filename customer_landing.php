@@ -2,6 +2,7 @@
 include "connect_database.php";
 include "src/get_data_from_database/get_services.php";
 date_default_timezone_set('Asia/Manila');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +28,18 @@ date_default_timezone_set('Asia/Manila');
 </head>
 
 <body class="customer-landing">
-  <header>
+<style>
+    .navbar a {
+      color: white;
+      font-weight: normal;
+    }
+
+    .navbar a.active {
+      color: #FFB800;
+      font-weight: bold;
+    }
+  </style>
+ <header>
     <nav class="navbar">
       <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
       <input type="checkbox" id="menu-toggler">
@@ -38,14 +50,15 @@ date_default_timezone_set('Asia/Manila');
         </svg>
       </label>
       <ul class="all-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#amenities">Amenities</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#amenities" class="nav-link">Amenities</a></li>
+        <li><a href="#about" class="nav-link">About Us</a></li>
+        <li><a href="#contact" class="nav-link">Contact Us</a></li>
       </ul>
     </nav>
   </header>
+
 
   <section class="homepage" id="home">
     <div class="content">
@@ -58,65 +71,110 @@ date_default_timezone_set('Asia/Manila');
   </section>
 
   <section class="services" id="services">
-      <h2>Our Services</h2>
-      <!-- <p>Explore our wide range of camping gear services.</p> -->
-      <ul class="cards">
+    <h2>Our Services</h2>
+    <!-- <p>Explore our wide range of camping gear services.</p> -->
+    <ul class="cards">
+      <?php foreach ($arrayServices as $services) : ?>
+        <?php
+        $serviceID = $services['serviceID'];
+        $serviceName = $services['serviceName'];
+        $serviceCapacity = $services['serviceCapacity'];
+        $serviceRate = $services['serviceRate'];
+        $serviceImage = "src/images/Services/" . $services['serviceImage'];
+        ?>
         <li class="card">
-          <img src="src/images/Services/Billiards Hall.jpg" alt="img">
-          <h3>Billiards</h3>
-          <p>Rate: ₱150/hr</p>
+          <img src="<?php echo $serviceImage; ?>" alt="<?php echo $serviceName; ?>">
+          <h3><?php echo $serviceName; ?></h3>
+          <p>Rate: ₱<?php echo $serviceRate; ?></p>
         </li>
-        <li class="card">
-          <img src="src/images/Services/KTV Room 1.jpg" alt="img">
-          <h3>KTV Room 1</h3>
-          <p>Rate: ₱5000/2hrs</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/KTV Room 2.jpg" alt="img">
-          <h3>KTV Room 2</h3>
-          <p>Rate: ₱3000/2hrs</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/KTV Room 3.jpg" alt="img">
-          <h3>KTV Room 3</h3>
-          <p>Rate: ₱3000/2hrs</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/Karaoke.jpg" alt="img">
-          <h3>Karaoke Night</h3>
-          <p>Rate: Free</p>
-        </li>
-        <li class="card">
-          <img src="src/images/Services/Membership.jpg" alt="img">
-          <h3>Membership</h3>
-          <p>Rate: 250</p>
-        </li>
-      </ul>
-    </section>
+      <?php endforeach; ?>
+    </ul>
+  </section>
 
   <section class="amenities" id="amenities">
     <h2>Amenities</h2>
     <ul class="cards">
       <li class="card">
-        <img src="src/images/Services/Billiards Hall.jpg" alt="img">
+        <a href="src/images/IMG_20240628_120053.webp"><img src="src/images/IMG_20240628_120053.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="img">
+        <a href="src/images/IMG_20240628_120929.webp"><img src="src/images/IMG_20240628_120929.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_121355.webp"><img src="src/images/IMG_20240628_121355.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_123118.webp"><img src="src/images/IMG_20240628_123118.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_121039.webp"><img src="src/images/IMG_20240628_121039.webp" alt="amenities"></a>
       </li>
       <li class="card">
-        <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" alt="">
+        <a href="src/images/IMG_20240628_115926.webp"><img src="src/images/IMG_20240628_115926.webp" alt="amenities"></a>
       </li>
     </ul>
   </section>
+  <div class="overlay"></div>
+
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.card');
+    const overlay = document.querySelector('.overlay');
+
+    cards.forEach(card => {
+      card.addEventListener('click', (event) => {
+        event.preventDefault();
+        const clickedCard = event.currentTarget;
+        const imgSrc = clickedCard.querySelector('img').src;
+
+        const fullscreenCard = document.createElement('div');
+        fullscreenCard.classList.add('card', 'fullscreen');
+        fullscreenCard.innerHTML = `<img src="${imgSrc}" alt="amenity">`;
+        document.body.appendChild(fullscreenCard);
+
+        overlay.classList.add('active');
+
+        fullscreenCard.addEventListener('click', () => {
+          fullscreenCard.classList.remove('fullscreen');
+          overlay.classList.remove('active');
+          setTimeout(() => {
+            fullscreenCard.remove();
+          }, 300);
+        });
+      });
+    });
+
+    overlay.addEventListener('click', () => {
+      const fullscreenCard = document.querySelector('.card.fullscreen');
+      if (fullscreenCard) {
+        fullscreenCard.classList.remove('fullscreen');
+        overlay.classList.remove('active');
+        setTimeout(() => {
+          fullscreenCard.remove();
+        }, 300);
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('.card') || event.target.matches('.card.fullscreen img')) {
+        // Click inside card or on fullscreen image, do nothing
+        return;
+      }
+      const fullscreenCard = document.querySelector('.card.fullscreen');
+      if (fullscreenCard) {
+        fullscreenCard.classList.remove('fullscreen');
+        overlay.classList.remove('active');
+        setTimeout(() => {
+          fullscreenCard.remove();
+        }, 300);
+      }
+    });
+  });
+</script>
+
+
+
 
 
   <section class="about" id="about">
@@ -158,13 +216,77 @@ date_default_timezone_set('Asia/Manila');
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3866.3311061967775!2d121.1001308758709!3d14.29218458455158!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d96d5e79b44d%3A0xf3bc2aea1c1e6f4e!2sBevitore%20Sta.%20Rosa!5e0!3m2!1sen!2sph!4v1712407493936!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
+
+
+    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'pool_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#updateTable').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+    </script>
+      <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.nav-link');
+      const sections = document.querySelectorAll('section');
+
+      const makeActive = (link) => {
+        navLinks.forEach((navLink) => navLink.classList.remove('active'));
+        link.classList.add('active');
+      };
+
+      const options = {
+        threshold: 0.6
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            const link = document.querySelector(`.nav-link[href="#${id}"]`);
+            if (link) {
+              makeActive(link);
+            }
+          }
+        });
+      }, options);
+
+      sections.forEach((section) => {
+        observer.observe(section);
+      });
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          window.scrollTo({
+            top: targetSection.offsetTop,
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+  </script>
   </section>
-
-
 
   <footer>
     <div>
-      <span>Copyright © 2023 All Rights Reserved</span>
+      <span>Copyright © 2024 All Rights Reserved</span>
       <span class="link">
         <a href="#">Home</a>
         <a href="#contact">Contact</a>

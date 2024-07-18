@@ -79,7 +79,7 @@ if (isset($_POST['submitSuperAdmin'])) {
             <label for="contactNumber" class="form-label">Username <span>*</span></label>
             <input type="text" class="form-control" name="username" id="contactNumber" placeholder="Enter Username here" required pattern="^09\d{9}$" oninvalid="this.setCustomValidity('Please enter a valid contact number starting with 09 and exactly 11 digits long')" oninput="this.setCustomValidity('')" />
             <!-- <div class="valid-feedback">
-                      Looks good!
+                      <!-- Looks good! -->
                   </div> -->
             <div class="invalid-feedback">
               Please enter a valid username.
@@ -89,7 +89,7 @@ if (isset($_POST['submitSuperAdmin'])) {
             <label for="email" class="form-label">Email Address <span>*</span></label>
             <input type="email" class="form-control" name="email" id="email" placeholder="Enter email address here" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')" />
             <!-- <div class="valid-feedback">
-                Looks good!
+                <!-- Looks good! -->
             </div> -->
             <div class="invalid-feedback">
               Please enter a valid email address.

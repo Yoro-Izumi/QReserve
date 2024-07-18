@@ -8,6 +8,7 @@ if (isset($_SESSION['userMemberID'])) {
   include "src/get_data_from_database/get_pool_table_info.php";
   include "src/get_data_from_database/get_member_account.php";
   include "src/get_data_from_database/get_customer_information.php";
+  include "src/get_data_from_database/get_services.php";
   $key = "TheGreatestNumberIs73";
   foreach ($arrayMemberAccount as $memberAccount) {
     if ($memberAccount["memberID"] == $userID) {
@@ -54,24 +55,8 @@ if (isset($_SESSION['userMemberID'])) {
   </head>
 
   <body class="body">
-    <header>
-      <nav class="navbar p-0">
-        <img src="src/images/Bevitore-logo.png" id="customer-landing-logo" />
-        <input type="checkbox" id="menu-toggler">
-        <label for="menu-toggler" id="hamburger-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z" />
-          </svg>
-        </label>
-        <ul class="all-links">
-          <li><a href="customer_dashboard.php">Home</a></li>
-          <li><a href="customer_account.php">Reservations</a></li>
-          <li><a href="customer_account.php">Account</a></li>
-          <li><a href="customer_logout.php">Log Out</a></li>
-        </ul>
-      </nav>
-    </header>
+    <?php include "customer_header.php";
+    ?>
 
 
     <h3 class="qreserve mt-5 pt-3 mb-0">Welcome <?php echo $customerName; ?>!</h3>
@@ -81,32 +66,35 @@ if (isset($_SESSION['userMemberID'])) {
     </div>
     <hr class="my-4 mb-3 mt-3">
     <div class="container-fluid table-container dashboard-square-kebab" id="home-active-playing">
-    <table id="example" class="table table-striped" style="width: 100%">
-          <!--table data is dynamicaly updated and is from pool_table.php-->
-        </table>
+      <table id="example" class="table table-striped" style="width: 100%">
+        <!--table data is dynamicaly updated and is from pool_table.php-->
+      </table>
     </div>
 
     <div class="container-fluid mt-4">
       <div class="row justify-content-center text-center">
         <div class="col-md-4 mb-3">
-          <div class="dashboard-square-kebab">
-            Membership valid until
-            <h1><?php echo $validityDate; ?></h1>
+          <div class="dashboard-square-kebab visitors-box">
+            <h1 class="member-validity-date"><?php echo $validityDate; ?></h1>
+            <h6 class="Visitors-today"> Membership valid until</h6>
           </div>
         </div>
         <div class="col-md-4 mb-3">
           <div class="dashboard-square-kebab">
             <div id="service-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="src/images/Services/Membership.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Services/Billiards Hall.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Services//KTV Room 1.jpg" class="d-block w-100" alt="..." />
-                </div>
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
+                  </div>
+                <?php endforeach; ?>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -120,19 +108,23 @@ if (isset($_SESSION['userMemberID'])) {
           </div>
         </div>
 
+
         <div class="col-md-4 mb-3">
           <div class="dashboard-square-kebab">
             <div id="pubmat-carousel" class="carousel slide carousel-height" data-bs-ride="carousel">
               <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="src/images/Pubmats/434190531_386131807641129_6896777236919307809_n.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Pubmats/434349874_384753677778942_8332027815166046702_n.jpg" class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                  <img src="src/images/Pubmats/434361833_384754844445492_7151520115554376035_n.jpg" class="d-block w-100" alt="..." />
-                </div>
+                <?php
+                $first = true;
+                foreach ($arrayServices as $services) :
+                  $serviceImage = "src/images/Services/" . $services['serviceImage'];
+                ?>
+                  <div class="carousel-item <?php if ($first) {
+                                              echo 'active';
+                                              $first = false;
+                                            } ?>">
+                    <img src="<?php echo $serviceImage; ?>" class="d-block w-100" alt="..." />
+                  </div>
+                <?php endforeach; ?>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#pubmat-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -148,6 +140,32 @@ if (isset($_SESSION['userMemberID'])) {
 
       </div>
     </div>
+
+
+
+    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
+    <script>
+      $(document).ready(function() {
+        // Function to update table content
+        function updateTable() {
+          $.ajax({
+            url: 'pool_table.php',
+            type: 'GET',
+            success: function(response) {
+              $('#updateTable').html(response);
+            }
+          });
+        }
+
+        // Initial table update
+        updateTable();
+
+        // Refresh table every 5 seconds
+        setInterval(updateTable, 1000); // Adjust interval as needed
+      });
+    </script>
+
+
 
 
 
@@ -189,7 +207,7 @@ if (isset($_SESSION['userMemberID'])) {
       }
     </script>
 
-<script>
+    <script>
       $(document).ready(function() {
         // Function to update table content
         function updateTable() {
@@ -208,7 +226,7 @@ if (isset($_SESSION['userMemberID'])) {
         // Refresh table every 5 seconds
         setInterval(updateTable, 1000); // Adjust interval as needed
       });
-</script>
+    </script>
 
   </body>
 

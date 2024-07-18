@@ -55,7 +55,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
     <?php include "superadmin_sidebar.php"; ?>
 
     <section class="home-section">
-      
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="qreserve">Admin Accounts</h4>
         <a href="add_new_admin.php" type="button" class="btn btn-primary fw-bold start-button" id="add-new-profile">Add New Admin</a>
@@ -63,20 +62,42 @@ if (isset($_SESSION["userSuperAdminID"])) {
       <hr class="my-4 mb-3 mt-3">
       <div class="container-fluid dashboard-square-kebab" id="profile-management">
         <table id="example" class="table table-striped" style="width: 100%">
-          <!--dynamically updates the table when new data is entered-->
+          <thead>
+            <tr>
+              <th>Actions</th>
+              <th>Name</th>
+              <th>Sex</th>
+              <th>Username</th>
+              <th>Contact Number</th>
+              <th>Email Address</th>
+              <th>Shift</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($arrayAdminAccount as $adminAccount) : ?>
+              <tr>
+                <td><input type='checkbox' class='admin-checkbox' name='admin[]' value='<?php echo $adminAccount['adminInfoID']; ?>'></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminFirstName'], $key) . " " . decryptData($adminAccount['adminMiddleName'], $key) . " " . decryptData($adminAccount['adminLastName'], $key)); ?></td>
+                <td><?php echo htmlspecialchars($adminAccount['adminSex']); ?></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminUsername'], $key)); ?></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminContactNumber'], $key)); ?></td>
+                <td><?php echo htmlspecialchars(decryptData($adminAccount['adminEmail'], $key)); ?></td>
+                <td><?php echo htmlspecialchars($adminAccount['shiftTimeStart'] . " - " . $adminAccount['shiftTimeEnd']); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
         </table>
-        <div><form type="hidden" id="pass-admin" name="pass-admin"><input type="hidden" id="edit-admin-val" name="edit-admin-val" value=""></form></div>
+        <div>
+          <form type="hidden" id="pass-admin" name="pass-admin">
+            <input type="hidden" id="edit-admin-val" name="edit-admin-val" value="">
+          </form>
+        </div>
         <div class="mt-3">
-          <!-- <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete Selected</button>
-          <button type="button" class="btn btn-primary" onclick="editSelected()">Edit Selected</button> -->
-
-          <button type="button" id="edit-admin" class="btn btn-primary">Edit Selected</button>
-          <button type="button" class="btn btn-danger" id="delete-admin" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-service">Delete Selected</button>
-          
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-admin-account-modal" id="delete-admin" disabled>Delete</button>
         </div>
       </div>
     </section>
-
 
     <!-- Delete Modal -->
     <div class="modal fade" id="delete-admin-account-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -113,219 +134,14 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
+    <div id="updateTable" style="display:none;"><!--this div's only purpose is to help table update--></div>
 
-
-
-
-
-
-    <script>
-      $(document).ready(function() {
-        $("#example").DataTable({
-          paging: true,
-          lengthChange: true,
-          searching: true,
-          ordering: true,
-          info: true,
-          autoWidth: false,
-          responsive: true,
-        });
-      });
-
-      // JavaScript functions for handling bulk actions
-      function deleteSelected() {
-        // Implement delete logic here
-        console.log("Delete selected rows");
-      }
-
-      function editSelected() {
-        // Implement edit logic here
-        console.log("Edit selected rows");
-      }
-    </script>
-
-    <script>
-      let sidebar = document.querySelector(".sidebar");
-      let closeBtn = document.querySelector("#btn");
-      let searchBtn = document.querySelector(".bx-search");
-
-      closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      searchBtn.addEventListener("click", () => {
-        // Sidebar open when you click on the search icon
-        sidebar.classList.toggle("open");
-        menuBtnChange(); //calling the function(optional)
-      });
-
-      // following are the code to change sidebar button(optional)
-      function menuBtnChange() {
-        if (sidebar.classList.contains("open")) {
-          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right"); //replacing the icons class
-        } else {
-          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu"); //replacing the icons class
-        }
-      }
-    </script>
-
-<script>
-  $(document).ready(function() {
-    var intervalID; // Define intervalID variable outside to make it accessible across functions
-
-    // Function to update table content
-    function updateTable() {
-      $.ajax({
-        url: 'admin_table.php', // Change this to the PHP file that contains the table content
-        type: 'GET',
-        success: function(response) {
-          $('#example').html(response);
-          attachCheckboxListeners(); // Attach event listeners for checkboxes after AJAX call
-        }
-      });
-    }
-
-    // Function to start interval
-    function startInterval() {
-      intervalID = setInterval(updateTable, 1000); // Adjust interval as needed
-    }
-
-    // Function to stop interval
-    function stopInterval() {
-      clearInterval(intervalID);
-    }
-
-    // Attach event listeners for checkboxes
-function attachCheckboxListeners() {
-    const checkboxes = document.querySelectorAll('.admin-checkbox');
-    var editAdminButton = document.getElementById('edit-admin');
-    var deleteAdminButton = document.getElementById('delete-admin');
-    var checkedCount = 0; var checkBoxValue;
-
-    editAdminButton.disabled = true;
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                checkedCount++;
-                if (checkedCount === 1) {
-                    // If only one checkbox is checked, set its value
-                    // Ensure that checkboxValue is defined and refers to the appropriate element
-                    checkboxValue = this.value; // You need to define checkboxValue
-                }
-            } else {
-                checkedCount--;
-                if (checkedCount === 1) {
-                    // If only one checkbox remains checked after unchecking this one, find and set its value
-                    const remainingCheckbox = [...checkboxes].find(checkbox => checkbox.checked);
-                    if (remainingCheckbox) {
-                        checkboxValue.value = remainingCheckbox.value; // You need to define checkboxValue
-                        document.getElementById('edit-admin-val').value = remainingCheckbox.value;
-                    }
-                } else {
-                    // If no or multiple checkboxes are checked, clear the value
-                    checkboxValue.value = " "; // You need to define checkboxValue
-                }
-            }
-            editAdminButton.disabled = checkedCount !== 1; // Disable button if no checkbox is checked or more than one checkbox is checked
-
-            // Stop or start interval based on checkbox status
-            if (checkedCount > 0) {
-                stopInterval();
-            } else {
-                startInterval();
-            }
-        });
-    });
-}
-
-
-    // Initial table update and start interval
-    updateTable();
-    startInterval();
-  });
-</script>
-
-<!--script for deleting admin-->
-<script>
-  $(document).ready(function(){
-        // AJAX code to handle deletion
-        $("#confirm-delete-admin").click(function(){
-            // Array to store IDs of selected rows
-            var selectedRows = [];
-
-            // Iterate through each checked checkbox
-            $(".admin-checkbox:checked").each(function(){
-                // Push the value (ID) of checked checkbox into the array
-                selectedRows.push($(this).val());
-            });
-
-            // AJAX call to send selected rows IDs to delete script
-            $.ajax({
-                url: "admin_crud.php",
-                type: "POST",
-                data: {selectedRows: selectedRows},
-                success: function(response){
-                    // Reload the page or update the table as needed
-                   // location.reload(); // For example, reload the page after deletion
-                },
-                error: function(xhr, status, error){
-                    //console.error("Error:", error);
-                }
-            });
-        });
-    });
-
-//reload page
-function reload(){
-  location.reload();
-}
-</script>
-
-<script>
-var val;
-function getSelected(checkbox) {
-  if (checkbox.checked) {
-    val = checkbox.value;
-
-    // Assign values to input fields
-    document.getElementById("edit-admin-val").value = val;
-  }
-}
-</script>
-
-<script>
-        /*$(document).ready(function(){
-            $("#edit-admin").click(function(){
-                var formData = $("#pass-admin").serialize(); // Serialize form data
-                
-                $.ajax({
-                    url: "edit_admin_account.php",
-                    type: "POST",
-                    data: formData,
-                    success: function(response){
-                        // Redirect to check_data.php if success
-                        window.location.href = "edit_admin_account.php";
-                    }
-                });
-            });
-        });
-*/
-      $("#edit-admin").click(function(){
-            // Get the value from the input field
-            var value = document.getElementById('edit-admin-val').value;
-
-            // Redirect to the PHP file with the value as a query parameter
-            window.location.href = 'edit_admin_account.php?value=' + encodeURIComponent(value);
-        });
-</script>
-
-
+    <script src="src/js/admin_profiles.js"></script>
+    <script src="src/js/sidebar.js"></script>
 
   </body>
 
   </html>
-  <?php } else {
+<?php } else {
   header("location:login.php");
 } ?>
