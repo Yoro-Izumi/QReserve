@@ -136,32 +136,38 @@ if (isset($_SESSION["userSuperAdminID"])) {
           </div>
         </div>
         <div class="col-12 col-md-6">
-  <label for="password" class="form-label">Password <span>*</span></label>
-  <div class="input-group">
-    <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required oninput="checkPasswordStrength(this)" maxlength="50"/>
-    <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
-      <i class="fas fa-eye-slash"></i>
-    </button>
-  </div>
-  <div id="password-strength-indicator"></div>
-  <div class="invalid-feedback">Password strength is weak. Please enter a stronger password.</div>
-</div>
-<div class="col-12 col-md-6">
-  <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
-  <div class="input-group">
-    <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required oninput="checkPasswordMatch()" maxlength="50"/>
-    <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
-      <i class="fas fa-eye-slash"></i>
-    </button>
-  </div>
-  <div class="feedback" id="passwordMatchFeedback"></div>
-  <div class="valid-feedback" id="passwordMatch">
-    Passwords match!
-  </div>
-  <div class="invalid-feedback" id="passwordMismatch">
-    Passwords do not match.
-  </div>
-</div>
+            <label for="password" class="form-label">Password <span>*</span></label>
+            <div class="input-group">
+              <input type="password" class="form-control" name="password" id="password" placeholder="Enter password here" required oninput="checkPasswordStrength(this)" maxlength="50" />
+              <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-1">
+                <i class="fas fa-eye-slash"></i>
+              </button>
+            </div>
+            <div id="password-strength-indicator"></div>
+            <div class="password-requirements" id="password-requirements" style="display: none;">
+              <p>Password must contain:</p>
+              <ul>
+                <li id="uppercase" class="invalid">1 uppercase letter</li>
+                <li id="number" class="invalid">1 number</li>
+                <li id="special" class="invalid">1 special character</li>
+                <li id="length" class="invalid">At least 8 characters</li>
+              </ul>
+            </div>
+            <div class="invalid-feedback">Password strength is weak. Please enter a stronger password.</div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="confirmPassword" class="form-label">Confirm Password <span>*</span></label>
+            <div class="input-group">
+              <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Re-enter password here" required oninput="checkPasswordMatch()" maxlength="50" />
+              <button class="btn btn-secondary eye-toggle" type="button" id="password-toggle-2">
+                <i class="fas fa-eye-slash"></i>
+              </button>
+            </div>
+            <div class="feedback" id="passwordMatchFeedback"></div>
+            <div class="valid-feedback" id="passwordMatch">Passwords match!</div>
+            <div class="invalid-feedback" id="passwordMismatch">Passwords do not match.</div>
+          </div>
         <div class="row justify-content-end mt-5">
           <div class="col-12 col-md-2 mb-2 mb-md-0">
             <button class="btn btn-primary w-100 create-button" type="submit" id="create-walkin-button">Create</button>
