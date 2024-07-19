@@ -62,6 +62,27 @@ if ($_SERVER['HTTP_HOST'] === 'qreserve.site') {
     setInterval(updateTable, 1000); // Adjust interval as needed
   });
 </script> 
+
+  <script>
+      function executePHP() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'delete_member_notification.php', true);
+          xhr.send();
+          xhr.onload = function() {
+              if (xhr.status != 200) {
+                  console.error(`Error ${xhr.status}: ${xhr.statusText}`);
+              } else {
+                  console.log(`Done, response received: ${xhr.response}`);
+              }
+          };
+          xhr.onerror = function() {
+              console.error('Request failed');
+          };
+      }
+
+      setInterval(executePHP, 4000);
+  </script>
+  
 <script src="src/loader/loader.js"></script>
 
 </body>

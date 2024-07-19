@@ -97,6 +97,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
     $memberControlNumber = encryptData(mysqli_real_escape_string($conn, $_POST['controlNumber']), $key);
     $memberPassword = mysqli_real_escape_string($conn, $_POST['password']);
     $memberValidity = mysqli_real_escape_string($conn, $_POST['validity']);
+    $statusValidity = 'Valid';
     $userSuperAdmin = $_SESSION['userSuperAdminID'] ?? 1; // Default to 1 if not set
 
     // Hash the password using Argon2
@@ -121,9 +122,9 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
     mysqli_stmt_execute($conUpdateCustomerInfo);
 
     if ($memberPassword === ".") {
-      $qryUpdateMemberDetails = "UPDATE `member_details` SET `membershipID`=?, `creationDate`=?, `validityDate`=?, `superAdminID`=? WHERE `customerID`=?";
+      $qryUpdateMemberDetails = "UPDATE `member_details` SET `membershipID`=?, `creationDate`=?, `validityDate`=?, `superAdminID`=?, `validity`=? WHERE `customerID`=?";
       $conUpdateMemberDetails = mysqli_prepare($conn, $qryUpdateMemberDetails);
-      mysqli_stmt_bind_param($conUpdateMemberDetails, "sssii", $memberControlNumber, $currentDate, $sqlDate, $userSuperAdmin, $memberID);
+      mysqli_stmt_bind_param($conUpdateMemberDetails, "sssisi", $memberControlNumber, $currentDate, $sqlDate, $userSuperAdmin,$statusValidity, $memberID);
       mysqli_stmt_execute($conUpdateMemberDetails);
     } else {
       $qryUpdateMemberDetails = "UPDATE `member_details` SET `membershipID`=?, `membershipPassword`=?, `creationDate`=?, `validityDate`=?, `superAdminID`=? WHERE `customerID`=?";

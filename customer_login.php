@@ -22,7 +22,7 @@ if (isset($_POST['login_member'])) {
 
   if (mysqli_num_rows($memberAccountConn) > 0) {
     foreach ($arrayMemberAccount as $membershipAccount) {
-      if (decryptData($membershipAccount['membershipID'], $key) == $controlNumber) {
+      if (decryptData($membershipAccount['membershipID'], $key) == $controlNumber && $membershipAccount['validity'] === 'Valid') {
         $controlNumberExists = true;
         if (password_verify($password, $membershipAccount['membershipPassword'])) {
           echo '<script language="javascript">';

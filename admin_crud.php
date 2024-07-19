@@ -51,6 +51,18 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) {
 if(isset($_POST['selectedRows'])){ 
     $selectedRows = $_POST['selectedRows'];
         foreach($selectedRows as $rowId){
+            //null first admin in walkin reservation
+          foreach($arrayAdminAccount as $admin){
+            $adminID = $admin['adminID'];
+              if($rowId === $adminID){
+                $adminInfoID = $admin['adminInfoID'];
+                $qryNullReservation = "UPDATE `pool_table_walk_in` SET adminID = NULL WHERE adminID = ?";
+                $connNullReservation = mysqli_prepare($conn, $qryNullReservation);
+                mysqli_stmt_bind_param($connNullReservation, "i", $adminInfoID);
+                mysqli_stmt_execute($connNullReservation);
+            }
+          }
+          
             //delete admin account
             $qryDeleteAdminAccount = "DELETE FROM `admin_accounts` WHERE adminInfoID = ?";
             $connDeleteAdminAccount = mysqli_prepare($conn, $qryDeleteAdminAccount);

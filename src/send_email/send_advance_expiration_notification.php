@@ -32,7 +32,7 @@
                 <hr style='color:green; opacity:80%;'></hr>
                 <span>Dear Customer,</span>
                 <br><br>
-                <span style='margin:20px;'>Your account is about to expire on $date</span>
+                <span style='margin:20px;'>Your account is about to expire on $validityDate</span>
                 <br><br>
                 <span style='margin:20px;'>Contact Bevitore Sta.Rosa to extend your membership</span>
                 <br><br>
