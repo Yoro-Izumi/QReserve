@@ -136,6 +136,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
               <tr>
                 <th>Actions</th>
                 <th>Reservation Code</th>
+                <th>Customer Type</th>
                 <th>Name</th>
                 <th>Date of Reservation</th>
                 <th>Time of Reservation</th>
@@ -186,6 +187,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   }
                   echo "
                 <td>$reservationCode</td>
+                <td>Member</td>
                 <td>$customerName</td>
                 <td>" . convertToNormalDate($reservationDate) . "</td>
                 <td>$reservationTimeStart - $reservationTimeEnd</td>
@@ -212,6 +214,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
                   $email = decryptData($walkin['customerEmail'], $key) ?? '';
 
                   echo "<tr>
+                <td></td>
                 <td></td>
                 <td>Walk-in</td>
                 <td>$customerName</td>
