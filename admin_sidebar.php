@@ -1,14 +1,14 @@
 <?php
-  include "encodeDecode.php";
-  $key = "TheGreatestNumberIs73";
-  include "src/get_data_from_database/get_admin_accounts.php";
-$adminSessionID = $_SESSION['userAdminID'];
-$adminUsername = " ";
-  foreach($arrayAdminAccount as $admin){
-    if($admin['adminID'] === $adminSessionID){      
-      $adminUsername = decryptData($admin['adminUsername'], $key);
-    } 
-  }
+//   include "encodeDecode.php";
+//   $key = "TheGreatestNumberIs73";
+//   include "src/get_data_from_database/get_admin_accounts.php";
+// $adminSessionID = $_SESSION['userAdminID'];
+// $adminUsername = " ";
+//   foreach($arrayAdminAccount as $admin){
+//     if($admin['adminID'] === $adminSessionID){      
+//       $adminUsername = decryptData($admin['adminUsername'], $key);
+//     } 
+//   }
 
 ?>
 <!DOCTYPE html>
