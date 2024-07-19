@@ -7,6 +7,16 @@ include "src/get_data_from_database/get_services.php";
 session_start();
 date_default_timezone_set('Asia/Manila');
 
+include "src/get_data_from_database/get_super_admin_accounts.php";
+$superAdminSessionID = $_SESSION['userSuperAdminID'];
+$superAdminUsername = "";
+
+foreach ($arraySuperAdminAccount as $superAdmin) {
+    if ($superAdmin['superAdminID'] === $superAdminSessionID) {
+        $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
+    }
+}
+
 // Initialize variables with default values
 // $ID = $adminID = $serviceID = $serviceName = $serviceCapacity = $serviceRate = $serviceImage = "";
 

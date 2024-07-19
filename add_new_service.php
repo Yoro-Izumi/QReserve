@@ -4,6 +4,18 @@ date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
     include "connect_database.php";
     include "src/get_data_from_database/get_services.php";
+
+    include "src/get_data_from_database/get_super_admin_accounts.php";
+    include "encodeDecode.php";
+    $key = "TheGreatestNumberIs73";
+    $superAdminSessionID = $_SESSION['userSuperAdminID'];
+    $superAdminUsername = "";
+
+    foreach ($arraySuperAdminAccount as $superAdmin) {
+        if ($superAdmin['superAdminID'] === $superAdminSessionID) {
+            $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
+        }
+    }
 ?>
     <!DOCTYPE html>
     <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->

@@ -4,6 +4,19 @@ date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION["userSuperAdminID"])) {
   include "connect_database.php";
   include "src/get_data_from_database/get_services.php";
+
+
+  include "src/get_data_from_database/get_super_admin_accounts.php";
+  include "encodeDecode.php";
+  $key = "TheGreatestNumberIs73";
+  $superAdminSessionID = $_SESSION['userSuperAdminID'];
+  $superAdminUsername = "";
+
+  foreach ($arraySuperAdminAccount as $superAdmin) {
+    if ($superAdmin['superAdminID'] === $superAdminSessionID) {
+      $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
+    }
+  }
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -75,23 +88,22 @@ if (isset($_SESSION["userSuperAdminID"])) {
                 <td><?php echo htmlspecialchars($services['serviceCapacity']); ?></td>
                 <td>₱<?php echo htmlspecialchars($services['serviceRate']); ?></td>
                 <td>
-    <a href="#" class="image-link" data-bs-toggle="modal" data-bs-target="#image-modal" 
-       data-image="src/images/Services/<?php echo htmlspecialchars($services['serviceImage']); ?>">
-       <?php echo htmlspecialchars(strlen($services['serviceImage']) > 15 ? substr($services['serviceImage'], 0, 15) . '...' : $services['serviceImage']); ?>
-    </a>
-</td>
+                  <a href="#" class="image-link" data-bs-toggle="modal" data-bs-target="#image-modal" data-image="src/images/Services/<?php echo htmlspecialchars($services['serviceImage']); ?>">
+                    <?php echo htmlspecialchars(strlen($services['serviceImage']) > 15 ? substr($services['serviceImage'], 0, 15) . '...' : $services['serviceImage']); ?>
+                  </a>
+                </td>
 
-            <?php endforeach; ?>
+              <?php endforeach; ?>
           </tbody>
         </table>
         <div>
-            <form type="hidden" id="pass-admin" name="pass-admin">
-                <input type="hidden" id="edit-admin-val" name="edit-admin-val" value="">
-            </form>
+          <form type="hidden" id="pass-admin" name="pass-admin">
+            <input type="hidden" id="edit-admin-val" name="edit-admin-val" value="">
+          </form>
         </div>
         <div class="mt-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-admin" disabled>Delete</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" id="edit-admin" onclick="trimRate()" disabled>Edit</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-service-modal" id="delete-admin" disabled>Delete</button>
         </div>
       </div>
     </section>
@@ -160,7 +172,7 @@ if (isset($_SESSION["userSuperAdminID"])) {
         }
 
         updateTable();
-        setInterval(updateTable, 1000); 
+        setInterval(updateTable, 1000);
 
         $('.image-link').on('click', function() {
           var imageUrl = $(this).data('image');

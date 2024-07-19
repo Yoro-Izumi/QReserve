@@ -15,6 +15,23 @@ if (isset($_SESSION["userSuperAdminID"])) {
   $currentDate = date("Y-m-d");
 
   $customerName = $email = $contactNumber = " ";
+
+
+
+
+
+
+  include "src/get_data_from_database/get_super_admin_accounts.php";
+  //   include "encodeDecode.php";
+  // $key = "TheGreatestNumberIs73";
+  $superAdminSessionID = $_SESSION['userSuperAdminID'];
+  $superAdminUsername = "";
+
+  foreach ($arraySuperAdminAccount as $superAdmin) {
+    if ($superAdmin['superAdminID'] === $superAdminSessionID) {
+      $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
+    }
+  }
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -61,75 +78,74 @@ if (isset($_SESSION["userSuperAdminID"])) {
   <body class="body">
     <?php include "superadmin_sidebar.php"; ?>
 
-
     <script>
-  $(document).ready(function() {
-    var table = $('#example').DataTable();
-    var searchContainer = table.table().container().querySelector('.dataTables_filter');
+      $(document).ready(function() {
+        var table = $('#example').DataTable();
+        var searchContainer = table.table().container().querySelector('.dataTables_filter');
 
-    // Move the DataTables search input into the custom container
-    document.getElementById('datatableSearchContainer').appendChild(searchContainer);
-  });
+        // Move the DataTables search input into the custom container
+        document.getElementById('datatableSearchContainer').appendChild(searchContainer);
+      });
 
-  // Custom filter function for status
-  $('#statusFilter').on('change', function() {
-    var selectedStatus = $(this).val();
-    $('#example').DataTable().column(8).search(selectedStatus).draw();
-  });
-</script>
+      // Custom filter function for status
+      $('#statusFilter').on('change', function() {
+        var selectedStatus = $(this).val();
+        $('#example').DataTable().column(8).search(selectedStatus).draw();
+      });
+    </script>
 
-<style>
-  .form-group label {
-    display: inline-block;
-    margin-right: 10px;
-  }
+    <style>
+      .form-group label {
+        display: inline-block;
+        margin-right: 10px;
+      }
 
-  #statusFilter {
-    display: inline-block;
-    width: auto;
-  }
+      #statusFilter {
+        display: inline-block;
+        width: auto;
+      }
 
-  .dataTables_filter {
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
-  }
-</style>
+      .dataTables_filter {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+      }
+    </style>
 
-<section class="home-section">
-  <h4 class="qreserve">Reservations</h4>
-  <hr class="my-4 mb-3 mt-3">
-  <div class="container-fluid dashboard-square-kebab">
-    <form>
-      <div class="row">
-        <div class="col-12 d-flex justify-content-between align-items-center">
-          <div class="form-group mb-0 d-flex align-items-center">
-            <label for="statusFilter" class="mb-0 me-2">Filter by Status:</label>
-            <select class="form-control" id="statusFilter">
-              <option value="">All</option>
-              <option value="Reserved">Reserved</option>
-              <option value="On Process">On Process</option>
-              <option value="Rejected">Rejected</option>
-            </select>
+    <section class="home-section">
+      <h4 class="qreserve">Reservations</h4>
+      <hr class="my-4 mb-3 mt-3">
+      <div class="container-fluid dashboard-square-kebab">
+        <form>
+          <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+              <div class="form-group mb-0 d-flex align-items-center">
+                <label for="statusFilter" class="mb-0 me-2">Filter by Status:</label>
+                <select class="form-control" id="statusFilter">
+                  <option value="">All</option>
+                  <option value="Reserved">Reserved</option>
+                  <option value="On Process">On Process</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+              <div id="datatableSearchContainer"></div>
+            </div>
           </div>
-          <div id="datatableSearchContainer"></div>
-        </div>
-      </div>
-      <table id="example" class="table table-striped" style="width: 100%">
-        <thead>
-          <tr>
-            <th>Actions</th>
-            <th>Reservation Code</th>
-            <th>Name</th>
-            <th>Date of Reservation</th>
-            <th>Time of Reservation</th>
-            <th>Pool Table</th>
-            <th>Contact Number</th>
-            <th>Email Address</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
+          <table id="example" class="table table-striped" style="width: 100%">
+            <thead>
+              <tr>
+                <th>Actions</th>
+                <th>Reservation Code</th>
+                <th>Name</th>
+                <th>Date of Reservation</th>
+                <th>Time of Reservation</th>
+                <th>Pool Table</th>
+                <th>Contact Number</th>
+                <th>Email Address</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
               <?php
               foreach ($arrayReservationInfo as $reservations) {
                 $reservationID = $reservations['reservationID'] ?? '';
@@ -233,7 +249,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
     </section>
 
     <!-- Modals -->
-    <!-- Accept Reservation Modals -->
     <!-- Accept Reservation Modals -->
     <div class="modal fade" id="accept-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -389,10 +404,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
       </div>
     </div>
 
-
-
-
-
     <style>
       /* Hide div result */
       #result {
@@ -409,12 +420,8 @@ if (isset($_SESSION["userSuperAdminID"])) {
       }
     </style>
 
-
-
     <script src="src/js/sidebar.js"></script>
     <script src="src/js/reservations_viewing.js"></script>
-
-
     <script>
       function removeInputField() {
         var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -443,10 +450,6 @@ if (isset($_SESSION["userSuperAdminID"])) {
         removeInputField();
       });
     </script>
-
-
-
-
   </body>
 
   </html>

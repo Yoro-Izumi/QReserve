@@ -26,7 +26,15 @@ if (isset($_SESSION["userSuperAdminID"])) {
     }
   }
 
+  include "src/get_data_from_database/get_super_admin_accounts.php";
+  $superAdminSessionID = $_SESSION['userSuperAdminID'];
+  $superAdminUsername = "";
 
+  foreach ($arraySuperAdminAccount as $superAdmin) {
+      if ($superAdmin['superAdminID'] === $superAdminSessionID) {
+          $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
+      }
+  }
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->

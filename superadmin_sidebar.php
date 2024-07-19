@@ -1,15 +1,15 @@
 <?php
-  include "src/get_data_from_database/get_super_admin_accounts.php";
-  include "encodeDecode.php";
-  $key = "TheGreatestNumberIs73";
-  $superAdminSessionID = $_SESSION['userSuperAdminID'];
-  $superAdminUsername = "";
+  // include "src/get_data_from_database/get_super_admin_accounts.php";
+  // include "encodeDecode.php";
+  // $key = "TheGreatestNumberIs73";
+  // $superAdminSessionID = $_SESSION['userSuperAdminID'];
+  // $superAdminUsername = "";
 
-  foreach($arraySuperAdminAccount as $superAdmin){
-    if($superAdmin['superAdminID'] === $superAdminSessionID){
-      $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
-    } 
-  }
+  // foreach($arraySuperAdminAccount as $superAdmin){
+  //   if($superAdmin['superAdminID'] === $superAdminSessionID){
+  //     $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
+  //   } 
+  // }
 
 ?>
 <!DOCTYPE html>

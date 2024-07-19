@@ -8,6 +8,20 @@ include "src/get_data_from_database/get_walk_in.php";
 include "src/get_data_from_database/convert_to_normal_time.php";
 include "encodeDecode.php";
 $key = "TheGreatestNumberIs73";
+
+
+
+include "src/get_data_from_database/get_super_admin_accounts.php";
+$superAdminSessionID = $_SESSION['userSuperAdminID'];
+$superAdminUsername = "";
+
+foreach ($arraySuperAdminAccount as $superAdmin) {
+    if ($superAdmin['superAdminID'] === $superAdminSessionID) {
+        $superAdminUsername = decryptData($superAdmin['superAdminUsername'], $key);
+    }
+}
+
+
 date_default_timezone_set('Asia/Manila');
 $currentDate = date('Y-m-d');
 

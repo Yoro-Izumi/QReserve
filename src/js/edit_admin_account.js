@@ -362,13 +362,13 @@ document.addEventListener('DOMContentLoaded', () => {
       unsavedChangesModal.show();
     } else {
       // Directly redirect if form is not dirty
-      window.location.href = 'member-profiles.php';
+      window.location.href = 'admin-profiles.php';
     }
   });
 
   const proceedButton = document.getElementById('proceedButton');
   proceedButton.addEventListener('click', () => {
     // Handle the proceed button action
-    window.location.href = 'member-profiles.php';
+    window.location.href = 'admin-profiles.php';
   });
 });
