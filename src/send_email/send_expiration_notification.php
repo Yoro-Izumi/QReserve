@@ -34,7 +34,7 @@
                 <br><br>
                 <span style='margin:20px;'>Your account has expired</span>
                 <br><br>
-                <span style='margin:20px;'>Contact Bevitore Sta.Rosa to renew membership account</span>
+                <span style='margin:20px;'>Contact Bevitore Sta.Rosa to create a new membership account</span>
                 <br><br>
                 <span>Account: ".decryptData($memberControlNumber, $key)." </span>
                 <br>

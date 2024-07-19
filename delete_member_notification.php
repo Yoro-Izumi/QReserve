@@ -45,32 +45,43 @@ foreach($arrayMemberAccount as $memberAccount) {
     $validityDate = convertToNormalDate($sqlDate);
     $dateDifference = dateDifference($sqlDate, $currentDate); // function for date difference
     $customerEmail = $memberAccount['customerEmail'];
+    $memberAccountStatus = $memberAccount['validity'];
 
     // Check if memberID + current date is not in last execution data
     $memberDateKey = $memberID . '_' . $currentDate;
+    
     if (!in_array($memberDateKey, $lastExecutionData)) {
         // Notify if membership will expire in 5 days
-        if ($dateDifference === 5) {
+        if ($dateDifference === 5 && $memberAccountStatus === 'Valid') {
             include 'src/send_email/send_advance_expiration_notification.php';
 
             
             // Record memberID + current date in current execution data
             $currentExecutionData[] = $memberDateKey;
-        } elseif ($sqlDate < $currentDate) {
+        } 
+        
+        elseif ($sqlDate < $currentDate && $memberAccountStatus === 'Valid') {
             // Update membership validity if expired
             $qryDeleteMembershipAccount = "UPDATE member_details SET validity = ? WHERE memberID = ?";
             $prepareDeleteMembershipAccount = mysqli_prepare($conn, $qryDeleteMembershipAccount);
+            
             if ($prepareDeleteMembershipAccount) {
                 mysqli_stmt_bind_param($prepareDeleteMembershipAccount, "si", $validity, $memberID);
                 mysqli_stmt_execute($prepareDeleteMembershipAccount);
 
                 // Notify member of expiration
                 include 'src/send_email/send_expiration_notification.php';
-            } else {
+                // Record memberID + current date in current execution data
+                $currentExecutionData[] = $memberDateKey;
+            } 
+            
+            else {
                 // Handle query preparation error
                 error_log("Failed to prepare query: " . mysqli_error($conn));
             }
         }
+
+        
     }
 }
 
