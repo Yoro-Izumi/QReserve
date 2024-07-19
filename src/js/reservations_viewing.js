@@ -173,10 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Apply new filter
-        if (numColumns > 8) {
+        if (numColumns > 10) {
+            table.column(10).search(selectedValue).draw();
+        } else if (numColumns > 8) {
             table.column(8).search(selectedValue).draw();
-        } else if (numColumns > 7) {
-            table.column(7).search(selectedValue).draw();
         }
     }); 
 
