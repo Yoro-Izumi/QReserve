@@ -129,7 +129,7 @@ function validateControlNumber(event) {
 
 
  //   For Validity Date
- document.addEventListener("DOMContentLoaded", function() {
+/* document.addEventListener("DOMContentLoaded", function() {
   const validityInput = document.querySelector("#validity");
 
   // Get today's date
@@ -140,6 +140,31 @@ function validateControlNumber(event) {
 
   // Set the minimum date to today's date
   const minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  validityInput.setAttribute("min", minDate);
+
+  // Set the maximum date to 1 year from today's date
+  const maxDate = new Date(today.getTime() + (365 * 24 * 60 * 60 * 1000));
+  const maxYear = maxDate.getFullYear();
+  const maxMonth = maxDate.getMonth() + 1; // Month is zero-indexed
+  const maxDay = maxDate.getDate();
+  const maxDateString = `${maxYear}-${maxMonth.toString().padStart(2, '0')}-${maxDay.toString().padStart(2, '0')}`;
+  validityInput.setAttribute("max", maxDateString);
+});*/
+// For Validity Date
+document.addEventListener("DOMContentLoaded", function() {
+  const validityInput = document.querySelector("#validity");
+
+  // Get today's date
+  const today = new Date();
+
+  // Calculate the date exactly 30 days from today
+  const futureDate = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+  const minYear = futureDate.getFullYear();
+  const minMonth = futureDate.getMonth() + 1; // Month is zero-indexed
+  const minDay = futureDate.getDate();
+
+  // Set the minimum date to exactly 30 days from today
+  const minDate = `${minYear}-${minMonth.toString().padStart(2, '0')}-${minDay.toString().padStart(2, '0')}`;
   validityInput.setAttribute("min", minDate);
 
   // Set the maximum date to 1 year from today's date
