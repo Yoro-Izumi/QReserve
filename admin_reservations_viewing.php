@@ -15,6 +15,15 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   $currentDate = date("Y-m-d");
 
   $customerName = $email = $contactNumber = " ";
+
+  include "src/get_data_from_database/get_admin_accounts.php";
+  $adminSessionID = $_SESSION['userAdminID'];
+  $adminUsername = " ";
+  foreach ($arrayAdminAccount as $admin) {
+    if ($admin['adminID'] === $adminSessionID) {
+      $adminUsername = decryptData($admin['adminUsername'], $key);
+    }
+  }
 ?>
   <!DOCTYPE html>
   <!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
@@ -59,161 +68,162 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
   </head>
 
   <body class="body">
-  <?php include "admin_sidebar.php"; ?>
+    <?php include "admin_sidebar.php"; ?>
 
-  <script>
-  $(document).ready(function() {
-    var table = $('#example').DataTable();
-    var searchContainer = table.table().container().querySelector('.dataTables_filter');
+    <script>
+      $(document).ready(function() {
+        var table = $('#example').DataTable();
+        var searchContainer = table.table().container().querySelector('.dataTables_filter');
 
-    // Move the DataTables search input into the custom container
-    document.getElementById('datatableSearchContainer').appendChild(searchContainer);
-  });
+        // Move the DataTables search input into the custom container
+        document.getElementById('datatableSearchContainer').appendChild(searchContainer);
+      });
 
-  // Custom filter function for status
-  $('#statusFilter').on('change', function() {
-    var selectedStatus = $(this).val();
-    $('#example').DataTable().column(8).search(selectedStatus).draw();
-  });
-</script>
+      // Custom filter function for status
+      $('#statusFilter').on('change', function() {
+        var selectedStatus = $(this).val();
+        $('#example').DataTable().column(8).search(selectedStatus).draw();
+      });
+    </script>
 
-<style>
-  .form-group label {
-    display: inline-block;
-    margin-right: 10px;
-  }
+    <style>
+      .form-group label {
+        display: inline-block;
+        margin-right: 10px;
+      }
 
-  #statusFilter {
-    display: inline-block;
-    width: auto;
-  }
+      #statusFilter {
+        display: inline-block;
+        width: auto;
+      }
 
-  .dataTables_filter {
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
-  }
-</style>
+      .dataTables_filter {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+      }
+    </style>
 
-<section class="home-section">
-  <h4 class="qreserve">Reservations</h4>
-  <hr class="my-4 mb-3 mt-3">
-  <div class="container-fluid dashboard-square-kebab">
-    <form>
-      <div class="row">
-        <div class="col-12 d-flex justify-content-between align-items-center">
-          <div class="form-group mb-0 d-flex align-items-center">
-            <label for="statusFilter" class="mb-0 me-2">Filter by Status:</label>
-            <select class="form-control" id="statusFilter">
-              <option value="">All</option>
-              <option value="Reserved">Reserved</option>
-              <option value="On Process">On Process</option>
-              <option value="Rejected">Rejected</option>
-            </select>
+    <section class="home-section">
+      <h4 class="qreserve">Reservations</h4>
+      <hr class="my-4 mb-3 mt-3">
+      <div class="container-fluid dashboard-square-kebab">
+        <form>
+          <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+              <div class="form-group mb-0 d-flex align-items-center">
+                <label for="statusFilter" class="mb-0 me-2">Filter by Status:</label>
+                <select class="form-control" id="statusFilter">
+                  <option value="">All</option>
+                  <option value="Reserved">Reserved</option>
+                  <option value="On Process">On Process</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+              <div id="datatableSearchContainer"></div>
+            </div>
           </div>
-          <div id="datatableSearchContainer"></div>
-        </div>
-      </div>
-      <table id="example" class="table table-striped" style="width: 100%">
-        <thead>
-            <tr>
-              <th>Reservation Code</th>
-              <th>Name</th>
-              <th>Date of Reservation</th>
-              <th>Time of Reservation</th>
-              <th>Pool Table</th>
-              <th>Contact Number</th>
-              <th>Email Address</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            foreach ($arrayReservationInfo as $reservations) {
-              $reservationID = $reservations['reservationID'] ?? '';
-              $reservationDate = $reservations['reservationDate'] ?? '';
-              $reservationStatus = $reservations['reservationStatus'] ?? '';
-              $reservationTimeStart = convertToNormalTime($reservations['reservationTimeStart']) ?? '';
-              $reservationTimeEnd = convertToNormalTime($reservations['reservationTimeEnd']) ?? '';
-              $tableNumber = $reservations['poolTableNumber'] ?? '';
-              $reservationCode = '';
+          <table id="example" class="table table-striped" style="width: 100%">
+            <thead>
+              <tr>
+                <th>Reservation Code</th>
+                <th>Name</th>
+                <th>Date of Reservation</th>
+                <th>Time of Reservation</th>
+                <th>Pool Table</th>
+                <th>Contact Number</th>
+                <th>Email Address</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              foreach ($arrayReservationInfo as $reservations) {
+                $reservationID = $reservations['reservationID'] ?? '';
+                $reservationDate = $reservations['reservationDate'] ?? '';
+                $reservationStatus = $reservations['reservationStatus'] ?? '';
+                $reservationTimeStart = convertToNormalTime($reservations['reservationTimeStart']) ?? '';
+                $reservationTimeEnd = convertToNormalTime($reservations['reservationTimeEnd']) ?? '';
+                $tableNumber = $reservations['poolTableNumber'] ?? '';
+                $reservationCode = '';
 
-              if ($reservationDate >= $currentDate) {
-                $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
-                $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
-                mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
-                mysqli_stmt_execute($getQRCodePrepare);
-                $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
-                $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
-                $reservationCode = $getQRCodeRow['codeQR'] ?? '';
+                if ($reservationDate >= $currentDate) {
+                  $getQRCodeQuery = "SELECT codeQR FROM qr_code where reservationID = ?";
+                  $getQRCodePrepare = mysqli_prepare($conn, $getQRCodeQuery);
+                  mysqli_stmt_bind_param($getQRCodePrepare, "i", $reservationID);
+                  mysqli_stmt_execute($getQRCodePrepare);
+                  $getQRCodeResult = mysqli_stmt_get_result($getQRCodePrepare);
+                  $getQRCodeRow = mysqli_fetch_assoc($getQRCodeResult);
+                  $reservationCode = $getQRCodeRow['codeQR'] ?? '';
 
-                foreach ($arrayMemberAccount as $members) {
-                  if ($members['memberID'] == $reservations['memberID']) {
-                    $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
-                    $contactNumber = decryptData($members['customerNumber'], $key) ?? '';
-                    $email = decryptData($members['customerEmail'], $key) ?? '';
+                  foreach ($arrayMemberAccount as $members) {
+                    if ($members['memberID'] == $reservations['memberID']) {
+                      $customerName = decryptData($members['customerFirstName'], $key) . " " . decryptData($members['customerMiddleName'], $key) . " " . decryptData($members['customerLastName'], $key);
+                      $contactNumber = decryptData($members['customerNumber'], $key) ?? '';
+                      $email = decryptData($members['customerEmail'], $key) ?? '';
+                    }
                   }
-                }
 
-                echo "<tr>";
-                if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
-                  $status = "badge bg-success";
-                } else if ($reservationStatus == "On Process") {
-                  $status = "badge bg-warning";
-                } else {
-                  $status = "badge bg-danger";
-                }
-                echo "
+                  echo "<tr>";
+                  if ($reservationStatus == "Paid" || $reservationStatus == "Done" || $reservationStatus == "Reserved") {
+                    $status = "badge bg-success";
+                  } else if ($reservationStatus == "On Process") {
+                    $status = "badge bg-warning";
+                  } else {
+                    $status = "badge bg-danger";
+                  }
+                  echo "
                   <td>$reservationCode</td>
                   <td>$customerName</td>
-                  <td>".convertToNormalDate($reservationDate)."</td>
+                  <td>" . convertToNormalDate($reservationDate) . "</td>
                   <td>$reservationTimeStart - $reservationTimeEnd</td>
                   <td>$tableNumber</td>
                   <td>$contactNumber</td>
                   <td>$email</td>
                   <td><span class='$status'>$reservationStatus</span></td>
                 </tr>";
-              } else {
-                // Additional code for else case, if needed
+                } else {
+                  // Additional code for else case, if needed
+                }
               }
-            }
 
-            foreach ($arrayWalkinDetails as $walkin) {
-              $walkinDate = $walkin['walkinDate'] ?? '';
-              $walkinStatus = $walkin['walkinStatus'] ?? '';
-              $walkinTimeStart = convertToNormalTime($walkin['walkinTimeStart']) ?? '';
-              $walkinTimeEnd = convertToNormalTime($walkin['walkinTimeEnd']) ?? '';
-              $tableNumber = $walkin['poolTableNumber'] ?? '';
+              foreach ($arrayWalkinDetails as $walkin) {
+                $walkinDate = $walkin['walkinDate'] ?? '';
+                $walkinStatus = $walkin['walkinStatus'] ?? '';
+                $walkinTimeStart = convertToNormalTime($walkin['walkinTimeStart']) ?? '';
+                $walkinTimeEnd = convertToNormalTime($walkin['walkinTimeEnd']) ?? '';
+                $tableNumber = $walkin['poolTableNumber'] ?? '';
 
-              if ($walkinDate >= $currentDate) {
-                $customerName = decryptData($walkin['customerFirstName'], $key) . " " . decryptData($walkin['customerMiddleName'], $key) . " " . decryptData($walkin['customerLastName'], $key);
-                $contactNumber = decryptData($walkin['customerNumber'], $key) ?? '';
-                $email = decryptData($walkin['customerEmail'], $key) ?? '';
+                if ($walkinDate >= $currentDate) {
+                  $customerName = decryptData($walkin['customerFirstName'], $key) . " " . decryptData($walkin['customerMiddleName'], $key) . " " . decryptData($walkin['customerLastName'], $key);
+                  $contactNumber = decryptData($walkin['customerNumber'], $key) ?? '';
+                  $email = decryptData($walkin['customerEmail'], $key) ?? '';
 
-                echo "<tr>
+                  echo "<tr>
                   <td>Walk-in</td>
                   <td>$customerName</td>
-                  <td>".convertToNormalDate($walkinDate)."</td>
+                  <td>" . convertToNormalDate($walkinDate) . "</td>
                   <td>$walkinTimeStart - $walkinTimeEnd</td>
                   <td>$tableNumber</td>
                   <td>$contactNumber</td>
                   <td>$email</td>";
-                if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
-                  $status = "badge bg-success";
-                } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
-                  $status = "badge bg-warning";
-                } else {
-                  $status = "badge bg-danger";
-                }
-                echo "<td><span class='$status'>$walkinStatus</span></td>
+                  if ($walkinStatus == "Paid" || $walkinStatus == "Done" || $walkinStatus == "Reserved") {
+                    $status = "badge bg-success";
+                  } else if ($walkinStatus == "Waiting" || $walkinStatus == "Pending") {
+                    $status = "badge bg-warning";
+                  } else {
+                    $status = "badge bg-danger";
+                  }
+                  echo "<td><span class='$status'>$walkinStatus</span></td>
                 </tr>";
-              } else {
-                // Additional code for else case, if needed
+                } else {
+                  // Additional code for else case, if needed
+                }
               }
-            }
-            ?>
-          </tbody>
-        </table></form>
+              ?>
+            </tbody>
+          </table>
+        </form>
       </div>
     </section>
 
@@ -292,25 +302,25 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
 
 
     <input type="text" id="qrInput" autofocus>
-      <div id="result" type='hidden'></div>
+    <div id="result" type='hidden'></div>
 
     <!-- Modal for showing the reservation details on qr scan-->
     <div class="modal fade" id="reservation_details" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" id="wait">
-                <div class="modal-header">
-                    <h2 class="modal-title fw-bold text-center" id="success">
-                        <img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Reservation Details
-                    </h2>
-                </div>
-                <div class="modal-body text-center" id="modal-body-content">
-                    (Details Here)
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary create-button" id="submitReserve" type="button">Close</button>
-                </div>
-            </div>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="wait">
+          <div class="modal-header">
+            <h2 class="modal-title fw-bold text-center" id="success">
+              <img src="src/images/icons/available-worldwide.gif" alt="Wait Icon" class="modal-icons">Reservation Details
+            </h2>
+          </div>
+          <div class="modal-body text-center" id="modal-body-content">
+            (Details Here)
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary create-button" id="submitReserve" type="button">Close</button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Modal for Invalid QR Code -->
@@ -338,7 +348,7 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       #result {
         position: absolute;
         left: -9999px;
-        display:none;
+        display: none;
       }
     </style>
     <style>
@@ -349,36 +359,36 @@ if (isset($_SESSION["userSuperAdminID"]) || isset($_SESSION["userAdminID"])) { /
       }
     </style>
 
-<script src="src/js/sidebar.js"></script>
-<script src="src/js/reservations_viewing.js"></script>
+    <script src="src/js/sidebar.js"></script>
+    <script src="src/js/reservations_viewing.js"></script>
 
     <script>
-        function removeInputField() {
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      function removeInputField() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-            // Check for iOS devices
-            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+        // Check for iOS devices
+        var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 
-            // Check for other mobile devices
-            var isMobile = /Android|webOS|BlackBerry|IEMobile|Opera Mini/.test(userAgent) || isIOS;
+        // Check for other mobile devices
+        var isMobile = /Android|webOS|BlackBerry|IEMobile|Opera Mini/.test(userAgent) || isIOS;
 
-            if (isMobile) {
-                var inputField = document.getElementById('qrInput');
-                if (inputField) {
-                    inputField.parentNode.removeChild(inputField);
-                }
-            }
-            if (isIOS) {
-                var inputField = document.getElementById('qrInput');
-                if (inputField) {
-                    inputField.parentNode.removeChild(inputField);
-                }
-            }
+        if (isMobile) {
+          var inputField = document.getElementById('qrInput');
+          if (inputField) {
+            inputField.parentNode.removeChild(inputField);
+          }
         }
+        if (isIOS) {
+          var inputField = document.getElementById('qrInput');
+          if (inputField) {
+            inputField.parentNode.removeChild(inputField);
+          }
+        }
+      }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            removeInputField();
-        });
+      document.addEventListener("DOMContentLoaded", function() {
+        removeInputField();
+      });
     </script>
 
   </body>
