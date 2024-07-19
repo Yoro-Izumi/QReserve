@@ -87,7 +87,9 @@ if (isset($_SESSION["userSuperAdminID"])) {
           <tbody>
                 <?php foreach ($arrayMemberAccount as $memberAccount) { ?>
                     <tr>
+                <?php if($memberAccount['validity'] === 'Valid'){ ?>
                         <td><input type='checkbox' class='member-checkbox' name='member[]' value='<?php echo $memberAccount['customerID']; ?>'></td>
+                <?php }else{echo "<td></td>";} ?>
                         <td><?php echo htmlspecialchars(decryptData($memberAccount['customerFirstName'], $key) . " " . decryptData($memberAccount['customerMiddleName'], $key) . " " . decryptData($memberAccount['customerLastName'], $key)); ?></td>
                         <td><?php echo htmlspecialchars(decryptData($memberAccount['membershipID'], $key)); ?></td>
                         <td><?php echo htmlspecialchars(decryptData($memberAccount['customerBirthdate'], $key)); ?></td>
