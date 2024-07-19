@@ -28,7 +28,7 @@
         <div class='container'>
             <h3 style='text-align:center; color:green;'></h3>
             <div style='border:2px solid green; border-radius:10px; padding: 20px; margin:20px;'>
-                <h1 style='font:Inika; text-align:center; color:green;'>Admission Status</h1>
+                <h1 style='font:Inika; text-align:center; color:green;'>Membership Status</h1>
                 <hr style='color:green; opacity:80%;'></hr>
                 <span>Dear Customer,</span>
                 <br><br>
